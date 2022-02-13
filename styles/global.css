@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+    overflow-x: hidden;
+    font-family: 'Source Sans Pro', sans-serif;
+}
+
+h1,p,h2 {
+    font-family: 'Source Sans Pro', sans-serif;
+}
+
+#home {
+    background-image: url('../public/images/home/bg.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
