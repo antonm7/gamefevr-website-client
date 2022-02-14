@@ -7,6 +7,9 @@ const nextConfig = {
       use: ['@svgr/webpack'],
     });
     return config;
+  },
+  env: {
+    key:'e996863ffbd04374ac0586ec2bcadd55'
   }
 }
 

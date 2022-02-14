@@ -1,8 +1,17 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
+import { useRouter } from 'next/router'
 import Car from '../components/animations/Car'
-import Navbar from '../components/animations/Navbar'
+import Filters from '../components/Filters'
+import SearchButton from '../components/common/SearchButton'
+import SearchInput from '../components/common/SearchInput'
 const Home: NextPage = () => {
+  const router = useRouter()
+
+  const navigate = () => {
+    router.push('/search')
+  }
+
   return (
     <div>
       <Head>
@@ -12,12 +21,18 @@ const Home: NextPage = () => {
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700;900&display=swap" rel="stylesheet" />
       </Head>
+      <Filters />
       <div className='flex flex-row'>
         <main id="home" className='h-screen w-screen flex relative'>
-          {/* <Navbar /> */}
             <div className='w-full flex flex-col'>
-              <div>
-                <h1 className='text-white font-black text-7xl pt-36 text-center'>Search The Best<br /> Game For You</h1>
+              <div className='z-10 bg-transparent h-full'>
+                <h1 className='text-white font-black text-7xl pt-32 text-center'>Search The Best<br /> Game For You</h1>
+                <div className='flex pt-8 justify-center'>
+                  <SearchInput />
+                  <div className='w-24 h-16 rounded-lg ml-4'>
+                    <SearchButton onClick={() => navigate()}/>
+                  </div>
+                </div>
               </div>
               <Car />
             </div>
