@@ -26,7 +26,7 @@ const Home: NextPage = () => {
         <main id="home" className='h-screen w-screen flex relative'>
             <div className='w-full flex flex-col'>
               <div className='z-10 bg-transparent h-full'>
-                <h1 className='text-white font-black text-7xl pt-32 text-center'>Search The Best<br /> Game For You</h1>
+                <h1 className='text-white font-black text-7xl overflow-hidden	pt-32 text-center'>Search The Best<br /> Game For You</h1>
                 <div className='flex pt-8 justify-center'>
                   <SearchInput />
                   <div className='w-24 h-16 rounded-lg ml-4'>
