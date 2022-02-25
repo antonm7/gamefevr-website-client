@@ -21,18 +21,17 @@ const Home: NextPage = () => {
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700;900&display=swap" rel="stylesheet" />
       </Head>
-      <Filters />
       <div className='flex flex-row'>
         <main id="home" className='h-screen w-screen flex relative'>
             <div className='w-full flex flex-col'>
               <div className='z-10 bg-transparent h-full'>
                 <h1 className='text-white font-black text-7xl overflow-hidden	pt-32 text-center'>Search The Best<br /> Game For You</h1>
-                <div className='flex pt-8 justify-center'>
-                  <SearchInput />
-                  <div className='w-24 h-16 rounded-lg ml-4'>
-                    <SearchButton onClick={() => navigate()}/>
+                  <div className='flex flex-col items-center'>
+                    <p className='text-white font-regular text-2xl pt-12 text-center'>Start searching the best game for you</p>
+                    <div className='w-24 h-16 rounded-lg mt-8 ml-4'>
+                      <SearchButton text={true} onClick={() => navigate()}/>
+                    </div>
                   </div>
-                </div>
               </div>
               <Car />
             </div>
