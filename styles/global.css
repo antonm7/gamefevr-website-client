@@ -9,7 +9,7 @@
 
 h1,p,h2 {
     font-family: 'Source Sans Pro', sans-serif;
-    
+    overflow: hidden !important;
 }
 
 #home {
