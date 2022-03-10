@@ -3,14 +3,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 type Props = {
     onClick:any,
-    text?:boolean
+    text?:string
 }
 
 export default function SearchButton(props:Props) {
     if(props.text) {
         return (
             <button onClick={props.onClick} className="bg-specialYellow w-full h-full flex items-center justify-center">
-               <p className="text-white font-semobild">Search</p>
+               <p className="text-white font-semobild">{props.text}</p>
             </button>
         )
     } else {
