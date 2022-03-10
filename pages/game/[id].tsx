@@ -1,5 +1,5 @@
 import { GetServerSideProps } from "next"
-import Navbar from "../../components/Navbar"
+import SearchLayout from "../../components/layout/SearchLayout"
 import { DetailedGame, ElementDescription } from "../../types"
 
 type Props = {
@@ -9,9 +9,8 @@ type Props = {
 export default function GamePage(props:Props) {
     const game = props.game
     return (
-        <div className="h-screen">
-            <Navbar />
-            <main className="p-36">
+        <SearchLayout>
+            <main className="px-36 py-6">
                 <div className="flex flex-row justify-between">
                     <div>
                         <h3 className="text-white font-normal text-1xl opacity-40"> {game.released.slice(0,4)}</h3>
@@ -34,10 +33,11 @@ export default function GamePage(props:Props) {
                     __html: game.description
                 }}></div>              
             </main>
-        </div>
+        </SearchLayout>
     )
 }
 
+//TODO:change to static props with filters using getStaticProps & getStaticPaths
 export const getServerSideProps:GetServerSideProps = async (context) => {
     const query = context.query
     const id = query.id

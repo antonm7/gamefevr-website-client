@@ -21,7 +21,6 @@ export default function Index(props:any) {
 
     return (
         <SearchLayout>
-          <div>Welcome</div>
           <div className="flex flex-wrap justify-center">
             {games.map((game:any,index:number) => <SmallGameBox key={index} game={game}/>)}
           </div>
@@ -31,7 +30,6 @@ export default function Index(props:any) {
         </SearchLayout>
       )
 }
-
 export const getServerSideProps:GetServerSideProps = async (context) => {
   const query = context.query
   //filters
