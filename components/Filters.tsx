@@ -1,7 +1,7 @@
 import { genres } from "../lib/staticData";
-import { Genre } from "../types";
+import { ElementDescription } from "../types";
 import SelectBox from "./common/SelectBox";
-import Slider, { Range } from 'rc-slider';
+import { Range } from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import { useState } from "react";
 
@@ -13,7 +13,7 @@ export default function Filters() {
             <h1 className="text-3xl truncate font-semibold text-center">Genres</h1>
             <div className="bg-white p-4 w-2/3 mt-6 mx-auto">
                 <div className="flex h-auto items-center justify-center flex-row flex-wrap">
-                    {genres.map((genre:Genre, index:number) => {
+                    {genres.map((genre:ElementDescription, index:number) => {
                         return <SelectBox key={index} title={genre.name} />
                     })}
                 </div>
