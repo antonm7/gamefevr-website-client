@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { Genre, ShortGame } from "../types"
+import { ElementDescription, ShortGame } from "../types"
 
 type Props = {
     game:ShortGame;
@@ -16,11 +16,10 @@ export default function SmallGameBox(props:Props) {
                 <div className="flex-grow p-4">
                     <h1 style={{lineBreak:'anywhere'}} className="font-semibold text-xl whitespace-pre-wrap">{game.name}</h1>
                     <div className="flex flex-row justify-between pt-6">
-                        <div className="flex flex-row flex-nowrap">{game.genres.slice(0, 3).map((genre:Genre,index:number) => <h2 key={index} className={'pr-1'}>{genre.name}{index === game.genres.length - 1 || index === 2 ? '' : ','}</h2>)}</div>
+                        <div className="flex flex-row flex-nowrap">{game.genres.slice(0, 3).map((genre:ElementDescription,index:number) => <h2 key={index} className={'pr-1'}>{genre.name}{index === game.genres.length - 1 || index === 2 ? '' : ','}</h2>)}</div>
                         <h2>{game.released.slice(0,4)}</h2>
                     </div>
                 </div>
-                {/* <h1>{game.background_image}</h1> */}
             </div>
         </Link>
     )
