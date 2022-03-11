@@ -80,3 +80,10 @@ export type DetailedGame = {
     tags:ElementDescription[];
     website:string;
 }
+
+export type Review = {
+    id:string;
+    userId:string;
+    time:string;
+    text:string
+}
