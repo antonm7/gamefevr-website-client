@@ -1,13 +1,23 @@
-import { GetServerSideProps } from "next"
+import { useEffect, useState } from "react"
 import SearchLayout from "../../components/layout/SearchLayout"
 import { DetailedGame, ElementDescription } from "../../types"
+import { PrismaClient } from '@prisma/client'
+import { ObjectId } from "bson"
+import { useRouter } from "next/router"
 
 type Props = {
     game:DetailedGame
 }
 
+type Params = {
+    params : {
+        id:string
+    }
+}
+
 export default function GamePage(props:Props) {
     const game = props.game
+    
     return (
         <SearchLayout>
             <main className="px-36 py-6">
@@ -37,14 +47,34 @@ export default function GamePage(props:Props) {
     )
 }
 
-//TODO:change to static props with filters using getStaticProps & getStaticPaths
-export const getServerSideProps:GetServerSideProps = async (context) => {
-    const query = context.query
-    const id = query.id
+
+export async function getStaticPaths() {
+    return {
+      paths: [
+        { params: { id: '' } },
+      ],
+      fallback: true
+    }
+  }
+
+export const getStaticProps = async ({params}:Params) => {
+    const id = params.id
     const getData = await fetch(`https://api.rawg.io/api/games/${id}?key=e996863ffbd04374ac0586ec2bcadd55`)
     const getScreenshots = await fetch(`https://api.rawg.io/api/games/${id}/screenshots?key=e996863ffbd04374ac0586ec2bcadd55`)
     const gameData = await getData.json()
     const screenshots = await getScreenshots.json()
+
+    // const prisma = new PrismaClient()
+
+    // await prisma.user.create({
+    //     data: {
+    //         id:new ObjectId().toString(),
+    //         email:'',
+    //         password:'',
+    //         username:'',            
+    //     }
+    // })
+    // console.log('created user')
 
     let finalData:DetailedGame = {
         id:gameData.id,
@@ -68,5 +98,5 @@ export const getServerSideProps:GetServerSideProps = async (context) => {
         game: finalData
       }
     }
-  }
+}
   
