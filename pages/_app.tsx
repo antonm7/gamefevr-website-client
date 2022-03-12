@@ -1,12 +1,15 @@
 import type { AppProps } from 'next/app'
 import 'tailwindcss/tailwind.css'
 import '../styles/global.css'
+import { SessionProvider } from "next-auth/react"
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps:{session,...pageProps} }: AppProps) {
   return (
-    <div className='bg-main-blue'>
-      <Component {...pageProps} />
-    </div>
+    <SessionProvider session={session}>
+      <div className='bg-main-blue'>
+        <Component {...pageProps} />
+      </div>
+    </SessionProvider>
   )
 }
 
