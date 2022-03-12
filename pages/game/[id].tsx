@@ -1,9 +1,5 @@
-import { useEffect, useState } from "react"
 import SearchLayout from "../../components/layout/SearchLayout"
 import { DetailedGame, ElementDescription } from "../../types"
-import { PrismaClient } from '@prisma/client'
-import { ObjectId } from "bson"
-import { useRouter } from "next/router"
 
 type Props = {
     game:DetailedGame
@@ -20,7 +16,7 @@ export default function GamePage(props:Props) {
     
     return (
         <SearchLayout>
-            <main className="px-36 py-6">
+            <main className="px-44 py-6">
                 <div className="flex flex-row justify-between">
                     <div>
                         <h3 className="text-white font-normal text-1xl opacity-40"> {game.released.slice(0,4)}</h3>
@@ -58,23 +54,11 @@ export async function getStaticPaths() {
   }
 
 export const getStaticProps = async ({params}:Params) => {
-    const id = params.id
+    const id:string = params.id
     const getData = await fetch(`https://api.rawg.io/api/games/${id}?key=e996863ffbd04374ac0586ec2bcadd55`)
     const getScreenshots = await fetch(`https://api.rawg.io/api/games/${id}/screenshots?key=e996863ffbd04374ac0586ec2bcadd55`)
     const gameData = await getData.json()
     const screenshots = await getScreenshots.json()
-
-    // const prisma = new PrismaClient()
-
-    // await prisma.user.create({
-    //     data: {
-    //         id:new ObjectId().toString(),
-    //         email:'',
-    //         password:'',
-    //         username:'',            
-    //     }
-    // })
-    // console.log('created user')
 
     let finalData:DetailedGame = {
         id:gameData.id,
