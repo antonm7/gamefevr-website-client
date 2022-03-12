@@ -20,7 +20,8 @@ module.exports = {
         'text-gray':'#e6e6e6'
       },
       width: {
-        '700':'40rem'
+        '700':'40rem',
+        '500':'30rem'
       }
     },
   },
