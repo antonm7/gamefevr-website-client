@@ -11,21 +11,21 @@ export default async function handler(req:Request, res:Response) {
         let games:any = []
         let filteredString:string = ''
         if(Object.keys(query).length === 0){
-            const getData = await fetch(`https://api.rawg.io/api/games?key=e996863ffbd04374ac0586ec2bcadd55&page_size=20`)
+            const getData = await fetch(`https://api.rawg.io/api/games?key=e996863ffbd04374ac0586ec2bcadd55&page_size=20&page=${query.page}`)
             games = await getData.json()
         } else {
             if(query.dates) filteredString.concat(`&dates=${query.dates[0]}-1-1,${query.dates[1]}-1-1`)
             if(query.genres) {
-            let genresString:string = ''
-            query.genres.map((g:string,i:number) => i === query.genres.length - 1 ? genresString.concat(g) : genresString.concat(`g,`))
-            filteredString.concat(`&genres=${genresString}`)
+                let genresString:string = ''
+                query.genres.map((g:string,i:number) => i === query.genres.length - 1 ? genresString.concat(g) : genresString.concat(`g,`))
+                filteredString.concat(`&genres=${genresString}`)
             } 
             if(query.publishers) {
             let publishersString:string = ''
             query.publishers.map((p:string,i:number) => i === query.publishers.length - 1 ? publishersString.concat(p) : publishersString.concat(`${p},`))
             filteredString.concat(`&genres=${publishersString}`)
             }
-            const getData = await fetch(`https://api.rawg.io/api/games?key=e996863ffbd04374ac0586ec2bcadd55&page_size=20${filteredString}`)
+            const getData = await fetch(`https://api.rawg.io/api/games?key=e996863ffbd04374ac0586ec2bcadd55&page=${query.page}&page_size=20${filteredString}`)
             games = await getData.json()
         } 
         res.status(200).send({games:games.results})
