@@ -1,5 +1,5 @@
 import NextAuth from 'next-auth';
-import Providers from 'next-auth/providers';
+import CredentialsProvider from "next-auth/providers/credentials"
 
 export default NextAuth({
     session: {
@@ -19,8 +19,8 @@ export default NextAuth({
             return token;
         },
       },
-    providers: [
-        Providers.Credentials({
+      providers: [
+        CredentialsProvider({
             async authorize(credentials) {
                 //Get all the users
                 //get user with his email (credentials.email)

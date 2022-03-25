@@ -13,7 +13,7 @@ export default function Navbar() {
             return (
                 <div style={{width:130,cursor:'pointer'}}>
                     <Link href="/">
-                        <div style={{borderWidth:0.5,borderColor:'#ef626d'}} className="rounded-lg w-full h-11">
+                        <div style={{borderWidth:0.5,borderColor:'#ef626d'}} className="rounded-lg w-full h-11 overflow-hidden">
                             <p style={{lineHeight:'2.75rem'}} className="text-white font-regular text-sm text-center">Profile</p>
                         </div>
                     </Link>
@@ -23,7 +23,7 @@ export default function Navbar() {
             return (
                 <div style={{width:130,cursor:'pointer'}}>
                     <Link href="/">
-                        <div style={{borderWidth:0.5,borderColor:'#ef626d'}} className="rounded-lg w-full h-11">
+                        <div style={{borderWidth:0.5,borderColor:'#ef626d'}} className="rounded-lg w-full h-11 overflow-hidden">
                             <p style={{lineHeight:'2.75rem'}} className="text-white font-regular text-sm text-center">Register</p>
                         </div>
                     </Link>

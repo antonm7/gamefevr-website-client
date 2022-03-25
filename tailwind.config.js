@@ -11,7 +11,8 @@ module.exports = {
         'transparent-blue':'rgba(10, 27, 48, 0.6)',
         'specialYellow':'#ffc635',
         'filtersBg':'#efefef',
-        'text-gray':'#9b9b9b'
+        'text-gray':'#9b9b9b',
+        'darkIndigo':'#0c284a',
       },
       borderWidth: {
         DEFAULT:'1.5px'
