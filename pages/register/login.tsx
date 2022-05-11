@@ -37,12 +37,12 @@ const Login:NextPage = () => {
                     <div className="pt-12">
                         <YellowButton onClick={signin} title="Login"/>
                     </div>
-                    <p className="text-darkIndigo font-semibold text-base pt-4 flex items-center">
+                    <div className="text-darkIndigo font-semibold text-base pt-4 flex items-center">
                         Don't have an account? 
                         <Link href={"/register/signup"}>
                             <p style={{color:'#38b6cc'}} className="cursor-pointer pl-1 font-semibold text-base">Sign Up</p>
                         </Link>
-                    </p>
+                    </div>
                 </div>
             </div>
             <LoginAnimation />

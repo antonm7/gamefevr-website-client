@@ -4,11 +4,16 @@ import SelectBox from "./common/SelectBox";
 import { Range } from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import { useStore } from "../store";
 
 export default function Filters() {
     const [yearRange, changeYearRange] = useState<number[]>([1900, 2020]);
+    const store = useStore()
     return (
         <div className="fixed z-50 rounded-lg p-6 w-4/6 h-5/6 bg-filtersBg top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+            <FontAwesomeIcon icon={faXmark} className="h-8 float-right cursor-pointer" onClick={() => store.changeFilterVisibility(false)}/>
             <h1 className="text-3xl truncate font-semibold text-center">Genres</h1>
             <div className="bg-white p-4 w-5/6 mt-6 mx-auto">
                 <div className="flex h-auto items-center justify-center flex-row flex-wrap">
