@@ -8,6 +8,9 @@ const nextConfig = {
     });
     return config;
   },
+  images: {
+    domains: ['media.rawg.io'],
+  },
   env: {
     key:'e996863ffbd04374ac0586ec2bcadd55'
   }
