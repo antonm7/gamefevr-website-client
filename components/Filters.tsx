@@ -10,7 +10,19 @@ import { useStore } from "../store";
 
 export default function Filters() {
     const [yearRange, changeYearRange] = useState<number[]>([1900, 2020]);
+    const [selectedGenres, changeSelectedGenres] = useState<number[]>([]);
     const store = useStore()
+    
+    const updateGenres = (index:number):void => {
+        if(selectedGenres.includes(index)) {
+            //removes
+            changeSelectedGenres(selectedGenres.filter(genre => genre !== index))
+        } else {
+            //adds
+            changeSelectedGenres([...selectedGenres, index])
+        }
+    }
+    
     return (
         <div className="fixed z-50 rounded-lg p-6 w-4/6 h-5/6 bg-filtersBg top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
             <FontAwesomeIcon icon={faXmark} className="h-8 float-right cursor-pointer" onClick={() => store.changeFilterVisibility(false)}/>
@@ -18,7 +30,7 @@ export default function Filters() {
             <div className="bg-white p-4 w-5/6 mt-6 mx-auto">
                 <div className="flex h-auto items-center justify-center flex-row flex-wrap">
                     {genres.map((genre:ElementDescription, index:number) => {
-                        return <SelectBox key={index} title={genre.name} />
+                        return <SelectBox isSelected={selectedGenres.includes(index)} onClick={() => updateGenres(index)} key={index} title={genre.name} />
                     })}
                 </div>
             </div>
