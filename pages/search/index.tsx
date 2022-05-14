@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { useStore } from "../../store";
+import Filters from "../../components/Filters";
 
 export default function Index(props:any) {
   // const [games,setGames] = useState<any[]>([])
@@ -20,7 +21,6 @@ export default function Index(props:any) {
         query:router.query
       })
       return getData.data.games
-      // setGames(old => [...old, ...getData.data.games])
     } catch (e) {
       console.log('ERROR',e)
     }
@@ -32,15 +32,9 @@ export default function Index(props:any) {
     })
   },[page])
 
-  // const loadMore = async () => {
-  //   const getData = await fetch(`https://api.rawg.io/api/games?key=e996863ffbd04374ac0586ec2bcadd55&page=${page}&page_size=20`)
-  //   let data = await getData.json()
-  //   setGames((old:any[]) => [...old, ...data.results])
-  //   setPage(page => page += 1)
-  // }
-
   return (
       <SearchLayout>
+        {store.isFilterOn ? <Filters /> : null}
         {
           !store.games.length ? <div>Loading...</div> :
           <div>

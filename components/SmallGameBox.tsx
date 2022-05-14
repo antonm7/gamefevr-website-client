@@ -1,6 +1,6 @@
 import Link from "next/link"
+import Image from 'next/image'
 import { ElementDescription, ShortGame } from "../types"
-
 type Props = {
     game:ShortGame;
     key:number
@@ -10,8 +10,9 @@ export default function SmallGameBox(props:Props) {
     const game = props.game
     return (
         <Link href={`/game/${props.game.id}`}>
-            <div className="w-80 h-72 bg-white rounded-lg m-6 overflow-hidden" style={{height:'1%'}}>
-                <div className="w-full h-4/6 bg-cover bg-center bg-no-repeat" style={{height:'14rem',backgroundImage: `url(${game.background_image})`}}>
+            <div className="w-80 h-72 bg-white rounded-lg mx-8 my-4 overflow-hidden" style={{height:'1%'}}>
+                <div  className="bg-image" >
+                    <Image quality="1" loading="eager" className="z-0" src={game.background_image} layout="fill" objectFit="cover" />
                 </div>
                 <div className="flex-grow p-4">
                     <h1 style={{lineBreak:'anywhere'}} className="font-semibold text-xl whitespace-pre-wrap">{game.name}</h1>

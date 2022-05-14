@@ -7,7 +7,8 @@ generator client {
 
 datasource db {
   provider = "mongodb"
-  url      = "mongodb+srv://root:antonM712@cluster0.bpces.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+  url      = "mongodb://localhost:27017/gameFevr?retryWrites=true&w=majority"
+  // url      = "mongodb+srv://root:antonM712@cluster0.bpces.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
 }
 
 model User {

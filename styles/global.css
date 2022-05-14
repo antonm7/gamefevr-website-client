@@ -17,3 +17,23 @@ h1,p,h2,div {
     background-position: center;
     background-repeat: no-repeat;
 }
+
+
+#search_layout_page::-webkit-scrollbar {
+    /* background: red !important; */
+    width: 2px; 
+}
+
+#search_layout_page::-webkit-scrollbar-thumb { /* Foreground */
+    background: lightblue;
+}
+
+.bg-image {
+    position: relative;
+    width: 100% !important;
+    height: 14rem !important;
+    /* position: relative; */
+    /* width: 100% !important; */
+    /* width:15rem !important; */
+    /* height:14rem; */
+}
