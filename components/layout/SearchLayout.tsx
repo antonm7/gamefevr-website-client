@@ -2,9 +2,9 @@ import Navbar from "../Navbar";
 
 export default function SearchLayout({children}:any) {
     return (
-        <div>
+        <div >
             <Navbar />
-            <main className="h-screen pt-20">{children}</main>
+            <main id="search_layout_page" className="h-screen py-20">{children}</main>
         </div>
     )
 }

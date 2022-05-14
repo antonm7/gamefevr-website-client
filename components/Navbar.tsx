@@ -55,12 +55,12 @@ export default function Navbar() {
         )
     } else {
         return (
-            <div className="absolute h-20 w-full bg-main-blue">
+            <div className="absolute h-20 w-full bg-main-blue z-50">
                 <div className="h-full w-full flex justify-between pt-4 px-44 items-center">
                     <div className="flex items-center">
                         <div style={{marginTop:3}}>
                             <Image src={'/images/Logo.svg'} height={32} width={130} alt="Logo"/>
-                        </div>
+                        </div> 
                         <div className="flex pl-16">
                             <Link href="/">
                                 <p className="text-white font-regular cursor-pointer text-xs">Home</p>
@@ -74,7 +74,7 @@ export default function Navbar() {
                         </div>
                     </div>
                     <div className="flex items-center">
-                        <div>
+                        <div className="mr-10">
                             <SmallSearchInput />
                         </div>
                         <DynamicSession />
