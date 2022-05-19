@@ -10,7 +10,7 @@ module.exports = {
         'main-blue':'#0a1b30',
         'transparent-blue':'rgba(10, 27, 48, 0.6)',
         'specialYellow':'#ffc635',
-        'filtersBg':'#efefef',
+        'filtersBg':'#e3e3e3',
         'text-gray':'#9b9b9b',
         'darkIndigo':'#0c284a',
       },
