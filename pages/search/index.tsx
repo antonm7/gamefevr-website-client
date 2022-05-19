@@ -7,10 +7,11 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import { useStore } from "../../store";
 import Filters from "../../components/Filters";
+import SmallLoader from '../../components/common/SmallLoader'
 
 export default function Index(props:any) {
-  // const [games,setGames] = useState<any[]>([])
   const [page,setPage] = useState<number>(1)
+  const [loading, setLoading] = useState<boolean>(false)
   const router = useRouter()
   const store = useStore()
 
@@ -27,22 +28,26 @@ export default function Index(props:any) {
   }
 
   useEffect(() => {
+    setLoading(true)
     Promise.resolve(loadGames(page)).then(games => {
       store.addGames(games)
+      setLoading(false)
     })
   },[page])
+
 
   return (
       <SearchLayout>
         {store.isFilterOn ? <Filters /> : null}
         {
-          !store.games.length ? <div>Loading...</div> :
+          !store.games.length ? <SmallLoader big={true} screenCentered={true}/>
+          :
           <div>
             <div className="flex flex-wrap justify-center">
               {store.games.map((game:any,index:number) => <SmallGameBox key={index} game={game}/>)}
             </div>
             <div className='w-24 h-16 rounded-lg m-auto mb-8'>
-              <SearchButton text="Load More" onClick={() => setPage((before:number) => before += 1)}/>
+              {loading ? <SmallLoader big={false} xCentered={true}/> : <SearchButton text="Load More" onClick={() => setPage((before:number) => before += 1)}/>}
             </div>
           </div>
         }
