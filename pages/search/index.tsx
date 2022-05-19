@@ -1,4 +1,3 @@
-import { GetServerSideProps } from "next";
 import SearchLayout from "../../components/layout/SearchLayout";
 import SmallGameBox from "../../components/SmallGameBox";
 import SearchButton from "../../components/common/SearchButton"
@@ -10,7 +9,6 @@ import Filters from "../../components/Filters";
 import SmallLoader from '../../components/common/SmallLoader'
 
 export default function Index(props:any) {
-  const [page,setPage] = useState<number>(1)
   const [loading, setLoading] = useState<boolean>(false)
   const router = useRouter()
   const store = useStore()
@@ -29,11 +27,11 @@ export default function Index(props:any) {
 
   useEffect(() => {
     setLoading(true)
-    Promise.resolve(loadGames(page)).then(games => {
+    Promise.resolve(loadGames(store.page)).then(games => {
       store.addGames(games)
       setLoading(false)
     })
-  },[page])
+  },[store.page])
 
 
   return (
@@ -47,7 +45,7 @@ export default function Index(props:any) {
               {store.games.map((game:any,index:number) => <SmallGameBox key={index} game={game}/>)}
             </div>
             <div className='w-24 h-16 rounded-lg m-auto mb-8'>
-              {loading ? <SmallLoader big={false} xCentered={true}/> : <SearchButton text="Load More" onClick={() => setPage((before:number) => before += 1)}/>}
+              {loading ? <SmallLoader big={false} xCentered={true}/> : <SearchButton text="Load More" onClick={() => store.changePage(store.page += 1)}/>}
             </div>
           </div>
         }
