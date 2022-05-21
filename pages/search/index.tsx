@@ -10,6 +10,8 @@ import SmallLoader from '../../components/common/SmallLoader'
 
 export default function Index(props:any) {
   const [loading, setLoading] = useState<boolean>(false)
+  const [games, setGames] = useState<any[]>([])
+  const [page, setPage] = useState<number>(1)
   const router = useRouter()
   const store = useStore()
 
@@ -27,25 +29,25 @@ export default function Index(props:any) {
 
   useEffect(() => {
     setLoading(true)
-    Promise.resolve(loadGames(store.page)).then(games => {
-      store.addGames(games)
+    Promise.resolve(loadGames(page)).then(games => {
+      setGames(v => [...v,...games])
       setLoading(false)
     })
-  },[store.page])
+  },[page])
 
-
+  
   return (
       <SearchLayout>
         {store.isFilterOn ? <Filters /> : null}
         {
-          !store.games.length ? <SmallLoader big={true} screenCentered={true}/>
+          !games.length ? <SmallLoader big={true} screenCentered={true}/>
           :
           <div>
             <div className="flex flex-wrap justify-center">
-              {store.games.map((game:any,index:number) => <SmallGameBox key={index} game={game}/>)}
+              {games.map((game:any,index:number) => <SmallGameBox key={index} game={game}/>)}
             </div>
             <div className='w-24 h-16 rounded-lg m-auto mb-8'>
-              {loading ? <SmallLoader big={false} xCentered={true}/> : <SearchButton text="Load More" onClick={() => store.changePage(store.page += 1)}/>}
+              {loading ? <SmallLoader big={false} xCentered={true}/> : <SearchButton text="Load More" onClick={() => setPage(v => v += 1)}/>}
             </div>
           </div>
         }
