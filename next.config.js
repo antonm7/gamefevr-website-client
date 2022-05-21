@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  "presets": ["next/babel"],
   reactStrictMode: false,
   webpack(config) {
     config.module.rules.push({
@@ -9,7 +10,7 @@ const nextConfig = {
     return config;
   },
   images: {
-    domains: ['media.rawg.io'],
+    domains: ['media.rawg.io','placeimg.com'],
   },
   env: {
     key:'e996863ffbd04374ac0586ec2bcadd55'
