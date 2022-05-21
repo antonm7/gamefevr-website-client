@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import Screenshots from "../../components/GamePage/Screenshots"
 import SearchLayout from "../../components/layout/SearchLayout"
 import { DetailedGame, ElementDescription } from "../../types"
 
@@ -52,7 +53,10 @@ export default function GamePage(props:Props) {
                     <div className="max-w-2xl leading-8 text-base py-44 text-white font-light"
                     dangerouslySetInnerHTML={{
                         __html: game.description
-                    }}></div>              
+                    }}></div> 
+                    <div className="bg-red-200 h-40">
+                        <Screenshots images={game.screenshots.results}/>             
+                    </div>
                 </main>
             }
         </SearchLayout>
