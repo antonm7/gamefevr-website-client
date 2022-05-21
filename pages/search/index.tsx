@@ -42,7 +42,7 @@ export default function Index(props:any) {
         {
           !games.length ? <SmallLoader big={true} screenCentered={true}/>
           :
-          <div>
+          <div className="py-10">
             <div className="flex flex-wrap justify-center">
               {games.map((game:any,index:number) => <SmallGameBox key={index} game={game}/>)}
             </div>

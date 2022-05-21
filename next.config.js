@@ -10,7 +10,7 @@ const nextConfig = {
     return config;
   },
   images: {
-    domains: ['media.rawg.io','placeimg.com'],
+    domains: ['media.rawg.io','hatrabbits.com'],
   },
   env: {
     key:'e996863ffbd04374ac0586ec2bcadd55'

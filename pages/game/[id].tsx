@@ -32,7 +32,7 @@ export default function GamePage(props:Props) {
         <SearchLayout>
             {
                 loading ? <div>Loading...</div> :
-                <main className="px-44 py-6">
+                <main className="px-44 py-10">
                     <div className="flex flex-row justify-between">
                         <div>
                             <h3 className="text-white font-normal text-1xl opacity-40"> {game.released.slice(0,4)}</h3>
