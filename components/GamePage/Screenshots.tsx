@@ -7,29 +7,26 @@ export default function Screenshots(props:any) {
         console.log(props.images)
     },[])
 
-    const flickityOptions = {
-        // initialIndex:0,
-        // cellAlign: 'left',
-        // pageDots:false,
-        // prevNextButtons: false,
-        // wrapAround: true,
-        // draggable: true,
-        // accessibility: false
+   
+    const flickityOptions:any =  {
+      initialIndex:0,
+      cellAlign: 'left',
+      pageDots:false,
+      prevNextButtons: false,
+      // wrapAround: true,
+      // draggable: true,
+      // accessibility: false
     }
-    return (
-        <Flickity
-        className={'carousel'} // default ''
-        elementType={'div'} // default 'div'
-         // takes flickity options {}
-        disableImagesLoaded={false} // default false
-        reloadOnUpdate // default false
-        static // default false
+
+  return (
+    <Flickity 
+      className='w-full '
+      options={flickityOptions}
       >
-        <div className='h-full w-full bg-red-500'>welcome</div>
-        <div className='h-full w-full bg-red-500'>welcome</div>
-        <div className='h-full w-full bg-red-500'>welcome</div>
-        <div className='h-full w-full bg-red-500'>welcome</div>
-      
-      </Flickity>
-    )
+      <img src="https://placeimg.com/640/480/animals" className='w-5/6'/>
+      <img src="https://placeimg.com/640/480/nature" className='w-full'/>
+      <img src="https://placeimg.com/640/480/architecture" className='w-full'/>
+     
+    </Flickity>
+  );
 }

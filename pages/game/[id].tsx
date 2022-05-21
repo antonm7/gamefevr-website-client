@@ -54,9 +54,7 @@ export default function GamePage(props:Props) {
                     dangerouslySetInnerHTML={{
                         __html: game.description
                     }}></div> 
-                    <div className="bg-red-200 h-40">
-                        <Screenshots images={game.screenshots.results}/>             
-                    </div>
+                    <Screenshots images={game.screenshots.results}/>             
                 </main>
             }
         </SearchLayout>
