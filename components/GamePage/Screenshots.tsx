@@ -1,32 +1,26 @@
 import { useEffect } from 'react'
-import Flickity from 'react-flickity-component'
 import Image from 'next/image'
-export default function Screenshots(props:any) {
-    
-    useEffect(() => {
-        console.log(props.images)
-    },[])
+import Slider from "react-slick"
 
-   
-    const flickityOptions:any =  {
-      initialIndex:0,
-      cellAlign: 'left',
-      pageDots:false,
-      prevNextButtons: false,
-      // wrapAround: true,
-      // draggable: true,
-      // accessibility: false
-    }
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+
+export default function Screenshots(props:any) {
+  
+const settings = {
+    infinite: true,
+    // speed: 500,
+    slidesToShow: 3,
+    // slidesToScroll: 1
+  };
+
+  if(props.images.length === 0) return (<div>Loading....</div>)
 
   return (
-    <Flickity 
-      className='w-full '
-      options={flickityOptions}
-      >
-      <img src="https://placeimg.com/640/480/animals" className='w-5/6'/>
-      <img src="https://placeimg.com/640/480/nature" className='w-full'/>
-      <img src="https://placeimg.com/640/480/architecture" className='w-full'/>
-     
-    </Flickity>
+    <Slider {...settings}>
+        {props.images.map((s:any,index:number) => (
+          <Image src={s.image} key={index} width={300} height={150}/>
+        ))}
+      </Slider>
   );
 }
