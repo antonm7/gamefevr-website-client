@@ -2,11 +2,14 @@ import { faGear } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import SearchLayout from '../../components/layout/SearchLayout'
 import Favorite from '../../components/Profile/Favorite'
+import Reviews from '../../components/Profile/Reviews'
+import SettingsBar from '../../components/Profile/SettingsBar'
 
 export default function Profile() {
     return (
         <SearchLayout>
             <main className="px-44 py-10">
+             <SettingsBar />
                 <div className='flex justify-between items-center'>
                     <h1 className='text-white font-bold text-4xl'>Welcome Anton!</h1>
                     {/* 
@@ -18,13 +21,19 @@ export default function Profile() {
                     </div>
                 </div>
                 <div className='pt-24'>
-                    <h1 className='text-white font-bold text-3xl'>Favorite Games</h1>
+                    <h1 className='text-white font-bold text-3xl'>Your Reviews</h1>
                     <div className='mt-6'>
                         {/* TODO: */}
                         <Favorite />
                     </div>
                 </div>
-
+                <div className='pt-24'>
+                    <h1 className='text-white font-bold text-3xl'>Favorite Games</h1>
+                    <div className='mt-6'>
+                        {/* TODO: */}
+                        <Reviews />
+                    </div>
+                </div>
             </main>
         </SearchLayout>
     )
