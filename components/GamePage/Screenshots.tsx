@@ -19,7 +19,9 @@ const settings = {
   return (
     <Slider {...settings}>
         {props.images.map((s:any,index:number) => (
-          <Image src={s.image} key={index} width={300} height={150}/>
+          <div key={index} className="h-60 w-96 bg-cover bg-red-200 rounded-xl bg-center bg-no-repeat" style={{height:'14rem',backgroundImage: `url(${s.image})`}}>
+            welcome
+          </div>
         ))}
       </Slider>
   );
