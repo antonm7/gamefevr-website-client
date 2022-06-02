@@ -1,37 +1,55 @@
 import { useEffect, useState } from "react"
 import Screenshots from "../../components/GamePage/Screenshots"
 import SearchLayout from "../../components/layout/SearchLayout"
+import useQuery from "../../lib/functions/useQuery"
 import { DetailedGame, ElementDescription } from "../../types"
 
 type Props = {
     game:DetailedGame
 }
 
-type Params = {
-    params : {
-        id:string
-    }
-}
-
 export default function GamePage(props:Props) {
     const [game, setGame] = useState<any>(null)
     const [loading, setLoading] = useState<boolean>(true)
+    const query:any = useQuery();
 
     useEffect(() => {
-        if(!props.game) {
-            setLoading(true)
-        } else {
-            setGame(props.game)
-            setLoading(false)
+        if(!query?.id) return;
+        const fetchGame = async () => {
+            console.log(query.id)
+            const getData = await fetch(`https://api.rawg.io/api/games/${query.id}?key=e996863ffbd04374ac0586ec2bcadd55`)
+            const getScreenshots = await fetch(`https://api.rawg.io/api/games/${query.id}/screenshots?key=e996863ffbd04374ac0586ec2bcadd55`)
+            const gameData = await getData.json()
+            const screenshots = await getScreenshots.json()
+            
+            let finalData:DetailedGame = {
+                id:gameData.id,
+                name:gameData.name,
+                released:gameData.released,
+                background_image:gameData.background_image,
+                description:gameData.description,
+                genres:gameData.genres,
+                developers:gameData.developers,
+                parent_platforms:gameData.parent_platforms,
+                platforms:gameData.platforms,
+                stores:gameData.stores,
+                publishers:gameData.publishers,
+                screenshots:screenshots,
+                tags:gameData.tags,
+                website:gameData.website,
+            }
+            setGame(finalData)
         }
-    },[props])
+        fetchGame()
+        setLoading(false)
+    },[query])
 
 
 
     return (
         <SearchLayout>
             {
-                loading ? <div>Loading...</div> :
+                loading || !game ? <div>Loading...</div> :
                 <main className="px-44 py-10">
                     <div className="flex flex-row justify-between">
                         <div>
@@ -60,45 +78,3 @@ export default function GamePage(props:Props) {
         </SearchLayout>
     )
 }
-
-
-export async function getStaticPaths() {
-    return {
-      paths: [
-        { params: { id: '' } },
-      ],
-      fallback: true
-    }
-  }
-
-export const getStaticProps = async ({params}:Params) => {
-    const id:string = params.id
-    const getData = await fetch(`https://api.rawg.io/api/games/${id}?key=e996863ffbd04374ac0586ec2bcadd55`)
-    const getScreenshots = await fetch(`https://api.rawg.io/api/games/${id}/screenshots?key=e996863ffbd04374ac0586ec2bcadd55`)
-    const gameData = await getData.json()
-    const screenshots = await getScreenshots.json()
-
-    let finalData:DetailedGame = {
-        id:gameData.id,
-        name:gameData.name,
-        released:gameData.released,
-        background_image:gameData.background_image,
-        description:gameData.description,
-        genres:gameData.genres,
-        developers:gameData.developers,
-        parent_platforms:gameData.parent_platforms,
-        platforms:gameData.platforms,
-        stores:gameData.stores,
-        publishers:gameData.publishers,
-        screenshots:screenshots,
-        tags:gameData.tags,
-        website:gameData.website,
-    }
-
-    return {
-      props: {
-        game: finalData
-      }
-    }
-}
-  
