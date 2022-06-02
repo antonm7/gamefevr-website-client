@@ -194,4 +194,12 @@ h1,p,h2,div {
     color:#9da8b6;
     font-weight: 300;
   }
+
+  #settings_bar {
+    clip-path: inset(100% 0 0 0);
+    transition: 0.4s all;
+  }
+  .opened {
+    clip-path: inset(0% 0 0 0) !important;
+  }
   
