@@ -33,7 +33,9 @@ export default function SettingsBar(props:Props) {
                 <SettingsInput label="Current Password" placeholder="Enter Your Current Password" onChange={(e:any) => setPassword(e.target.value)} type="password"/>
                 <SettingsInput label="Confirm Password" placeholder="Confirm Your Password" onChange={(e:any) => setConfirmPassword(e.target.value)} type="password"/>
             </div>
-            <YellowButton title="Save Changes" onClick={() => saveChanges()} />
+            <div style={{marginBottom:'6rem'}}>
+                <YellowButton  title="Save Changes" onClick={() => saveChanges()} />
+            </div>
         </div>       
     )
 }
