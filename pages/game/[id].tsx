@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import SmallLoader from "../../components/common/SmallLoader"
 import Screenshots from "../../components/GamePage/Screenshots"
 import SearchLayout from "../../components/layout/SearchLayout"
 import useQuery from "../../lib/functions/useQuery"
@@ -49,7 +50,7 @@ export default function GamePage(props:Props) {
     return (
         <SearchLayout>
             {
-                loading || !game ? <div>Loading...</div> :
+                loading || !game ? <SmallLoader big={true} screenCentered={true}/> :
                 <main className="px-44 py-10">
                     <div className="flex flex-row justify-between">
                         <div>
