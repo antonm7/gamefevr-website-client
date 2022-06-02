@@ -16,7 +16,7 @@ export default function SettingsBar(props:Props) {
     const [confirmPassword, setConfirmPassword] = useState<string>('')
 
     const saveChanges = () => {
-
+        
     }
 
     return (
