@@ -1,9 +1,11 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useEffect, useState } from "react"
 import SmallLoader from "../../components/common/SmallLoader"
 import Screenshots from "../../components/GamePage/Screenshots"
 import SearchLayout from "../../components/layout/SearchLayout"
 import useQuery from "../../lib/functions/useQuery"
 import { DetailedGame, ElementDescription } from "../../types"
+import Image from 'next/image'
 
 type Props = {
     game:DetailedGame
@@ -67,10 +69,18 @@ export default function GamePage(props:Props) {
                                         {game.genres.map((genre:ElementDescription,index:number) => <h2 key={index} className="pl-1 text-white font-semibold text-1xl">{genre.name}{index !== game.genres.length - 1 ? ',' : ''}</h2>)}
                                     </div>
                                 </div>
+                                <div className="flex items-center pt-6">
+                                    <div className="w-8 h-8 rounded-sm flex items-center justify-center mr-4 cursor-pointer" style={{backgroundColor:'#38b6cc'}}>
+                                        <Image  id="brand" src={"/icons/twitter.svg"} height={14} width={14}/>
+                                    </div>
+                                    <div className="w-8 h-8 rounded-sm flex items-center justify-center cursor-pointer" style={{backgroundColor:'#38b6cc'}}>
+                                        <Image  id="brand" src={"/icons/facebook.svg"} height={14} width={14}/>
+                                    </div>
+                                </div>
                             </div>
-                            <div className="h-60 w-96 bg-cover rounded-xl bg-center bg-no-repeat" style={{height:'14rem',backgroundImage: `url(${game.background_image})`}} />
+                            <div className="h-60 w-96 bg-cover rounded-xl bg-center bg-no-repeat" style={{height:'19rem',backgroundImage: `url(${game.background_image})`}} />
                         </div>
-                        <div className="max-w-2xl leading-8 text-base py-36 text-white font-light"
+                        <div className="max-w-2xl leading-8 text-base py-20 text-white font-light"
                         dangerouslySetInnerHTML={{
                             __html: game.description
                         }}></div>

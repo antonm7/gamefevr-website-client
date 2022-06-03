@@ -41,6 +41,10 @@ h1,p,h2,div {
   margin-top: 6rem;
 }
 
+#brand {
+  filter: brightness(0) invert(1);
+}
+
 #controller {
   position: absolute;
   height:700px;
