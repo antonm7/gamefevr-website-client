@@ -34,6 +34,12 @@ h1,p,h2,div {
     height: 14rem !important;
 }
 
+#favorite-image {
+    position: relative;
+    width: 100% !important;
+    height: 75% !important;
+}
+
 .screenshot {
   position: relative;
   width: 100% !important;
