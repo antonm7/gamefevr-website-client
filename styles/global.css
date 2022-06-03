@@ -34,6 +34,22 @@ h1,p,h2,div {
     height: 14rem !important;
 }
 
+.screenshot {
+  position: relative;
+  width: 100% !important;
+  height: 28rem !important;
+  margin-top: 6rem;
+}
+
+#controller {
+  position: absolute;
+  height:700px;
+  width: 594px;
+  background-color: #0c284a;
+  left: 0% !important;
+  border-bottom-right-radius: 140px;
+}
+
 
 .flickity-enabled {
     position: relative;

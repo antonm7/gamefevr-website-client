@@ -17,12 +17,12 @@ const settings = {
   if(props.images.length === 0) return (<div>Loading....</div>)
 
   return (
-    <Slider {...settings}>
-        {props.images.map((s:any,index:number) => (
-          <div key={index} className="h-60 w-96 bg-cover bg-red-200 rounded-xl bg-center bg-no-repeat" style={{height:'14rem',backgroundImage: `url(${s.image})`}}>
-            welcome
-          </div>
-        ))}
-      </Slider>
+      <Slider {...settings} className="ml-32">
+          {props.images.map((s:any,index:number) => (
+            <div className="screenshot" key={index}>
+              <Image quality="1" loading="eager" className="z-0" objectPosition='center' src={s.image} layout="fill" objectFit="cover" />
+            </div>
+          ))}
+        </Slider>
   );
 }
