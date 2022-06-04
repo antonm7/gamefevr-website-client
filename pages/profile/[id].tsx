@@ -12,21 +12,16 @@ import Arrow from '../../components/Profile/Arrow'
 
 export default function Profile() {
     const [isOpened, setIsOpened] = useState<boolean>(false)
-    const slider = useRef<any>(null)
 
     const changeVisibleSettings = (value:boolean) => {
         setIsOpened(value)
     }
 
     const settings = {
-        className: "center",
-        centerPadding: "129px",
         infinite: true,
-        slidesToShow: 3
-    };
-    
-    const prev = () => slider.current.slickPrev()
-    const next = () => slider.current.slickNext()
+        slidesToShow: 4
+    }
+
 
     const items = [{name:'Portal 2',image:'/images/example.webp'},{name:'Portal 2',image:'/images/example.webp'},{name:'Portal 2',image:'/images/example.webp'},{name:'Portal 2',image:'/images/example.webp'},{name:'Portal 2',image:'/images/example.webp'}]
 
@@ -36,9 +31,6 @@ export default function Profile() {
              <SettingsBar isOpened={isOpened} method={() => changeVisibleSettings(false)}/>
                 <div className='flex justify-between items-center'>
                     <h1 className='text-white font-bold text-4xl'>Welcome Anton!</h1>
-                    {/* 
-                    TODO:Check if it is needed
-                    <h2>Need to verify your </h2> */}
                     <div className='flex items-center' onClick={() => changeVisibleSettings(true)}>
                         <FontAwesomeIcon icon={faGear} className="pr-2 cursor-pointer" style={{color:'#616e7e'}}/>
                         <p className="text-large font-semibold cursor-pointer" style={{color:'#616e7e'}}>Account Settings</p>
@@ -47,24 +39,25 @@ export default function Profile() {
                 <div className='pt-24'>
                     <div className='flex items-center justify-between'>
                         <h1 className='text-white font-bold text-3xl'>Your Reviews</h1>
-                        <div className='flex items-center'>
-                            <Arrow direction='left' onClick={() => prev()}/>
-                            <Arrow direction='right' onClick={() => next()}/>
-                        </div>
                     </div>
-                    <div className='mt-6'>
-                        <Slider {...settings} ref={slider}>
+                    <div className='mt-12'>
+                        <Slider {...settings}> 
                             {items.map((obj:any,index:number) => (
-                                <Favorite />
+                                <Reviews key={index}/>
                             ))}
                         </Slider>
-
                     </div>
                 </div>
-                <div className='pt-24'>
-                    <h1 className='text-white font-bold text-3xl'>Favorite Games</h1>
-                    <div className='mt-6'>
-                        <Reviews />
+                <div className='pt-14'>
+                    <div className='flex items-center justify-between'>
+                        <h1 className='text-white font-bold text-3xl'>Favorite Games</h1>
+                    </div>
+                    <div className='mt-12'>
+                        <Slider {...settings}> 
+                            {items.map((obj:any,index:number) => (
+                                <Favorite key={index}/>
+                            ))}
+                        </Slider>
                     </div>
                 </div>
             </main>
