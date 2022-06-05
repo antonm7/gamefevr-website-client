@@ -58,7 +58,7 @@ export default function GamePage(props:Props) {
                         <div className="flex flex-row justify-between">
                             <div>
                                 <h3 className="text-white font-normal text-1xl opacity-40"> {game.released.slice(0,4)}</h3>
-                                <h1 className="text-white text-8xl font-bold overflow-hidden">{game.name}</h1>
+                                <h1 className="text-white text-8xl font-bold overflow-hidden h-28">{game.name}</h1>
                                 <div className="pt-8">
                                     <div className="flex flex-row flex-no-wrap">
                                         <h2 className="text-white font-normal text-1xl opacity-70">Publisher:</h2> 
