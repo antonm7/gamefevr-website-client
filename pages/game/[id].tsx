@@ -6,6 +6,8 @@ import SearchLayout from "../../components/layout/SearchLayout"
 import useQuery from "../../lib/functions/useQuery"
 import { DetailedGame, ElementDescription, Platform } from "../../types"
 import Image from 'next/image'
+import YellowButton from "../../components/common/YellowButton"
+import Reviews from "../../components/GamePage/Reviews"
 
 type Props = {
     game:DetailedGame
@@ -96,6 +98,9 @@ export default function GamePage(props:Props) {
                     <div className="relative" style={{height:'700px'}}>
                         <div id="controller"/>
                         <Screenshots images={game.screenshots.results}/>             
+                    </div>
+                    <div className="flex flex-col items-center">
+                        <Reviews />
                     </div>
                 </div>
             }

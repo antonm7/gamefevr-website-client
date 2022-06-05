@@ -13,6 +13,7 @@ module.exports = {
         'filtersBg':'#e3e3e3',
         'text-gray':'#9b9b9b',
         'darkIndigo':'#0c284a',
+        'cool-blue':'#38b6cc'
       },
       borderWidth: {
         DEFAULT:'1.5px'
