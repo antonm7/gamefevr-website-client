@@ -4,7 +4,7 @@ import SmallLoader from "../../components/common/SmallLoader"
 import Screenshots from "../../components/GamePage/Screenshots"
 import SearchLayout from "../../components/layout/SearchLayout"
 import useQuery from "../../lib/functions/useQuery"
-import { DetailedGame, ElementDescription } from "../../types"
+import { DetailedGame, ElementDescription, Platform } from "../../types"
 import Image from 'next/image'
 
 type Props = {
@@ -19,7 +19,6 @@ export default function GamePage(props:Props) {
     useEffect(() => {
         if(!query?.id) return;
         const fetchGame = async () => {
-            console.log(query.id)
             const getData = await fetch(`https://api.rawg.io/api/games/${query.id}?key=e996863ffbd04374ac0586ec2bcadd55`)
             const getScreenshots = await fetch(`https://api.rawg.io/api/games/${query.id}/screenshots?key=e996863ffbd04374ac0586ec2bcadd55`)
             const gameData = await getData.json()
@@ -41,6 +40,7 @@ export default function GamePage(props:Props) {
                 tags:gameData.tags,
                 website:gameData.website,
             }
+            console.log(finalData)
             setGame(finalData)
         }
         fetchGame()
@@ -64,9 +64,13 @@ export default function GamePage(props:Props) {
                                         <h2 className="text-white font-normal text-1xl opacity-70">Publisher:</h2> 
                                         {game.publishers.map((publisher:ElementDescription,index:number) => <h2 key={index} className="pl-1 text-white font-semibold text-1xl">{publisher.name}{index !== game.publishers.length - 1 ? ',' : ''}</h2>)}
                                     </div>
-                                    <div className="flex flex-row flex-no-wrap">
+                                    <div className="flex flex-row flex-no-wrap pt-2">
                                         <h2 className="text-white font-normal text-1xl opacity-70">Genres:</h2> 
                                         {game.genres.map((genre:ElementDescription,index:number) => <h2 key={index} className="pl-1 text-white font-semibold text-1xl">{genre.name}{index !== game.genres.length - 1 ? ',' : ''}</h2>)}
+                                    </div>
+                                    <div className="flex flex-row flex-no-wrap pt-2">
+                                        <h2 className="text-white font-normal text-1xl opacity-70">Platforms:</h2> 
+                                        {game.platforms.map((platform:Platform,index:number) => <h2 key={index} className="pl-1 text-white font-semibold text-1xl">{platform.platform.name}{index !== game.platforms.length - 1 ? ',' : ''}</h2>)}
                                     </div>
                                 </div>
                                 <div className="flex items-center pt-6">
@@ -84,6 +88,10 @@ export default function GamePage(props:Props) {
                         dangerouslySetInnerHTML={{
                             __html: game.description
                         }}></div>
+                        <div className="flex flex-row flex-wrap pt-2 max-w-lg	">
+                            <h2 className="text-white font-normal text-1xl opacity-70">Tags:</h2> 
+                            {game.tags.map((tag:ElementDescription,index:number) => <h2 key={index} className="px-1 pb-1 text-white font-semibold text-1xl opacity-60">{tag.name}{index !== game.tags.length - 1 ? ',' : ''}</h2>)}
+                        </div>
                     </main>
                     <div className="relative" style={{height:'700px'}}>
                         <div id="controller"/>
