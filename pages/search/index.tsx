@@ -15,26 +15,29 @@ export default function Index(props:any) {
   const router = useRouter()
   const store = useStore()
 
-  const loadGames = async (page:number) => {
+  const loadGames = async (cur:number) => {
     try {
+      setLoading(true)
       const getData = await axios.post('/api/query/search', {
-        page,
+        page:cur,
         query:router.query
       })
-      return getData.data.games
+      setPage(v => v += 1)
+      setGames(v => [...v,...getData.data.games])
+      setLoading(false)
     } catch (e) {
       console.log('ERROR',e)
     }
   }
 
   useEffect(() => {
+    if(!router.isReady && games.length === 0) return;
     setLoading(true)
-    Promise.resolve(loadGames(page)).then(games => {
-      setGames(v => [...v,...games])
-      setLoading(false)
-    })
-  },[page])
-  
+    setPage(1)
+    setGames([])
+    loadGames(1)
+  },[router.query,router.isReady])
+
   return (
       <SearchLayout>
         {store.isFilterOn ? <Filters /> : null}
@@ -46,7 +49,7 @@ export default function Index(props:any) {
               {games.map((game:any,index:number) => <SmallGameBox key={index} game={game}/>)}
             </div>
             <div className='w-24 h-16 rounded-lg m-auto mt-8'>
-              {loading ? <SmallLoader big={false} xCentered={true}/> : <SearchButton text="Load More" onClick={() => setPage(v => v += 1)}/>}
+              {loading ? <SmallLoader big={false} xCentered={true}/> : <SearchButton text="Load More" onClick={() => loadGames(page)}/>}
             </div>
           </div>
         }
