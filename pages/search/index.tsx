@@ -34,7 +34,6 @@ export default function Index(props:any) {
       setLoading(false)
     })
   },[page])
-
   
   return (
       <SearchLayout>
@@ -46,7 +45,7 @@ export default function Index(props:any) {
             <div className="flex flex-wrap justify-center">
               {games.map((game:any,index:number) => <SmallGameBox key={index} game={game}/>)}
             </div>
-            <div className='w-24 h-16 rounded-lg m-auto mb-8'>
+            <div className='w-24 h-16 rounded-lg m-auto mt-8'>
               {loading ? <SmallLoader big={false} xCentered={true}/> : <SearchButton text="Load More" onClick={() => setPage(v => v += 1)}/>}
             </div>
           </div>

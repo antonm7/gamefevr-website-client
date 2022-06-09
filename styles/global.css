@@ -21,7 +21,7 @@ h1,p,h2,div {
 
 #search_layout_page::-webkit-scrollbar {
     /* background: red !important; */
-    width: 2px; 
+    width: 5px; 
 }
 
 #search_layout_page::-webkit-scrollbar-thumb { /* Foreground */
@@ -229,3 +229,8 @@ h1,p,h2,div {
     clip-path: inset(0% 0 0 0) !important;
   }
   
+  .active-link{
+    color:#38b6cc;
+    border-bottom: 2px solid #38b6cc !important;
+    border-bottom: 3px;
+  }

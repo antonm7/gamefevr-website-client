@@ -52,6 +52,7 @@ export type ShortGame = {
     name: string;
     genres: ElementDescription[];
     platforms: Platform[];
+    parent_platforms: ParentPlatform[];
     released:string;
     slug:string;
     tags:ElementDescription[];

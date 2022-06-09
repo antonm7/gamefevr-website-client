@@ -48,9 +48,7 @@ export default function GamePage(props:Props) {
         fetchGame()
         setLoading(false)
     },[query])
-
-
-
+    
     return (
         <SearchLayout>
             {
