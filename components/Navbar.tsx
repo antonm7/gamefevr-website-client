@@ -40,13 +40,13 @@ export default function Navbar() {
                     </div>
                     <div className="flex pt-0">
                         <Link href="/">
-                            <p className="text-white font-regular cursor-pointer text-xs">Home</p>
+                            <p className={`text-white font-semibold cursor-pointer text-sm ${router.pathname === '/' ? 'active-link ' : ''}`}>Home</p>
                         </Link>
                         <Link href="/">
-                            <p className="text-white mx-8 font-regular cursor-pointer text-xs">Explore</p>
+                            <p className={`text-white mx-8 font-semibold cursor-pointer text-sm ${router.pathname === '/search' ? 'active-link ' : ''}`}>Explore</p>
                         </Link>
                         <Link href="/">
-                            <p className="text-white font-regular cursor-pointer text-xs">Reviews</p>
+                            <p className={`text-white font-semibold cursor-pointer text-sm ${router.pathname === '/reviews' ? 'active-link ' : ''}`}>Reviews</p>
                         </Link>
                     </div>
                     <DynamicSession />
@@ -63,13 +63,13 @@ export default function Navbar() {
                         </div> 
                         <div className="flex pl-16">
                             <Link href="/">
-                                <p className="text-white font-regular cursor-pointer text-xs">Home</p>
+                                <p className={`text-white font-semibold cursor-pointer text-sm ${router.pathname === '/' ? 'active-link ' : ''}`}>Home</p>
                             </Link>
                             <Link href="/">
-                                <p className="text-white px-8 font-regular cursor-pointer text-xs">Explore</p>
+                                <p className={`text-white mx-8 font-semibold cursor-pointer text-sm ${router.pathname === '/search' ? 'active-link ' : ''}`}>Explore</p>
                             </Link>
                             <Link href="/">
-                                <p className="text-white font-regular cursor-pointer text-xs">Reviews</p>
+                                <p className={`text-white font-semibold cursor-pointer text-sm ${router.pathname === '/reviews' ? 'active-link ' : ''}`}>Reviews</p>
                             </Link>
                         </div>
                     </div>
