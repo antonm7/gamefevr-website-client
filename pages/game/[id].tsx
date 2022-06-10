@@ -42,7 +42,6 @@ export default function GamePage(props:Props) {
                 tags:gameData.tags,
                 website:gameData.website,
             }
-            console.log(finalData)
             setGame(finalData)
         }
         fetchGame()

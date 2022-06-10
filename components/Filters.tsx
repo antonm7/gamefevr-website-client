@@ -110,12 +110,6 @@ export default function Filters() {
                             />
                         </div>
                     </div>
-                    <div className="flex w-full">
-                        <div>
-                            <h1 className="text-3xl truncate font-semibold text-center py-6">Game Publisher</h1>
-                            <input className="w-full h-16 px-6 outline-none rounded-md" placeholder="write publisher name..." style={{width:'30rem'}} ></input>
-                        </div>
-                    </div>
                 </div>
                 <div className="w-44 h-16 mt-6">
                     <YellowButton onClick={() => search()} title={"search"}/>

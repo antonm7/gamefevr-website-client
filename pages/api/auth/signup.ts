@@ -12,7 +12,6 @@ async function handler(req:Request, res:Response) {
     if (req.method === 'POST') {
       try {
         const { email, password, username }:ReqBody = req.body;
-        console.log('request:',req.body)
 
         const client = await clientPromise
         const db = client.db()
