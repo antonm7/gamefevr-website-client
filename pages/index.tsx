@@ -13,7 +13,14 @@ const Home: NextPage = () => {
   const store = useStore()
 
   const navigate = () => {
-    router.push('/search')
+    router.push({
+        pathname: "/search",
+        query: { 
+            yearRange:[1990,2022],
+            genres:[],
+            consoles:[]
+        }
+    });
   }
 
   return (

@@ -25,7 +25,7 @@ export default async function handler(req:Request, res:Response) {
                 const getData = await fetch(`https://api.rawg.io/api/games?key=e996863ffbd04374ac0586ec2bcadd55&page=${body.page}&page_size=20&dates=${yearRange[0]}-01-01,${yearRange[1]}-01-01`)
                 games = await getData.json()
             } else {
-                const getData = await fetch(`https://api.rawg.io/api/games?key=e996863ffbd04374ac0586ec2bcadd55&page=${body.page}&page_size=20&dates=1999-01-01,2000-01-01`)
+                const getData = await fetch(`https://api.rawg.io/api/games?key=e996863ffbd04374ac0586ec2bcadd55&page=${body.page}&page_size=20`)
                 games = await getData.json()
             }
             res.status(200).send({games:games.results})

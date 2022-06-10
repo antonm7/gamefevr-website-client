@@ -3,7 +3,7 @@ import { ElementDescription } from "../types";
 import SelectBox from "./common/SelectBox";
 import { Range } from 'rc-slider';
 import 'rc-slider/assets/index.css';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { useStore } from "../store";
@@ -11,7 +11,7 @@ import YellowButton from "./common/YellowButton";
 import { useRouter } from "next/router";
 
 export default function Filters() {
-    const [yearRange, changeYearRange] = useState<number[]>([1900, 2020]);
+    const [yearRange, changeYearRange] = useState<number[]>([2010, 2020]);
     const [selectedGenres, changeSelectedGenres] = useState<number[]>([]);
     const [selectedConsoles, changeSelectedConsoles] = useState<number[]>([]);
     const store = useStore()
@@ -41,12 +41,31 @@ export default function Filters() {
         router.push({
             pathname: "/search",
             query: { 
-                yearRange: yearRange,
+                yearRange,
                 genres:selectedGenres,
-                selectedConsoles:selectedConsoles
+                consoles:selectedConsoles
             }
         });
+        store.changeFilterVisibility(false)
     }
+
+    useEffect(() => {
+        if(!router.isReady && router.query) return
+        //trick to add type for router query, otherwise its yelling at me
+        let q:any = router.query
+        //typescript fires error 'object is possibly 'undefined, so checking' if it exists
+        //always compare between query and state, to keep the state updated
+        if(q.yearRange) {
+            if(yearRange[0] === parseInt(q.yearRange[0]) && yearRange[1] === parseInt(q.yearRange[1])) return
+            changeYearRange([parseInt(q.yearRange[0]), parseInt(q.yearRange[1])])
+        }
+        if(q.genres?.length) {
+            changeSelectedGenres([...q.genres])            
+        }
+        if(q.consoles?.length) {
+            changeSelectedConsoles([...q.consoles])            
+        }
+    },[router.isReady])
     
     return (
         <div className="fixed z-50 rounded-lg p-6 w-4/6 h-5/6 bg-filtersBg top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
