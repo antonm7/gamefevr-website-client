@@ -79,10 +79,10 @@ export default function Filters() {
                 </div>
             </div>
             <div className="flex flex-col items-center">
-                <div className="flex justify-between w-5/6 flex-wrap">
-                    <div className="py-6" style={{width:'33rem'}}>
+                <div className="flex justify-between w-5/6 ">
+                    <div className="py-6 w-2/4 ">
                         <h1 className="text-3xl truncate font-semibold text-center">Consoles</h1>
-                        <div style={{width:'33rem'}} className="bg-white p-4 w-20 mt-6 mx-auto h-auto rounded-md">
+                        <div  className="bg-white p-4 mt-6 mx-auto h-auto rounded-md">
                             <div className="flex h-auto items-center justify-center flex-row flex-wrap">
                                 {parentConsoles.map((consoles:ElementDescription, index:number) => {
                                     return <SelectBox isSelected={selectedConsoles.includes(index)} coolBlue={true} onClick={() => updatedConsoles(index)} key={index} title={consoles.name} />
@@ -90,10 +90,10 @@ export default function Filters() {
                             </div>
                         </div>
                     </div>
-                    <div>
+                    <div className="w-2/4 ml-12">
                         <h1 className="text-3xl truncate font-semibold text-center py-6">Release Date</h1>
-                        <div className="bg-white h-52 flex flex-col items-center justify-center rounded-md" style={{width:'33rem'}}>
-                            <div style={{width:'29rem'}} className="flex flex-row justify-between pb-8">
+                        <div className="bg-white h-52 flex flex-col items-center justify-center rounded-md">
+                            <div className="flex flex-row justify-between pb-8 w-5/6">
                                 <div className="w-16 h-10 border flex items-center justify-center rounded-lg" style={{border:'1px solid #c9c9c9'}}>
                                     <p className="text-black text-sm" style={{paddingTop:1}}>{yearRange[0]}</p>
                                 </div>
@@ -102,7 +102,7 @@ export default function Filters() {
                                 </div>
                             </div>
                             <Range
-                                style={{width:'90%'}}
+                                style={{width:'83%'}}
                                 min={1990}
                                 max={2022}
                                 value={yearRange}
