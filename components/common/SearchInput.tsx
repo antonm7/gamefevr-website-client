@@ -1,14 +1,53 @@
 import { faSliders } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import axios from "axios"
+import Link from "next/link"
+import { useEffect, useState } from "react"
 import { useStore } from "../../store"
 
 export default function SearchInput() {
     const store = useStore()
+    const [searchTerm, setSearchTerm] = useState('')
+    const [games, setGames] = useState([])
+
+    const fetchData = async (name:string) => {
+        try {
+            const getData = await axios.get(`/api/query/name?search=${searchTerm}`)
+            const games = getData.data.games
+            setGames(games)
+        } catch (e) {
+            console.log('error,',e)
+        }
+    }
+
+    useEffect(() => {
+        const delayDebounceFn = setTimeout(() => {
+            if(searchTerm === '') {
+                setGames([])
+            } else {
+                fetchData(searchTerm)
+            }
+        }, 500)
+    
+        return () => clearTimeout(delayDebounceFn)
+      }, [searchTerm])
 
     return (
-        <div className="flex items-center relative ">
-            <FontAwesomeIcon onClick={() => store.changeFilterVisibility(true)} icon={faSliders} className="absolute h-4 cursor-pointer right-4 text-gray-600"/>
-            <input autoSave="true" autoFocus={true} placeholder="Search..." className="w-700 text-white placeholder-slate-400 outline-0 p-4 h-16 bg-inputBg rounded-lg" />
+        <div>
+            <div className="flex items-center relative">
+                <FontAwesomeIcon onClick={() => store.changeFilterVisibility(true)} icon={faSliders} className="absolute h-4 cursor-pointer right-4 text-gray-600"/>
+                <input autoSave="true" onChange={(e) => setSearchTerm(e.target.value)} autoFocus={true} placeholder="Search..." className="w-700 text-white placeholder-slate-400 outline-0 p-4 h-16 bg-inputBg rounded-lg" />
+            </div>
+            {games.length > 0 ? 
+                <div style={{minHeight:'7rem'}} className="w-700 text-white placeholder-slate-400 outline-0 px-4 py-2 h-auto bg-inputBg rounded-lg mt-2">
+                    {games.map((game:any,index:number) => (
+                        <Link href={`/game/${game.id}`} key={index}>
+                            <h1 className="cursor-pointer my-3 text-base font-base" style={{color:'#9da8b6'}}>{game.name}</h1>
+                        </Link>
+                    ))}
+                </div>
+                :null    
+            }
         </div>
     )
 }
