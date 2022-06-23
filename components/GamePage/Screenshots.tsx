@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import Image from 'next/image'
 import Slider from "react-slick"
 
@@ -7,10 +6,10 @@ import 'slick-carousel/slick/slick-theme.css';
 
 export default function Screenshots(props:any) {
   
-const settings = {
-  infinite: true,
-  slidesToShow: 3,
-};
+  const settings = {
+    infinite: true,
+    slidesToShow: 3,
+  };
 
   if(props.images.length === 0) return (<div>Loading....</div>)
 

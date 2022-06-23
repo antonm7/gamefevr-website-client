@@ -14,7 +14,7 @@ type Props = {
 }
 
 export default function GamePage(props:Props) {
-    const [game, setGame] = useState<any>(null)
+    const [game, setGame] = useState<DetailedGame | null>(null)
     const [loading, setLoading] = useState<boolean>(true)
     const query:any = useQuery();
 
@@ -38,7 +38,7 @@ export default function GamePage(props:Props) {
                 platforms:gameData.platforms,
                 stores:gameData.stores,
                 publishers:gameData.publishers,
-                screenshots:screenshots,
+                screenshots,
                 tags:gameData.tags,
                 website:gameData.website,
             }

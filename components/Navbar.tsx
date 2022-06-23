@@ -3,9 +3,9 @@ import Image from 'next/image'
 import { useRouter } from "next/router";
 import SmallSearchInput from "./common/SmallSearchInput";
 import { useSession } from "next-auth/react";
+
 export default function Navbar() {
     const router = useRouter()
-
     const {data:session} = useSession()
 
     const DynamicSession = () => {

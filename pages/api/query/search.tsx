@@ -1,14 +1,24 @@
 import {Request, Response} from 'express';
 
+interface BodyReq {
+    page:number,
+    query: {
+        yearRange:number[],
+        consoles:string | string[],
+        genres:string | string[]
+    }
+}
+
 export default async function handler(req:Request, res:Response) {
     if(req.method === 'POST') { 
+        console.log(req.body)
         try {
-            const body:any = req.body
-            const {yearRange, genres, consoles, publishers } = body.query
-            let games:any = []
+            const body:BodyReq = req.body
+            const {yearRange, genres, consoles } = body.query
+            let games = []
             let filteredString:string = ''
             //checking if i got some filter
-            if(yearRange || genres || consoles || publishers) {
+            if(yearRange || genres || consoles) {
                 if(yearRange) {
                     filteredString = filteredString.concat('', `&dates=${yearRange[0]}-01-01,${yearRange[1]}-12-31`);
                 }

@@ -77,7 +77,7 @@ export type DetailedGame = {
         results:Store[]
     };
     publishers: ElementDescription[];
-    screenshots: Screenshot[];
+    screenshots: Screenshot;
     tags:ElementDescription[];
     website:string;
 }
@@ -87,4 +87,9 @@ export type Review = {
     userId:string;
     time:string;
     text:string
+}
+
+export type NamedGame = {
+    id:number,
+    name:string
 }
