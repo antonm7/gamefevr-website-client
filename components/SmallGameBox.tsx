@@ -16,9 +16,9 @@ export default function SmallGameBox(props:Props) {
                 <Image quality="1" loading="eager" className="z-0" src={game.background_image} layout="fill" objectFit="cover" />
             </div>
             <div className="flex-grow p-4">
-                <a href={`/game/${props.game.id}`}>
+                <Link href={`/game/${props.game.id}`}>
                     <h1 style={{lineBreak:'anywhere'}} className="font-semibold text-xl whitespace-pre-wrap hover:text-gray-500">{game.name}</h1>
-                </a>
+                </Link>
                 <div className="flex flex-row flex-nowrap">
                     {game.parent_platforms.slice(0, 3).map((platform:any,index:number) => <h2 key={index} className='pr-1 text-sm text-cool-blue'>{platform.platform.name}{index === game.parent_platforms.length - 1 || index === 2 ? '' : ','}</h2>)}
                 </div>

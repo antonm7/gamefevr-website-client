@@ -38,6 +38,8 @@ export default function Filters() {
     }
 
     const search = () => {
+        store.clearGames()
+        store.clearPage()
         router.push({
             pathname: "/search",
             query: { 
@@ -50,20 +52,33 @@ export default function Filters() {
     }
 
     useEffect(() => {
-        if(!router.isReady && router.query) return
+        if(!router.isReady && !router.query) return
         //trick to add type for router query, otherwise its yelling at me
         let q:any = router.query
         //typescript fires error 'object is possibly 'undefined, so checking' if it exists
         //always compare between query and state, to keep the state updated
         if(q.yearRange) {
-            if(yearRange[0] === parseInt(q.yearRange[0]) && yearRange[1] === parseInt(q.yearRange[1])) return
-            changeYearRange([parseInt(q.yearRange[0]), parseInt(q.yearRange[1])])
+            if(yearRange[0] !== parseInt(q.yearRange[0]) && yearRange[1] !== parseInt(q.yearRange[1])) {
+                changeYearRange([parseInt(q.yearRange[0]), parseInt(q.yearRange[1])])
+            }
         }
         if(q.genres?.length) {
-            changeSelectedGenres([...q.genres])            
+            if(typeof q.genres === 'string') {
+                changeSelectedGenres([parseInt(q.genres)])
+            } else {
+                for(let key in q.genres) {
+                    changeSelectedGenres(v => [...v, parseInt(q.genres[key])])
+                }            
+            }
         }
-        if(q.consoles?.length) {
-            changeSelectedConsoles([...q.consoles])            
+        if(q.consoles?.length > 0) {
+            if(typeof q.consoles === 'string') {
+                changeSelectedConsoles([parseInt(q.consoles)])
+            } else {
+                for(let key in q.consoles) {
+                    changeSelectedConsoles(v => [...v, parseInt(q.consoles[key])])
+                }         
+            }
         }
     },[router.isReady])
     
@@ -75,7 +90,7 @@ export default function Filters() {
                 <div className="bg-white p-4 w-5/6 mt-6 mx-auto rounded-md filters-column-shadow">
                     <div className="flex h-auto items-center justify-center flex-row flex-wrap">
                         {genres.map((genre:ElementDescription, index:number) => {
-                            return <SelectBox isSelected={selectedGenres.includes(index)} onClick={() => updateGenres(index)} key={index} title={genre.name} />
+                            return <SelectBox isSelected={selectedGenres.includes(genre.id)} onClick={() => updateGenres(genre.id)} key={index} title={genre.name} />
                         })}
                     </div>
                 </div>
@@ -86,8 +101,8 @@ export default function Filters() {
                         <h1 className="text-3xl truncate font-semibold text-center">Consoles</h1>
                         <div  className="bg-white p-4 mt-6 mx-auto h-auto rounded-md filters-column-shadow">
                             <div className="flex h-auto items-center justify-center flex-row flex-wrap ">
-                                {parentConsoles.map((consoles:ElementDescription, index:number) => {
-                                    return <SelectBox isSelected={selectedConsoles.includes(index)} coolBlue={true} onClick={() => updatedConsoles(index)} key={index} title={consoles.name} />
+                                {parentConsoles.map((console:ElementDescription, index:number) => {
+                                    return <SelectBox isSelected={selectedConsoles.includes(console.id)} coolBlue={true} onClick={() => updatedConsoles(console.id)} key={index} title={console.name} />
                                 })}
                             </div>
                         </div>

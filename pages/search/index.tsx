@@ -22,8 +22,9 @@ export default function Index(props:any) {
         page:cur,
         query:router.query
       })
-      setPage(v => v += 1)
-      setGames(v => [...v,...getData.data.games])
+      // setPage(v => v += 1)
+      store.addPage()
+      store.addGames(getData.data.games)
       setLoading(false)
     } catch (e) {
       console.log('ERROR',e)
@@ -32,24 +33,26 @@ export default function Index(props:any) {
 
   useEffect(() => {
     if(!router.isReady && games.length === 0) return;
-    setLoading(true)
-    setPage(1)
-    setGames([])
-    loadGames(1)
+    if(store.games.length === 0) {
+      setLoading(true)
+      store.clearPage()
+      store.clearGames()
+      loadGames(1)
+    }
   },[router.query,router.isReady])
 
   return (
       <SearchLayout>
         {store.isFilterOn ? <Filters /> : null}
         {
-          !games.length ? <SmallLoader big={true} screenCentered={true}/>
+          !store.games.length ? <SmallLoader big={true} screenCentered={true}/>
           :
           <div className="py-10">
             <div className="flex flex-wrap justify-center">
-              {games.map((game:any,index:number) => <SmallGameBox key={index} game={game}/>)}
+              {store.games.map((game:any,index:number) => <SmallGameBox key={index} game={game}/>)}
             </div>
             <div className='w-24 h-16 rounded-lg m-auto mt-8'>
-              {loading ? <SmallLoader big={false} xCentered={true}/> : <SearchButton text="Load More" onClick={() => loadGames(page)}/>}
+              {loading ? <SmallLoader big={false} xCentered={true}/> : <SearchButton text="Load More" onClick={() => loadGames(store.page)}/>}
             </div>
           </div>
         }
