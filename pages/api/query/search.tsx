@@ -16,7 +16,7 @@ export default async function handler(req:Request, res:Response) {
                 //thats why i am checkinf the type of the consoles
                 if(consoles) {
                     if(typeof consoles === 'string') {
-                        filteredString = filteredString.concat(`&platforms=${consoles}`)
+                        filteredString = filteredString.concat(`&parent_platforms=${consoles}`)
                     } else {
                         let consolesString:string = ''
                         for(let key in consoles) {
@@ -30,9 +30,19 @@ export default async function handler(req:Request, res:Response) {
                     }
                 }
                 if(genres) {
-                    let genresString:string = ''
-                    genres.map((g:string,i:number) => i === genres.length - 1 ? genresString.concat(g) : genresString.concat(`g,`))
-                    filteredString = filteredString.concat(`&genres=${genresString}`)
+                    if(typeof genres === 'string') {
+                        filteredString = filteredString.concat(`&genres=${genres}`)
+                    } else {
+                        let genresString:string = ''
+                        for(let key in genres) {
+                            if(parseInt(key) !== genres.length - 1) {
+                                genresString = genresString.concat(`${genres[key]}`,',')
+                            } else {
+                                genresString = genresString.concat(`${genres[key]}`,'') 
+                            }
+                        }   
+                        filteredString = filteredString.concat(`&genres=${genresString}`)
+                    }
                 } 
                 const getData = await fetch(`https://api.rawg.io/api/games?key=e996863ffbd04374ac0586ec2bcadd55&page=${body.page}&page_size=20${filteredString}`)
                 games = await getData.json()
@@ -40,6 +50,7 @@ export default async function handler(req:Request, res:Response) {
                 const getData = await fetch(`https://api.rawg.io/api/games?key=e996863ffbd04374ac0586ec2bcadd55&page=${body.page}&page_size=20`)
                 games = await getData.json()
             }
+            console.log(games.results.length)
             res.status(200).send({games:games.results})
             //filters
             //dates:2010-01-01,2012-01-01
