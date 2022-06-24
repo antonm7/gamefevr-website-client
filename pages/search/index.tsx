@@ -10,8 +10,6 @@ import SmallLoader from '../../components/common/SmallLoader'
 
 export default function Index(props:any) {
   const [loading, setLoading] = useState<boolean>(false)
-  const [games, setGames] = useState<any[]>([])
-  const [page, setPage] = useState<number>(1)
   const router = useRouter()
   const store = useStore()
 
@@ -22,7 +20,6 @@ export default function Index(props:any) {
         page:cur,
         query:router.query
       })
-      // setPage(v => v += 1)
       store.addPage()
       store.addGames(getData.data.games)
       setLoading(false)
@@ -32,7 +29,7 @@ export default function Index(props:any) {
   }
 
   useEffect(() => {
-    if(!router.isReady && games.length === 0) return;
+    if(!router.isReady) return;
     if(store.games.length === 0) {
       setLoading(true)
       store.clearPage()

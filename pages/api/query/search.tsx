@@ -11,7 +11,6 @@ interface BodyReq {
 
 export default async function handler(req:Request, res:Response) {
     if(req.method === 'POST') { 
-        console.log(req.body)
         try {
             const body:BodyReq = req.body
             const {yearRange, genres, consoles } = body.query
@@ -60,7 +59,6 @@ export default async function handler(req:Request, res:Response) {
                 const getData = await fetch(`https://api.rawg.io/api/games?key=e996863ffbd04374ac0586ec2bcadd55&page=${body.page}&page_size=20`)
                 games = await getData.json()
             }
-            console.log(games.results.length)
             res.status(200).send({games:games.results})
         } catch (e) {
             console.log(e)

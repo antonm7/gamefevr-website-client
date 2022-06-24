@@ -2,8 +2,8 @@ import { NextPage } from "next"
 import { signIn } from "next-auth/react"
 import Image from 'next/image'
 import Link from "next/link"
+import { useRouter } from "next/router"
 import { useState } from "react"
-import LoginAnimation from "../../components/animations/Login"
 import SignupAnimation from "../../components/animations/Signup"
 import YellowButton from "../../components/common/YellowButton"
 import StyledInput from "../../components/Register/StyledInput"
@@ -12,6 +12,7 @@ const Signup:NextPage = () => {
     const [email, setEmail] = useState<string>("")
     const [password, setPassword] = useState<string>("")
     const [username, setUsername] = useState<string>("")
+    const router = useRouter()
 
     const signup = async () => {
         try {
@@ -27,13 +28,17 @@ const Signup:NextPage = () => {
                 })
             })
             const res = await reqToServer.json()
-
             if(res.error) throw new Error (res.error)
-            //.then((res) => {
-            // setLoading(false)
-            // if(res.error) {
-            //   setLoading(false)
-            //   return setLoginerror('Email or password is invalid')
+
+            if(reqToServer.status === 201) {
+                signIn('credentials', {
+                    redirect:false,
+                    email,
+                    password
+                }).then(() => router.push('/'))
+            } else {
+                throw new Error (res.error)
+            }
         } catch (e) {
             alert(e)
         }
@@ -56,7 +61,7 @@ const Signup:NextPage = () => {
                         <StyledInput forgot={false} title="Password" placeholder="Enter password" type="password" onChange={e => setPassword(e.target.value)}/>
                     </div>
                     <div className="pt-12">
-                        <YellowButton onClick={signup} title="Signup"/>
+                        <YellowButton onClick={() => signup()} title="Signup"/>
                     </div>
                     <div className="text-darkIndigo font-semibold text-base pt-4 flex items-center">
                         Already have an account? 

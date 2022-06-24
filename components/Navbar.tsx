@@ -3,16 +3,29 @@ import Image from 'next/image'
 import { useRouter } from "next/router";
 import SmallSearchInput from "./common/SmallSearchInput";
 import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
 
 export default function Navbar() {
     const router = useRouter()
-    const {data:session} = useSession()
+    const session:any = useSession()
+    const [auth, setAuth] = useState<boolean>(false)
+
+
+
+    useEffect(() => {
+        if(session.status === 'authenticated') {
+            setAuth(true)
+        } else {
+            setAuth(false)
+        }
+    },[session.status])
+
 
     const DynamicSession = () => {
-        if(session) {
+        if(auth) {
             return (
                 <div style={{width:130,cursor:'pointer'}} className="hover:bg-[#ef626d] rounded-lg">
-                    <Link href="/">
+                    <Link href={`/profile/${session?.data?.user?.userId}`}>
                         <div style={{borderWidth:0.5,borderColor:'#ef626d'}} className="cursor-pointer rounded-lg w-full h-11 overflow-hidden">
                             <p style={{lineHeight:'2.75rem'}} className="text-white font-regular text-sm text-center cursor-pointer">Profile</p>
                         </div>
