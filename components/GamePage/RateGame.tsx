@@ -1,43 +1,93 @@
-import { useState } from "react"
+import axios from "axios"
+import { useSession } from "next-auth/react"
+import { useRouter } from "next/router"
+import { useEffect, useState } from "react"
 
 export default function RateGame(){
     const [wasteOfTime,setWasteOfTime] = useState<boolean>(false)
     const [nuh,setNuh] = useState<boolean>(false)
     const [good,setGood] = useState<boolean>(false)
     const [must,setMust] = useState<boolean>(false)
+    const [isUserRated, setIsUserRated] = useState<string | null>(null)
 
-    const rate = (rank:string) => {
-        
+    const session:any = useSession()
+    const router = useRouter()
+
+    const setRating = (rank:string) => {
+        if(rank === 'waste_of_time') {
+            setIsUserRated('waste_of_time')
+        }
+        if(rank === 'nuh') {
+            setIsUserRated('nuh')
+        }
+        if(rank === 'good') {
+            setIsUserRated('good')
+        }
+        if(rank === 'must') {
+            setIsUserRated('must')
+        }
+    }
+
+    useEffect(() => { 
+        const isUserRated = async () => {
+            try {
+                const req = await axios.get(`/api/game/getRank?userId=${session.data?.user?.userId}&gameId=${router.query.id}`)
+                if(req.status === 200) {
+                    if(!req.data.isUserRated) return
+                    setRating(req.data.isUserRated)
+                } else {
+                    throw new Error(req.data.error)
+                }
+            } catch (e) {
+                console.log('error',e)
+            }
+        } 
+        isUserRated()
+    },[])
+
+    const rate = async (rank:string) => {
+        if(session.status === 'unauthenticated') return
+        try {
+            const req = await axios.post('/api/game/rankGame', {
+                userId:session.data?.user?.userId,
+                gameId:router.query.id,
+                value:rank
+            })
+            if(req.status === 200) return console.log('updated', req)
+            throw new Error(req.data.error)
+        } catch (e) {
+            console.log('error', e)
+        }
     }
 
     return (
-        <div className="overflow-hidden">
+        <div className="h-32 overflow-hidden">
             <div className="bg-white w-72 h-24 rounded-lg text-center py-4 ">
                 <h1 className="text-sm font-semibold text-darkIndigo">How Would You Rate This Game?</h1>
                 <div className="flex justify-between px-16 pt-3">
                     <span 
-                        className={`text-xl cursor-pointer opacity-40 hover:opacity-100`} 
+                        className={`text-xl cursor-pointer opacity-40 ${wasteOfTime || isUserRated === 'waste_of_time' ? 'opacity-100' : ''}`} 
                         onMouseEnter={() => setWasteOfTime(true)}
                         onMouseLeave={() => setWasteOfTime(false)}
-                        onClick={() => rate('waste of time')}
+                        onClick={() => rate('waste_of_time')}
                         >😫
                     </span>
                     <span 
-                        className={`text-xl cursor-pointer opacity-40 hover:opacity-100`} 
+                        className={`text-xl cursor-pointer opacity-40 ${nuh || isUserRated === 'nuh' ? 'opacity-100' : ''}`} 
                         onMouseEnter={() => setNuh(true)}
                         onMouseLeave={() => setNuh(false)}
                         onClick={() => rate('nuh')}
                         >🙁
                     </span>
                     <span 
-                        className={`text-xl cursor-pointer opacity-40 hover:opacity-100`} 
+                        className={`text-xl cursor-pointer opacity-40 ${good || isUserRated === 'good' ? 'opacity-100' : ''}`} 
                         onMouseEnter={() => setGood(true)}
                         onMouseLeave={() => setGood(false)}
                         onClick={() => rate('good')}
                         >😐
                     </span>
                     <span 
-                        className={`text-xl cursor-pointer opacity-40 hover:opacity-100`} 
+                        className={`text-xl cursor-pointer opacity-40 ${must || isUserRated === 'must' ? 'opacity-100' : ''}`} 
                         onMouseEnter={() => setMust(true)}
                         onMouseLeave={() => setMust(false)}
                         onClick={() => rate('must')}
@@ -45,7 +95,7 @@ export default function RateGame(){
                     </span>
                 </div>
             </div>
-            <div className="absolute">
+            <div className="w-72">
                 {wasteOfTime ? 
                     <div className="bg-white w-22 p-2 pt-1 rating-text text-center" style={{marginLeft:'26px'}}>
                         <p className="text-sm font-semibold text-darkIndigo">waste of time</p>
