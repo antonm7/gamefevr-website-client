@@ -82,13 +82,6 @@ export type DetailedGame = {
     website:string;
 }
 
-export type Review = {
-    id:string;
-    userId:string;
-    time:string;
-    text:string
-}
-
 export type NamedGame = {
     id:number,
     name:string
