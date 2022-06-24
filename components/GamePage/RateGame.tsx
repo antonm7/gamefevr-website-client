@@ -13,28 +13,13 @@ export default function RateGame(){
     const session:any = useSession()
     const router = useRouter()
 
-    const setRating = (rank:string) => {
-        if(rank === 'waste_of_time') {
-            setIsUserRated('waste_of_time')
-        }
-        if(rank === 'nuh') {
-            setIsUserRated('nuh')
-        }
-        if(rank === 'good') {
-            setIsUserRated('good')
-        }
-        if(rank === 'must') {
-            setIsUserRated('must')
-        }
-    }
-
     useEffect(() => { 
         const isUserRated = async () => {
             try {
                 const req = await axios.get(`/api/game/getRank?userId=${session.data?.user?.userId}&gameId=${router.query.id}`)
                 if(req.status === 200) {
                     if(!req.data.isUserRated) return
-                    setRating(req.data.isUserRated)
+                    setIsUserRated(req.data.isUserRated)
                 } else {
                     throw new Error(req.data.error)
                 }
@@ -48,13 +33,24 @@ export default function RateGame(){
     const rate = async (rank:string) => {
         if(session.status === 'unauthenticated') return
         try {
-            const req = await axios.post('/api/game/rankGame', {
-                userId:session.data?.user?.userId,
-                gameId:router.query.id,
-                value:rank
-            })
-            if(req.status === 200) return console.log('updated', req)
-            throw new Error(req.data.error)
+            //cancel rank
+            if(rank === isUserRated) {
+                setIsUserRated(null)
+                const req = await axios.post('/api/game/cancelRank',{
+                    userId:session.data?.user?.userId,
+                    gameId:router.query.id,
+                    value:rank
+                })
+                if(req.status !== 200) throw new Error(req.data.error)
+            } else {
+                setIsUserRated(rank)
+                const req = await axios.post('/api/game/rankGame', {
+                    userId:session.data?.user?.userId,
+                    gameId:router.query.id,
+                    value:rank
+                })
+                if(req.status !== 200) throw new Error(req.data.error)
+            }
         } catch (e) {
             console.log('error', e)
         }
