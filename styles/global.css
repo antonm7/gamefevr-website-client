@@ -4,11 +4,11 @@
 
 * {
     overflow-x: hidden;
-    font-family: 'Source Sans Pro', sans-serif;
+    font-family: 'Source Sans Pro', sans-serif !important;
 }
 
 h1,p,h2,div {
-    font-family: 'Source Sans Pro', sans-serif;
+    font-family: 'Source Sans Pro', sans-serif !important;
 }
 
 #home {
@@ -16,6 +16,13 @@ h1,p,h2,div {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+}
+
+.rating-text {
+  border-radius: 6px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  display: inline-block;
 }
 
 

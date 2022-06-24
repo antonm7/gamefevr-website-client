@@ -8,6 +8,7 @@ import { DetailedGame, ElementDescription, Platform } from "../../types"
 import Image from 'next/image'
 import YellowButton from "../../components/common/YellowButton"
 import Reviews from "../../components/GamePage/Reviews"
+import RateGame from "../../components/GamePage/RateGame"
 
 type Props = {
     game:DetailedGame
@@ -81,7 +82,10 @@ export default function GamePage(props:Props) {
                                     </div>
                                 </div>
                             </div>
-                            <div className="h-60 w-96 bg-cover rounded-xl bg-center bg-no-repeat" style={{height:'19rem',backgroundImage: `url(${game.background_image})`}} />
+                            <div className="flex flex-col items-center">
+                                <div className="h-60 w-96 bg-cover rounded-xl bg-center bg-no-repeat" style={{height:'19rem',backgroundImage: `url(${game.background_image})`}} />
+                                <RateGame />
+                            </div>
                         </div>
                         <div className="max-w-2xl leading-8 text-base py-20 text-white font-light"
                         dangerouslySetInnerHTML={{
