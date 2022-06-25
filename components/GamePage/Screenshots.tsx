@@ -4,14 +4,11 @@ import Slider from "react-slick"
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { useEffect, useState } from 'react';
+import useWindowSize from '../../lib/functions/useWindowSize';
 
 export default function Screenshots(props:any) {
-  const [width, setWidth] = useState<number>(0)
-
-  useEffect(() => {
-    console.log(props.width)
-    setWidth(props.width)
-  },[props.width])
+  const [width, height] = useWindowSize();
+ 
 
   const settings = {
     infinite: true,

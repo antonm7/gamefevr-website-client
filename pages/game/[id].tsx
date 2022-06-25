@@ -136,7 +136,7 @@ export default function GamePage(props:Props) {
                     </main>
                     <div id="game_page_screenshots_controller" className="relative" style={{height:'700px'}}>
                         <div id="controller"/>
-                        <Screenshots images={game.screenshots.results} width={width}/>             
+                        <Screenshots images={game.screenshots.results}/>             
                     </div>
                     <div className="flex flex-col items-center pt-24">
                         <Reviews />

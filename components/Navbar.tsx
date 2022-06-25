@@ -4,13 +4,15 @@ import { useRouter } from "next/router";
 import SmallSearchInput from "./common/SmallSearchInput";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
+import useWindowSize from "../lib/functions/useWindowSize";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
 
 export default function Navbar() {
     const router = useRouter()
     const session:any = useSession()
     const [auth, setAuth] = useState<boolean>(false)
-
-
+    const [width,height] = useWindowSize()
 
     useEffect(() => {
         if(session.status === 'authenticated') {
@@ -20,7 +22,6 @@ export default function Navbar() {
             setAuth(false)
         }
     },[session.status])
-
 
     const DynamicSession = () => {
         if(auth) {
@@ -48,8 +49,8 @@ export default function Navbar() {
     if(router.route === '/') {
         return (
             <div className="absolute h-20 w-full" style={{zIndex:99}}>
-                <div className="h-full w-full flex justify-between pt-4 px-44 items-center">
-                    <div style={{marginTop:3}}>
+                <div className="h-full w-full flex justify-between pt-4 px-44 items-center" id="navbar">
+                    <div style={{marginTop:7}}>
                         <Image src={'/images/Logo.svg'} height={32} width={130} alt="Logo"/>
                     </div>
                     <div className="flex pt-0">
@@ -69,31 +70,70 @@ export default function Navbar() {
         )
     } else {
         return (
-            <div className="absolute h-20 w-full bg-main-blue z-50">
-                <div className="h-full w-full flex justify-between pt-4 px-44 items-center">
-                    <div className="flex items-center">
-                        <div style={{marginTop:3}}>
-                            <Image src={'/images/Logo.svg'} height={32} width={130} alt="Logo"/>
-                        </div> 
-                        <div className="flex pl-16">
-                            <Link href="/">
-                                <p className={`text-white font-semibold cursor-pointer text-sm ${router.pathname === '/' ? 'active-link ' : ''}`}>Home</p>
-                            </Link>
-                            <Link href="/">
-                                <p className={`text-white mx-8 font-semibold cursor-pointer text-sm ${router.pathname === '/search' ? 'active-link ' : ''}`}>Explore</p>
-                            </Link>
-                            <Link href="/">
-                                <p className={`text-white font-semibold cursor-pointer text-sm ${router.pathname === '/reviews' ? 'active-link ' : ''}`}>Reviews</p>
-                            </Link>
+            <div className={`absolute ${width > 1024 ? 'h-20' : 'h-50'} w-full bg-main-blue z-50 overflow-hidden`}>
+                {width > 1024 ?
+                    <div className="h-full w-full flex justify-between pt-4 px-44 items-center" id="navbar">
+                        <div className="flex items-center">
+                            <div style={{marginTop:7}}>
+                                <Image src={'/images/Logo.svg'} height={32} width={130} alt="Logo"/>
+                            </div> 
+                            <div id="navbar_links_wrapper" className="flex pl-16">
+                                <Link href="/">
+                                    <p className={`text-white font-semibold cursor-pointer text-sm ${router.pathname === '/' ? 'active-link ' : ''}`}>Home</p>
+                                </Link>
+                                <Link href="/">
+                                    <p className={`text-white mx-8 font-semibold cursor-pointer text-sm ${router.pathname === '/search' ? 'active-link ' : ''}`}>Explore</p>
+                                </Link>
+                                <Link href="/">
+                                    <p className={`text-white font-semibold cursor-pointer text-sm ${router.pathname === '/reviews' ? 'active-link ' : ''}`}>Reviews</p>
+                                </Link>
+                            </div>
+                        </div>
+                        <div className="flex items-center">
+                            <div id="small_search_input_wrapper" className="mr-10">
+                                <SmallSearchInput />
+                            </div>
+                            <DynamicSession />
+                        </div>
+                    </div> : width > 640 ?
+                    <div className="h-full w-full flex flex-col pt-4 px-44" id="navbar">
+                        <div className="flex items-center justify-between overflow-hidden">
+                            <div style={{marginTop:7}}>
+                                <Image src={'/images/Logo.svg'} height={32} width={130} alt="Logo"/>
+                            </div> 
+                            <div id="navbar_links_wrapper" className="flex pl-16">
+                                <Link href="/">
+                                    <p className={`text-white font-semibold cursor-pointer text-sm ${router.pathname === '/' ? 'active-link ' : ''}`}>Home</p>
+                                </Link>
+                                <Link href="/">
+                                    <p className={`text-white mx-8 font-semibold cursor-pointer text-sm ${router.pathname === '/search' ? 'active-link ' : ''}`}>Explore</p>
+                                </Link>
+                                <Link href="/">
+                                    <p className={`text-white font-semibold cursor-pointer text-sm ${router.pathname === '/reviews' ? 'active-link ' : ''}`}>Reviews</p>
+                                </Link>
+                            </div>
+                            <DynamicSession />
+                        </div>
+                        <div className="flex items-center overflow-hidden h-50">
+                            <div id="small_search_input_wrapper">
+                                <SmallSearchInput />
+                            </div>
+                        </div>
+                    </div> :
+                    <div className="h-full w-full flex flex-col pt-4 px-44" id="navbar">
+                        <div className="flex items-center justify-between overflow-hidden h-11">
+                            <div style={{marginTop:7}}>
+                                <Image src={'/images/Logo.svg'} height={32} width={130} alt="Logo"/>
+                            </div>
+                            <FontAwesomeIcon icon={faBars} className="h-5 text-white cursor-pointer"/> 
+                        </div>
+                        <div className="flex items-center overflow-hidden h-50">
+                            <div id="small_search_input_wrapper">
+                                <SmallSearchInput />
+                            </div>
                         </div>
                     </div>
-                    <div className="flex items-center">
-                        <div className="mr-10">
-                            <SmallSearchInput />
-                        </div>
-                        <DynamicSession />
-                    </div>
-                </div>
+                }
             </div>
         )
     }
