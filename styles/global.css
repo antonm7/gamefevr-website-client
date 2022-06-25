@@ -246,3 +246,16 @@ h1,p,h2,div {
     -webkit-box-shadow: 0px 0px 42px -17px rgba(0,0,0,0.2); 
     box-shadow: 0px 0px 42px -17px rgba(0,0,0,0.2);
   }
+
+.simple-transition {
+    transition: 0.3s ease;
+}
+
+textarea {
+  width: 300px;
+  height: 200px !important;
+  resize: none;
+  color: white;
+  outline: none;
+  background-color: rgba(21,21,21,0.5)
+}

@@ -2,6 +2,8 @@ import type { AppProps } from 'next/app'
 import 'tailwindcss/tailwind.css'
 import '../styles/global.css'
 import '../styles/responsive.css'
+import '../styles/animation.css'
+
 import { SessionProvider } from "next-auth/react"
 
 

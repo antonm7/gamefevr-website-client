@@ -6,9 +6,13 @@ import SearchLayout from "../../components/layout/SearchLayout"
 import useQuery from "../../lib/functions/useQuery"
 import { DetailedGame, ElementDescription, Platform } from "../../types"
 import Image from 'next/image'
-import Reviews from "../../components/GamePage/Reviews"
+import Review from "../../components/GamePage/Review"
 import RateGame from "../../components/GamePage/RateGame"
 import useWindowSize from "../../lib/functions/useWindowSize"
+import WriteReview from "../../components/GamePage/WriteReview"
+import YellowButton from "../../components/common/YellowButton"
+import ReviewsSlider from "../../components/GamePage/ReviewsSlider"
+import { faPlus } from "@fortawesome/free-solid-svg-icons"
 
 type Props = {
     game:DetailedGame
@@ -18,7 +22,23 @@ export default function GamePage(props:Props) {
     const [game, setGame] = useState<DetailedGame | null>(null)
     const [loading, setLoading] = useState<boolean>(true)
     const [width, height] = useWindowSize();
+    const [screenshotsAnimtion, setScreenshotsAnimtion] = useState<boolean>(false)
+    const [reviewsAnimation, setReviewsAnimation] = useState<boolean>(false)
     const query:any = useQuery();
+
+    const toggleAnimation = () => {
+        if(reviewsAnimation) {
+            setReviewsAnimation(false)
+            setTimeout(() => {
+                setScreenshotsAnimtion(false)
+            },300)
+        } else {
+            setScreenshotsAnimtion(true)
+            setTimeout(() => {
+                setReviewsAnimation(true)
+            },300)
+        }
+    }
 
     useEffect(() => {
         if(!query?.id) return;
@@ -134,13 +154,48 @@ export default function GamePage(props:Props) {
                             {game.tags.map((tag:ElementDescription,index:number) => <h2 key={index} className="px-1 pb-1 text-white font-semibold text-1xl opacity-60">{tag.name}{index !== game.tags.length - 1 ? ',' : ''}</h2>)}
                         </div>
                     </main>
-                    <div id="game_page_screenshots_controller" className="relative" style={{height:'700px'}}>
-                        <div id="controller"/>
-                        <Screenshots images={game.screenshots.results}/>             
-                    </div>
-                    <div className="flex flex-col items-center pt-24">
-                        <Reviews />
-                    </div>
+                    {width > 1200 ?
+                        <div id="game_page_screenshots_controller" className="relative overflow-hidden" style={{height:'700px'}}>
+                            <div id="controller" className={`${screenshotsAnimtion ? 'controller_animation' : ''}`}/>
+                            <Screenshots isAnimated={screenshotsAnimtion } images={game.screenshots.results}/> 
+                            <div className="flex items-center overflow-hidden" style={{marginTop:width > 1400 ?'-28.45rem' : '-20rem'}}>
+                                <div className={`px-20 ${reviewsAnimation ? 'write_review_animation_enabled' : 'write_review_animation_disabled'}`}>
+                                    <FontAwesomeIcon icon={faPlus} className="h-16 text-white cursor-pointer opacity-40 hover:opacity-100 simple-transition"/>
+                                </div>
+                                <ReviewsSlider isAnimated={reviewsAnimation}/>
+                            </div>
+                        </div> :
+                        <div >
+                            <div id="game_page_screenshots_controller" className="relative overflow-hidden" style={{height:'700px'}}>
+                                <div id="controller" className={`${screenshotsAnimtion ? 'controller_animation' : ''}`}/>
+                                <Screenshots isAnimated={screenshotsAnimtion } images={game.screenshots.results}/> 
+                            </div>
+                            <div id="game_page_reviews_container" className="flex flex-col items-center">
+                                <div className="w-72 p-6 flex items-center justify-center rounded-xl mb-8 cursor-pointer opacity-80 hover:opacity-100" style={{backgroundColor:'rgba(21,21,21,0.6)'}}>
+                                    <div className="flex items-center justify-center">
+                                        <FontAwesomeIcon icon={faPlus} className="h-6 text-white pr-4"/>
+                                        <h1 className="text-white text-xl flex items-center">Add A Review</h1>
+                                    </div>
+                                </div>
+                                <div className="my-4">
+                                    <Review/>
+                                </div>
+                                <div className="my-4">
+                                    <Review/>
+                                </div>
+                                <div className="my-4">
+                                    <Review/>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    {width > 1200 ? 
+                        <div className={`w-full flex justify-center ${reviewsAnimation ? 'button_animation_enabled' : 'button_animation_disabled'}`}>
+                            <div className="w-52" id="show_comments_wrapper">
+                                <YellowButton title="Show Comments" onClick={() => toggleAnimation()} />          
+                            </div>
+                        </div>
+                    : null}
                 </div>
             }
         </SearchLayout>
