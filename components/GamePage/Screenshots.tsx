@@ -3,12 +3,19 @@ import Slider from "react-slick"
 
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import { useEffect, useState } from 'react';
 
 export default function Screenshots(props:any) {
-  
+  const [width, setWidth] = useState<number>(0)
+
+  useEffect(() => {
+    console.log(props.width)
+    setWidth(props.width)
+  },[props.width])
+
   const settings = {
     infinite: true,
-    slidesToShow: 3,
+    slidesToShow: width < 640 ? 2 : 3,
   };
 
   if(props.images.length === 0) return (<div>Loading....</div>)

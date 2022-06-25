@@ -57,10 +57,10 @@ export default function RateGame(){
     }
 
     return (
-        <div className="h-32 overflow-hidden">
-            <div className="bg-white w-72 h-24 rounded-lg text-center py-4 ">
-                <h1 className="text-sm font-semibold text-darkIndigo">How Would You Rate This Game?</h1>
-                <div className="flex justify-between px-16 pt-3">
+        <div id="rate_game" className="h-32 overflow-hidden">
+            <div id="rate_game" className="bg-white w-72 h-24 rounded-lg text-center py-4 ">
+                <h1 id="rate_game_title" className="text-sm font-semibold text-darkIndigo">How Would You Rate This Game?</h1>
+                <div id="span_line" className="flex justify-between px-16 pt-3">
                     <span 
                         className={`text-xl cursor-pointer opacity-40 ${wasteOfTime || isUserRated === 'waste_of_time' ? 'opacity-100' : ''}`} 
                         onMouseEnter={() => setWasteOfTime(true)}
@@ -91,28 +91,28 @@ export default function RateGame(){
                     </span>
                 </div>
             </div>
-            <div className="w-72">
+            <div id="rating_label" className="w-72">
                 {wasteOfTime ? 
-                    <div className="bg-white w-22 p-2 pt-1 rating-text text-center" style={{marginLeft:'26px'}}>
-                        <p className="text-sm font-semibold text-darkIndigo">waste of time</p>
+                    <div className="bg-white w-22 p-2 pt-1 rating-text text-center" style={{marginLeft:'26px'}} id="waste_of_time">
+                        <p className="text-sm font-semibold text-darkIndigo rating_label_text">waste of time</p>
                     </div>
                     :null
                 }
                 {nuh ? 
-                    <div className="bg-white w-22 p-2 pt-1 rating-text text-center" style={{marginLeft:'102px'}}>
-                        <p className="text-sm font-semibold text-darkIndigo">nuh</p>
+                    <div className="bg-white w-22 p-2 pt-1 rating-text text-center" style={{marginLeft:'102px'}} id="nuh">
+                        <p className="text-sm font-semibold text-darkIndigo rating_label_text">nuh</p>
                     </div>
                     :null
                 }
                 {good ? 
-                    <div className="bg-white w-22 p-2 pt-1 rating-text text-center" style={{marginLeft:'141px'}}>
-                        <p className="text-sm font-semibold text-darkIndigo">good</p>
+                    <div className="bg-white w-22 p-2 pt-1 rating-text text-center" style={{marginLeft:'141px'}} id="good">
+                        <p className="text-sm font-semibold text-darkIndigo rating_label_text">good</p>
                     </div>
                     :null
                 }
                 {must ? 
-                    <div className="bg-white w-22 p-2 pt-1 rating-text text-center" style={{marginLeft:'186px'}}>
-                        <p className="text-sm font-semibold text-darkIndigo">must</p>
+                    <div className="bg-white w-22 p-2 pt-1 rating-text text-center" style={{marginLeft:'186px'}} id="must">
+                        <p className="text-sm font-semibold text-darkIndigo rating_label_text">must</p>
                     </div>
                     :null
                 }
