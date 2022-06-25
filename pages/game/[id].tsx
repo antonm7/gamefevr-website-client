@@ -41,6 +41,7 @@ export default function GamePage(props:Props) {
     }
 
     useEffect(() => {
+        // TODO:send to backend visited data on the game page.
         if(!query?.id) return;
         const fetchGame = async () => {
             const getData = await fetch(`https://api.rawg.io/api/games/${query.id}?key=e996863ffbd04374ac0586ec2bcadd55`)
@@ -70,7 +71,11 @@ export default function GamePage(props:Props) {
         setLoading(false)
     },[query])
 
+    //TODO:add additional data for the website, like the game stores.
+    //maybe trying accessing another api's like twitch/steam/epicgames.
+
     return (
+        // TODO: add design shapes on the backgorund
         <SearchLayout>
             {
                 loading || !game ? <SmallLoader big={true} screenCentered={true}/> :
@@ -154,6 +159,7 @@ export default function GamePage(props:Props) {
                             {game.tags.map((tag:ElementDescription,index:number) => <h2 key={index} className="px-1 pb-1 text-white font-semibold text-1xl opacity-60">{tag.name}{index !== game.tags.length - 1 ? ',' : ''}</h2>)}
                         </div>
                     </main>
+                    {/* TODO:finish adding a review on backend and client + user authorization*/}
                     {width > 1200 ?
                         <div id="game_page_screenshots_controller" className="relative overflow-hidden" style={{height:'700px'}}>
                             <div id="controller" className={`${screenshotsAnimtion ? 'controller_animation' : ''}`}/>
