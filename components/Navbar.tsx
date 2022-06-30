@@ -17,7 +17,6 @@ export default function Navbar() {
     useEffect(() => {
         if(session.status === 'authenticated') {
             setAuth(true)
-            console.log(session.data?.user?.userId)
         } else {
             setAuth(false)
         }

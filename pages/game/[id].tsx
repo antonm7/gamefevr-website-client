@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { useEffect, useLayoutEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import SmallLoader from "../../components/common/SmallLoader"
 import Screenshots from "../../components/GamePage/Screenshots"
 import SearchLayout from "../../components/layout/SearchLayout"
@@ -9,10 +9,10 @@ import Image from 'next/image'
 import Review from "../../components/GamePage/Review"
 import RateGame from "../../components/GamePage/RateGame"
 import useWindowSize from "../../lib/functions/useWindowSize"
-import WriteReview from "../../components/GamePage/WriteReview"
 import YellowButton from "../../components/common/YellowButton"
 import ReviewsSlider from "../../components/GamePage/ReviewsSlider"
 import { faPlus } from "@fortawesome/free-solid-svg-icons"
+import { useSession } from "next-auth/react"
 
 type Props = {
     game:DetailedGame
@@ -25,6 +25,7 @@ export default function GamePage(props:Props) {
     const [screenshotsAnimtion, setScreenshotsAnimtion] = useState<boolean>(false)
     const [reviewsAnimation, setReviewsAnimation] = useState<boolean>(false)
     const query:any = useQuery();
+    const session:any = useSession()
 
     const toggleAnimation = () => {
         if(reviewsAnimation) {
@@ -41,7 +42,6 @@ export default function GamePage(props:Props) {
     }
 
     useEffect(() => {
-        // TODO:send to backend visited data on the game page.
         if(!query?.id) return;
         const fetchGame = async () => {
             const getData = await fetch(`https://api.rawg.io/api/games/${query.id}?key=e996863ffbd04374ac0586ec2bcadd55`)
@@ -66,6 +66,11 @@ export default function GamePage(props:Props) {
                 website:gameData.website,
             }
             setGame(finalData)
+            fetch(`/api/game/visited?gameId=${query.id}`, {
+                headers:{
+                    userId:session.data?.user?.userId
+                }
+            })
         }
         fetchGame()
         setLoading(false)

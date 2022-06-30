@@ -40,7 +40,12 @@ async function handler(req:Request, res:Response) {
         await db.collection('users').insertOne({
           email,
           username,
-          password:hashedPassword
+          password:hashedPassword,
+          created_at:'',
+          favorite:[],
+          reviews:[],
+          ranks:[],
+          visited_games:[]
         })
 
         res.status(201).send({error:null})

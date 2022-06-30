@@ -44,4 +44,5 @@ export type full_user = {
     favorite:ObjectId[];
     reviews:ObjectId[];
     ranks:ObjectId[];
+    visited_games:ObjectId[];
 }
