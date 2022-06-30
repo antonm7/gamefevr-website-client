@@ -14,16 +14,18 @@ export type games_data = {
 }
 
 export type Review = {
-    _id:ObjectId;
+    _id?:ObjectId;
+    gameId:string;
     userId:string;
-    time:string;
+    created_at:string;
     text:string;
+    rank:string;
 }
 
 export type Favorite = {
-    _id:ObjectId;
+    _id?:ObjectId;
     userId:string;
-    time:string;
+    created_at:string;
     gameId:string;
 }
 

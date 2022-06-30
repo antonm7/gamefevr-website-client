@@ -30,6 +30,7 @@
     "react-flickity-component": "^3.6.2",
     "react-lottie": "^1.2.3",
     "react-slick": "^0.29.0",
+    "react-textarea-autosize": "^8.3.4",
     "slick-carousel": "^1.8.1",
     "spinners-react": "^1.0.7",
     "zustand": "^3.7.1"

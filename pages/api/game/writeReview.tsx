@@ -2,12 +2,13 @@ import { ObjectId } from 'bson';
 import {Request, Response} from 'express';
 import games_data_document from '../../../lib/functions/create/games_data'
 import clientPromise from '../../../lib/functions/mongodb'
-import { Rank } from '../../../types/schema';
+import { Rank, Review } from '../../../types/schema';
 
 export default async function handler(req:Request, res:Response) {
     if(req.method === 'POST') {
         let db = null
-        let savedRank;
+        const query = req.body
+        let savedReview;
         //initializing database
         try {
             const client = await clientPromise
@@ -23,53 +24,35 @@ export default async function handler(req:Request, res:Response) {
             res.status(500).send({error:'Unexpected error'})
             return console.log('error on games_data_document', e)
         }
-        //saves the rank inside own ranks collection
+        //saves the reviews inside own ranks collection
         try {
-            const rank:Rank = {
-                userId: req.body.userId,
-                gameId: req.body.gameId,
+            const review:Review = {
+                userId: query.userId,
+                gameId: query.gameId,
                 created_at: 'time',
-                value: req.body.value
+                rank:query.rank,
+                text: query.text
             }
-            savedRank = await db.collection('ranks').insertOne(rank)
+           
+            savedReview = await db.collection('reviews').insertOne(review)
         } catch (e) {
             res.status(500).send({error:'Unexpected error'})
-            return console.log('error saving the rank',e)
+            return console.log('error saving the review',e)
         }
         //updates user's document
         try {
            await db.collection('users')
-           .updateOne({_id:new ObjectId(req.body.userId)},
-           {$push:{ranks:savedRank?.insertedId}}) 
+           .updateOne({_id:new ObjectId(query.userId)},
+           {$push:{reviews:savedReview?.insertedId}}) 
         } catch (e) {
             res.status(500).send({error:'Unexpected error'})
             return console.log('error on updating user ranks field')
         }
         //updates game data document
         try {
-            if(req.body.value === 'waste_of_time') {
-                await db.collection('games_data').
-                updateOne({gameId:req.body.gameId},
-                {$inc:{waste_of_time:1}})
-            }
-
-            if(req.body.value === 'nuh') {
-                await db.collection('games_data').
-                updateOne({gameId:req.body.gameId},
-                {$inc:{nuh:1}})
-            }
-
-            if(req.body.value === 'good') {
-                await db.collection('games_data').
-                updateOne({gameId:req.body.gameId},
-                {$inc:{good:1}})
-            }
-
-            if(req.body.value === 'must') {
-                await db.collection('games_data').
-                updateOne({gameId:req.body.gameId},
-                {$inc:{must:1}})
-            }
+            await db.collection('games_data').updateOne({gameId:query.gameId}, {
+                $inc:{reviews:1}
+            })
         } catch (e) {
             res.status(500).send({error:'Unexpected error'})    
             return console.log('error on updating games_data document',e)

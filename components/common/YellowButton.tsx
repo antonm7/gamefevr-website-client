@@ -1,6 +1,6 @@
 interface Props {
     title: string,
-    onClick:() => void,
+    onClick:() => void
 }
 
 export default function YellowButton(props:Props) {

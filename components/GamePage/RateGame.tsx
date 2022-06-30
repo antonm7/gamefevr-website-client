@@ -49,7 +49,7 @@ export default function RateGame(){
                     gameId:router.query.id,
                     value:rank
                 })
-                if(req.status !== 200) throw new Error(req.data.error)
+                if(req.status !== 201) throw new Error(req.data.error)
             }
         } catch (e) {
             console.log('error', e)
