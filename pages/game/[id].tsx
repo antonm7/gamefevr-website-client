@@ -13,6 +13,7 @@ import YellowButton from "../../components/common/YellowButton"
 import ReviewsSlider from "../../components/GamePage/ReviewsSlider"
 import { faPlus } from "@fortawesome/free-solid-svg-icons"
 import { useSession } from "next-auth/react"
+import WriteReview from "../../components/GamePage/WriteReview"
 
 type Props = {
     game:DetailedGame
@@ -66,15 +67,25 @@ export default function GamePage(props:Props) {
                 website:gameData.website,
             }
             setGame(finalData)
+        }
+        fetchGame()
+        setLoading(false)
+    },[query?.id])
+
+    useEffect(() => {
+        if(!query?.id) return;
+        if(session.status === 'authenticated') {
             fetch(`/api/game/visited?gameId=${query.id}`, {
                 headers:{
                     userId:session.data?.user?.userId
                 }
             })
         }
-        fetchGame()
-        setLoading(false)
-    },[query])
+    },[query?.id,session.status])
+
+    const toggleAddReview = () => {
+
+    }
 
     //TODO:add additional data for the website, like the game stores.
     //maybe trying accessing another api's like twitch/steam/epicgames.
@@ -86,6 +97,7 @@ export default function GamePage(props:Props) {
                 loading || !game ? <SmallLoader big={true} screenCentered={true}/> :
                 <div>
                     <main className="px-44 py-10" id="game_page">
+                    <WriteReview />
                         {width > 640 ? 
                             <div id="game_page_header" className="flex flex-row justify-between">
                                 <div className="pr-16">
@@ -183,7 +195,7 @@ export default function GamePage(props:Props) {
                             </div>
                             <div id="game_page_reviews_container" className="flex flex-col items-center">
                                 <div className="w-72 p-6 flex items-center justify-center rounded-xl mb-8 cursor-pointer opacity-80 hover:opacity-100" style={{backgroundColor:'rgba(21,21,21,0.6)'}}>
-                                    <div className="flex items-center justify-center">
+                                    <div className="flex items-center justify-center" onClick={() => toggleAddReview()}>
                                         <FontAwesomeIcon icon={faPlus} className="h-6 text-white pr-4"/>
                                         <h1 className="text-white text-xl flex items-center">Add A Review</h1>
                                     </div>
