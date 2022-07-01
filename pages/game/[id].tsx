@@ -101,7 +101,12 @@ export default function GamePage(props:Props) {
                 loading || !game ? <SmallLoader big={true} screenCentered={true}/> :
                 <div>
                     <main className="px-44 py-10" id="game_page">
-                    <WriteReview isUserRated={isUserRated} onClose={() => setWriteReviewVisibility(false)} visible={writeReviewVisibility}/>
+                    <WriteReview 
+                        isUserRated={isUserRated}
+                        onClose={() => setWriteReviewVisibility(false)}
+                        visible={writeReviewVisibility} 
+                        insertNewReview={(review:Review_Type) => setReviews([...reviews, review])}       
+                    />
                         {width > 640 ? 
                             <div id="game_page_header" className="flex flex-row justify-between">
                                 <div className="pr-16">
@@ -180,17 +185,17 @@ export default function GamePage(props:Props) {
                         </div>
                     </main>
                     {width > 1200 ?
-                        <div id="game_page_screenshots_controller" className="relative overflow-hidden" style={{height: !reviewsAnimation && !reviews.length ? '700px' : '300px'}}>
+                        <div id="game_page_screenshots_controller" className="relative overflow-hidden" style={{height: reviewsAnimation && !reviews.length ? '300px' : '700px'}}>
                             <div id="controller" className={`${screenshotsAnimtion ? 'controller_animation' : ''}`}/>
                             <Screenshots isAnimated={screenshotsAnimtion } images={game.screenshots.results}/> 
                             {reviews.length ? 
-                                <div className="flex items-center overflow-hidden" style={{marginTop:width > 1400 ?'-28.45rem' : '-20rem'}}>
+                                <div className="h-full flex items-center overflow-hidden" style={{marginTop:width > 1400 ? '-34rem' : '-20rem'}}>
                                     <div className={`px-20 ${reviewsAnimation ? 'write_review_animation_enabled' : 'write_review_animation_disabled'}`}>
                                         <FontAwesomeIcon icon={faPlus} className="h-16 text-white cursor-pointer opacity-40 hover:opacity-100 simple-transition" onClick={() => setWriteReviewVisibility(true)}/>
                                     </div>
                                     <ReviewsSlider isAnimated={reviewsAnimation} reviews={reviews}/>
                                 </div> :
-                                <div className="flex justify-center overflow-hidden" style={{marginTop:width > 1400 ?'-28.45rem' : '-20rem'}}>
+                                <div className="h-ful  flex justify-center overflow-hidden" style={{marginTop:width > 1400 ?'-34rem' : '-20rem'}}>
                                     <div className={`px-20 ${reviewsAnimation ? 'write_review_animation_enabled' : 'write_review_animation_disabled'}`}>
                                         <FontAwesomeIcon icon={faPlus} className="h-16 text-white cursor-pointer opacity-40 hover:opacity-100 simple-transition" onClick={() => setWriteReviewVisibility(true)}/>
                                     </div>
@@ -209,7 +214,7 @@ export default function GamePage(props:Props) {
                                         <h1 className="text-white text-xl flex items-center">Add A Review</h1>
                                     </div>
                                 </div>
-                                {reviews.length ? <VerticalReviewsLoader /> : null}
+                                {reviews.length ? <VerticalReviewsLoader reviews={reviews}/> : null}
                             </div>
                         </div>
                     }

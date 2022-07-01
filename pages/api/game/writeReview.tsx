@@ -57,7 +57,13 @@ export default async function handler(req:Request, res:Response) {
             res.status(500).send({error:'Unexpected error'})    
             return console.log('error on updating games_data document',e)
         }
-        res.status(201).send({error:null})
+        try {
+            const review = await db.collection('reviews').findOne({_id:savedReview?.insertedId})
+            res.status(201).send({error:null,review})
+        } catch (e) {
+            res.status(500).send({error:'Unexpected error'})    
+            return console.log('error on updating games_data document',e)
+        }
     }
 }
 

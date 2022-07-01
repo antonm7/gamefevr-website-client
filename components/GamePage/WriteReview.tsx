@@ -5,11 +5,14 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import TextareaAutosize from 'react-textarea-autosize';
+import { Review_Type } from "../../types/schema";
 
 interface Props {
     onClose: () => void;
+    insertNewReview: (review: Review_Type) => void;
     isUserRated:string | null;
     visible: boolean;
+
 }
 
 export default function WriteReview(props:Props) {
@@ -41,6 +44,7 @@ export default function WriteReview(props:Props) {
             })
             if(writeReviewRequest.status !== 201) throw new Error(writeReviewRequest.data.error)
             if(rankGameRequest.status !== 201) throw new Error(rankGameRequest.data.error)
+            props.insertNewReview(writeReviewRequest.data.review)
         } catch (e) {
             console.log('error',e)
         }
@@ -51,24 +55,6 @@ export default function WriteReview(props:Props) {
             setRank(props.isUserRated)
         }
     }, [props.isUserRated])
-
-    // useEffect(() => { 
-    //     const isUserRated = async () => {
-    //         try {
-    //             const req = await axios.get(`/api/game/getRank?userId=${session.data?.user?.userId}&gameId=${router.query.id}`)
-    //             if(req.status === 200) {
-    //                 if(!req.data.isUserRated) return
-    //                 setIsUserRated(req.data.isUserRated)
-    //                 setRank(req.data.isUserRated)
-    //             } else {
-    //                 throw new Error(req.data.error)
-    //             }
-    //         } catch (e) {
-    //             console.log('error',e)
-    //         }
-    //     } 
-    //     isUserRated()
-    // },[])
 
     const toggleRank = (value:string) => {
         if(rank === value) {

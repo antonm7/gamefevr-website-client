@@ -35,7 +35,7 @@ export default function Review(props:Review_Type) {
         <div id="review" className="px-7 py-6 rounded-xl relative mx-2" style={{width:'32rem',minWidth:'32rem',height:'30rem',minHeight:'30rem', backgroundColor:'rgba(21,21,21,0.6)'}}>
             <h1 className="text-white font-bold text-3xl  underline">Rank</h1>
             <p className="text-white font-base pt-2">t is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).</p>
-            <div className="flex items-center justify-between pt-5">
+            <div className="flex flex-grow  items-center justify-between mt-20 ">
                 <div>
                     <p className="text-cool-blue font-semibold">Anton Migolko</p>
                     <p className="text-white opacity-50">19 Aug, 2022</p>
