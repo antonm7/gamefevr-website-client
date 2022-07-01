@@ -53,7 +53,7 @@ export default function GamePage(props:Props) {
         const fetchGame = async () => {
             const getData = await fetch(`https://api.rawg.io/api/games/${query.id}?key=e996863ffbd04374ac0586ec2bcadd55`)
             const getScreenshots = await fetch(`https://api.rawg.io/api/games/${query.id}/screenshots?key=e996863ffbd04374ac0586ec2bcadd55`)
-            const getReviews = await axios.get(`/api/game/getReviews?gameId=${query.id}`)
+            const getReviews = await axios.get(`/api/game/get/getReviews?gameId=${query.id}`)
             const gameData = await getData.json()
             const screenshots = await getScreenshots.json()
             
@@ -83,7 +83,7 @@ export default function GamePage(props:Props) {
     useEffect(() => {
         if(!query?.id) return;
         if(session.status === 'authenticated') {
-            fetch(`/api/game/visited?gameId=${query.id}`, {
+            fetch(`/api/game/action/visited?gameId=${query.id}`, {
                 headers:{
                     userId:session.data?.user?.userId
                 }

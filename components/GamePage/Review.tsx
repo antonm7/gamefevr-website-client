@@ -9,12 +9,12 @@ export default function Review(props:Review_Type) {
 
     const deleteReview = async () => {
         try {
-            const deleteReviewRequest = await axios.post('api/game/deleteReview', {
+            const deleteReviewRequest = await axios.post('api/game/cancel/deleteReview', {
                 userId:props.userId,
                 gameId:props.gameId,
                 reviewId:props._id
             })
-            const cancelRankRequest = await axios.post('api/game/cancelRank',{
+            const cancelRankRequest = await axios.post('api/game/cancel/cancelRank',{
                 userId:props.userId,
                 gameId:props.gameId,
                 rankId:props._id

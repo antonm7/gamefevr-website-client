@@ -26,18 +26,18 @@ export default function WriteReview(props:Props) {
             //if user already rated the game, and if the raview
             // ranking is different then needs to cancel the ranking 
             if(props.isUserRated && rank !== props.isUserRated) {
-                await axios.post('/api/game/cancelRank', {
+                await axios.post('/api/game/cancel/cancelRank', {
                     userId:session.data?.user?.userId,
                     gameId:router.query.id,
                 })
             }
-            const writeReviewRequest = await axios.post('/api/game/writeReview', {
+            const writeReviewRequest = await axios.post('/api/game/action/writeReview', {
                 userId:session.data?.user?.userId,
                 gameId:router.query.id,
                 text,
                 rank
             })
-            const rankGameRequest = await axios.post('/api/game/rankGame', {
+            const rankGameRequest = await axios.post('/api/game/action/rankGame', {
                 userId:session.data?.user?.userId,
                 gameId:router.query.id,
                 value:rank

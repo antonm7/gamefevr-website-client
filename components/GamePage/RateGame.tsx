@@ -16,7 +16,7 @@ export default function RateGame(props:any){
     useEffect(() => { 
         const isUserRated = async () => {
             try {
-                const req = await axios.get(`/api/game/getRank?userId=${session.data?.user?.userId}&gameId=${router.query.id}`)
+                const req = await axios.get(`/api/game/get/getRank?userId=${session.data?.user?.userId}&gameId=${router.query.id}`)
                 if(req.status === 200) {
                     if(!req.data.isUserRated) return
                     setIsUserRated(req.data.isUserRated)
@@ -37,7 +37,7 @@ export default function RateGame(props:any){
             //cancel rank
             if(rank === isUserRated) {
                 setIsUserRated(null)
-                const req = await axios.post('/api/game/cancelRank',{
+                const req = await axios.post('/api/game/cancel/cancelRank',{
                     userId:session.data?.user?.userId,
                     gameId:router.query.id,
                     value:rank
@@ -47,14 +47,14 @@ export default function RateGame(props:any){
                 setIsUserRated(rank)
                 //for not getting several ranking on the same game
                 if(isUserRated) {
-                    const req = await axios.post('/api/game/cancelRank',{
+                    const req = await axios.post('/api/game/cancel/cancelRank',{
                         userId:session.data?.user?.userId,
                         gameId:router.query.id,
                         value:rank
                     })
                     if(req.status !== 200) throw new Error(req.data.error)
                 }
-                const req = await axios.post('/api/game/rankGame', {
+                const req = await axios.post('/api/game/action/rankGame', {
                     userId:session.data?.user?.userId,
                     gameId:router.query.id,
                     value:rank
