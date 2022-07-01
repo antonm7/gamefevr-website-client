@@ -6,7 +6,6 @@ import SearchLayout from "../../components/layout/SearchLayout"
 import useQuery from "../../lib/functions/useQuery"
 import { DetailedGame, ElementDescription, Platform } from "../../types"
 import Image from 'next/image'
-import Review from "../../components/GamePage/Review"
 import RateGame from "../../components/GamePage/RateGame"
 import useWindowSize from "../../lib/functions/useWindowSize"
 import YellowButton from "../../components/common/YellowButton"
@@ -14,6 +13,9 @@ import ReviewsSlider from "../../components/GamePage/ReviewsSlider"
 import { faPlus } from "@fortawesome/free-solid-svg-icons"
 import { useSession } from "next-auth/react"
 import WriteReview from "../../components/GamePage/WriteReview"
+import VerticalReviewsLoader from "../../components/GamePage/VerticalReviewsLoader"
+import axios from "axios"
+import { Review_Type } from "../../types/schema"
 
 type Props = {
     game:DetailedGame
@@ -27,6 +29,8 @@ export default function GamePage(props:Props) {
     const [reviewsAnimation, setReviewsAnimation] = useState<boolean>(false)
     const [writeReviewVisibility, setWriteReviewVisibility] = useState<boolean>(false)
     const [isUserRated, setIsUserRated] = useState<string | null>(null)
+    const [reviews, setReviews] = useState<Review_Type[]>([])
+
     const query:any = useQuery();
     const session:any = useSession()
 
@@ -49,6 +53,7 @@ export default function GamePage(props:Props) {
         const fetchGame = async () => {
             const getData = await fetch(`https://api.rawg.io/api/games/${query.id}?key=e996863ffbd04374ac0586ec2bcadd55`)
             const getScreenshots = await fetch(`https://api.rawg.io/api/games/${query.id}/screenshots?key=e996863ffbd04374ac0586ec2bcadd55`)
+            const getReviews = await axios.get(`/api/game/getReviews?gameId=${query.id}`)
             const gameData = await getData.json()
             const screenshots = await getScreenshots.json()
             
@@ -69,6 +74,7 @@ export default function GamePage(props:Props) {
                 website:gameData.website,
             }
             setGame(finalData)
+            setReviews(getReviews.data.reviews)
         }
         fetchGame()
         setLoading(false)
@@ -182,7 +188,10 @@ export default function GamePage(props:Props) {
                                 <div className={`px-20 ${reviewsAnimation ? 'write_review_animation_enabled' : 'write_review_animation_disabled'}`}>
                                     <FontAwesomeIcon icon={faPlus} className="h-16 text-white cursor-pointer opacity-40 hover:opacity-100 simple-transition" onClick={() => setWriteReviewVisibility(true)}/>
                                 </div>
-                                <ReviewsSlider isAnimated={reviewsAnimation}/>
+                                {
+                                    reviews.length ? <ReviewsSlider isAnimated={reviewsAnimation} reviews={reviews}/> : null
+                                }
+                                
                             </div>
                         </div> :
                         <div >
@@ -197,15 +206,7 @@ export default function GamePage(props:Props) {
                                         <h1 className="text-white text-xl flex items-center">Add A Review</h1>
                                     </div>
                                 </div>
-                                <div className="my-4">
-                                    <Review/>
-                                </div>
-                                <div className="my-4">
-                                    <Review/>
-                                </div>
-                                <div className="my-4">
-                                    <Review/>
-                                </div>
+                                {reviews.length ? <VerticalReviewsLoader /> : null}
                             </div>
                         </div>
                     }

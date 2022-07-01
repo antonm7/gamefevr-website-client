@@ -13,7 +13,7 @@ export type games_data = {
     facebook_share:number
 }
 
-export type Review = {
+export type Review_Type = {
     _id?:ObjectId;
     gameId:string;
     userId:string;

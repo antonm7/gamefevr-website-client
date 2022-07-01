@@ -2,7 +2,7 @@ import { ObjectId } from 'bson';
 import {Request, Response} from 'express';
 import games_data_document from '../../../lib/functions/create/games_data'
 import clientPromise from '../../../lib/functions/mongodb'
-import { Rank, Review } from '../../../types/schema';
+import { Review_Type } from '../../../types/schema';
 
 export default async function handler(req:Request, res:Response) {
     if(req.method === 'POST') {
@@ -26,7 +26,7 @@ export default async function handler(req:Request, res:Response) {
         }
         //saves the reviews inside own ranks collection
         try {
-            const review:Review = {
+            const review:Review_Type = {
                 userId: query.userId,
                 gameId: query.gameId,
                 created_at: 'time',
