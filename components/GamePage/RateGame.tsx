@@ -3,7 +3,7 @@ import { useSession } from "next-auth/react"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 
-export default function RateGame(){
+export default function RateGame(props:any){
     const [wasteOfTime,setWasteOfTime] = useState<boolean>(false)
     const [nuh,setNuh] = useState<boolean>(false)
     const [good,setGood] = useState<boolean>(false)
@@ -20,6 +20,7 @@ export default function RateGame(){
                 if(req.status === 200) {
                     if(!req.data.isUserRated) return
                     setIsUserRated(req.data.isUserRated)
+                    props.updateIsUserRated(req.data.isUserRated)
                 } else {
                     throw new Error(req.data.error)
                 }

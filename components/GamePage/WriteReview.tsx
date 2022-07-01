@@ -1,3 +1,4 @@
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import axios from "axios";
 import { useSession } from "next-auth/react";
@@ -5,20 +6,23 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import TextareaAutosize from 'react-textarea-autosize';
 
-export default function WriteReview(props:any) {
+interface Props {
+    onClose: () => void;
+    isUserRated:string | null;
+    visible: boolean;
+}
+
+export default function WriteReview(props:Props) {
     const [text, setText] = useState<string>('')
     const [rank, setRank] = useState<string | null>(null)
-    const [isUserRated, setIsUserRated] = useState<string | null>(null)
     const session:any = useSession()
     const router = useRouter()
 
     const writeReview = async () => {
-        //if the user is already ranked the game
-        //need to send cancel rank request
         try {
             //if user already rated the game, and if the raview
             // ranking is different then needs to cancel the ranking 
-            if(isUserRated) {
+            if(props.isUserRated && rank !== props.isUserRated) {
                 await axios.post('/api/game/cancelRank', {
                     userId:session.data?.user?.userId,
                     gameId:router.query.id,
@@ -42,23 +46,30 @@ export default function WriteReview(props:any) {
         }
     }
 
-    useEffect(() => { 
-        const isUserRated = async () => {
-            try {
-                const req = await axios.get(`/api/game/getRank?userId=${session.data?.user?.userId}&gameId=${router.query.id}`)
-                if(req.status === 200) {
-                    if(!req.data.isUserRated) return
-                    setIsUserRated(req.data.isUserRated)
-                    setRank(req.data.isUserRated)
-                } else {
-                    throw new Error(req.data.error)
-                }
-            } catch (e) {
-                console.log('error',e)
-            }
-        } 
-        isUserRated()
-    },[])
+    useEffect(() => {
+        console.log(props.isUserRated)
+        if(props.isUserRated) {
+            setRank(props.isUserRated)
+        }
+    }, [props.isUserRated])
+
+    // useEffect(() => { 
+    //     const isUserRated = async () => {
+    //         try {
+    //             const req = await axios.get(`/api/game/getRank?userId=${session.data?.user?.userId}&gameId=${router.query.id}`)
+    //             if(req.status === 200) {
+    //                 if(!req.data.isUserRated) return
+    //                 setIsUserRated(req.data.isUserRated)
+    //                 setRank(req.data.isUserRated)
+    //             } else {
+    //                 throw new Error(req.data.error)
+    //             }
+    //         } catch (e) {
+    //             console.log('error',e)
+    //         }
+    //     } 
+    //     isUserRated()
+    // },[])
 
     const toggleRank = (value:string) => {
         if(rank === value) {
@@ -69,7 +80,8 @@ export default function WriteReview(props:any) {
     }
 
     return (
-    <div id="write_review_container" className={`px-7 py-6 rounded-xl fixed mx-2 w-3/5 z-40`} style={{minHeight:'24rem',maxHeight:'80%',backgroundColor:'rgba(21,21,21)'}}>
+    <div id="write_review_container" className={`${props.visible ? 'fixed ' : 'hidden '}px-7 py-6 rounded-xl mx-2 w-3/5 z-40`} style={{minHeight:'24rem',maxHeight:'80%',backgroundColor:'rgba(21,21,21)'}}>
+           <FontAwesomeIcon onClick={props.onClose} icon={faXmark} className="h-6 absolute white text-white right-6 cursor-pointer"/>
             <div className="flex flex-wrap my-2">
                 <div onClick={() => toggleRank('waste_of_time')} className={`simple-transition cursor-pointer flex items-center flex-nowrap rounded-md py-1 px-2 mr-4 mb-4 hover:bg-white ${rank === 'waste_of_time' ? 'bg-white' : ''}`} style={{border:'solid #e3e3e3',borderWidth:1}}>
                     <span className="pr-2 text-md">😫</span>

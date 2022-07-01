@@ -25,6 +25,8 @@ export default function GamePage(props:Props) {
     const [width, height] = useWindowSize();
     const [screenshotsAnimtion, setScreenshotsAnimtion] = useState<boolean>(false)
     const [reviewsAnimation, setReviewsAnimation] = useState<boolean>(false)
+    const [writeReviewVisibility, setWriteReviewVisibility] = useState<boolean>(false)
+    const [isUserRated, setIsUserRated] = useState<string | null>(null)
     const query:any = useQuery();
     const session:any = useSession()
 
@@ -83,10 +85,6 @@ export default function GamePage(props:Props) {
         }
     },[query?.id,session.status])
 
-    const toggleAddReview = () => {
-
-    }
-
     //TODO:add additional data for the website, like the game stores.
     //maybe trying accessing another api's like twitch/steam/epicgames.
 
@@ -97,7 +95,7 @@ export default function GamePage(props:Props) {
                 loading || !game ? <SmallLoader big={true} screenCentered={true}/> :
                 <div>
                     <main className="px-44 py-10" id="game_page">
-                    <WriteReview />
+                    <WriteReview isUserRated={isUserRated} onClose={() => setWriteReviewVisibility(false)} visible={writeReviewVisibility}/>
                         {width > 640 ? 
                             <div id="game_page_header" className="flex flex-row justify-between">
                                 <div className="pr-16">
@@ -128,8 +126,7 @@ export default function GamePage(props:Props) {
                                 </div>
                                 <div id="game_page_background_image_wrapper" className="flex flex-col items-center" style={{minWidth:'24rem'}}>
                                     <div id="game_page_background_image" className="h-60 w-96 bg-cover rounded-xl bg-center bg-no-repeat" style={{height:'19rem',backgroundImage: `url(${game.background_image})`}} />
-                                    <RateGame />
-                                </div>
+                                    <RateGame updateIsUserRated={(value:string) => setIsUserRated(value)}/>                                </div>
                             </div> :
                             // responsive > order change
                             <div id="game_page_header" className="flex flex-row justify-between">
@@ -162,7 +159,7 @@ export default function GamePage(props:Props) {
                                         </div>
                                     </div>
                                     <div className="relative h-48 pt-5 overflow-hidden">
-                                        <RateGame />
+                                        <RateGame updateIsUserRated={(value:string) => setIsUserRated(value)}/>
                                     </div>
                                 </div>
                             </div>
@@ -183,7 +180,7 @@ export default function GamePage(props:Props) {
                             <Screenshots isAnimated={screenshotsAnimtion } images={game.screenshots.results}/> 
                             <div className="flex items-center overflow-hidden" style={{marginTop:width > 1400 ?'-28.45rem' : '-20rem'}}>
                                 <div className={`px-20 ${reviewsAnimation ? 'write_review_animation_enabled' : 'write_review_animation_disabled'}`}>
-                                    <FontAwesomeIcon icon={faPlus} className="h-16 text-white cursor-pointer opacity-40 hover:opacity-100 simple-transition"/>
+                                    <FontAwesomeIcon icon={faPlus} className="h-16 text-white cursor-pointer opacity-40 hover:opacity-100 simple-transition" onClick={() => setWriteReviewVisibility(true)}/>
                                 </div>
                                 <ReviewsSlider isAnimated={reviewsAnimation}/>
                             </div>
@@ -195,8 +192,8 @@ export default function GamePage(props:Props) {
                             </div>
                             <div id="game_page_reviews_container" className="flex flex-col items-center">
                                 <div className="w-72 p-6 flex items-center justify-center rounded-xl mb-8 cursor-pointer opacity-80 hover:opacity-100" style={{backgroundColor:'rgba(21,21,21,0.6)'}}>
-                                    <div className="flex items-center justify-center" onClick={() => toggleAddReview()}>
-                                        <FontAwesomeIcon icon={faPlus} className="h-6 text-white pr-4"/>
+                                    <div className="flex items-center justify-center" onClick={() => setWriteReviewVisibility(true)}>
+                                        <FontAwesomeIcon icon={faPlus} className="h-6 text-white pr-4" onClick={() => setWriteReviewVisibility(true)}/>
                                         <h1 className="text-white text-xl flex items-center">Add A Review</h1>
                                     </div>
                                 </div>
