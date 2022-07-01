@@ -1,7 +1,36 @@
 import { faThumbsDown, faThumbsUp } from "@fortawesome/free-regular-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import axios from "axios"
+import { useSession } from "next-auth/react"
+import { Review_Type } from "../../types/schema"
 
-export default function Review() {
+export default function Review(props:Review_Type) {
+    const session = useSession()
+
+    const deleteReview = async () => {
+        try {
+            const deleteReviewRequest = await axios.post('api/game/deleteReview', {
+                userId:props.userId,
+                gameId:props.gameId,
+                reviewId:props._id
+            })
+            const cancelRankRequest = await axios.post('api/game/cancelRank',{
+                userId:props.userId,
+                gameId:props.gameId,
+                rankId:props._id
+            })
+            if(deleteReviewRequest.status !== 200) {
+                throw new Error(deleteReviewRequest.data.error)
+            }
+            if(cancelRankRequest.status !== 200) {
+                throw new Error(deleteReviewRequest.data.error)
+            }
+            console.log('deleted rank')
+        } catch (e) {
+            console.log('error',e)
+        }
+    }
+
     return (
         <div id="review" className="px-7 py-6 rounded-xl relative mx-2" style={{width:'32rem',minWidth:'32rem',height:'30rem',minHeight:'30rem', backgroundColor:'rgba(21,21,21,0.6)'}}>
             <h1 className="text-white font-bold text-3xl  underline">Rank</h1>
