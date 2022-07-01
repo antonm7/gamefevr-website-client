@@ -47,7 +47,6 @@ export default function WriteReview(props:Props) {
     }
 
     useEffect(() => {
-        console.log(props.isUserRated)
         if(props.isUserRated) {
             setRank(props.isUserRated)
         }

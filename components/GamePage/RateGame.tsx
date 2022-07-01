@@ -45,6 +45,15 @@ export default function RateGame(props:any){
                 if(req.status !== 200) throw new Error(req.data.error)
             } else {
                 setIsUserRated(rank)
+                //for not getting several ranking on the same game
+                if(isUserRated) {
+                    const req = await axios.post('/api/game/cancelRank',{
+                        userId:session.data?.user?.userId,
+                        gameId:router.query.id,
+                        value:rank
+                    })
+                    if(req.status !== 200) throw new Error(req.data.error)
+                }
                 const req = await axios.post('/api/game/rankGame', {
                     userId:session.data?.user?.userId,
                     gameId:router.query.id,
