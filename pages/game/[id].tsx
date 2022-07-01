@@ -179,20 +179,23 @@ export default function GamePage(props:Props) {
                             {game.tags.map((tag:ElementDescription,index:number) => <h2 key={index} className="px-1 pb-1 text-white font-semibold text-1xl opacity-60">{tag.name}{index !== game.tags.length - 1 ? ',' : ''}</h2>)}
                         </div>
                     </main>
-                    {/* TODO:finish adding a review on backend and client + user authorization*/}
                     {width > 1200 ?
-                        <div id="game_page_screenshots_controller" className="relative overflow-hidden" style={{height:'700px'}}>
+                        <div id="game_page_screenshots_controller" className="relative overflow-hidden" style={{height: !reviewsAnimation && !reviews.length ? '700px' : '300px'}}>
                             <div id="controller" className={`${screenshotsAnimtion ? 'controller_animation' : ''}`}/>
                             <Screenshots isAnimated={screenshotsAnimtion } images={game.screenshots.results}/> 
-                            <div className="flex items-center overflow-hidden" style={{marginTop:width > 1400 ?'-28.45rem' : '-20rem'}}>
-                                <div className={`px-20 ${reviewsAnimation ? 'write_review_animation_enabled' : 'write_review_animation_disabled'}`}>
-                                    <FontAwesomeIcon icon={faPlus} className="h-16 text-white cursor-pointer opacity-40 hover:opacity-100 simple-transition" onClick={() => setWriteReviewVisibility(true)}/>
-                                </div>
-                                {
-                                    reviews.length ? <ReviewsSlider isAnimated={reviewsAnimation} reviews={reviews}/> : null
-                                }
-                                
-                            </div>
+                            {reviews.length ? 
+                                <div className="flex items-center overflow-hidden" style={{marginTop:width > 1400 ?'-28.45rem' : '-20rem'}}>
+                                    <div className={`px-20 ${reviewsAnimation ? 'write_review_animation_enabled' : 'write_review_animation_disabled'}`}>
+                                        <FontAwesomeIcon icon={faPlus} className="h-16 text-white cursor-pointer opacity-40 hover:opacity-100 simple-transition" onClick={() => setWriteReviewVisibility(true)}/>
+                                    </div>
+                                    <ReviewsSlider isAnimated={reviewsAnimation} reviews={reviews}/>
+                                </div> :
+                                <div className="flex justify-center overflow-hidden" style={{marginTop:width > 1400 ?'-28.45rem' : '-20rem'}}>
+                                    <div className={`px-20 ${reviewsAnimation ? 'write_review_animation_enabled' : 'write_review_animation_disabled'}`}>
+                                        <FontAwesomeIcon icon={faPlus} className="h-16 text-white cursor-pointer opacity-40 hover:opacity-100 simple-transition" onClick={() => setWriteReviewVisibility(true)}/>
+                                    </div>
+                                </div> 
+                            }
                         </div> :
                         <div >
                             <div id="game_page_screenshots_controller" className="relative overflow-hidden" style={{height:'700px'}}>

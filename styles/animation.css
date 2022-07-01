@@ -2,6 +2,10 @@
     transition: all 1.6s ease;
 }
 
+#game_page_screenshots_controller {
+    transition: all 1.4s ease;
+}
+
 .controller_animation {
     margin-left: -40rem !important;
 }
@@ -30,13 +34,13 @@
 }
 
 .write_review_animation_enabled {
-    transition: all 1.6s ease;
+    transition: all 1.2s ease;
     overflow: hidden;
     margin-top: 0rem !important;
 }
 
 .write_review_animation_disabled {
-    transition: all 1.6s ease;
+    transition: all 1.2s ease;
     overflow: hidden;
     margin-top: -75rem !important;
 }
