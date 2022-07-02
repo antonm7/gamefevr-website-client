@@ -1,5 +1,5 @@
 #controller {
-    transition: all 1.6s ease;
+    transition: all 0.8s ease;
 }
 
 #game_page_screenshots_controller {
@@ -13,22 +13,22 @@
 .screenshots_animation_enabled {
     margin-left: 135rem !important;
     width: 100%;
-    transition: all 1.6s ease;
+    transition: all 0.8s ease;
 }
 
 .screenshots_animation_disabled {
     width: 100%;
-    transition: all 1.6s ease;
+    transition: all 0.8s ease;
 }
 
 .reviews_animation_disable {
-    transition: all 1.6s ease;
+    transition: all 0.8s ease;
     overflow: hidden;
     margin-top: 75rem;
 }
 
 .reviews_animation_enable {
-    transition: all 1.6s ease;
+    transition: all 0.8s ease;
     overflow: hidden;
 }
 
@@ -46,15 +46,15 @@
 
 @media (max-width: 1400px) { 
     .write_review_animation_enabled {
-        transition: all 1.6s ease;
+        transition: all 0.8s ease;
         overflow: hidden;
     }
     .write_review_animation_disabled {
-        transition: all 1.6s ease;
+        transition: all 0.8s ease;
         overflow: hidden;
     }
     .button_animation_enabled {
-        margin-top: 5rem;
+        margin-top: 2rem;
         transition: all ease 1s;
     }
     .button_animation_disabled {

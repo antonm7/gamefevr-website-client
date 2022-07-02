@@ -39,12 +39,12 @@ export default function GamePage(props:Props) {
             setReviewsAnimation(false)
             setTimeout(() => {
                 setScreenshotsAnimtion(false)
-            },300)
+            },450)
         } else {
             setScreenshotsAnimtion(true)
             setTimeout(() => {
                 setReviewsAnimation(true)
-            },300)
+            },450)
         }
     }
 
@@ -184,48 +184,51 @@ export default function GamePage(props:Props) {
                             {game.tags.map((tag:ElementDescription,index:number) => <h2 key={index} className="px-1 pb-1 text-white font-semibold text-1xl opacity-60">{tag.name}{index !== game.tags.length - 1 ? ',' : ''}</h2>)}
                         </div>
                     </main>
-                    {width > 1200 ?
-                        <div id="game_page_screenshots_controller" className="relative overflow-hidden" style={{height: reviewsAnimation && !reviews.length ? '300px' : '700px'}}>
-                            <div id="controller" className={`${screenshotsAnimtion ? 'controller_animation' : ''}`}/>
-                            <Screenshots isAnimated={screenshotsAnimtion } images={game.screenshots.results}/> 
-                            {reviews.length ? 
-                                <div className="h-full flex items-center overflow-hidden" style={{marginTop:width > 1400 ? '-34rem' : '-20rem'}}>
-                                    <div className={`px-20 ${reviewsAnimation ? 'write_review_animation_enabled' : 'write_review_animation_disabled'}`}>
-                                        <FontAwesomeIcon icon={faPlus} className="h-16 text-white cursor-pointer opacity-40 hover:opacity-100 simple-transition" onClick={() => setWriteReviewVisibility(true)}/>
-                                    </div>
-                                    <ReviewsSlider isAnimated={reviewsAnimation} reviews={reviews}/>
-                                </div> :
-                                <div className="h-ful  flex justify-center overflow-hidden" style={{marginTop:width > 1400 ?'-34rem' : '-20rem'}}>
-                                    <div className={`px-20 ${reviewsAnimation ? 'write_review_animation_enabled' : 'write_review_animation_disabled'}`}>
-                                        <FontAwesomeIcon icon={faPlus} className="h-16 text-white cursor-pointer opacity-40 hover:opacity-100 simple-transition" onClick={() => setWriteReviewVisibility(true)}/>
-                                    </div>
-                                </div> 
-                            }
-                        </div> :
-                        <div >
-                            <div id="game_page_screenshots_controller" className="relative overflow-hidden" style={{height:'700px'}}>
+                    <div>
+
+                        {width > 1200 ?
+                            <div id="game_page_screenshots_controller" className="relative overflow-hidden" style={{height: width > 1400 ? reviewsAnimation && !reviews.length ? '300px' : '700px' : reviewsAnimation && !reviews.length ? '150px' : '410px'}}>
                                 <div id="controller" className={`${screenshotsAnimtion ? 'controller_animation' : ''}`}/>
                                 <Screenshots isAnimated={screenshotsAnimtion } images={game.screenshots.results}/> 
-                            </div>
-                            <div id="game_page_reviews_container" className="flex flex-col items-center">
-                                <div className="w-72 p-6 flex items-center justify-center rounded-xl mb-8 cursor-pointer opacity-80 hover:opacity-100" style={{backgroundColor:'rgba(21,21,21,0.6)'}}>
-                                    <div className="flex items-center justify-center" onClick={() => setWriteReviewVisibility(true)}>
-                                        <FontAwesomeIcon icon={faPlus} className="h-6 text-white pr-4" onClick={() => setWriteReviewVisibility(true)}/>
-                                        <h1 className="text-white text-xl flex items-center">Add A Review</h1>
-                                    </div>
+                                {reviews.length ? 
+                                    <div className="h-full flex items-center overflow-hidden" style={{marginTop:width > 1400 ? '-34rem' : '-20rem'}}>
+                                        <div className={`px-20 ${reviewsAnimation ? 'write_review_animation_enabled' : 'write_review_animation_disabled'}`}>
+                                            <FontAwesomeIcon icon={faPlus} className="h-16 text-white cursor-pointer opacity-40 hover:opacity-100 simple-transition" onClick={() => setWriteReviewVisibility(true)}/>
+                                        </div>
+                                        <ReviewsSlider isAnimated={reviewsAnimation} reviews={reviews}/>
+                                    </div> :
+                                    <div className="h-ful  flex justify-center overflow-hidden" style={{marginTop:width > 1400 ?'-34rem' : '-20rem'}}>
+                                        <div className={`px-20 ${reviewsAnimation ? 'write_review_animation_enabled' : 'write_review_animation_disabled'}`}>
+                                            <FontAwesomeIcon icon={faPlus} className="h-16 text-white cursor-pointer opacity-40 hover:opacity-100 simple-transition" onClick={() => setWriteReviewVisibility(true)}/>
+                                        </div>
+                                    </div> 
+                                }
+                            </div> :
+                            <div >
+                                <div id="game_page_screenshots_controller" className="relative overflow-hidden" style={{height:'700px'}}>
+                                    <div id="controller" className={`${screenshotsAnimtion ? 'controller_animation' : ''}`}/>
+                                    <Screenshots isAnimated={screenshotsAnimtion } images={game.screenshots.results}/> 
                                 </div>
-                                {reviews.length ? <VerticalReviewsLoader reviews={reviews}/> : null}
+                                <div id="game_page_reviews_container" className="flex flex-col items-center">
+                                    <div className="w-72 p-6 flex items-center justify-center rounded-xl mb-8 cursor-pointer opacity-80 hover:opacity-100" style={{backgroundColor:'rgba(21,21,21,0.6)'}}>
+                                        <div className="flex items-center justify-center" onClick={() => setWriteReviewVisibility(true)}>
+                                            <FontAwesomeIcon icon={faPlus} className="h-6 text-white pr-4" onClick={() => setWriteReviewVisibility(true)}/>
+                                            <h1 className="text-white text-xl flex items-center">Add A Review</h1>
+                                        </div>
+                                    </div>
+                                    {reviews.length ? <VerticalReviewsLoader reviews={reviews}/> : null}
+                                </div>
                             </div>
-                        </div>
-                    }
-                    {width > 1200 ? 
-                        <div className={`w-full flex justify-center ${reviewsAnimation ? 'button_animation_enabled' : 'button_animation_disabled'}`}>
-                            <div className="w-52" id="show_comments_wrapper">
-                                <YellowButton title="Show Comments" onClick={() => toggleAnimation()} />          
+                        }
+                        {width > 1200 ? 
+                            <div className={`w-full flex justify-center ${reviewsAnimation ? 'button_animation_enabled' : 'button_animation_disabled'}`}>
+                                <div className="w-52" id="show_comments_wrapper">
+                                    <YellowButton title="Show Comments" onClick={() => toggleAnimation()} />          
+                                </div>
                             </div>
-                        </div>
-                    : null}
-                </div>
+                        : null}
+                    </div>
+                    </div>
             }
         </SearchLayout>
     )

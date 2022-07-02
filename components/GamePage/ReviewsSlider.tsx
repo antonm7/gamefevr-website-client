@@ -18,7 +18,7 @@ export default function ReviewsSlider(props:any) {
   return (
       <Slider {...settings} className={`reviews_slider ${props.isAnimated ? 'reviews_animation_enable' : 'reviews_animation_disable'}`}>
         {props.reviews.map((review:Review_Type,index:number) => (
-            <Review key={index} gameId={review.gameId} userId={review.userId} created_at={review.created_at} text={review.text} rank={review.rank} />
+            <Review key={index} _id={review._id} likes={review.likes} dislikes={review.dislikes} gameId={review.gameId} userId={review.userId} created_at={review.created_at} text={review.text} rank={review.rank} />
           ))}
       </Slider>
   );

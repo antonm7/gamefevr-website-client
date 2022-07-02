@@ -51,13 +51,18 @@
     #platforms_row {
         width: 100% !important;
     }
-    #game_page_screenshots_controller {
-      height: 500px !important;  
-      overflow: hidden;
-    }
     #controller {
         height:400px !important;
         width: 480px;
+    }
+    #review {
+        min-width: 40rem !important;
+        width:40rem !important;
+        min-height: 23rem !important;
+        height: 23rem !important;
+    }
+    #review_bottom_container {
+        margin-top: 2rem;
     }
     .screenshot {
         width: 100% !important;
@@ -76,12 +81,12 @@
     #small_search_input {
         width: 20rem;
     }
-    #review {
+    /* #review {
         min-width: 40rem !important;
         width:40rem !important;
         min-height: 23rem !important;
         height: 23rem !important;
-    }
+    } */
 }
 
 @media (max-width:1024px) {

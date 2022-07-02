@@ -1,6 +1,6 @@
 import { ObjectId } from 'bson';
 import {Request, Response} from 'express';
-import clientPromise from '../../../../lib/functions/mongodb'
+import clientPromise from '../../../../../lib/functions/mongodb';
 
 interface Query {
     userId:string;

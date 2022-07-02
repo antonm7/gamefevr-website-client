@@ -31,7 +31,7 @@ export default function WriteReview(props:Props) {
                     gameId:router.query.id,
                 })
             }
-            const writeReviewRequest = await axios.post('/api/game/action/writeReview', {
+            const writeReviewRequest = await axios.post('/api/game/action/review/writeReview', {
                 userId:session.data?.user?.userId,
                 gameId:router.query.id,
                 text,

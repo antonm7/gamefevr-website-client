@@ -20,6 +20,8 @@ export type Review_Type = {
     created_at:string;
     text:string;
     rank:string;
+    likes:ObjectId[];
+    dislikes:ObjectId[];
 }
 
 export type Favorite = {

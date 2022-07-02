@@ -1,8 +1,8 @@
 import { ObjectId } from 'bson';
 import {Request, Response} from 'express';
-import games_data_document from '../../../../lib/functions/create/games_data'
-import clientPromise from '../../../../lib/functions/mongodb'
-import { Review_Type } from '../../../../types/schema';
+import games_data_document from '../../../../../lib/functions/create/games_data'
+import clientPromise from '../../../../../lib/functions/mongodb'
+import { Review_Type } from '../../../../../types/schema';
 
 export default async function handler(req:Request, res:Response) {
     if(req.method === 'POST') {
@@ -31,7 +31,9 @@ export default async function handler(req:Request, res:Response) {
                 gameId: query.gameId,
                 created_at: 'time',
                 rank:query.rank,
-                text: query.text
+                text: query.text,
+                likes:[],
+                dislikes:[]
             }
            
             savedReview = await db.collection('reviews').insertOne(review)
