@@ -18,6 +18,8 @@ export type Review_Type = {
     gameId:string;
     userId:string;
     created_at:string;
+    game_name:string;
+    game_image:string;
     text:string;
     rank:string;
     likes:ObjectId[];

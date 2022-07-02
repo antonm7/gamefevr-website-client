@@ -26,16 +26,21 @@ export default async function handler(req:Request, res:Response) {
         }
         //saves the reviews inside own ranks collection
         try {
+            const getData = await fetch(`https://api.rawg.io/api/games/${query.gameId}?key=e996863ffbd04374ac0586ec2bcadd55`)
+            const gameData = await getData.json()
+            
             const review:Review_Type = {
                 userId: query.userId,
                 gameId: query.gameId,
+                game_name:gameData.name,
+                game_image:gameData.background_image,
                 created_at: 'time',
                 rank:query.rank,
                 text: query.text,
                 likes:[],
                 dislikes:[]
             }
-           
+            
             savedReview = await db.collection('reviews').insertOne(review)
         } catch (e) {
             res.status(500).send({error:'Unexpected error'})

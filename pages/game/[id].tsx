@@ -143,7 +143,6 @@ export default function GamePage(props:Props) {
                     </div>
                 </main>
                 <div>
-
                     {width > 1200 ?
                         <div id="game_page_screenshots_controller" className="relative overflow-hidden" style={{height: width > 1400 ? reviewsAnimation && !reviews.length ? '300px' : '700px' : reviewsAnimation && !reviews.length ? '150px' : '410px'}}>
                             <div id="controller" className={`${screenshotsAnimtion ? 'controller_animation' : ''}`}/>
