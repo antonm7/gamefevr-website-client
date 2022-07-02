@@ -7,7 +7,7 @@ export default function Reviews(props:Review_Type) {
         }
         return text
     }
-    console.log(props)
+
     return (
        <div className='h-72 rounded-lg p-6' style={{backgroundColor:'#0e3462',width:'28rem'}}>
             <div className='flex items-center'>
