@@ -10,3 +10,5 @@ export const useStore = create((set:any) => ({
     clearPage:() => set(() => ({page:1})),
     changeFilterVisibility:(value:boolean) => set(() => ({isFilterOn:value}))
 }))
+
+export * from './useProgressStore';
