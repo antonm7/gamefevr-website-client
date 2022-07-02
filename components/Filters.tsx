@@ -83,7 +83,7 @@ export default function Filters() {
     },[router.isReady])
     
     return (
-        <div className="fixed z-50 rounded-lg p-6 w-4/6 h-5/6 bg-filtersBg top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+        <div className="fixed z-40 rounded-lg p-6 w-4/6 h-5/6 bg-filtersBg top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
             <FontAwesomeIcon icon={faXmark} className="h-8 float-right cursor-pointer" onClick={() => store.changeFilterVisibility(false)}/>
             <h1 className="text-3xl truncate font-semibold text-center">Genres</h1>
             <div className="px-6">

@@ -69,7 +69,7 @@ export default function Navbar() {
         )
     } else {
         return (
-            <div className={`absolute ${width > 1024 ? 'h-20' : 'h-50'} w-full bg-main-blue z-50 overflow-hidden`}>
+            <div className={`absolute ${width > 1024 ? 'h-20' : 'h-50'} w-full bg-main-blue z-40 overflow-hidden`}>
                 {width > 1024 ?
                     <div className="h-full w-full flex justify-between pt-4 px-44 items-center" id="navbar">
                         <div className="flex items-center">
