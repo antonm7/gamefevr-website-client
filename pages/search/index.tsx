@@ -106,10 +106,10 @@ export async function getServerSideProps(context:any) {
               filteredString = filteredString.concat(`&genres=${genresString}`)
           }
       } 
-      const getData = await fetch(`https://api.rawg.io/api/games?key=e996863ffbd04374ac0586ec2bcadd55&page=1&page_size=20${filteredString}`)
+      const getData = await fetch(`https://api.rawg.io/api/games?key=e996863ffbd04374ac0586ec2bcadd55&ordering=-released&page=1&page_size=20${filteredString}`)
       games = await getData.json()
   } else {
-      const getData = await fetch(`https://api.rawg.io/api/games?key=e996863ffbd04374ac0586ec2bcadd55&page=1&page_size=20`)
+      const getData = await fetch(`https://api.rawg.io/api/games?key=e996863ffbd04374ac0586ec2bcadd55&ordering=-released&page=1&page_size=20`)
       games = await getData.json()
   }
   return {
