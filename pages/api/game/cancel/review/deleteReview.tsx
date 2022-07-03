@@ -46,6 +46,7 @@ export default async function handler(req:Request, res:Response) {
             res.status(500).send({error:'Unexpected error'})    
             return console.log('error on updating games_data document',e)
         }
+        console.log('deleted')
         res.status(200).send({error:null})
     }
 }

@@ -10,17 +10,21 @@ import { getSession } from 'next-auth/react'
 import clientPromise from '../../lib/functions/mongodb'
 import { ObjectId } from 'bson'
 import { Review_Type } from '../../types/schema'
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
 export default function Profile(props:any) {
     const [isOpened, setIsOpened] = useState<boolean>(false)
     const [user, setUser] = useState<any>(null)
+    const [reviews, setReviews] = useState<Review_Type[]>([])
+
     const changeVisibleSettings = (value:boolean) => {
         setIsOpened(value)
     }
 
     const settings = {
         infinite: false,
-        slidesToShow: 3
+        slidesToShow: props.reviews.length >= 3 ? 3 : props.reviews.length
     }
 
     const favoritesSettings = {
@@ -32,7 +36,15 @@ export default function Profile(props:any) {
 
     useEffect(() => {
         setUser(props.user)
+        setReviews(props.reviews)
     },[props.user])
+
+    const deleteReview = (id:ObjectId | undefined) => {
+        if(id) {
+            const newReviews = reviews.filter((review:Review_Type) => review._id !== id)
+            setReviews(newReviews)
+        }
+    }
 
     if(!user) {
         return null
@@ -53,8 +65,20 @@ export default function Profile(props:any) {
                     </div>
                     <div className='mt-12'>
                         <Slider {...settings}>
-                            {props.user.reviews.map((review:Review_Type,index:number) => (
-                                <Review key={index} _id={review._id} likes={review.likes} dislikes={review.dislikes} gameId={review.gameId} userId={review.userId} created_at={review.created_at} text={review.text} rank={review.rank} game_name={review.game_name} game_image={review.game_image} />
+                            {reviews.map((review:Review_Type,index:number) => (
+                                <Review 
+                                    key={index} 
+                                    _id={review._id} 
+                                    likes={review.likes} 
+                                    dislikes={review.dislikes} 
+                                    gameId={review.gameId} 
+                                    userId={review.userId} 
+                                    created_at={review.created_at} 
+                                    text={review.text} 
+                                    rank={review.rank} 
+                                    game_name={review.game_name} 
+                                    game_image={review.game_image}
+                                    deleteReview={(id) => deleteReview(id)} />
                             ))}
                         </Slider>
                     </div>
@@ -85,14 +109,14 @@ export async function getServerSideProps(context:any) {
         const user:any = await db.collection('users').findOne({_id:new ObjectId(session?.user?.userId)})
 
         const reviews = await db.collection('reviews').find({userId:session?.user?.userId}).toArray()
-        console.log(reviews)
+
         return {
             props: {
                 user: {
-                    username: user.username,
-                    favorite: user.favorite,
-                    reviews:JSON.parse(JSON.stringify(reviews))
-                }
+                username: user.username,
+                },
+                favorite: user.favorite,
+                reviews:JSON.parse(JSON.stringify(reviews))
             }
         }
 
