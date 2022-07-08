@@ -3,14 +3,18 @@ import { useSession } from "next-auth/react"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 
-export default function RateGame(props:any){
+interface Props {
+    updateIsUserRated: (isUserRated: string) => void;
+}
+
+export default function RateGame(props:Props){
     const [wasteOfTime,setWasteOfTime] = useState<boolean>(false)
     const [nuh,setNuh] = useState<boolean>(false)
     const [good,setGood] = useState<boolean>(false)
     const [must,setMust] = useState<boolean>(false)
     const [isUserRated, setIsUserRated] = useState<string | null>(null)
 
-    const session:any = useSession()
+    const session = useSession()
     const router = useRouter()
 
     useEffect(() => { 

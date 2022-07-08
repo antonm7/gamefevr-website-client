@@ -1,16 +1,18 @@
 import { ObjectId } from 'bson';
-import {Request, Response} from 'express';
+import { NextApiRequest, NextApiResponse } from 'next';
 import clientPromise from '../../../../../lib/functions/mongodb'
 
-interface Query {
-    reviewId:string;
-    userId:string;
+interface ExtendedNextApiRequest extends NextApiRequest {
+    body: {
+      userId:string;
+      reviewId:string;
+    };
 }
 
-export default async function handler(req:Request, res:Response) {
+export default async function handler(req:ExtendedNextApiRequest, res:NextApiResponse) {
     if(req.method === 'POST') {
         let db = null
-        const query:Query = req.body
+        const query = req.body
         //initializing database
         try {
             const client = await clientPromise

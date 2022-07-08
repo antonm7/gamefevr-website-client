@@ -1,7 +1,12 @@
+import React, { ReactChildren, ReactChild } from 'react';
 import useWindowSize from "../../lib/functions/useWindowSize";
 import Navbar from "../Navbar";
 
-export default function SearchLayout({children}:any) {
+interface AuxProps {
+  children: ReactChild | ReactChildren;
+}
+
+export default function SearchLayout({children}:AuxProps) {
     const [width,height] = useWindowSize()
 
     return (

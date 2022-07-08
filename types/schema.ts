@@ -54,3 +54,9 @@ export type full_user = {
     ranks:ObjectId[];
     visited_games:ObjectId[];
 }
+
+export type Client_User = {
+    _id:ObjectId;
+    username:string;
+    email:string;
+}

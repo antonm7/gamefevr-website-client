@@ -1,9 +1,12 @@
 import { useNProgress } from '@tanem/react-nprogress';
-
 import { Bar } from './Bar';
 import { Container } from './Container';
 
-export default function Progress({ isAnimating }:any){
+interface Props {
+  isAnimating: boolean;
+}
+
+export default function Progress({ isAnimating }:Props){
   const { animationDuration, isFinished, progress } = useNProgress({
     isAnimating,
   });

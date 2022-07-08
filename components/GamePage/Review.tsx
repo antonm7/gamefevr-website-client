@@ -10,7 +10,7 @@ import { Review_Type } from "../../types/schema"
 
 
 export default function Review(props:Review_Type) {
-    const session:any = useSession()
+    const session = useSession()
     const [like, setLike] = useState<boolean>(false)
     const [dislike, setDislike] = useState<boolean>(false)
     const [isUserLiked, setIsUserLiked] = useState<boolean>(false)
@@ -19,14 +19,16 @@ export default function Review(props:Review_Type) {
     const [dislikes,setDislikes] = useState<ObjectId[]>([])
 
     useEffect(() => {
-        if(props.likes.includes(session.data?.user?.userId)) {
-            setIsUserLiked(true)
+        if(session.status === 'authenticated') {
+            if(props.likes.includes(session.data?.user?.userId)) {
+                setIsUserLiked(true)
+            }
+            if(props.dislikes.includes(session.data?.user?.userId)) {
+                setIsUserDisliked(true)
+            }
+            setLikes(props.likes)
+            setDislikes(props.dislikes)
         }
-        if(props.dislikes.includes(session.data?.user?.userId)) {
-            setIsUserDisliked(true)
-        }
-        setLikes(props.likes)
-        setDislikes(props.dislikes)
     },[])
 
     const deleteReview = async () => {
@@ -54,6 +56,7 @@ export default function Review(props:Review_Type) {
     }
 
     const likeReview = async () => {
+        if(session.status !== 'authenticated') return
         try {
             //if user already liked that means he want to cancel his like
             if(isUserLiked) {
@@ -93,6 +96,7 @@ export default function Review(props:Review_Type) {
 
     const dislikeReview = async () => {
         try {
+            if(session.status !== 'authenticated') return
             //if user already disliked that means he want to cancel his dislike
             if(isUserDisliked) {
                 setDislikes(likes.filter(like => like !== session.data?.user?.userId))

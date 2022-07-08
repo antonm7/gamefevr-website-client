@@ -1,10 +1,19 @@
 import { ObjectId } from 'bson';
-import {Request, Response} from 'express';
+import { NextApiRequest, NextApiResponse } from 'next';
 import games_data_document from '../../../../../lib/functions/create/games_data'
 import clientPromise from '../../../../../lib/functions/mongodb'
 import { Review_Type } from '../../../../../types/schema';
 
-export default async function handler(req:Request, res:Response) {
+interface ExtendedNextApiRequest extends NextApiRequest {
+    body: {
+        userId:string;
+        gameId:string;
+        rank:string;
+        text:string;
+    };
+}
+
+export default async function handler(req:ExtendedNextApiRequest, res:NextApiResponse) {
     if(req.method === 'POST') {
         let db = null
         const query = req.body

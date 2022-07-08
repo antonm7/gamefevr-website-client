@@ -1,10 +1,17 @@
 import { ObjectId } from 'bson';
-import {Request, Response} from 'express';
 import { Favorite_Type } from '../../../../../types/schema'
 import clientPromise from '../../../../../lib/functions/mongodb'
 import games_data_document from '../../../../../lib/functions/create/games_data';
+import { NextApiRequest, NextApiResponse } from 'next';
 
-export default async function handler(req:Request, res:Response) {
+interface ExtendedNextApiRequest extends NextApiRequest {
+    body: {
+        gameId:string;
+        userId:string;
+    };
+}
+
+export default async function handler(req:ExtendedNextApiRequest, res:NextApiResponse) {
     if(req.method === 'POST') {
         let db = null
         let savedFavorite;

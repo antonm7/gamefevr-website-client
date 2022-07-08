@@ -7,8 +7,13 @@ import axios from "axios";
 import { useStore } from "../../store";
 import Filters from "../../components/Filters";
 import SmallLoader from '../../components/common/SmallLoader'
+import { ShortGame } from "../../types";
 
-export default function Index(props:any) {
+interface Props {
+  games: ShortGame[];
+}
+
+export default function Index(props:Props) {
   const [loading, setLoading] = useState<boolean>(false)
   const router = useRouter()
   const store = useStore()
@@ -47,26 +52,30 @@ export default function Index(props:any) {
 
   return (
       <SearchLayout>
+        <div>
         {store.isFilterOn ? <Filters /> : null}
-        {/* { */}
-          {/* // !store.games.length ? <SmallLoader big={true} screenCentered={true}/> */}
-          {/* : */}
           <div className="py-10">
             <div className="flex flex-wrap justify-center">
-              {store.games.map((game:any,index:number) => <SmallGameBox key={index} game={game}/>)}
+              {store.games.map((game:ShortGame,index:number) => <SmallGameBox key={index} game={game}/>)}
             </div>
             <div className='w-24 h-16 rounded-lg m-auto mt-8'>
               {loading ? <SmallLoader big={false} xCentered={true}/> : <SearchButton text="Load More" onClick={() => loadGames(store.page)}/>}
             </div>
           </div>
-        {/* } */}
+        </div>
       </SearchLayout>
     )
 }
 
+interface Context {
+  query: {
+    yearRange: string[] | string | undefined;
+    genres: string[] | string | undefined;
+    consoles: string[] | string | undefined;
+  }
+}
 
-
-export async function getServerSideProps(context:any) {
+export async function getServerSideProps(context:Context) {
   const {yearRange, genres, consoles } = context.query
   let games = []
   let filteredString:string = ''

@@ -32,8 +32,8 @@ export default function GamePage(props:Props) {
     const [isUserRated, setIsUserRated] = useState<string | null>(null)
     const [reviews, setReviews] = useState<Review_Type[]>([])
 
-    const query:any = useQuery();
-    const session:any = useSession()
+    const query = useQuery();
+    const session = useSession()
 
     const toggleAnimation = () => {
         if(reviewsAnimation) {
@@ -129,7 +129,13 @@ export default function GamePage(props:Props) {
     )
 }
 
-export async function getServerSideProps(context:any) {
+interface Context {
+    params: {
+        id: number
+    }
+}
+
+export async function getServerSideProps(context:Context) {
     try {
         const getData = await fetch(`https://api.rawg.io/api/games/${context.params.id}?key=e996863ffbd04374ac0586ec2bcadd55`)
         const getScreenshots = await fetch(`https://api.rawg.io/api/games/${context.params.id}/screenshots?key=e996863ffbd04374ac0586ec2bcadd55`)
@@ -155,7 +161,7 @@ export async function getServerSideProps(context:any) {
         
         const client = await clientPromise
         const db = client.db('gameFevr')
-        const reviews = await db.collection('reviews').find({gameId:context.params.gameId}).toArray()
+        const reviews = await db.collection('reviews').find({gameId:context.params.id}).toArray()
 
         // fetch(`/api/game/action/visited?gameId=${query.id}`, {
         //     //             headers:{

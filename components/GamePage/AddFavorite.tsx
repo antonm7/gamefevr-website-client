@@ -10,7 +10,7 @@ interface Props {
 }
 
 export default function AddFavorite(props:Props) {
-    const session:any = useSession()
+    const session = useSession()
     const [isFavorite, setIsFavorite] = useState<boolean>(false);
 
     const addFavorite = async () => {

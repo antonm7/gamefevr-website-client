@@ -9,11 +9,17 @@ import SettingsBar from '../../components/Profile/SettingsBar'
 import { getSession } from 'next-auth/react'
 import clientPromise from '../../lib/functions/mongodb'
 import { ObjectId } from 'bson'
-import { Favorite_Type, Review_Type } from '../../types/schema'
+import { Client_User, Favorite_Type, full_user, Review_Type } from '../../types/schema'
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
-export default function Profile(props:any) {
+interface Props {
+    reviews: Review_Type[],
+    favorites: Favorite_Type[],
+    user:Client_User
+}
+
+export default function Profile(props:Props) {
     const [isOpened, setIsOpened] = useState<boolean>(false)
     const [user, setUser] = useState<any>(null)
     const [reviews, setReviews] = useState<Review_Type[]>([])
@@ -108,7 +114,7 @@ export default function Profile(props:any) {
 }
 
 export async function getServerSideProps(context:any) {
-    const session:any = await getSession(context)
+    const session = await getSession(context)
 
     try {
         const client = await clientPromise
@@ -117,6 +123,7 @@ export async function getServerSideProps(context:any) {
 
         const reviews = await db.collection('reviews').find({userId:session?.user?.userId}).toArray()
         const favorites = await db.collection('favorites').find({userId:session?.user?.userId}).toArray()
+        
         return {
             props: {
                 user: {

@@ -1,10 +1,16 @@
 import { ObjectId } from 'bson';
-import {Request, Response} from 'express';
-import games_data_document from '../../../../lib/functions/create/games_data'
+import { NextApiRequest, NextApiResponse } from 'next';
 import clientPromise from '../../../../lib/functions/mongodb'
-import { Rank } from '../../../../types/schema';
 
-export default async function handler(req:Request, res:Response) {
+interface ExtendedNextApiRequest extends NextApiRequest {
+    body: {
+      gameId: string;
+      userId:string;
+      value:string;
+    };
+}
+
+export default async function handler(req:ExtendedNextApiRequest, res:NextApiResponse) {
     if(req.method === 'POST') {
         let db = null
         let removedRank;

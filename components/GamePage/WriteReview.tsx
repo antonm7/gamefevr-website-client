@@ -18,7 +18,7 @@ interface Props {
 export default function WriteReview(props:Props) {
     const [text, setText] = useState<string>('')
     const [rank, setRank] = useState<string | null>(null)
-    const session:any = useSession()
+    const session = useSession()
     const router = useRouter()
 
     const writeReview = async () => {

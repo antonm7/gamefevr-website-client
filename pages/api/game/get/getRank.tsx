@@ -1,7 +1,15 @@
 import {Request, Response} from 'express';
+import { NextApiRequest } from 'next';
 import clientPromise from '../../../../lib/functions/mongodb'
 
-export default async function handler(req:Request, res:Response) {
+type ExtendedRequest = NextApiRequest & {
+    query: {
+      gameId:string;
+      userId:string;
+    };
+}
+
+export default async function handler(req:ExtendedRequest, res:Response) {
     if(req.method === 'GET') {
         try {
             const query = req.query

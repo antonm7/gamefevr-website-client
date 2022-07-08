@@ -5,14 +5,19 @@ import useWindowSize from '../../lib/functions/useWindowSize';
 import Review from './Review';
 import { Review_Type } from "../../types/schema";
 
-export default function ReviewsSlider(props:any) {
+interface Props {
+  reviews: Review_Type[];
+  isAnimated: boolean;
+  
+}
+
+export default function ReviewsSlider(props:Props) {
   const [width, height] = useWindowSize();
   
   const settings = {
     infinite: false,
     width: width > 1400 ? 3 : 2
   };
-
 
   return (
     <Slider {...settings} className={`${props.isAnimated ? 'reviews_animation_enable' : 'reviews_animation_disable'}`}>

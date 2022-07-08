@@ -7,10 +7,11 @@ import { useEffect, useState } from "react";
 import useWindowSize from "../lib/functions/useWindowSize";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
+import { Session } from "next-auth";
 
 export default function Navbar() {
     const router = useRouter()
-    const session:any = useSession()
+    const session = useSession()
     const [auth, setAuth] = useState<boolean>(false)
     const [width,height] = useWindowSize()
 

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import SettingsInput from "./SettingsInput";
 import YellowButton from '../common/YellowButton'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -28,10 +28,10 @@ export default function SettingsBar(props:Props) {
             <FontAwesomeIcon icon={faXmark} className="absolute cursor-pointer" style={{height:22,color:'#c7c7c7',right:35,top:42}}/>
             <h1 className="text-white font-semibold text-2xl">Account Settings</h1>
             <div className="pt-4 pb-12">
-                <SettingsInput label="Username" placeholder="Enter Your Username" onChange={(e:any) => setUsername(e.target.value)} type="text"/>
-                <SettingsInput label="Email" placeholder="Enter Your Email" onChange={(e:any) => setEmail(e.target.value)} type="email"/>
-                <SettingsInput label="Current Password" placeholder="Enter Your Current Password" onChange={(e:any) => setPassword(e.target.value)} type="password"/>
-                <SettingsInput label="Confirm Password" placeholder="Confirm Your Password" onChange={(e:any) => setConfirmPassword(e.target.value)} type="password"/>
+                <SettingsInput label="Username" placeholder="Enter Your Username" onChange={(e:React.ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)} type="text"/>
+                <SettingsInput label="Email" placeholder="Enter Your Email" onChange={(e:React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)} type="email"/>
+                <SettingsInput label="Current Password" placeholder="Enter Your Current Password" onChange={(e:React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)} type="password"/>
+                <SettingsInput label="Confirm Password" placeholder="Confirm Your Password" onChange={(e:React.ChangeEvent<HTMLInputElement>) => setConfirmPassword(e.target.value)} type="password"/>
             </div>
             <div style={{marginBottom:'6rem'}}>
                 <YellowButton  title="Save Changes" onClick={() => saveChanges()} />

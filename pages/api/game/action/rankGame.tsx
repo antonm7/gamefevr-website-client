@@ -1,13 +1,22 @@
 import { ObjectId } from 'bson';
-import {Request, Response} from 'express';
+import { NextApiRequest, NextApiResponse } from 'next';
 import games_data_document from '../../../../lib/functions/create/games_data'
 import clientPromise from '../../../../lib/functions/mongodb'
 import { Rank } from '../../../../types/schema';
 
-export default async function handler(req:Request, res:Response) {
+interface ExtendedNextApiRequest extends NextApiRequest {
+    body: {
+      gameId: string;
+      userId:string;
+      value:string;
+    };
+}
+
+export default async function handler(req:ExtendedNextApiRequest, res:NextApiResponse) {
     if(req.method === 'POST') {
-        let db = null
+        let db = null;
         let savedRank;
+        let body = req.body
         //initializing database
         try {
             const client = await clientPromise
@@ -18,7 +27,7 @@ export default async function handler(req:Request, res:Response) {
         }
         //checks if game document exists
         try {
-            await games_data_document(req.body.gameId)
+            await games_data_document(body.gameId)
         } catch (e) {
             res.status(500).send({error:'Unexpected error'})
             return console.log('error on games_data_document', e)

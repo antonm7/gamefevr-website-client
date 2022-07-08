@@ -1,4 +1,9 @@
-export const Bar = ({ animationDuration, progress }:any) => {
+interface Props {
+  animationDuration:number;
+  progress:number;
+}
+
+export const Bar = ({ animationDuration, progress }:Props) => {
     return (<div
       className='bg-cool-blue w-full left-0 top-0 fixed z-50'
       style={{
