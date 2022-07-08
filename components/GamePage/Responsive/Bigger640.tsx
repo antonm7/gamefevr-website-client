@@ -1,11 +1,13 @@
 import { DetailedGame, ElementDescription, Platform } from "../../../types";
 import RateGame from "../RateGame";
 import Image from "next/image";
+import AddFavorite from "../AddFavorite";
 
 interface Props {
     game: DetailedGame;
     changeIsUserRated: (value: string) => void;
 }
+
 export default function Bigger640({game, changeIsUserRated}:Props){
     return (
         <div id="game_page_header" className="flex flex-row justify-between">
@@ -30,9 +32,10 @@ export default function Bigger640({game, changeIsUserRated}:Props){
                     <div className="w-8 h-8 rounded-sm flex items-center justify-center mr-4 cursor-pointer" style={{backgroundColor:'#38b6cc'}}>
                         <Image  id="brand" src={"/icons/twitter.svg"} height={14} width={14}/>
                     </div>
-                    <div className="w-8 h-8 rounded-sm flex items-center justify-center cursor-pointer" style={{backgroundColor:'#38b6cc'}}>
+                    <div className="w-8 h-8 rounded-sm flex items-center justify-center cursor-pointer mr-4" style={{backgroundColor:'#38b6cc'}}>
                         <Image  id="brand" src={"/icons/facebook.svg"} height={14} width={14}/>
                     </div>
+                    <AddFavorite gameId={game.id}/>
                 </div>
             </div>
             <div id="game_page_background_image_wrapper" className="flex flex-col items-center" style={{minWidth:'24rem'}}>
