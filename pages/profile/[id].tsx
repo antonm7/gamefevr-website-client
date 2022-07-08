@@ -63,10 +63,10 @@ export default function Profile(props:Props) {
         return null
     } else {
         return <SearchLayout>
-            <main className="px-44 py-10">
-            <SettingsBar isOpened={isOpened} method={() => changeVisibleSettings(false)}/>
-                <div className='flex justify-between items-center'>
-                    <h1 className='text-white font-bold text-4xl'>Welcome {user.username}!</h1>
+            <main className="px-44 py-10" id="profile_page">
+                <SettingsBar isOpened={isOpened} method={() => changeVisibleSettings(false)}/>
+                <div id="profile_page_welcome" className='flex justify-between items-center'>
+                    <h1 id="welcome_title" className='text-white font-bold text-4xl'>Welcome {user.username}!</h1>
                     <div className='flex items-center' onClick={() => changeVisibleSettings(true)}>
                         <FontAwesomeIcon icon={faGear} className="h-4 pr-2 cursor-pointer" style={{color:'#616e7e'}}/>
                         <p className="text-large font-semibold cursor-pointer" style={{color:'#616e7e'}}>Account Settings</p>

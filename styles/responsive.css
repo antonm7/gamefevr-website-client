@@ -81,12 +81,10 @@
     #small_search_input {
         width: 20rem;
     }
-    /* #review {
-        min-width: 40rem !important;
-        width:40rem !important;
-        min-height: 23rem !important;
-        height: 23rem !important;
-    } */
+    #profile_page {
+        padding-left: 5rem;
+        padding-right: 5rem;
+    }
 }
 
 @media (max-width:1024px) {
@@ -171,8 +169,35 @@
         padding-left: 2rem;
         padding-right: 2rem;
       }
+      #profile_page {
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+    #settings_bar {
+        width: 100vw !important;
+    }
+    #settings_bar h1{
+        text-align: center;
+    }
+    #settings_bar_inner_container {
+        width: 100% !important;
+        margin: 0 auto;
+    }
+    #settings_bar_bottom {
+        width: 100% !important;
+        margin: 0 auto;
+    }
 }
 
+@media (max-width:700px) {
+    #profile_page_welcome {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    #profile_page_welcome div{
+        padding-top: 1rem;
+    }
+}
 
 @media (max-width: 640px) { 
     #game_page_header {
@@ -244,3 +269,21 @@
         margin-left: 2rem !important;
     }
 }
+
+@media (max-width: 440px) {
+    #welcome_title {
+        font-size: 1.7rem;
+    }
+    #settings_bar {
+        padding: 2rem !important;
+        padding-top: 3rem !important;
+    }
+    #settings_bar h1{
+        font-size: 1.2rem;
+        white-space: nowrap;
+    }
+    #settings_bar svg {
+        top: 25px !important;
+        right:20px !important;
+    }
+} 
