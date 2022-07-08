@@ -52,6 +52,13 @@ export default function Profile(props:Props) {
         }
     }
 
+    const deleteFavorite = (id:ObjectId | undefined) => {
+        if(id) {
+            const newFavorites = favorites.filter((favorite:Favorite_Type) => favorite._id !== id)
+            setFavorites(newFavorites)
+        }
+    }
+
     if(!user) {
         return null
     } else {
@@ -97,12 +104,14 @@ export default function Profile(props:Props) {
                         <Slider {...favoritesSettings}> 
                             {favorites.map((review:Favorite_Type,index:number) => (
                                 <Favorite 
+                                    _id={review._id}
                                     key={index} 
                                     userId={review.userId} 
                                     created_at={review.created_at}    
                                     gameId={review.gameId}
                                     game_name={review.game_name}
                                     game_image={review.game_image}
+                                    deleteFavorite={(id) => deleteFavorite(id)}
                                 />
                             ))}
                         </Slider>

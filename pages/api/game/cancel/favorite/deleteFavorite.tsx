@@ -14,7 +14,6 @@ export default async function handler(req:ExtendedNextApiRequest, res:NextApiRes
     if(req.method === 'POST') {
         let db = null
         const query = req.body
-        let savedReview;
         //initializing database
         try {
             const client = await clientPromise
@@ -24,7 +23,6 @@ export default async function handler(req:ExtendedNextApiRequest, res:NextApiRes
             return console.log('error on initializing database',e)
         }
         //saves the favorites inside own ranks collection
-        console.log(query)
         try {
             await db.collection('favorites').deleteOne({_id:new ObjectId(query.favoriteId)})
         } catch (e) {
@@ -32,7 +30,6 @@ export default async function handler(req:ExtendedNextApiRequest, res:NextApiRes
             return console.log('error deleting the review',e)
         }
         //updates user's document
-        console.log(query)
         try {
            await db.collection('users')
            .updateOne({_id:new ObjectId(query.userId)},
