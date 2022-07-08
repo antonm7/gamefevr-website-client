@@ -9,7 +9,7 @@ import SettingsBar from '../../components/Profile/SettingsBar'
 import { getSession } from 'next-auth/react'
 import clientPromise from '../../lib/functions/mongodb'
 import { ObjectId } from 'bson'
-import { Review_Type } from '../../types/schema'
+import { Favorite_Type, Review_Type } from '../../types/schema'
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
@@ -17,6 +17,7 @@ export default function Profile(props:any) {
     const [isOpened, setIsOpened] = useState<boolean>(false)
     const [user, setUser] = useState<any>(null)
     const [reviews, setReviews] = useState<Review_Type[]>([])
+    const [favorites, setFavorites] = useState<Favorite_Type[]>([])
 
     const changeVisibleSettings = (value:boolean) => {
         setIsOpened(value)
@@ -29,14 +30,13 @@ export default function Profile(props:any) {
 
     const favoritesSettings = {
         infinite: false,
-        slidesToShow: 4
+        slidesToShow: props.favorites.length >= 4 ? 4 : props.favorites.length
     }
-
-    const items = [{name:'Portal 2',image:'/images/example.webp'}]
 
     useEffect(() => {
         setUser(props.user)
         setReviews(props.reviews)
+        setFavorites(props.favorites)
     },[props.user])
 
     const deleteReview = (id:ObjectId | undefined) => {
@@ -89,8 +89,15 @@ export default function Profile(props:any) {
                     </div>
                     <div className='mt-12'>
                         <Slider {...favoritesSettings}> 
-                            {items.map((obj:any,index:number) => (
-                                <Favorite key={index}/>
+                            {favorites.map((review:Favorite_Type,index:number) => (
+                                <Favorite 
+                                    key={index} 
+                                    userId={review.userId} 
+                                    created_at={review.created_at}    
+                                    gameId={review.gameId}
+                                    game_name={review.game_name}
+                                    game_image={review.game_image}
+                                />
                             ))}
                         </Slider>
                     </div>
@@ -109,13 +116,13 @@ export async function getServerSideProps(context:any) {
         const user:any = await db.collection('users').findOne({_id:new ObjectId(session?.user?.userId)})
 
         const reviews = await db.collection('reviews').find({userId:session?.user?.userId}).toArray()
-
+        const favorites = await db.collection('favorites').find({userId:session?.user?.userId}).toArray()
         return {
             props: {
                 user: {
-                username: user.username,
+                    username: user.username,
                 },
-                favorite: user.favorite,
+                favorites: JSON.parse(JSON.stringify(favorites)),
                 reviews:JSON.parse(JSON.stringify(reviews))
             }
         }

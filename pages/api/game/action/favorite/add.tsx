@@ -1,6 +1,6 @@
 import { ObjectId } from 'bson';
 import {Request, Response} from 'express';
-import { Favorite } from '../../../../../types/schema'
+import { Favorite_Type } from '../../../../../types/schema'
 import clientPromise from '../../../../../lib/functions/mongodb'
 import games_data_document from '../../../../../lib/functions/create/games_data';
 
@@ -25,10 +25,14 @@ export default async function handler(req:Request, res:Response) {
         }
         //saves the favorite inside own favorites collection
         try {
-            const favorite:Favorite = {
+            const getData = await fetch(`https://api.rawg.io/api/games/${req.body.gameId}?key=e996863ffbd04374ac0586ec2bcadd55`)
+            const gameData = await getData.json()
+            const favorite:Favorite_Type = {
                 userId: req.body.userId,
                 gameId: req.body.gameId,
                 created_at: 'time',
+                game_name: gameData.name,
+                game_image: gameData.background_image
             }
             savedFavorite = await db.collection('favorites').insertOne(favorite)
         } catch (e) {

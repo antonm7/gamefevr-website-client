@@ -26,11 +26,13 @@ export type Review_Type = {
     dislikes:ObjectId[];
 }
 
-export type Favorite = {
+export type Favorite_Type = {
     _id?:ObjectId;
     userId:string;
     created_at:string;
     gameId:string;
+    game_name:string;
+    game_image:string;
 }
 
 export type Rank = {
