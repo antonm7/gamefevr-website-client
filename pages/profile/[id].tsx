@@ -66,7 +66,7 @@ export default function Profile(props:Props) {
             <main className="px-44 py-10">
             <SettingsBar isOpened={isOpened} method={() => changeVisibleSettings(false)}/>
                 <div className='flex justify-between items-center'>
-                    <h1 className='text-white font-bold text-4xl'>Welcome {user.username}</h1>
+                    <h1 className='text-white font-bold text-4xl'>Welcome {user.username}!</h1>
                     <div className='flex items-center' onClick={() => changeVisibleSettings(true)}>
                         <FontAwesomeIcon icon={faGear} className="h-4 pr-2 cursor-pointer" style={{color:'#616e7e'}}/>
                         <p className="text-large font-semibold cursor-pointer" style={{color:'#616e7e'}}>Account Settings</p>
@@ -77,23 +77,26 @@ export default function Profile(props:Props) {
                         <h1 className='text-white font-bold text-3xl'>Your Reviews</h1>
                     </div>
                     <div className='mt-12'>
-                        <Slider {...settings}>
-                            {reviews.map((review:Review_Type,index:number) => (
-                                <Review 
-                                    key={index} 
-                                    _id={review._id} 
-                                    likes={review.likes} 
-                                    dislikes={review.dislikes} 
-                                    gameId={review.gameId} 
-                                    userId={review.userId} 
-                                    created_at={review.created_at} 
-                                    text={review.text} 
-                                    rank={review.rank} 
-                                    game_name={review.game_name} 
-                                    game_image={review.game_image}
-                                    deleteReview={(id) => deleteReview(id)} />
-                            ))}
-                        </Slider>
+                        {reviews.length > 0 ?
+                            <Slider {...settings}>
+                                {reviews.map((review:Review_Type,index:number) => (
+                                    <Review 
+                                        key={index} 
+                                        _id={review._id} 
+                                        likes={review.likes} 
+                                        dislikes={review.dislikes} 
+                                        gameId={review.gameId} 
+                                        userId={review.userId} 
+                                        created_at={review.created_at} 
+                                        text={review.text} 
+                                        rank={review.rank} 
+                                        game_name={review.game_name} 
+                                        game_image={review.game_image}
+                                        deleteReview={(id) => deleteReview(id)} />
+                                ))}
+                            </Slider> :
+                            <div className='text-md text-white font-semibold opacity-30'>You don't have favorite games yet!</div>
+                        }
                     </div>
                 </div>
                 <div className='pt-14'>
@@ -101,20 +104,23 @@ export default function Profile(props:Props) {
                         <h1 className='text-white font-bold text-3xl'>Favorite Games</h1>
                     </div>
                     <div className='mt-12'>
-                        <Slider {...favoritesSettings}> 
-                            {favorites.map((review:Favorite_Type,index:number) => (
-                                <Favorite 
-                                    _id={review._id}
-                                    key={index} 
-                                    userId={review.userId} 
-                                    created_at={review.created_at}    
-                                    gameId={review.gameId}
-                                    game_name={review.game_name}
-                                    game_image={review.game_image}
-                                    deleteFavorite={(id) => deleteFavorite(id)}
-                                />
-                            ))}
-                        </Slider>
+                        {favorites.length > 0 ?
+                            <Slider {...favoritesSettings}> 
+                                {favorites.map((review:Favorite_Type,index:number) => (
+                                    <Favorite 
+                                        _id={review._id}
+                                        key={index} 
+                                        userId={review.userId} 
+                                        created_at={review.created_at}    
+                                        gameId={review.gameId}
+                                        game_name={review.game_name}
+                                        game_image={review.game_image}
+                                        deleteFavorite={(id) => deleteFavorite(id)}
+                                    />
+                                ))}
+                            </Slider> :
+                            <div className='text-md text-white font-semibold opacity-30'>You don't have favorite games yet!</div>
+                        }
                     </div>
                 </div>
             </main>
