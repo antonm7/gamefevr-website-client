@@ -29,7 +29,7 @@ export default function RateGame(props:any){
             }
         } 
         isUserRated()
-    },[])
+    },[session.status])
 
     const rate = async (rank:string) => {
         if(session.status === 'unauthenticated') return
