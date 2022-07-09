@@ -24,6 +24,7 @@ export default function SmallGameBox(props:Props) {
                 <Link href={`/game/${props.game.id}`}>
                     <h1 style={{lineBreak:'anywhere'}} className="font-semibold text-xl whitespace-pre-wrap hover:text-gray-500">{game.name}</h1>
                 </Link>
+                {/* TODO:Switch platform text to platform icons */}
                 <div className="flex flex-row flex-nowrap">
                     {game?.parent_platforms?.slice(0, 3).map((platform:PlatformParentObject,index:number) => <h2 key={index} className='pr-1 text-sm text-cool-blue'>{platform.platform.name}{index === game.parent_platforms.length - 1 || index === 2 ? '' : ','}</h2>)}
                 </div>

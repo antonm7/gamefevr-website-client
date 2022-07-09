@@ -267,3 +267,7 @@ h1,p,h2,div {
   left: 50%;
   transform: translateX(-50%);
 }
+
+#global_error {
+  top: 5%;
+}
