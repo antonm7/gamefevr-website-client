@@ -31,7 +31,7 @@ async function handler(req:Request, res:Response) {
         
         const isEmailExists = await db.collection('users').findOne({email})
         if(isEmailExists) return res.status(500).send({error:'Email is already in use'})
-
+        
         const isUsernameExists = await db.collection('users').findOne({username})
         if(isUsernameExists) return res.status(500).send({error:'Username is already in use'})
 
