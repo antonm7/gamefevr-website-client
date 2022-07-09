@@ -12,3 +12,4 @@ export const useStore = create((set:any) => ({
 }))
 
 export * from './useProgressStore';
+export * from './useGlobalError';

@@ -8,14 +8,16 @@ import { SessionProvider } from "next-auth/react"
 import { useEffect } from 'react'
 import {useRouter} from 'next/router'
 import Progress from '../components/progress/Progress'
-import {useProgressStore} from '../store'
+import {useGlobalError, useProgressStore} from '../store'
+import GlobalError from '../components/common/GlobalError'
 
 
 function MyApp({ Component, pageProps:{session,...pageProps} }: AppProps) {
   const setIsAnimating = useProgressStore(state => state.setIsAnimating)
   const isAnimating = useProgressStore(state => state.isAnimating)
+  const isVisible = useGlobalError(state => state.isVisible)
   const router = useRouter()
-  
+
   useEffect(() => {
     const handleStart = () => {
       setIsAnimating(true)
@@ -38,6 +40,7 @@ function MyApp({ Component, pageProps:{session,...pageProps} }: AppProps) {
   
   return (
     <>
+      <GlobalError isVisible={isVisible}/>
       <Progress isAnimating={isAnimating}/>
       <SessionProvider session={session}>
         <div className='bg-main-blue'>
