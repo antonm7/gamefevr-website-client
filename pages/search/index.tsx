@@ -60,7 +60,6 @@ export default function Index(props:Props) {
     }
   },[props])
 
-
   return (
       <SearchLayout>
         <div>

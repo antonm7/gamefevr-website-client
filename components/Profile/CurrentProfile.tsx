@@ -62,7 +62,7 @@ export default function CurrentProfile(props:Props) {
     return (
         <SearchLayout>
             <main className="px-44 py-10" id="profile_page">
-                <SettingsBar isOpened={isOpened} method={() => changeVisibleSettings(false)}/>
+                <SettingsBar user={props.user} isOpened={isOpened} close={() => changeVisibleSettings(false)}/>
                 <div id="profile_page_welcome" className='flex justify-between items-center'>
                     <h1 id="welcome_title" className='text-white font-bold text-4xl'>Welcome {user?.username}!</h1>
                     <div className='flex items-center' onClick={() => changeVisibleSettings(true)}>
@@ -124,5 +124,4 @@ export default function CurrentProfile(props:Props) {
             </main>
         </SearchLayout>
     )
-        
 }

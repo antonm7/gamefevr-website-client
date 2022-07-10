@@ -2,6 +2,7 @@ interface Props {
     placeholder:string,
     label:string,
     type:string,
+    value:string,
     onChange:(e:React.ChangeEvent<HTMLInputElement>) => void,
 }
 
@@ -10,6 +11,7 @@ export default function SettingsInput(props:Props) {
         <>
             <h3 className="pt-8 pb-3 text-lg" style={{color:'#9da8b6'}}>{props.label}</h3>
             <input 
+                value={props.value}
                 id="placeholder-text"
                 placeholder={props.placeholder} 
                 className="h-14 w-full rounded-md text-white text-md outline-none px-5 " 
