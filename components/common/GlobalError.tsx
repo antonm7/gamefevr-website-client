@@ -10,6 +10,8 @@ interface Props {
 export default function GlobalError(props:Props) {
     const [visibility, setVisibility] = useState<boolean>(props.isVisible)
     const changeGlobalErrorVisibility = useGlobalError(store => store.setIsVisible)
+    const text = useGlobalError(store => store.text)
+
     useEffect(() => {
         if(props.isVisible) {
             setVisibility(true)
@@ -27,7 +29,7 @@ export default function GlobalError(props:Props) {
                     <FontAwesomeIcon className="h-3 text-white" icon={faXmark}/>
                 </div>
                 <p className="text-white text-sm font-semibold" style={{color:'#991B1B'}}>
-                    Unexpected Error
+                    {text ? text : 'Something went wrong'}
                 </p>
             </div>
             <TimerBar start={visibility}/>
