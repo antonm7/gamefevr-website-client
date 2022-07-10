@@ -21,7 +21,6 @@ export default async function handler(req:ExtendedNextApiRequest, res:NextApiRes
             console.log(e)
             return res.status(401)
         }
-        
         let db = null
         let body = req.body
         //initializing database
@@ -29,19 +28,22 @@ export default async function handler(req:ExtendedNextApiRequest, res:NextApiRes
             const client = await clientPromise
             db = client.db('gameFevr')
         } catch (e) {
-            res.status(500).send({error:'Unexpected error'})
-            return console.log('error on initializing database',e)
+            throw new Error('Unexpected error')
         }
-        
         //comparing password
         try {
             const user = await db.collection('users').findOne({_id:new ObjectId(body.userId)})
-            if(!user) throw new Error('User not found')
+            if(!user) {
+                res.status(404).send({error:'User not found'})
+                throw new Error('User not found')
+            }
             const isValid = await compare(body.oldPassword,user.password)
-            if(!isValid) throw new Error('wrong password')
+            if(!isValid) {
+                return res.status(200).send({error:'Wrong password'})
+            }
         } catch (e) {
             console.log('error on comparing password',e)
-            res.status(500).send({error:'Unexpected error'})
+            throw new Error('Unexpected error')
         }
 
         try {
@@ -50,7 +52,7 @@ export default async function handler(req:ExtendedNextApiRequest, res:NextApiRes
             res.status(200).send({error:null})
         } catch (e) {
             console.log(e)
-            res.status(500).send({error:'undexpected error on updating password'})
+            res.status(500).send({error:'Unexpected error'})
         }
     }
 }

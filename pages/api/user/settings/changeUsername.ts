@@ -19,7 +19,6 @@ export default async function handler(req:ExtendedNextApiRequest, res:NextApiRes
             console.log(e)
             return res.status(401)
         }
-
         let db = null
         let body = req.body
         //initializing database
@@ -27,8 +26,9 @@ export default async function handler(req:ExtendedNextApiRequest, res:NextApiRes
             const client = await clientPromise
             db = client.db('gameFevr')
         } catch (e) {
-            res.status(500).send({error:'Unexpected error'})
-            return console.log('error on initializing database',e)
+            console.log('error on initializing database',e)
+            res.status(200).send({error:'Unexpected error'})
+            return
         }
         //checkinf if username is already taken
         try {
@@ -36,7 +36,8 @@ export default async function handler(req:ExtendedNextApiRequest, res:NextApiRes
             if(user) throw new Error('Username already taken')
         } catch (e) {
             console.log('error on checking if username is already taken',e)
-            res.status(500).send({error:'username is already taken'})
+            res.status(200).send({error:'username is already taken'})
+            return 
         }
         //updating username
         try {

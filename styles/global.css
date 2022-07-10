@@ -5,6 +5,7 @@
 * {
     overflow-x: hidden;
     font-family: 'Source Sans Pro', sans-serif !important;
+    box-sizing: border-box !important;
 }
 
 h1,p,h2,div {
@@ -270,4 +271,22 @@ h1,p,h2,div {
 
 #global_error {
   top: 5%;
+}
+
+#explore_container {
+  width: 50%;
+  height: 40rem;
+  margin: 0 auto;
+  scroll-snap-type: mandatory;
+  scroll-snap-points-y: repeat(40rem);
+  scroll-snap-type: y mandatory;
+  -ms-touch-action: pan-y;
+touch-action: pan-y;
+}
+
+#explore_container div {
+  height: 100%;
+  width: 100%;
+  scroll-snap-align: start;
+
 }

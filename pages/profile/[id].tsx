@@ -56,8 +56,11 @@ export async function getServerSideProps(context:any) {
 
         return {
             props: {
-                user: {
+                user:isVisited ? {
+                    username: user.username
+                } : {
                     username: user.username,
+                    email:user.email,
                 },
                 favorites: JSON.parse(JSON.stringify(favorites)),
                 reviews:JSON.parse(JSON.stringify(reviews)),
