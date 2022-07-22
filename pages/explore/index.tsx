@@ -56,7 +56,7 @@ export async function getServerSideProps() {
         filteredString = filteredString.concat(`&platforms=${genresString}`)
     }
 
-    const getData = await fetch(`https://api.rawg.io/api/games?key=e996863ffbd04374ac0586ec2bcadd55&page=${page}&page_size=${limit}`)
+    const getData = await fetch(`https://api.rawg.io/api/games?key=0ffbdb925caf4b20987cd068aa43fd75&page=${page}&page_size=${limit}`)
     const games = await getData.json()
     return {
         props: {

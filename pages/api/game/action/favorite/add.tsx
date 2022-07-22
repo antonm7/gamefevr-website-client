@@ -32,7 +32,7 @@ export default async function handler(req:ExtendedNextApiRequest, res:NextApiRes
         }
         //saves the favorite inside own favorites collection
         try {
-            const getData = await fetch(`https://api.rawg.io/api/games/${req.body.gameId}?key=e996863ffbd04374ac0586ec2bcadd55`)
+            const getData = await fetch(`https://api.rawg.io/api/games/${req.body.gameId}?key=0ffbdb925caf4b20987cd068aa43fd75`)
             const gameData = await getData.json()
             const favorite:Favorite_Type = {
                 userId: req.body.userId,

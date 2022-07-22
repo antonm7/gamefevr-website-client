@@ -8,7 +8,7 @@ export default async function handler(req:Request, res:Response) {
             let games:NamedGame[] = []
             let data = []
 
-            const getData = await fetch(`https://api.rawg.io/api/games?key=e996863ffbd04374ac0586ec2bcadd55&page=1&page_size=5&search=${query.search}`)
+            const getData = await fetch(`https://api.rawg.io/api/games?key=0ffbdb925caf4b20987cd068aa43fd75&page=1&page_size=5&search=${query.search}`)
             data = await getData.json()
 
             for(let key in data.results) {

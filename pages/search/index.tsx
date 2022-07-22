@@ -9,6 +9,8 @@ import Filters from "../../components/Filters";
 import SmallLoader from '../../components/common/SmallLoader'
 import { ShortGame } from "../../types";
 import LoadingError from "../../components/common/LoadingError";
+import cookie from 'cookie'
+
 
 interface Props {
   games: ShortGame[];
@@ -94,7 +96,21 @@ interface Context {
   }
 }
 
-export async function getServerSideProps(context:Context) {
+export async function getServerSideProps(context:any) {
+  function parseCookies(req:any){
+    return cookie.parse(req ? req.headers.cookie || "" : document.cookie);
+  }
+  
+  const cookies = parseCookies(context.req);
+  
+  if(cookies.prevRouter === '/game/[id]') {
+    return {
+      props: {
+        games: [],
+      }
+    }
+  }
+
   const {yearRange, genres, consoles } = context.query
   let filteredString:string = ''
   let games = []
@@ -135,10 +151,10 @@ export async function getServerSideProps(context:Context) {
                 filteredString = filteredString.concat(`&genres=${genresString}`)
             }
         } 
-        const getData:any = await axios(`https://api.rawg.io/api/games?key=e996863ffbd04374ac0586ec2bcadd55&ordering=-released&page=1&page_size=20${filteredString}`)
+        const getData:any = await axios(`https://api.rawg.io/api/games?key=0ffbdb925caf4b20987cd068aa43fd75&ordering=-released&page=1&page_size=20${filteredString}`)
         games = getData.data.results
     } else {
-        const getData:any = await axios(`https://api.rawg.io/api/games?key=e996863ffbd04374ac0586ec2bcadd55&ordering=-released&page=1&page_size=20`)
+        const getData:any = await axios(`https://api.rawg.io/api/games?key=0ffbdb925caf4b20987cd068aa43fd75&ordering=-released&dates=1990-01-01,2022-12-31&page=1&page_size=20`)
         games = getData.data.results
     }
     return {

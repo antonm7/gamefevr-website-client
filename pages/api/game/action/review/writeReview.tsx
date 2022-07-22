@@ -35,7 +35,7 @@ export default async function handler(req:ExtendedNextApiRequest, res:NextApiRes
         }
         //saves the reviews inside own ranks collection
         try {
-            const getData = await fetch(`https://api.rawg.io/api/games/${query.gameId}?key=e996863ffbd04374ac0586ec2bcadd55`)
+            const getData = await fetch(`https://api.rawg.io/api/games/${query.gameId}?key=0ffbdb925caf4b20987cd068aa43fd75`)
             const gameData = await getData.json()
             
             const review:Review_Type = {

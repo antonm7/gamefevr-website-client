@@ -3,6 +3,7 @@ import 'tailwindcss/tailwind.css'
 import '../styles/global.css'
 import '../styles/responsive.css'
 import '../styles/animation.css'
+import {setCookie } from 'cookies-next'
 
 import { SessionProvider } from "next-auth/react"
 import { useEffect } from 'react'
@@ -10,7 +11,6 @@ import {useRouter} from 'next/router'
 import Progress from '../components/progress/Progress'
 import {useGlobalError, useProgressStore} from '../store'
 import GlobalError from '../components/common/GlobalError'
-
 
 function MyApp({ Component, pageProps:{session,...pageProps} }: AppProps) {
   const setIsAnimating = useProgressStore(state => state.setIsAnimating)
@@ -30,6 +30,8 @@ function MyApp({ Component, pageProps:{session,...pageProps} }: AppProps) {
     router.events.on('routeChangeStart', handleStart)
     router.events.on('routeChangeComplete', handleStop)
     router.events.on('routeChangeError', handleStop)
+
+    setCookie('prevRouter', router.pathname)
 
     return () => {
       router.events.off('routeChangeStart', handleStart)

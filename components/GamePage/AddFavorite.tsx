@@ -45,10 +45,8 @@ export default function AddFavorite(props:Props) {
             const checkIsFavorite = async () => {
                 try {
                     const req = await axios.get(`/api/game/get/getIsFavorite?userId=${session.data?.user?.userId}&gameId=${props.gameId}`);
-                    console.log(req)
                     if(req.status === 200) {
                         if(!req.data.isFavorite) return
-                        console.log(req.data)
                         setIsFavorite(req.data.isFavorite);
                     } else {
                         throw new Error(req.data.error)
