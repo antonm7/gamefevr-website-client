@@ -16,7 +16,7 @@ const Home: NextPage = () => {
     router.push({
         pathname: "/search",
         query: { 
-            yearRange:[1990,2022],
+            yearRange:[],
             genres:[],
             consoles:[]
         }

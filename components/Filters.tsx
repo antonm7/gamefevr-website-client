@@ -43,7 +43,7 @@ export default function Filters() {
         router.push({
             pathname: "/search",
             query: { 
-                yearRange,
+                yearRange: yearRange[0] === 1990 && yearRange[1] === 2022 ? undefined : yearRange,
                 genres:selectedGenres,
                 consoles:selectedConsoles
             }
