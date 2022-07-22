@@ -5,7 +5,9 @@ import { useEffect, useState } from "react";
 import Slider from "react-slick";
 import deleteFavorite from "../../pages/api/game/cancel/favorite/deleteFavorite";
 import deleteReview from "../../pages/api/game/cancel/review/deleteReview";
+import { useStore } from "../../store";
 import { Review_Type, Favorite_Type, Client_User } from "../../types/schema";
+import Filters from "../Filters";
 import SearchLayout from "../layout/SearchLayout";
 import Favorite from "./Favorite";
 import Review from "./Review";
@@ -22,6 +24,8 @@ export default function CurrentProfile(props:Props) {
     const [user, setUser] = useState<any>(null)
     const [reviews, setReviews] = useState<Review_Type[]>([])
     const [favorites, setFavorites] = useState<Favorite_Type[]>([])
+
+    const store = useStore()
 
     const changeVisibleSettings = (value:boolean) => {
         setIsOpened(value)
@@ -62,6 +66,7 @@ export default function CurrentProfile(props:Props) {
     return (
         <SearchLayout>
             <main className="px-44 py-10" id="profile_page">
+                {store.isFilterOn ? <Filters /> : null}
                 <SettingsBar user={props.user} isOpened={isOpened} close={() => changeVisibleSettings(false)}/>
                 <div id="profile_page_welcome" className='flex justify-between items-center'>
                     <h1 id="welcome_title" className='text-white font-bold text-4xl'>Welcome {user?.username}!</h1>
