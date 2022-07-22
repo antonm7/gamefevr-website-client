@@ -9,9 +9,10 @@ import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { useStore } from "../store";
 import YellowButton from "./common/YellowButton";
 import { useRouter } from "next/router";
+import { setCookie } from "cookies-next";
 
 export default function Filters() {
-    const [yearRange, changeYearRange] = useState<number[]>([2010, 2020]);
+    const [yearRange, changeYearRange] = useState<number[]>([1990, 2022]);
     const [selectedGenres, changeSelectedGenres] = useState<number[]>([]);
     const [selectedConsoles, changeSelectedConsoles] = useState<number[]>([]);
     const store = useStore()
@@ -38,6 +39,7 @@ export default function Filters() {
     }
 
     const search = () => {
+        setCookie('prevRoute', '/')
         store.clearGames()
         store.clearPage()
         router.push({
@@ -129,7 +131,7 @@ export default function Filters() {
                     </div>
                 </div>
                 <div className="w-44 h-16 mt-12">
-                    <YellowButton onClick={() => search()} title={"search"}/>
+                    <YellowButton active={true} onClick={() => search()} title={"search"}/>
                 </div>
             </div>
         </div>
