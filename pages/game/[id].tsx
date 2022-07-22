@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 import Screenshots from "../../components/GamePage/Screenshots"
 import SearchLayout from "../../components/layout/SearchLayout"
 import useQuery from "../../lib/functions/useQuery"
-import { DetailedGame, ElementDescription, Platform } from "../../types"
+import { DetailedGame, ElementDescription, Platform, ShortGame } from "../../types"
 import Image from 'next/image'
 import RateGame from "../../components/GamePage/RateGame"
 import useWindowSize from "../../lib/functions/useWindowSize"
@@ -13,7 +13,7 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons"
 import { useSession } from "next-auth/react"
 import WriteReview from "../../components/GamePage/WriteReview"
 import VerticalReviewsLoader from "../../components/GamePage/VerticalReviewsLoader"
-import { Review_Type } from "../../types/schema"
+import { games_data, Review_Type } from "../../types/schema"
 import clientPromise from "../../lib/functions/mongodb"
 import Bigger640 from "../../components/GamePage/Responsive/Bigger640"
 import Lower640 from "../../components/GamePage/Responsive/Lower640"
@@ -135,10 +135,25 @@ interface Context {
     }
 }
 
-export async function getServerSideProps(context:Context) {
+export async function getStaticPaths() {
+    let ids:number[] = [];
+   
+    for(let i = 1; i < 5; i++) {
+        const getData:any = await fetch(`https://api.rawg.io/api/games?key=0ffbdb925caf4b20987cd068aa43fd75&ordering=-released&dates=1990-01-01,2022-12-31&page=${i}&page_size=${100}`)
+        ids.push(...(await getData.json()).results.map((game:ShortGame) => game.id))
+    }
+
+    const paths = ids.map((id) => ({
+        params: { id:JSON.stringify(id)  },
+    }))
+      
+    return { paths, fallback: 'blocking' }
+}
+
+export async function getStaticProps(context:Context) {
     try {
-        const getData = await fetch(`https://api.rawg.io/api/games/${context.params.id}?key=e996863ffbd04374ac0586ec2bcadd55`)
-        const getScreenshots = await fetch(`https://api.rawg.io/api/games/${context.params.id}/screenshots?key=e996863ffbd04374ac0586ec2bcadd55`)
+        const getData = await fetch(`https://api.rawg.io/api/games/${context.params.id}?key=0ffbdb925caf4b20987cd068aa43fd75`)
+        const getScreenshots = await fetch(`https://api.rawg.io/api/games/${context.params.id}/screenshots?key=0ffbdb925caf4b20987cd068aa43fd75`)
         const gameData = await getData.json()
         const screenshots = await getScreenshots.json()
        
