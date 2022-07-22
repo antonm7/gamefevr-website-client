@@ -31,7 +31,7 @@ function MyApp({ Component, pageProps:{session,...pageProps} }: AppProps) {
     router.events.on('routeChangeComplete', handleStop)
     router.events.on('routeChangeError', handleStop)
 
-    setCookie('prevRouter', router.pathname)
+    setCookie('prevRoute', router.pathname)
 
     return () => {
       router.events.off('routeChangeStart', handleStart)

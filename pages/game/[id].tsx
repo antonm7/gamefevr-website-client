@@ -17,6 +17,10 @@ import { games_data, Review_Type } from "../../types/schema"
 import clientPromise from "../../lib/functions/mongodb"
 import Bigger640 from "../../components/GamePage/Responsive/Bigger640"
 import Lower640 from "../../components/GamePage/Responsive/Lower640"
+import Filters from "../../components/Filters"
+import { useStore } from "../../store"
+import {setCookie } from 'cookies-next'
+
 
 type Props = {
     game:DetailedGame,
@@ -31,9 +35,8 @@ export default function GamePage(props:Props) {
     const [writeReviewVisibility, setWriteReviewVisibility] = useState<boolean>(false)
     const [isUserRated, setIsUserRated] = useState<string | null>(null)
     const [reviews, setReviews] = useState<Review_Type[]>([])
-
+    const store = useStore()
     const query = useQuery();
-    const session = useSession()
 
     const toggleAnimation = () => {
         if(reviewsAnimation) {
@@ -60,6 +63,7 @@ export default function GamePage(props:Props) {
         <SearchLayout>
             {!game ? <div>Erroooor!!!</div> :
             <div>
+                {store.isFilterOn ? <Filters /> : null}
                 <main className="px-44 py-10" id="game_page">
                 <WriteReview 
                     isUserRated={isUserRated}

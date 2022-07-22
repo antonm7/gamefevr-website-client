@@ -10,6 +10,7 @@ import SmallLoader from '../../components/common/SmallLoader'
 import { ShortGame } from "../../types";
 import LoadingError from "../../components/common/LoadingError";
 import cookie from 'cookie'
+import { setCookie } from "cookies-next";
 
 
 interface Props {
@@ -101,9 +102,10 @@ export async function getServerSideProps(context:any) {
     return cookie.parse(req ? req.headers.cookie || "" : document.cookie);
   }
   
-  const cookies = parseCookies(context.req);
+  const cookies:any = parseCookies(context.req);
+  console.log(cookies)
   
-  if(cookies.prevRouter === '/game/[id]') {
+  if(cookies.prevRoute === '/game/[id]') {
     return {
       props: {
         games: [],
@@ -157,6 +159,8 @@ export async function getServerSideProps(context:any) {
         const getData:any = await axios(`https://api.rawg.io/api/games?key=0ffbdb925caf4b20987cd068aa43fd75&ordering=-released&dates=1990-01-01,2022-12-31&page=1&page_size=20`)
         games = getData.data.results
     }
+    // context.res.setHeader('set-cookie', 'needToFetch=true')
+
     return {
       props: {
         games,
