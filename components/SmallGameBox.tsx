@@ -1,24 +1,24 @@
-import Link from "next/link";
-import Image from "next/image";
-import { ElementDescription, ShortGame } from "../types";
+import Link from 'next/link'
+import Image from 'next/image'
+import { ElementDescription, ShortGame } from '../types'
 
 type Props = {
-  game: ShortGame;
-  key: number;
-};
+  game: ShortGame
+  key: number
+}
 
 interface PlatformParentObject {
-  platform: ElementDescription;
+  platform: ElementDescription
 }
 
 export default function SmallGameBox(props: Props) {
-  const game = props.game;
-  if (!game) return null;
+  const game = props.game
+  if (!game) return null
 
   return (
     <div
       className="w-96 h-72 bg-white rounded-lg mx-8 mb-12 overflow-hidden"
-      style={{ height: "1%" }}
+      style={{ height: '1%' }}
     >
       <div className="bg-image">
         {!game.background_image ? null : (
@@ -36,7 +36,7 @@ export default function SmallGameBox(props: Props) {
       <div className="flex-grow p-4">
         <Link href={`/game/${props.game.id}`}>
           <h1
-            style={{ lineBreak: "anywhere" }}
+            style={{ lineBreak: 'anywhere' }}
             className="font-semibold text-xl whitespace-pre-wrap hover:text-gray-500"
           >
             {game.name}
@@ -50,8 +50,8 @@ export default function SmallGameBox(props: Props) {
               <h2 key={index} className="pr-1 text-sm text-cool-blue">
                 {platform.platform.name}
                 {index === game.parent_platforms.length - 1 || index === 2
-                  ? ""
-                  : ","}
+                  ? ''
+                  : ','}
               </h2>
             ))}
         </div>
@@ -63,18 +63,18 @@ export default function SmallGameBox(props: Props) {
                 <h2
                   key={index}
                   className="pr-1 text-sm"
-                  style={{ color: "#919191" }}
+                  style={{ color: '#919191' }}
                 >
                   {genre.name}
-                  {index === game.genres.length - 1 || index === 2 ? "" : ","}
+                  {index === game.genres.length - 1 || index === 2 ? '' : ','}
                 </h2>
               ))}
           </div>
-          <h2 className="pr-1 text-sm" style={{ color: "#919191" }}>
+          <h2 className="pr-1 text-sm" style={{ color: '#919191' }}>
             {game.released.slice(0, 4)}
           </h2>
         </div>
       </div>
     </div>
-  );
+  )
 }
