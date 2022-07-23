@@ -273,20 +273,11 @@ h1,p,h2,div {
   top: 5%;
 }
 
-#explore_container {
-  width: 50%;
-  height: 40rem;
-  margin: 0 auto;
-  scroll-snap-type: mandatory;
-  scroll-snap-points-y: repeat(40rem);
-  scroll-snap-type: y mandatory;
-  -ms-touch-action: pan-y;
-touch-action: pan-y;
+#explore_wrapper .slick-track {
+  overflow: hidden !important;
 }
 
-#explore_container div {
-  height: 100%;
-  width: 100%;
-  scroll-snap-align: start;
-
+#explore_wrapper {
+  
 }
+

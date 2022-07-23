@@ -122,7 +122,7 @@ export default function GamePage(props:Props) {
                     {width > 1200 ? 
                         <div className={`w-full flex justify-center ${reviewsAnimation ? 'button_animation_enabled' : 'button_animation_disabled'}`}>
                             <div className="w-52" id="show_comments_wrapper">
-                                <YellowButton title="Show Comments" onClick={() => toggleAnimation()} />          
+                                <YellowButton title="Show Comments" active={true} onClick={() => toggleAnimation()} />          
                             </div>
                         </div>
                     : null}
@@ -191,7 +191,7 @@ export async function getStaticProps(context:Context) {
         return {
             props:{
                 game:finalData,
-                reviews
+                reviews:JSON.parse(JSON.stringify(reviews))
             }
         }
     } catch (e) {
