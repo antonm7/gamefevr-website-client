@@ -1,82 +1,105 @@
-import { faGear } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { ObjectId } from "bson";
-import { useEffect, useState } from "react";
-import Slider from "react-slick";
-import useWindowSize from "../../lib/functions/useWindowSize";
-import { useStore } from "../../store";
-import { Review_Type, Favorite_Type, Client_User } from "../../types/schema";
-import Filters from "../Filters";
-import SearchLayout from "../layout/SearchLayout";
-import Favorite from "./Favorite";
-import Review from "./Review";
-import SettingsBar from "./SettingsBar";
+import { faGear } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { ObjectId } from 'bson'
+import { useEffect, useState } from 'react'
+import Slider from 'react-slick'
+import { useStore } from '../../store'
+import { Review_Type, Favorite_Type, Client_User } from '../../types/schema'
+import Filters from '../Filters'
+import SearchLayout from '../layout/SearchLayout'
+import Favorite from './Favorite'
+import Review from './Review'
+import SettingsBar from './SettingsBar'
 
 interface Props {
-  reviews: Review_Type[];
-  favorites: Favorite_Type[];
-  user: Client_User;
+  reviews: Review_Type[]
+  favorites: Favorite_Type[]
+  user: Client_User
 }
 
 export default function CurrentProfile(props: Props) {
-  const [isOpened, setIsOpened] = useState<boolean>(false);
-  const [user, setUser] = useState<any>(null);
-  const [reviews, setReviews] = useState<Review_Type[]>([]);
-  const [favorites, setFavorites] = useState<Favorite_Type[]>([]);
-  const [width, height] = useWindowSize();
+  const [isOpened, setIsOpened] = useState<boolean>(false)
+  const [user, setUser] = useState<any>(null)
+  const [reviews, setReviews] = useState<Review_Type[]>([])
+  const [favorites, setFavorites] = useState<Favorite_Type[]>([])
 
-  const store = useStore();
+  const store = useStore()
 
   const changeVisibleSettings = (value: boolean) => {
-    setIsOpened(value);
-  };
+    setIsOpened(value)
+  }
 
   const settings = {
     infinite: false,
     slidesToShow: props.reviews.length >= 3 ? 3 : props.reviews.length,
-  };
+    responsive: [
+      {
+        breakpoint: 1700,
+        settings: {
+          slidesToShow: props.reviews.length >= 2 ? 2 : props.reviews.length,
+        },
+      },
+      {
+        breakpoint: 1200,
+        settings: {
+          slidesToShow: 1,
+        },
+      },
+    ],
+  }
 
   const favoritesSettings = {
     infinite: false,
-    slidesToShow:
-      width > 1440
-        ? props.favorites.length >= 4
-          ? 4
-          : props.favorites.length
-        : width > 1200
-        ? props.favorites.length >= 3
-          ? 3
-          : props.favorites.length
-        : props.favorites.length >= 2
-        ? 2
-        : props.favorites.length,
-  };
+    slidesToShow: props.favorites.length >= 4 ? 4 : props.favorites.length,
+    responsive: [
+      {
+        breakpoint: 1600,
+        settings: {
+          slidesToShow:
+            props.favorites.length >= 3 ? 3 : props.favorites.length,
+        },
+      },
+      {
+        breakpoint: 1200,
+        settings: {
+          slidesToShow:
+            props.favorites.length >= 2 ? 2 : props.favorites.length,
+        },
+      },
+      {
+        breakpoint: 640,
+        settings: {
+          slidesToShow: 1,
+        },
+      },
+    ],
+  }
 
   useEffect(() => {
-    setUser(props.user);
-    setReviews(props.reviews);
-    setFavorites(props.favorites);
-  }, [props.user]);
+    setUser(props.user)
+    setReviews(props.reviews)
+    setFavorites(props.favorites)
+  }, [props.user])
 
   const deleteReview = (id: ObjectId | undefined) => {
     if (id) {
       const newReviews = reviews.filter(
         (review: Review_Type) => review._id !== id
-      );
-      setReviews(newReviews);
+      )
+      setReviews(newReviews)
     }
-  };
+  }
 
   const deleteFavorite = (id: ObjectId | undefined) => {
     if (id) {
       const newFavorites = favorites.filter(
         (favorite: Favorite_Type) => favorite._id !== id
-      );
-      setFavorites(newFavorites);
+      )
+      setFavorites(newFavorites)
     }
-  };
+  }
 
-  if (!user) return null;
+  if (!user) return null
 
   return (
     <SearchLayout>
@@ -101,11 +124,11 @@ export default function CurrentProfile(props: Props) {
             <FontAwesomeIcon
               icon={faGear}
               className="h-4 pr-2 cursor-pointer"
-              style={{ color: "#616e7e" }}
+              style={{ color: '#616e7e' }}
             />
             <p
               className="text-large font-semibold cursor-pointer"
-              style={{ color: "#616e7e" }}
+              style={{ color: '#616e7e' }}
             >
               Account Settings
             </p>
@@ -171,5 +194,5 @@ export default function CurrentProfile(props: Props) {
         </div>
       </main>
     </SearchLayout>
-  );
+  )
 }
