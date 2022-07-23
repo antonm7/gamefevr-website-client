@@ -1,73 +1,73 @@
 #controller {
-    transition: all 0.8s ease;
+  transition: all 0.8s ease;
 }
 
 #game_page_screenshots_controller {
-    transition: all 0.8s ease;
+  transition: all 0.8s ease;
 }
 
 .controller_animation {
-    margin-left: -40rem !important;
+  margin-left: -40rem !important;
 }
 
 .screenshots_animation_enabled {
-    margin-left: 135rem !important;
-    width: 100%;
-    transition: all 0.8s ease;
+  margin-left: 135rem !important;
+  width: 100%;
+  transition: all 0.8s ease;
 }
 
 .screenshots_animation_disabled {
-    width: 100%;
-    transition: all 0.8s ease;
+  width: 100%;
+  transition: all 0.8s ease;
 }
 
 .reviews_animation_disable {
-    transition: all 0.8s ease;
-    overflow: hidden;
-    margin-top: 75rem;
+  transition: all 0.8s ease;
+  overflow: hidden;
+  margin-top: 75rem;
 }
 
 .reviews_animation_enable {
-    transition: all 0.8s ease;
-    overflow: hidden;
+  transition: all 0.8s ease;
+  overflow: hidden;
 }
 
 .write_review_animation_enabled {
-    transition: all 1.2s ease;
-    overflow: hidden;
-    margin-top: 0rem !important;
+  transition: all 1.2s ease;
+  overflow: hidden;
+  margin-top: 0rem !important;
 }
 
 .write_review_animation_disabled {
-    transition: all 1.2s ease;
-    overflow: hidden;
-    margin-top: -75rem !important;
+  transition: all 1.2s ease;
+  overflow: hidden;
+  margin-top: -75rem !important;
 }
 
-@media (max-width: 1400px) { 
-    .write_review_animation_enabled {
-        transition: all 0.8s ease;
-        overflow: hidden;
-    }
-    .write_review_animation_disabled {
-        transition: all 0.8s ease;
-        overflow: hidden;
-    }
-    .button_animation_enabled {
-        margin-top: 2rem;
-        transition: all ease 1s;
-    }
-    .button_animation_disabled {
-        margin-top: 0rem;
-        transition: all ease 1s;
-    }
+@media (max-width: 1400px) {
+  .write_review_animation_enabled {
+    transition: all 0.8s ease;
+    overflow: hidden;
+  }
+  .write_review_animation_disabled {
+    transition: all 0.8s ease;
+    overflow: hidden;
+  }
+  .button_animation_enabled {
+    margin-top: 2rem;
+    transition: all ease 1s;
+  }
+  .button_animation_disabled {
+    margin-top: 0rem;
+    transition: all ease 1s;
+  }
 }
 
 .global_animation_enabled {
-    right: 0;
-    transition: all 0.1s linear;
+  right: 0;
+  transition: all 0.1s linear;
 }
 .global_animation_disabled {
-    right: -20%;
-    transition: all 0.1s linear;
+  right: -20%;
+  transition: all 0.1s linear;
 }

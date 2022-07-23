@@ -16,6 +16,11 @@
     "incremental": true,
     "typeRoots": ["./types"]
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/api/auth/[...nextauth].tsx"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "pages/api/auth/[...nextauth].tsx"
+  ],
   "exclude": ["node_modules"]
 }

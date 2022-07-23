@@ -1,11 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  presets: ["next/babel"],
+  presets: ['next/babel'],
   reactStrictMode: false,
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/,
-      use: ["@svgr/webpack"],
+      use: ['@svgr/webpack'],
     });
     return config;
   },
@@ -13,11 +13,11 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   images: {
-    domains: ["media.rawg.io", "hatrabbits.com"],
+    domains: ['media.rawg.io', 'hatrabbits.com'],
   },
   env: {
-    key: "e996863ffbd04374ac0586ec2bcadd55",
+    key: 'e996863ffbd04374ac0586ec2bcadd55',
   },
 };
 
-module.exports = nextConfig;
+export default nextConfig;

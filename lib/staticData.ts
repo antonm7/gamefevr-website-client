@@ -1,148 +1,142 @@
 import { ElementDescription } from "../types";
 
-export const genres:ElementDescription[] = [
-    {
-        id: 4,
-        name: "Action"
-    },
-    {
-        id: 51,
-        name: "Indie",
-    
-    },
-    {
-        id: 3,
-        name: "Adventure",
-    
-    },
-    {
-        id: 5,
-        name: "RPG",
-    },
-    {
-        id: 10,
-        name: "Strategy",
-    },
-    {
-        id: 2,
-        name: "Shooter",
-    
-    },
-    {
-        id: 40,
-        name: "Casual",
-    },
-    {
-        id: 14,
-        name: "Simulation",
-    
-    },
-    {
-        id: 7,
-        name: "Puzzle",
-    },
-    {
-        id: 11,
-        name: "Arcade",
-    
-    },
-    {
-        id: 83,
-        name: "Platformer",
-    
-    },
-    {
-        id: 1,
-        name: "Racing",
-    },
-    {
-        id: 59,
-        name: "Massively Multiplayer",
-    },
-    {
-        id: 15,
-        name: "Sports",
-    },
-    {
-        id: 6,
-        name: "Fighting",
-    },
-    {
-        id: 19,
-        name: "Family",
-    },
-    {
-        id: 28,
-        name: "Board Games",
-    },
-    {
-        id: 34,
-        name: "Educational"
-    },
-    {
-        id: 17,
-        name: "Card"
-    }
-]
+export const genres: ElementDescription[] = [
+  {
+    id: 4,
+    name: "Action",
+  },
+  {
+    id: 51,
+    name: "Indie",
+  },
+  {
+    id: 3,
+    name: "Adventure",
+  },
+  {
+    id: 5,
+    name: "RPG",
+  },
+  {
+    id: 10,
+    name: "Strategy",
+  },
+  {
+    id: 2,
+    name: "Shooter",
+  },
+  {
+    id: 40,
+    name: "Casual",
+  },
+  {
+    id: 14,
+    name: "Simulation",
+  },
+  {
+    id: 7,
+    name: "Puzzle",
+  },
+  {
+    id: 11,
+    name: "Arcade",
+  },
+  {
+    id: 83,
+    name: "Platformer",
+  },
+  {
+    id: 1,
+    name: "Racing",
+  },
+  {
+    id: 59,
+    name: "Massively Multiplayer",
+  },
+  {
+    id: 15,
+    name: "Sports",
+  },
+  {
+    id: 6,
+    name: "Fighting",
+  },
+  {
+    id: 19,
+    name: "Family",
+  },
+  {
+    id: 28,
+    name: "Board Games",
+  },
+  {
+    id: 34,
+    name: "Educational",
+  },
+  {
+    id: 17,
+    name: "Card",
+  },
+];
 
-export const parentConsoles:ElementDescription[] = [
-    {
-        id:1,
-        name:"PC"
-    },
-    {
-        id:2,
-        name:"PlayStation"
-    },
-    {
-        id:3,
-        name:"Xbox"
-    },
-    {
-        id:4,
-        name:"iOS"
-    }, 
-    {
-        id:8,
-        name:"Android"
-    },
-    {
-        id:5,
-        name:"Apple Macintosh"
-    },
-    {
-        id:6,
-        name:"Linux"
-    },
-    {
-        id:7,
-        name:"Nintendo"
-    },
-    {
-        id:9,
-        name:"Atari"
-    },
-    {
-        id:10,
-        name:"Commodore / Amiga"
-    }, 
-    {
-        id:11,
-        name:"SEGA"
-    },
-    {
-        id:12,
-        name:"3DO"
-    },     
-    {
-        id:13,
-        name:"Neo Geo"
-    },
-    {
-        id:14,
-        name:"Web"
-    }         
-]
+export const parentConsoles: ElementDescription[] = [
+  {
+    id: 1,
+    name: "PC",
+  },
+  {
+    id: 2,
+    name: "PlayStation",
+  },
+  {
+    id: 3,
+    name: "Xbox",
+  },
+  {
+    id: 4,
+    name: "iOS",
+  },
+  {
+    id: 8,
+    name: "Android",
+  },
+  {
+    id: 5,
+    name: "Apple Macintosh",
+  },
+  {
+    id: 6,
+    name: "Linux",
+  },
+  {
+    id: 7,
+    name: "Nintendo",
+  },
+  {
+    id: 9,
+    name: "Atari",
+  },
+  {
+    id: 10,
+    name: "Commodore / Amiga",
+  },
+  {
+    id: 11,
+    name: "SEGA",
+  },
+  {
+    id: 12,
+    name: "3DO",
+  },
+  {
+    id: 13,
+    name: "Neo Geo",
+  },
+  {
+    id: 14,
+    name: "Web",
+  },
+];
 
 // export const detailedConsoles:ElementDescription[] = [
 //     {
