@@ -1,199 +1,202 @@
 import {
   faThumbsDown as faThumbsDownRegular,
   faThumbsUp as faThumbsUpRegular,
-} from "@fortawesome/free-regular-svg-icons";
+} from '@fortawesome/free-regular-svg-icons'
 import {
   faThumbsDown as faThumbsDownSolid,
   faThumbsUp as faThumbsUpSolid,
   faTrash,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import axios from "axios";
-import { ObjectId } from "bson";
-import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
-import { Review_Type } from "../../types/schema";
+} from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import axios from 'axios'
+import { ObjectId } from 'bson'
+import { useSession } from 'next-auth/react'
+import { useEffect, useState } from 'react'
+import { Review_Type } from '../../types/schema'
 
-export default function Review(props: Review_Type) {
-  const session = useSession();
-  const [like, setLike] = useState<boolean>(false);
-  const [dislike, setDislike] = useState<boolean>(false);
-  const [isUserLiked, setIsUserLiked] = useState<boolean>(false);
-  const [isUserDisliked, setIsUserDisliked] = useState<boolean>(false);
-  const [likes, setLikes] = useState<ObjectId[]>([]);
-  const [dislikes, setDislikes] = useState<ObjectId[]>([]);
+interface Props extends Review_Type {
+  deleteReview: (reviewId: ObjectId | undefined) => void
+}
+
+export default function Review(props: Props) {
+  const session = useSession()
+  const [like, setLike] = useState<boolean>(false)
+  const [dislike, setDislike] = useState<boolean>(false)
+  const [isUserLiked, setIsUserLiked] = useState<boolean>(false)
+  const [isUserDisliked, setIsUserDisliked] = useState<boolean>(false)
+  const [likes, setLikes] = useState<ObjectId[]>([])
+  const [dislikes, setDislikes] = useState<ObjectId[]>([])
 
   useEffect(() => {
-    if (session.status === "authenticated") {
+    if (session.status === 'authenticated') {
       if (props.likes.includes(session.data?.user?.userId)) {
-        setIsUserLiked(true);
+        setIsUserLiked(true)
       }
       if (props.dislikes.includes(session.data?.user?.userId)) {
-        setIsUserDisliked(true);
+        setIsUserDisliked(true)
       }
-      setLikes(props.likes);
-      setDislikes(props.dislikes);
+      setLikes(props.likes)
+      setDislikes(props.dislikes)
     }
-  }, []);
+  }, [])
 
   const deleteReview = async () => {
     try {
       const deleteReviewRequest = await axios.post(
-        "/api/game/cancel/review/deleteReview",
+        '/api/game/cancel/review/deleteReview',
         {
           userId: props.userId,
           gameId: props.gameId,
           reviewId: props._id,
         }
-      );
+      )
       const cancelRankRequest = await axios.post(
-        "/api/game/cancel/cancelRank",
+        '/api/game/cancel/cancelRank',
         {
           userId: props.userId,
           gameId: props.gameId,
           rankId: props._id,
         }
-      );
+      )
       if (deleteReviewRequest.status !== 200) {
-        throw new Error(deleteReviewRequest.data.error);
+        throw new Error(deleteReviewRequest.data.error)
       }
       if (cancelRankRequest.status !== 200) {
-        throw new Error(deleteReviewRequest.data.error);
+        throw new Error(deleteReviewRequest.data.error)
       }
-      console.log("deleted rank");
+      props.deleteReview(props._id)
     } catch (e) {
-      console.log("error", e);
+      console.log('error', e)
     }
-  };
+  }
 
   const likeReview = async () => {
-    if (session.status !== "authenticated") return;
+    if (session.status !== 'authenticated') return
     try {
       //if user already liked that means he want to cancel his like
       if (isUserLiked) {
-        setLikes(likes.filter((like) => like !== session.data?.user?.userId));
-        setIsUserLiked(false);
+        setLikes(likes.filter((like) => like !== session.data?.user?.userId))
+        setIsUserLiked(false)
         //sending request to cancel the like
-        const req = await axios.post("/api/game/cancel/review/like", {
+        const req = await axios.post('/api/game/cancel/review/like', {
           userId: session?.data?.user?.userId,
           reviewId: props._id,
-        });
-        if (req.status !== 200) throw new Error(req.data.error);
+        })
+        if (req.status !== 200) throw new Error(req.data.error)
       } else {
         //if user already disliked and now he want to like
         if (isUserDisliked) {
-          setIsUserDisliked(false);
+          setIsUserDisliked(false)
           //removing his dislike from the array
           setDislikes(
             dislikes.filter((id) => id !== session.data?.user?.userId)
-          );
+          )
           //request to cancel the dislike
-          const req = await axios.post("/api/game/cancel/review/dislike", {
+          const req = await axios.post('/api/game/cancel/review/dislike', {
             userId: session?.data?.user?.userId,
             reviewId: props._id,
-          });
-          if (req.status !== 200) throw new Error(req.data.error);
+          })
+          if (req.status !== 200) throw new Error(req.data.error)
         }
-        setIsUserLiked(true);
-        setLikes([...likes, session?.data?.user?.userId]);
-        const req = await axios.post("/api/game/action/review/like", {
+        setIsUserLiked(true)
+        setLikes([...likes, session?.data?.user?.userId])
+        const req = await axios.post('/api/game/action/review/like', {
           userId: session?.data?.user?.userId,
           reviewId: props._id,
-        });
-        if (req.status !== 200) throw new Error(req.data.error);
+        })
+        if (req.status !== 200) throw new Error(req.data.error)
       }
     } catch (e) {
-      console.log("error", e);
+      console.log('error', e)
     }
-  };
+  }
 
   const dislikeReview = async () => {
     try {
-      if (session.status !== "authenticated") return;
+      if (session.status !== 'authenticated') return
       //if user already disliked that means he want to cancel his dislike
       if (isUserDisliked) {
-        setDislikes(
-          likes.filter((like) => like !== session.data?.user?.userId)
-        );
-        setIsUserDisliked(false);
+        setDislikes(likes.filter((like) => like !== session.data?.user?.userId))
+        setIsUserDisliked(false)
         //sending request to cancel the dislike
-        const req = await axios.post("/api/game/cancel/review/dislike", {
+        const req = await axios.post('/api/game/cancel/review/dislike', {
           userId: session?.data?.user?.userId,
           reviewId: props._id,
-        });
-        if (req.status !== 200) throw new Error(req.data.error);
+        })
+        if (req.status !== 200) throw new Error(req.data.error)
       } else {
         //if user already liked and now he want to dislike
         if (isUserLiked) {
-          setIsUserLiked(false);
+          setIsUserLiked(false)
           //removing his like from the array
-          setLikes(likes.filter((id) => id !== session.data?.user?.userId));
+          setLikes(likes.filter((id) => id !== session.data?.user?.userId))
           //request to cancel the dislike
-          const req = await axios.post("/api/game/cancel/review/like", {
+          const req = await axios.post('/api/game/cancel/review/like', {
             userId: session?.data?.user?.userId,
             reviewId: props._id,
-          });
-          if (req.status !== 200) throw new Error(req.data.error);
+          })
+          if (req.status !== 200) throw new Error(req.data.error)
         }
-        setDislikes([...dislikes, session?.data?.user?.userId]);
-        setIsUserDisliked(true);
-        const req = await axios.post("/api/game/action/review/dislike", {
+        setDislikes([...dislikes, session?.data?.user?.userId])
+        setIsUserDisliked(true)
+        const req = await axios.post('/api/game/action/review/dislike', {
           userId: session?.data?.user?.userId,
           reviewId: props._id,
-        });
-        if (req.status !== 200) throw new Error(req.data.error);
+        })
+        if (req.status !== 200) throw new Error(req.data.error)
       }
     } catch (e) {
-      console.log("error", e);
+      console.log('error', e)
     }
-  };
+  }
 
   const CalculateCount = () => {
     if (likes.length - dislikes.length > 0) {
       return (
         <p
           className="mx-3 text-xl font-extrabold opacity-50"
-          style={{ color: " #8AFFAA" }}
+          style={{ color: ' #8AFFAA' }}
         >
           +{likes.length - dislikes.length}
         </p>
-      );
+      )
     } else if (likes.length - dislikes.length < 0) {
       return (
         <p
           className="mx-3 text-xl font-extrabold opacity-50"
-          style={{ color: "#d63044" }}
+          style={{ color: '#d63044' }}
         >
           {likes.length - dislikes.length}
         </p>
-      );
+      )
     } else {
       return (
         <p
           className="mx-3 text-xl font-extrabold opacity-50"
-          style={{ color: "#494949" }}
+          style={{ color: '#494949' }}
         >
           0
         </p>
-      );
+      )
     }
-  };
+  }
 
   return (
     <div
       id="review"
       className="px-7 py-6 rounded-xl relative mx-2"
       style={{
-        width: "32rem",
-        minWidth: "32rem",
-        height: "30rem",
-        minHeight: "30rem",
-        backgroundColor: "rgba(21,21,21,0.6)",
+        width: '32rem',
+        minWidth: '32rem',
+        height: '30rem',
+        minHeight: '30rem',
+        backgroundColor: 'rgba(21,21,21,0.6)',
       }}
     >
       <div className="flex justify-between items-center">
         <h1 className="text-white font-bold text-3xl  underline">Rank</h1>
         <FontAwesomeIcon
+          onClick={() => deleteReview()}
           icon={faTrash}
           className="h-4 cursor-pointer text-red-500 opacity-40 hover:opacity-100"
         />
@@ -240,5 +243,5 @@ export default function Review(props: Review_Type) {
         </div>
       </div>
     </div>
-  );
+  )
 }
