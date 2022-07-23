@@ -1,8 +1,10 @@
-import { Review_Type } from "../../types/schema";
-import Review from "./Review";
+import { ObjectId } from 'bson'
+import { Review_Type } from '../../types/schema'
+import Review from './Review'
 
 export default function VerticalReviewsLoader(props: {
-  reviews: Review_Type[];
+  reviews: Review_Type[]
+  deleteReview: (reviewId: ObjectId | undefined) => void
 }) {
   return (
     <>
@@ -14,15 +16,16 @@ export default function VerticalReviewsLoader(props: {
             likes={review.likes}
             dislikes={review.dislikes}
             gameId={review.gameId}
-            userId={review.gameId}
+            userId={review.userId}
             created_at={review.created_at}
             text={review.text}
             rank={review.rank}
             game_name={review.game_name}
             game_image={review.game_image}
+            deleteReview={(id) => props.deleteReview(id)}
           />
         </div>
       ))}
     </>
-  );
+  )
 }
