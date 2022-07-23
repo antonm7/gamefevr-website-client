@@ -68,6 +68,6 @@
   transition: all 0.1s linear;
 }
 .global_animation_disabled {
-  right: -20%;
+  right: -30rem;
   transition: all 0.1s linear;
 }

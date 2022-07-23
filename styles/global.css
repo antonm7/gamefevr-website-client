@@ -4,7 +4,7 @@
 
 * {
   overflow-x: hidden;
-  font-family: "Source Sans Pro", sans-serif !important;
+  font-family: 'Source Sans Pro', sans-serif !important;
   box-sizing: border-box !important;
 }
 
@@ -12,11 +12,11 @@ h1,
 p,
 h2,
 div {
-  font-family: "Source Sans Pro", sans-serif !important;
+  font-family: 'Source Sans Pro', sans-serif !important;
 }
 
 #home {
-  background-image: url("../public/images/home/bg.png");
+  background-image: url('../public/images/home/bg.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -281,7 +281,4 @@ div {
 
 #explore_wrapper .slick-track {
   overflow: hidden !important;
-}
-
-#explore_wrapper {
 }
