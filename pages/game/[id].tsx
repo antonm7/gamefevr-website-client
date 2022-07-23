@@ -1,67 +1,77 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useEffect, useState } from "react";
-import Screenshots from "../../components/GamePage/Screenshots";
-import SearchLayout from "../../components/layout/SearchLayout";
-import useQuery from "../../lib/functions/useQuery";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useEffect, useState } from 'react'
+import Screenshots from '../../components/GamePage/Screenshots'
+import SearchLayout from '../../components/layout/SearchLayout'
+import useQuery from '../../lib/functions/useQuery'
 import {
   DetailedGame,
   ElementDescription,
   Platform,
   ShortGame,
-} from "../../types";
-import Image from "next/image";
-import RateGame from "../../components/GamePage/RateGame";
-import useWindowSize from "../../lib/functions/useWindowSize";
-import YellowButton from "../../components/common/YellowButton";
-import ReviewsSlider from "../../components/GamePage/ReviewsSlider";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { useSession } from "next-auth/react";
-import WriteReview from "../../components/GamePage/WriteReview";
-import VerticalReviewsLoader from "../../components/GamePage/VerticalReviewsLoader";
-import { games_data, Review_Type } from "../../types/schema";
-import clientPromise from "../../lib/functions/mongodb";
-import Bigger640 from "../../components/GamePage/Responsive/Bigger640";
-import Lower640 from "../../components/GamePage/Responsive/Lower640";
-import Filters from "../../components/Filters";
-import { useStore } from "../../store";
-import { setCookie } from "cookies-next";
+} from '../../types'
+import Image from 'next/image'
+import RateGame from '../../components/GamePage/RateGame'
+import useWindowSize from '../../lib/functions/useWindowSize'
+import YellowButton from '../../components/common/YellowButton'
+import ReviewsSlider from '../../components/GamePage/ReviewsSlider'
+import { faPlus } from '@fortawesome/free-solid-svg-icons'
+import { useSession } from 'next-auth/react'
+import WriteReview from '../../components/GamePage/WriteReview'
+import VerticalReviewsLoader from '../../components/GamePage/VerticalReviewsLoader'
+import { games_data, Review_Type } from '../../types/schema'
+import clientPromise from '../../lib/functions/mongodb'
+import Bigger640 from '../../components/GamePage/Responsive/Bigger640'
+import Lower640 from '../../components/GamePage/Responsive/Lower640'
+import Filters from '../../components/Filters'
+import { useStore } from '../../store'
+import { setCookie } from 'cookies-next'
+import { ObjectId } from 'bson'
 
 type Props = {
-  game: DetailedGame;
-  reviews: Review_Type[];
-};
+  game: DetailedGame
+  reviews: Review_Type[]
+}
 
 export default function GamePage(props: Props) {
-  const [game, setGame] = useState<DetailedGame | null>(null);
-  const [width, height] = useWindowSize();
-  const [screenshotsAnimtion, setScreenshotsAnimtion] =
-    useState<boolean>(false);
-  const [reviewsAnimation, setReviewsAnimation] = useState<boolean>(false);
+  const [game, setGame] = useState<DetailedGame | null>(null)
+  const [width, height] = useWindowSize()
+  const [screenshotsAnimtion, setScreenshotsAnimtion] = useState<boolean>(false)
+  const [reviewsAnimation, setReviewsAnimation] = useState<boolean>(false)
   const [writeReviewVisibility, setWriteReviewVisibility] =
-    useState<boolean>(false);
-  const [isUserRated, setIsUserRated] = useState<string | null>(null);
-  const [reviews, setReviews] = useState<Review_Type[]>([]);
-  const store = useStore();
-  const query = useQuery();
+    useState<boolean>(false)
+  const [isUserRated, setIsUserRated] = useState<string | null>(null)
+  const [reviews, setReviews] = useState<Review_Type[]>([])
+  const store = useStore()
+  const query = useQuery()
 
   const toggleAnimation = () => {
     if (reviewsAnimation) {
-      setReviewsAnimation(false);
+      setReviewsAnimation(false)
       setTimeout(() => {
-        setScreenshotsAnimtion(false);
-      }, 450);
+        setScreenshotsAnimtion(false)
+      }, 450)
     } else {
-      setScreenshotsAnimtion(true);
+      setScreenshotsAnimtion(true)
       setTimeout(() => {
-        setReviewsAnimation(true);
-      }, 450);
+        setReviewsAnimation(true)
+      }, 450)
     }
-  };
+  }
 
   useEffect(() => {
-    setGame(props.game);
-    setReviews(props.reviews);
-  }, [query?.id]);
+    setGame(props.game)
+    setReviews(props.reviews)
+  }, [query?.id])
+
+  const deleteReview = (id: ObjectId | undefined) => {
+    if (id) {
+      const newReviews = reviews.filter(
+        (review: Review_Type) => review._id !== id
+      )
+      setReviews(newReviews)
+    }
+  }
+
   //TODO:add additional data for the website, like the game stores.
   //maybe trying accessing another api's like twitch/steam/epicgames.
   return (
@@ -109,7 +119,7 @@ export default function GamePage(props: Props) {
                   className="px-1 pb-1 text-white font-semibold text-1xl opacity-60"
                 >
                   {tag.name}
-                  {index !== game.tags.length - 1 ? "," : ""}
+                  {index !== game.tags.length - 1 ? ',' : ''}
                 </h2>
               ))}
             </div>
@@ -123,17 +133,17 @@ export default function GamePage(props: Props) {
                   height:
                     width > 1400
                       ? reviewsAnimation && !reviews.length
-                        ? "300px"
-                        : "700px"
+                        ? '300px'
+                        : '700px'
                       : reviewsAnimation && !reviews.length
-                      ? "150px"
-                      : "410px",
+                      ? '150px'
+                      : '410px',
                 }}
               >
                 <div
                   id="controller"
                   className={`${
-                    screenshotsAnimtion ? "controller_animation" : ""
+                    screenshotsAnimtion ? 'controller_animation' : ''
                   }`}
                 />
                 <Screenshots
@@ -143,13 +153,13 @@ export default function GamePage(props: Props) {
                 {reviews.length ? (
                   <div
                     className="h-full flex items-center overflow-hidden"
-                    style={{ marginTop: width > 1400 ? "-34rem" : "-20rem" }}
+                    style={{ marginTop: width > 1400 ? '-34rem' : '-20rem' }}
                   >
                     <div
                       className={`px-20 ${
                         reviewsAnimation
-                          ? "write_review_animation_enabled"
-                          : "write_review_animation_disabled"
+                          ? 'write_review_animation_enabled'
+                          : 'write_review_animation_disabled'
                       }`}
                     >
                       <FontAwesomeIcon
@@ -161,18 +171,19 @@ export default function GamePage(props: Props) {
                     <ReviewsSlider
                       isAnimated={reviewsAnimation}
                       reviews={reviews}
+                      deleteReview={(id) => deleteReview(id)}
                     />
                   </div>
                 ) : (
                   <div
                     className="h-ful  flex justify-center overflow-hidden"
-                    style={{ marginTop: width > 1400 ? "-34rem" : "-20rem" }}
+                    style={{ marginTop: width > 1400 ? '-34rem' : '-20rem' }}
                   >
                     <div
                       className={`px-20 ${
                         reviewsAnimation
-                          ? "write_review_animation_enabled"
-                          : "write_review_animation_disabled"
+                          ? 'write_review_animation_enabled'
+                          : 'write_review_animation_disabled'
                       }`}
                     >
                       <FontAwesomeIcon
@@ -189,16 +200,11 @@ export default function GamePage(props: Props) {
                 <div
                   id="game_page_screenshots_controller"
                   className="relative overflow-hidden"
-                  style={{ height: "700px" }}
+                  style={{ height: '400px' }}
                 >
-                  <div
-                    id="controller"
-                    className={`${
-                      screenshotsAnimtion ? "controller_animation" : ""
-                    }`}
-                  />
+                  <div id="controller" />
                   <Screenshots
-                    isAnimated={screenshotsAnimtion}
+                    isAnimated={false}
                     images={game.screenshots.results}
                   />
                 </div>
@@ -207,8 +213,9 @@ export default function GamePage(props: Props) {
                   className="flex flex-col items-center"
                 >
                   <div
-                    className="w-72 p-6 flex items-center justify-center rounded-xl mb-8 cursor-pointer opacity-80 hover:opacity-100"
-                    style={{ backgroundColor: "rgba(21,21,21,0.6)" }}
+                    className="w-72 p-6 flex items-center justify-center rounded-xl mb-8 
+                    cursor-pointer opacity-80 hover:opacity-100"
+                    style={{ backgroundColor: 'rgba(21,21,21,0.6)' }}
                   >
                     <div
                       className="flex items-center justify-center"
@@ -225,7 +232,10 @@ export default function GamePage(props: Props) {
                     </div>
                   </div>
                   {reviews.length ? (
-                    <VerticalReviewsLoader reviews={reviews} />
+                    <VerticalReviewsLoader
+                      reviews={reviews}
+                      deleteReview={(id) => deleteReview(id)}
+                    />
                   ) : null}
                 </div>
               </div>
@@ -234,8 +244,8 @@ export default function GamePage(props: Props) {
               <div
                 className={`w-full flex justify-center ${
                   reviewsAnimation
-                    ? "button_animation_enabled"
-                    : "button_animation_disabled"
+                    ? 'button_animation_enabled'
+                    : 'button_animation_disabled'
                 }`}
               >
                 <div className="w-52" id="show_comments_wrapper">
@@ -251,46 +261,46 @@ export default function GamePage(props: Props) {
         </div>
       )}
     </SearchLayout>
-  );
+  )
 }
 
 interface Context {
   params: {
-    id: number;
-  };
+    id: number
+  }
 }
 
 export async function getStaticPaths() {
-  let ids: number[] = [];
+  const ids: number[] = []
 
   for (let i = 1; i < 5; i++) {
     const getData: any = await fetch(
       `https://api.rawg.io/api/games?key=0ffbdb925caf4b20987cd068aa43fd75&ordering=-released&dates=1990-01-01,2022-12-31&page=${i}&page_size=${100}`
-    );
+    )
     ids.push(
       ...(await getData.json()).results.map((game: ShortGame) => game.id)
-    );
+    )
   }
 
   const paths = ids.map((id) => ({
     params: { id: JSON.stringify(id) },
-  }));
+  }))
 
-  return { paths, fallback: "blocking" };
+  return { paths, fallback: 'blocking' }
 }
 
 export async function getStaticProps(context: Context) {
   try {
     const getData = await fetch(
       `https://api.rawg.io/api/games/${context.params.id}?key=0ffbdb925caf4b20987cd068aa43fd75`
-    );
+    )
     const getScreenshots = await fetch(
       `https://api.rawg.io/api/games/${context.params.id}/screenshots?key=0ffbdb925caf4b20987cd068aa43fd75`
-    );
-    const gameData = await getData.json();
-    const screenshots = await getScreenshots.json();
+    )
+    const gameData = await getData.json()
+    const screenshots = await getScreenshots.json()
 
-    let finalData: DetailedGame = {
+    const finalData: DetailedGame = {
       id: gameData.id,
       name: gameData.name,
       released: gameData.released,
@@ -305,33 +315,32 @@ export async function getStaticProps(context: Context) {
       screenshots,
       tags: gameData.tags,
       website: gameData.website,
-    };
+    }
 
-    const client = await clientPromise;
-    const db = client.db("gameFevr");
+    const client = await clientPromise
+    const db = client.db('gameFevr')
     const reviews = await db
-      .collection("reviews")
+      .collection('reviews')
       .find({ gameId: context.params.id })
-      .toArray();
+      .toArray()
 
     // fetch(`/api/game/action/visited?gameId=${query.id}`, {
     //     //             headers:{
     //     //                 userId:session.data?.user?.userId
     //     //             }
     //     //         })
-
     return {
       props: {
         game: finalData,
         reviews: JSON.parse(JSON.stringify(reviews)),
       },
-    };
+    }
   } catch (e) {
     return {
       props: {
         game: null,
         reviews: null,
       },
-    };
+    }
   }
 }
