@@ -28,7 +28,7 @@ export default function Profile(props:Props) {
             return (
                 <CurrentProfile 
                     reviews={props.reviews} 
-                    favorites={props.reviews} 
+                    favorites={props.favorites} 
                     user={props.user}
                 />
             )
@@ -53,7 +53,6 @@ export async function getServerSideProps(context:any) {
             reviews = await db.collection('reviews').find({userId:session?.user?.userId}).toArray()
             favorites = await db.collection('favorites').find({userId:session?.user?.userId}).toArray()
         }
-
         return {
             props: {
                 user:isVisited ? {
