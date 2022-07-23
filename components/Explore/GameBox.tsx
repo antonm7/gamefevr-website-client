@@ -15,7 +15,7 @@ export default function GameBox(props:Props) {
     if(!game) return null
 
     return (
-        <div className="w-96 h-72 bg-white rounded-lg mx-8 mb-12 overflow-hidden" style={{height:'1%'}}>
+        <div className="relative bg-gray-400 rounded-lg  overflow-hidden h-96" style={{height:'40rem'}}>
             <div  className="bg-image" >{!game.background_image ? null :                
              <Image quality="1" loading="eager" className="z-0" src={game.background_image} layout="fill" objectFit="cover" alt="Not Working!"/>}
             </div>

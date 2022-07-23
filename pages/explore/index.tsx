@@ -18,7 +18,7 @@ export default function Index(props:Props) {
 
     return (
         <SearchLayout>
-            <div >
+            <div className="flex justify-center overflow-hidden">
                 <ExploreScroll games={props.games}/>
             </div>
         </SearchLayout>
