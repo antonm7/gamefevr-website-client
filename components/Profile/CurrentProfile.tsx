@@ -3,8 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ObjectId } from "bson";
 import { useEffect, useState } from "react";
 import Slider from "react-slick";
-import deleteFavorite from "../../pages/api/game/cancel/favorite/deleteFavorite";
-import deleteReview from "../../pages/api/game/cancel/review/deleteReview";
+import useWindowSize from "../../lib/functions/useWindowSize";
 import { useStore } from "../../store";
 import { Review_Type, Favorite_Type, Client_User } from "../../types/schema";
 import Filters from "../Filters";
@@ -24,6 +23,7 @@ export default function CurrentProfile(props:Props) {
     const [user, setUser] = useState<any>(null)
     const [reviews, setReviews] = useState<Review_Type[]>([])
     const [favorites, setFavorites] = useState<Favorite_Type[]>([])
+    const [width, height] = useWindowSize();
 
     const store = useStore()
 
@@ -38,7 +38,7 @@ export default function CurrentProfile(props:Props) {
 
     const favoritesSettings = {
         infinite: false,
-        slidesToShow: props.favorites.length >= 4 ? 4 : props.favorites.length
+        slidesToShow: width > 1440 ? props.favorites.length >= 4 ? 4 : props.favorites.length : width > 1200 ? props.favorites.length >= 3 ? 3 : props.favorites.length : props.favorites.length >= 2 ? 2 : props.favorites.length
     }
 
     useEffect(() => {
