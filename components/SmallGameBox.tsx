@@ -57,7 +57,7 @@ export default function SmallGameBox(props: Props) {
         </div>
         <div className="flex flex-row justify-between pt-6">
           <div className="flex flex-row flex-nowrap">
-            {game.genres
+            {game?.genres
               .slice(0, 3)
               .map((genre: ElementDescription, index: number) => (
                 <h2
@@ -66,12 +66,12 @@ export default function SmallGameBox(props: Props) {
                   style={{ color: '#919191' }}
                 >
                   {genre.name}
-                  {index === game.genres.length - 1 || index === 2 ? '' : ','}
+                  {index === game?.genres.length - 1 || index === 2 ? '' : ','}
                 </h2>
               ))}
           </div>
           <h2 className="pr-1 text-sm" style={{ color: '#919191' }}>
-            {game.released.slice(0, 4)}
+            {game.released?.slice(0, 4)}
           </h2>
         </div>
       </div>
