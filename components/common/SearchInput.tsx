@@ -22,6 +22,7 @@ export default function SearchInput() {
   };
 
   useEffect(() => {
+    store.changeGameName(searchTerm)
     const delayDebounceFn = setTimeout(() => {
       if (searchTerm === "") {
         setGames([]);
@@ -49,6 +50,7 @@ export default function SearchInput() {
           className="w-700 text-white placeholder-slate-400 outline-0 p-4 h-16 bg-inputBg rounded-lg"
         />
       </div>
+      {games.length === 0 ? <p className="text-cool-blue opacity-30 text-xs pt-2">Press the search button to start exploring games</p> : null}
       {games.length > 0 ? (
         <div
           style={{ minHeight: "7rem" }}
