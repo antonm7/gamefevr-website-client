@@ -15,7 +15,7 @@ export default async function handler(req: Request, res: Response) {
       const body: BodyReq = req.body;
       const { yearRange, genres, consoles } = body.query;
       let games = [];
-      let filteredString: string = "";
+      let filteredString = "";
       //checking if i got some filter
       if (yearRange || genres || consoles) {
         if (yearRange) {
@@ -32,8 +32,8 @@ export default async function handler(req: Request, res: Response) {
               `&parent_platforms=${consoles}`
             );
           } else {
-            let consolesString: string = "";
-            for (let key in consoles) {
+            let consolesString = "";
+            for (const key in consoles) {
               if (parseInt(key) !== consoles.length - 1) {
                 consolesString = consolesString.concat(`${consoles[key]}`, ",");
               } else {
@@ -49,8 +49,8 @@ export default async function handler(req: Request, res: Response) {
           if (typeof genres === "string") {
             filteredString = filteredString.concat(`&genres=${genres}`);
           } else {
-            let genresString: string = "";
-            for (let key in genres) {
+            let genresString = "";
+            for (const key in genres) {
               if (parseInt(key) !== genres.length - 1) {
                 genresString = genresString.concat(`${genres[key]}`, ",");
               } else {
@@ -66,7 +66,7 @@ export default async function handler(req: Request, res: Response) {
         games = await getData.json();
       } else {
         const getData = await fetch(
-          `https://api.rawg.io/api/games?key=0ffbdb925caf4b20987cd068aa43fd75&ordering=-released&page=${body.page}&page_size=20`
+          `https://api.rawg.io/api/games?key=0ffbdb925caf4b20987cd068aa43fd75&ordering=-released&dates=1990-01-01,2022-12-31&page=${body.page}&page_size=20`
         );
         games = await getData.json();
       }
