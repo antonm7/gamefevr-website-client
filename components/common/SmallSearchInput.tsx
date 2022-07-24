@@ -4,6 +4,7 @@ import { setCookie } from 'cookies-next'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { useFiltersStore, useStore } from '../../store'
+import FiltersAppliedCount from './FiltersAppliedCount'
 
 export default function SmallSearchInput() {
   const [search, setSearch] = useState<string>('')
@@ -64,6 +65,7 @@ export default function SmallSearchInput() {
         icon={faMagnifyingGlass}
         className="absolute h-3 cursor-pointer right-10 text-gray-600"
       />
+      <FiltersAppliedCount />
       <input
         id="small_search_input_input"
         value={search}
