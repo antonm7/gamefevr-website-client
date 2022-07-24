@@ -1,7 +1,7 @@
 import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
-import useWindowSize from '../../lib/functions/useWindowSize'
+import useWindowSize from '../../lib/functions/hooks/useWindowSize'
 import Review from './Review'
 import { Review_Type } from '../../types/schema'
 import { ObjectId } from 'bson'
@@ -39,11 +39,10 @@ export default function ReviewsSlider(props: Props) {
   return (
     <Slider
       {...settings}
-      className={`${
-        props.isAnimated
+      className={`${props.isAnimated
           ? 'reviews_animation_enable'
           : 'reviews_animation_disable'
-      }`}
+        }`}
     >
       {props.reviews.map((review: Review_Type, index: number) => (
         <Review
