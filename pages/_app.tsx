@@ -43,16 +43,6 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
 
     //follow any changes to the query, and update the store
     //because the filters component takes data from the store and not the query
-    if (router.pathname === '/search') {
-      filtersStore.setConsoles(
-        router.query.consoles ? router.query.consoles : []
-      )
-      filtersStore.setGenres(router.query.genres ? router.query.genres : [])
-      filtersStore.setYearRange(
-        router.query.yearRange ? router.query.yearRange : []
-      )
-      changeGameName(router.query.search ? router.query.search : '')
-    }
 
     return () => {
       router.events.off('routeChangeStart', handleStart)
@@ -60,6 +50,20 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
       router.events.off('routeChangeError', handleStop)
     }
   }, [router])
+
+  useEffect(() => {
+    if (router.pathname === '/search') {
+      // console.log('changeddedede', router.query)
+      // filtersStore.setConsoles(
+      //   router.query.consoles ? router.query.consoles : []
+      // )
+      // filtersStore.setGenres(router.query.genres ? router.query.genres : [])
+      // filtersStore.setYearRange(
+      //   router.query.yearRange ? router.query.yearRange : []
+      // )
+      // changeGameName(router.query.search ? router.query.search : '')
+    }
+  }, [router.query])
 
   return (
     <>

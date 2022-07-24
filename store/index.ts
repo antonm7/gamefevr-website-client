@@ -6,8 +6,13 @@ export const useStore = create((set: any) => ({
   page: <number>1,
   gameName: <string>'',
   addGames: (arr: any[]) =>
-    set((state: any) => ({ games: [...state.games, ...arr] })),
-  clearGames: () => set(() => ({ games: [] })),
+    set((state: any) => {
+      return { games: [...state.games, ...arr] }
+    }),
+  clearGames: () =>
+    set((state: any) => {
+      return { games: [] }
+    }),
   addPage: () => set((state: any) => ({ page: (state.page += 1) })),
   clearPage: () => set(() => ({ page: 1 })),
   changeFilterVisibility: (value: boolean) =>

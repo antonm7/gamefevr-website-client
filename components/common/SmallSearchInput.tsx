@@ -2,7 +2,7 @@ import { faMagnifyingGlass, faSliders } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { setCookie } from 'cookies-next'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useFiltersStore, useStore } from '../../store'
 import FiltersAppliedCount from './FiltersAppliedCount'
 
@@ -18,10 +18,10 @@ export default function SmallSearchInput() {
     store.changeGameName(text)
   }
 
+  // const memoizedNavigate = useCallback(() => navigate(), [])
+
   const navigate = () => {
     setCookie('prevRoute', '/')
-    store.clearGames()
-    store.clearPage()
     if (store.gameName.length > 0) {
       router.push({
         pathname: '/search',
@@ -50,6 +50,8 @@ export default function SmallSearchInput() {
         },
       })
     }
+    store.clearGames()
+    store.clearPage()
     store.changeFilterVisibility(false)
   }
 

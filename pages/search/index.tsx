@@ -17,7 +17,7 @@ interface Props {
 }
 
 export default function Index(props: Props) {
-  const [loadMoreLoading, setLoadMoreLoading] = useState<boolean>(false)
+  const [loadMoreLoading, setLoadMoreLoading] = useState<boolean>(true)
   const changeGlobalErrorVisibility = useGlobalError(
     (store) => store.setIsVisible
   )
@@ -54,21 +54,22 @@ export default function Index(props: Props) {
   }
 
   useEffect(() => {
-    store.clearGames()
-    store.clearPage()
     if (props.games.length === 0) {
-      setNoResults(true)
       return
+    } else {
+      if (props.error) {
+        console.log(props.error)
+        setLoadingError(true)
+        return
+      }
+      if (props.games.length === 0) {
+        setNoResults(true)
+        return
+      }
+      store.addPage()
+      store.addGames(props.games)
     }
-    if (props.error) {
-      setLoadingError(true)
-      return
-    }
-    setNoResults(false)
-    setLoadingError(false)
-    store.addPage()
-    store.addGames(props.games)
-  }, [props])
+  }, [props.games, props.error])
 
   return (
     <SearchLayout>
@@ -97,16 +98,20 @@ export default function Index(props: Props) {
                 <SmallGameBox key={index} game={game} />
               ))}
             </div>
-            <div className="w-24 h-16 rounded-lg m-auto mt-8">
-              {loadMoreLoading ? (
-                <SmallLoader big={false} xCentered={true} />
-              ) : (
-                <SearchButton
-                  text="Load More"
-                  onClick={() => loadGames(store.page)}
-                />
-              )}
-            </div>
+            {store.games.length > 0 ? (
+              <div className="w-24 h-16 rounded-lg m-auto mt-8">
+                {loadMoreLoading ? (
+                  <SmallLoader big={false} xCentered={true} />
+                ) : (
+                  <SearchButton
+                    text="Load More"
+                    onClick={() => loadGames(store.page)}
+                  />
+                )}
+              </div>
+            ) : (
+              <SmallLoader big={true} xCentered={true} />
+            )}
           </div>
         )}
       </div>
@@ -129,6 +134,7 @@ export async function getServerSideProps(context: any) {
   }
 
   const cookies: any = parseCookies(context.req)
+  console.log(context.query)
 
   if (cookies.prevRoute === '/game/[id]') {
     return {
@@ -137,12 +143,10 @@ export async function getServerSideProps(context: any) {
       },
     }
   }
-
   const { yearRange, genres, consoles, search } = context.query
   let filteredString = ''
   let games = []
   try {
-    console.log(context.query)
     if (yearRange || genres || consoles || search) {
       if (search) {
         filteredString += `&search=${search}&`
@@ -204,6 +208,7 @@ export async function getServerSideProps(context: any) {
       },
     }
   } catch (e) {
+    console.log(e)
     return {
       props: {
         games: [],

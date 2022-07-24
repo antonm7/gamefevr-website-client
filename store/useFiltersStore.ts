@@ -36,9 +36,11 @@ export const useFiltersStore = create((set: any) => ({
       }
     }),
   clearFilters: () =>
-    set((state: any) => ({
-      yearRange: [1990, 2022],
-      genres: [],
-      consoles: [],
-    })),
+    set((state: any) => {
+      return {
+        yearRange: [1990, 2022],
+        genres: [],
+        consoles: [],
+      }
+    }),
 }))
