@@ -10,7 +10,6 @@ import SmallLoader from "../../components/common/SmallLoader";
 import { ShortGame } from "../../types";
 import LoadingError from "../../components/common/LoadingError";
 import cookie from "cookie";
-import { setCookie } from "cookies-next";
 
 interface Props {
   games: ShortGame[];
@@ -50,18 +49,21 @@ export default function Index(props: Props) {
   };
 
   useEffect(() => {
-    if (store.games.length === 0) {
-      if (props.error) {
-        setLoadingError(true);
-        return;
-      }
-      if (props.games.length === 0) {
-        setNoResults(true);
-        return;
-      }
-      store.addPage();
-      store.addGames(props.games);
+    store.clearGames()
+    store.clearPage()
+    if (props.games.length === 0) {
+      setNoResults(true);
+      return;
     }
+    if (props.error) {
+      setLoadingError(true);
+      return;
+    }
+    setNoResults(false)
+    setLoadingError(false);
+    store.addPage();
+    store.addGames(props.games);
+
   }, [props]);
 
   return (
@@ -113,6 +115,7 @@ interface Context {
     yearRange: string[] | string | undefined;
     genres: string[] | string | undefined;
     consoles: string[] | string | undefined;
+    search: string | undefined
   };
 }
 
@@ -122,7 +125,6 @@ export async function getServerSideProps(context: any) {
   }
 
   const cookies: any = parseCookies(context.req);
-  console.log(cookies);
 
   if (cookies.prevRoute === "/game/[id]") {
     return {
@@ -132,11 +134,14 @@ export async function getServerSideProps(context: any) {
     };
   }
 
-  const { yearRange, genres, consoles } = context.query;
-  let filteredString: string = "";
+  const { yearRange, genres, consoles, search } = context.query;
+  let filteredString = "";
   let games = [];
   try {
-    if (yearRange || genres || consoles) {
+    if (yearRange || genres || consoles || search) {
+      if (search) {
+        filteredString += `&search=${search}&`;
+      }
       if (yearRange) {
         filteredString = filteredString.concat(
           "",
@@ -151,8 +156,8 @@ export async function getServerSideProps(context: any) {
             `&parent_platforms=${consoles}`
           );
         } else {
-          let consolesString: string = "";
-          for (let key in consoles) {
+          let consolesString = "";
+          for (const key in consoles) {
             if (parseInt(key) !== consoles.length - 1) {
               consolesString = consolesString.concat(`${consoles[key]}`, ",");
             } else {
@@ -168,8 +173,8 @@ export async function getServerSideProps(context: any) {
         if (typeof genres === "string") {
           filteredString = filteredString.concat(`&genres=${genres}`);
         } else {
-          let genresString: string = "";
-          for (let key in genres) {
+          let genresString = "";
+          for (const key in genres) {
             if (parseInt(key) !== genres.length - 1) {
               genresString = genresString.concat(`${genres[key]}`, ",");
             } else {
@@ -189,8 +194,6 @@ export async function getServerSideProps(context: any) {
       );
       games = getData.data.results;
     }
-    // context.res.setHeader('set-cookie', 'needToFetch=true')
-
     return {
       props: {
         games,
