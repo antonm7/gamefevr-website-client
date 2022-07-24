@@ -3,9 +3,10 @@ import { Request, Response } from "express";
 interface BodyReq {
   page: number;
   query: {
-    yearRange: number[];
-    consoles: string | string[];
-    genres: string | string[];
+    yearRange: string[] | string | undefined;
+    genres: string[] | string | undefined;
+    consoles: string[] | string | undefined;
+    search: string | undefined
   };
 }
 //TODO:change for get method
@@ -13,11 +14,14 @@ export default async function handler(req: Request, res: Response) {
   if (req.method === "POST") {
     try {
       const body: BodyReq = req.body;
-      const { yearRange, genres, consoles } = body.query;
+      const { yearRange, genres, consoles, search } = body.query;
       let games = [];
       let filteredString = "";
       //checking if i got some filter
-      if (yearRange || genres || consoles) {
+      if (yearRange || genres || consoles || search) {
+        if (search) {
+          filteredString += `&search=${search}&`;
+        }
         if (yearRange) {
           filteredString = filteredString.concat(
             "",
