@@ -31,9 +31,14 @@ export const useFiltersStore = create((set: any) => ({
         let loopedArr: number[] = []
         for (const key in consoles) {
           loopedArr = [...loopedArr, consoles[key]]
-          loopedArr.push(consoles[key])
         }
         return { consoles: loopedArr }
       }
     }),
+  clearFilters: () =>
+    set((state: any) => ({
+      yearRange: [1990, 2022],
+      genres: [],
+      consoles: [],
+    })),
 }))
