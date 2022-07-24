@@ -51,6 +51,7 @@ export default function Filters() {
             : yearRange,
         genres: selectedGenres,
         consoles: selectedConsoles,
+        search: store.gameName
       },
     });
     store.changeFilterVisibility(false);
