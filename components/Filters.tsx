@@ -40,18 +40,16 @@ export default function Filters() {
 
   const search = () => {
     setCookie("prevRoute", "/");
-    store.clearGames();
-    store.clearPage();
     router.push({
       pathname: "/search",
       query: {
         yearRange:
           yearRange[0] === 1990 && yearRange[1] === 2022
-            ? undefined
+            ? []
             : yearRange,
         genres: selectedGenres,
         consoles: selectedConsoles,
-        search: store.gameName
+        search: store.gameName ? store.gameName : null,
       },
     });
     store.changeFilterVisibility(false);
@@ -60,7 +58,7 @@ export default function Filters() {
   useEffect(() => {
     if (!router.isReady && !router.query) return;
     //trick to add type for router query, otherwise its yelling at me
-    let q: any = router.query;
+    const q: any = router.query;
     //typescript fires error 'object is possibly 'undefined, so checking' if it exists
     //always compare between query and state, to keep the state updated
     if (q.yearRange) {
@@ -75,7 +73,7 @@ export default function Filters() {
       if (typeof q.genres === "string") {
         changeSelectedGenres([parseInt(q.genres)]);
       } else {
-        for (let key in q.genres) {
+        for (const key in q.genres) {
           changeSelectedGenres((v) => [...v, parseInt(q.genres[key])]);
         }
       }
@@ -84,7 +82,7 @@ export default function Filters() {
       if (typeof q.consoles === "string") {
         changeSelectedConsoles([parseInt(q.consoles)]);
       } else {
-        for (let key in q.consoles) {
+        for (const key in q.consoles) {
           changeSelectedConsoles((v) => [...v, parseInt(q.consoles[key])]);
         }
       }
