@@ -17,7 +17,7 @@ interface Props {
 }
 
 export default function Index(props: Props) {
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const changeGlobalErrorVisibility = useGlobalError(
     (store) => store.setIsVisible
   );
@@ -33,13 +33,19 @@ export default function Index(props: Props) {
       setLoadingError(false);
     }
     try {
+      setNoResults(false)
       setLoading(true);
       const getData = await axios.post("/api/query/search", {
         page: cur,
         query: router.query,
       });
-      store.addPage();
-      store.addGames(getData.data.games);
+      if (getData.data.games.length === 0) {
+        setNoResults(true)
+        setLoading(false)
+      } else {
+        store.addPage();
+        store.addGames(getData.data.games);
+      }
       setLoading(false);
     } catch (e) {
       setLoading(false);
@@ -59,52 +65,54 @@ export default function Index(props: Props) {
       setLoadingError(true);
       return;
     }
+    // setLoading(false)
     setNoResults(false)
     setLoadingError(false);
     store.addPage();
     store.addGames(props.games);
-
+    setLoading(false)
   }, [props]);
 
   return (
     <SearchLayout>
       <div>
         {store.isFilterOn ? <Filters /> : null}
-        {loadingError ? (
-          <div className="pt-32">
-            <LoadingError
-              mainTitle={"Unexpected Error"}
-              description={"Oops...something went wrong"}
-              button={true}
-              onClick={() => loadGames(1)}
-            />
-          </div>
-        ) : noResults ? (
-          <div className="pt-32">
-            <LoadingError
-              mainTitle={"No Results Found"}
-              description={"We couldnt find what you searched..."}
-            />
-          </div>
-        ) : (
-          <div className="py-10">
-            <div className="flex flex-wrap justify-center">
-              {store.games.map((game: ShortGame, index: number) => (
-                <SmallGameBox key={index} game={game} />
-              ))}
+        {loading && !loadingError && !noResults ? <div className="pt-12"><SmallLoader screenCentered={true} big={true} /></div> :
+          loadingError ? (
+            <div className="pt-32">
+              <LoadingError
+                mainTitle={"Unexpected Error"}
+                description={"Oops...something went wrong"}
+                button={true}
+                onClick={() => loadGames(1)}
+              />
             </div>
-            <div className="w-24 h-16 rounded-lg m-auto mt-8">
-              {loading ? (
-                <SmallLoader big={false} xCentered={true} />
-              ) : (
-                <SearchButton
-                  text="Load More"
-                  onClick={() => loadGames(store.page)}
-                />
-              )}
+          ) : noResults ? (
+            <div className="pt-32">
+              <LoadingError
+                mainTitle={"No Results Found"}
+                description={"We couldnt find what you searched..."}
+              />
             </div>
-          </div>
-        )}
+          ) : (
+            <div className="py-10">
+              <div className="flex flex-wrap justify-center">
+                {store.games.map((game: ShortGame, index: number) => (
+                  <SmallGameBox key={index} game={game} />
+                ))}
+              </div>
+              <div className="w-24 h-16 rounded-lg m-auto mt-8">
+                {loading ? (
+                  <SmallLoader big={false} xCentered={true} />
+                ) : (
+                  <SearchButton
+                    text="Load More"
+                    onClick={() => loadGames(store.page)}
+                  />
+                )}
+              </div>
+            </div>
+          )}
       </div>
     </SearchLayout>
   );
