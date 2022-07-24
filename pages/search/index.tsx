@@ -142,6 +142,7 @@ export async function getServerSideProps(context: any) {
   let filteredString = ''
   let games = []
   try {
+    console.log(context.query)
     if (yearRange || genres || consoles || search) {
       if (search) {
         filteredString += `&search=${search}&`

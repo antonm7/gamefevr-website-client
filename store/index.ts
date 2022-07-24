@@ -1,10 +1,10 @@
-import create from "zustand";
+import create from 'zustand'
 
 export const useStore = create((set: any) => ({
   isFilterOn: <boolean>false,
   games: <any[]>[],
   page: <number>1,
-  gameName: <string>"",
+  gameName: <string>'',
   addGames: (arr: any[]) =>
     set((state: any) => ({ games: [...state.games, ...arr] })),
   clearGames: () => set(() => ({ games: [] })),
@@ -13,7 +13,8 @@ export const useStore = create((set: any) => ({
   changeFilterVisibility: (value: boolean) =>
     set(() => ({ isFilterOn: value })),
   changeGameName: (value: string) => set(() => ({ gameName: value })),
-}));
+}))
 
-export * from "./useProgressStore";
-export * from "./useGlobalError";
+export * from './useProgressStore'
+export * from './useGlobalError'
+export * from './useFiltersStore'

@@ -1,41 +1,50 @@
-import type { NextPage } from "next";
-import Head from "next/head";
-import { useRouter } from "next/router";
-import { useState } from "react";
-import Car from "../components/animations/Car";
-import SearchButton from "../components/common/SearchButton";
-import SearchInput from "../components/common/SearchInput";
-import Filters from "../components/Filters";
-import Navbar from "../components/Navbar";
-import { useStore } from "../store";
+import type { NextPage } from 'next'
+import Head from 'next/head'
+import { useRouter } from 'next/router'
+import { useState } from 'react'
+import Car from '../components/animations/Car'
+import SearchButton from '../components/common/SearchButton'
+import SearchInput from '../components/common/SearchInput'
+import Filters from '../components/Filters'
+import Navbar from '../components/Navbar'
+import { useFiltersStore, useStore } from '../store'
 
 const Home: NextPage = () => {
-  const router = useRouter();
-  const store = useStore();
+  const router = useRouter()
+  const store = useStore()
+  const filtersStore = useFiltersStore()
 
   const navigate = () => {
     if (store.gameName.length > 0) {
       router.push({
-        pathname: "/search",
+        pathname: '/search',
         query: {
-          yearRange: [],
-          genres: [],
-          consoles: [],
-          search: store.gameName
+          search: store.gameName,
+          genres: filtersStore.genres,
+          consoles: filtersStore.consoles,
+          yearRange:
+            filtersStore.yearRange[0] === 1990 &&
+            filtersStore.yearRange[1] === 2022
+              ? []
+              : filtersStore.yearRange,
         },
-      });
+      })
     } else {
       router.push({
-        pathname: "/search",
+        pathname: '/search',
         query: {
-          yearRange: [],
-          genres: [],
-          consoles: [],
+          genres: filtersStore.genres,
+          consoles: filtersStore.consoles,
+          yearRange:
+            filtersStore.yearRange[0] === 1990 &&
+            filtersStore.yearRange[1] === 2022
+              ? []
+              : filtersStore.yearRange,
         },
-      });
+      })
     }
     store.changeGameName('')
-  };
+  }
 
   return (
     <div>
@@ -70,7 +79,7 @@ const Home: NextPage = () => {
         </main>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home
