@@ -2,7 +2,7 @@ import Image from "next/image";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import useWindowSize from "../../lib/functions/useWindowSize";
+import useWindowSize from "../../lib/functions/hooks/useWindowSize";
 import { Short_Screenshot } from "../../types";
 
 interface Props {
@@ -23,11 +23,10 @@ export default function Screenshots(props: Props) {
   return (
     <Slider
       {...settings}
-      className={`ml-32 ${
-        props.isAnimated
+      className={`ml-32 ${props.isAnimated
           ? "screenshots_animation_enabled"
           : "screenshots_animation_disabled"
-      }`}
+        }`}
     >
       {props.images.map((s: Short_Screenshot, index: number) => (
         <div className="screenshot" key={index}>

@@ -5,7 +5,7 @@ import { ObjectId } from 'bson'
 import Link from 'next/link'
 import slicedParagrap from '../../lib/functions/slicedParagraph'
 import { Review_Type } from '../../types/schema'
-import useWindowSize from '../../lib/functions/useWindowSize'
+import useWindowSize from '../../lib/functions/hooks/useWindowSize'
 
 interface Props extends Review_Type {
   deleteReview?: (id: ObjectId | undefined) => void
@@ -49,8 +49,8 @@ export default function Reviews(props: Props) {
               {width > 1200
                 ? slicedParagrap(props.game_name, 22, 22)
                 : width < 600
-                ? slicedParagrap(props.game_name, 22, 22)
-                : props.game_name}
+                  ? slicedParagrap(props.game_name, 22, 22)
+                  : props.game_name}
             </h1>
           </Link>
         </div>
@@ -89,8 +89,8 @@ export default function Reviews(props: Props) {
               {width > 1200
                 ? slicedParagrap(props.game_name, 22, 22)
                 : width < 600
-                ? slicedParagrap(props.game_name, 22, 22)
-                : props.game_name}
+                  ? slicedParagrap(props.game_name, 22, 22)
+                  : props.game_name}
             </h1>
           </Link>
           <FontAwesomeIcon
@@ -114,10 +114,10 @@ export default function Reviews(props: Props) {
           {width > 1200
             ? slicedParagrap(props.text, 330, 330)
             : width < 600
-            ? slicedParagrap(props.text, 150, 150)
-            : width < 900
-            ? slicedParagrap(props.text, 400, 400)
-            : slicedParagrap(props.text, 600, 600)}
+              ? slicedParagrap(props.text, 150, 150)
+              : width < 900
+                ? slicedParagrap(props.text, 400, 400)
+                : slicedParagrap(props.text, 600, 600)}
         </p>
         <p className="text-base text-white opacity-60 whitespace-nowrap">
           Sep 12,2022
