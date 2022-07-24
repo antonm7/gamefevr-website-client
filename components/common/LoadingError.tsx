@@ -17,7 +17,7 @@ export default function LoadingError(props: Props) {
       </h3>
       {props.button && props.onClick ? (
         <div className="w-32" style={{ margin: "2rem auto" }}>
-          <YellowButton title={"Try Again"} onClick={props.onClick} />
+          <YellowButton title={"Try Again"} active={true} onClick={props.onClick} />
         </div>
       ) : null}
     </div>
