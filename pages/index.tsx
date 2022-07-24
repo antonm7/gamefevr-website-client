@@ -1,6 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import { useState } from "react";
 import Car from "../components/animations/Car";
 import SearchButton from "../components/common/SearchButton";
 import SearchInput from "../components/common/SearchInput";
@@ -13,14 +14,27 @@ const Home: NextPage = () => {
   const store = useStore();
 
   const navigate = () => {
-    router.push({
-      pathname: "/search",
-      query: {
-        yearRange: [],
-        genres: [],
-        consoles: [],
-      },
-    });
+    if (store.gameName.length > 0) {
+      router.push({
+        pathname: "/search",
+        query: {
+          yearRange: [],
+          genres: [],
+          consoles: [],
+          search: store.gameName
+        },
+      });
+    } else {
+      router.push({
+        pathname: "/search",
+        query: {
+          yearRange: [],
+          genres: [],
+          consoles: [],
+        },
+      });
+    }
+    store.changeGameName('')
   };
 
   return (
