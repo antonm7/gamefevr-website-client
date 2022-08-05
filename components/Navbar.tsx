@@ -1,64 +1,63 @@
-import Link from "next/link";
-import Image from "next/image";
-import { useRouter } from "next/router";
-import SmallSearchInput from "./common/SmallSearchInput";
-import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
-import useWindowSize from "../lib/functions/hooks/useWindowSize";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars } from "@fortawesome/free-solid-svg-icons";
+import Link from 'next/link'
+import Image from 'next/image'
+import { useRouter } from 'next/router'
+import SmallSearchInput from './common/SmallSearchInput'
+import { useSession } from 'next-auth/react'
+import { useEffect, useState } from 'react'
+import useWindowSize from '../lib/functions/hooks/useWindowSize'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faBars } from '@fortawesome/free-solid-svg-icons'
+import { signOut } from 'next-auth/react'
 
 export default function Navbar() {
-  const router = useRouter();
-  const session = useSession();
-  const [auth, setAuth] = useState<boolean>(false);
-  const [width, height] = useWindowSize();
+  const router = useRouter()
+  const session = useSession()
+  const [auth, setAuth] = useState<boolean>(false)
+  const [width, height] = useWindowSize()
 
   useEffect(() => {
-    if (session.status === "authenticated") {
-      setAuth(true);
+    if (session.status === 'authenticated') {
+      setAuth(true)
     } else {
-      setAuth(false);
+      setAuth(false)
     }
-  }, [session.status]);
+  }, [session.status])
 
   const DynamicSession = () => {
-    // TODO:make logout work
     if (auth) {
       if (router.pathname === '/profile/[id]') {
         return (
           <div
-            style={{ width: 130, cursor: "pointer" }}
+            style={{ width: 130, cursor: 'pointer' }}
             className="hover:bg-[#38b6cc] rounded-lg"
           >
-            <Link href={`/profile/${session?.data?.user?.userId}`}>
-              <div
-                style={{ borderWidth: 0.5, borderColor: "#38b6cc" }}
-                className="cursor-pointer rounded-lg w-full h-11 overflow-hidden"
+            <div
+              onClick={() => signOut()}
+              style={{ borderWidth: 0.5, borderColor: '#38b6cc' }}
+              className="cursor-pointer rounded-lg w-full h-11 overflow-hidden"
+            >
+              <p
+                style={{ lineHeight: '2.75rem' }}
+                className="text-white font-regular text-sm text-center cursor-pointer"
               >
-                <p
-                  style={{ lineHeight: "2.75rem" }}
-                  className="text-white font-regular text-sm text-center cursor-pointer"
-                >
-                  Logout
-                </p>
-              </div>
-            </Link>
+                Logout
+              </p>
+            </div>
           </div>
-        );
+        )
       } else {
         return (
           <div
-            style={{ width: 130, cursor: "pointer" }}
+            style={{ width: 130, cursor: 'pointer' }}
             className="hover:bg-[#ef626d] rounded-lg"
           >
             <Link href={`/profile/${session?.data?.user?.userId}`}>
               <div
-                style={{ borderWidth: 0.5, borderColor: "#ef626d" }}
+                style={{ borderWidth: 0.5, borderColor: '#ef626d' }}
                 className="cursor-pointer rounded-lg w-full h-11 overflow-hidden"
               >
                 <p
-                  style={{ lineHeight: "2.75rem" }}
+                  style={{ lineHeight: '2.75rem' }}
                   className="text-white font-regular text-sm text-center cursor-pointer"
                 >
                   Profile
@@ -66,21 +65,21 @@ export default function Navbar() {
               </div>
             </Link>
           </div>
-        );
+        )
       }
     } else {
       return (
         <div
-          style={{ width: 130, cursor: "pointer" }}
+          style={{ width: 130, cursor: 'pointer' }}
           className="hover:bg-[#ef626d] rounded-lg"
         >
           <Link href="/register/login">
             <div
-              style={{ borderWidth: 0.5, borderColor: "#ef626d" }}
+              style={{ borderWidth: 0.5, borderColor: '#ef626d' }}
               className="cursor-pointer rounded-lg w-full h-11 overflow-hidden"
             >
               <p
-                style={{ lineHeight: "2.75rem" }}
+                style={{ lineHeight: '2.75rem' }}
                 className="text-white font-regular text-sm text-center cursor-pointer"
               >
                 Register
@@ -88,11 +87,11 @@ export default function Navbar() {
             </div>
           </Link>
         </div>
-      );
+      )
     }
-  };
+  }
 
-  if (router.route === "/") {
+  if (router.route === '/') {
     return (
       <div className="absolute h-20 w-full z-30">
         <div
@@ -101,7 +100,7 @@ export default function Navbar() {
         >
           <div style={{ marginTop: 7 }}>
             <Image
-              src={"/images/Logo.svg"}
+              src={'/images/Logo.svg'}
               height={32}
               width={130}
               alt="Logo"
@@ -110,24 +109,27 @@ export default function Navbar() {
           <div className="flex pt-0">
             <Link href="/">
               <p
-                className={`text-white font-semibold cursor-pointer text-sm ${router.pathname === "/" ? "active-link " : ""
-                  }`}
+                className={`text-white font-semibold cursor-pointer text-sm ${
+                  router.pathname === '/' ? 'active-link ' : ''
+                }`}
               >
                 Home
               </p>
             </Link>
             <Link href="/">
               <p
-                className={`text-white mx-8 font-semibold cursor-pointer text-sm ${router.pathname === "/search" ? "active-link " : ""
-                  }`}
+                className={`text-white mx-8 font-semibold cursor-pointer text-sm ${
+                  router.pathname === '/search' ? 'active-link ' : ''
+                }`}
               >
                 Explore
               </p>
             </Link>
             <Link href="/">
               <p
-                className={`text-white font-semibold cursor-pointer text-sm ${router.pathname === "/reviews" ? "active-link " : ""
-                  }`}
+                className={`text-white font-semibold cursor-pointer text-sm ${
+                  router.pathname === '/reviews' ? 'active-link ' : ''
+                }`}
               >
                 Reviews
               </p>
@@ -136,12 +138,13 @@ export default function Navbar() {
           <DynamicSession />
         </div>
       </div>
-    );
+    )
   } else {
     return (
       <div
-        className={`absolute ${width > 1024 ? "h-20" : "h-50"
-          } w-full bg-main-blue z-30 overflow-hidden`}
+        className={`absolute ${
+          width > 1024 ? 'h-20' : 'h-50'
+        } w-full bg-main-blue z-30 overflow-hidden`}
       >
         {width > 1024 ? (
           <div
@@ -151,7 +154,7 @@ export default function Navbar() {
             <div className="flex items-center">
               <div style={{ marginTop: 7 }}>
                 <Image
-                  src={"/images/Logo.svg"}
+                  src={'/images/Logo.svg'}
                   height={32}
                   width={130}
                   alt="Logo"
@@ -160,24 +163,27 @@ export default function Navbar() {
               <div id="navbar_links_wrapper" className="flex pl-16">
                 <Link href="/">
                   <p
-                    className={`text-white font-semibold cursor-pointer text-sm ${router.pathname === "/" ? "active-link " : ""
-                      }`}
+                    className={`text-white font-semibold cursor-pointer text-sm ${
+                      router.pathname === '/' ? 'active-link ' : ''
+                    }`}
                   >
                     Home
                   </p>
                 </Link>
                 <Link href="/">
                   <p
-                    className={`text-white mx-8 font-semibold cursor-pointer text-sm ${router.pathname === "/search" ? "active-link " : ""
-                      }`}
+                    className={`text-white mx-8 font-semibold cursor-pointer text-sm ${
+                      router.pathname === '/search' ? 'active-link ' : ''
+                    }`}
                   >
                     Explore
                   </p>
                 </Link>
                 <Link href="/">
                   <p
-                    className={`text-white font-semibold cursor-pointer text-sm ${router.pathname === "/reviews" ? "active-link " : ""
-                      }`}
+                    className={`text-white font-semibold cursor-pointer text-sm ${
+                      router.pathname === '/reviews' ? 'active-link ' : ''
+                    }`}
                   >
                     Reviews
                   </p>
@@ -196,7 +202,7 @@ export default function Navbar() {
             <div className="flex items-center justify-between overflow-hidden">
               <div style={{ marginTop: 7 }}>
                 <Image
-                  src={"/images/Logo.svg"}
+                  src={'/images/Logo.svg'}
                   height={32}
                   width={130}
                   alt="Logo"
@@ -205,24 +211,27 @@ export default function Navbar() {
               <div id="navbar_links_wrapper" className="flex pl-16">
                 <Link href="/">
                   <p
-                    className={`text-white font-semibold cursor-pointer text-sm ${router.pathname === "/" ? "active-link " : ""
-                      }`}
+                    className={`text-white font-semibold cursor-pointer text-sm ${
+                      router.pathname === '/' ? 'active-link ' : ''
+                    }`}
                   >
                     Home
                   </p>
                 </Link>
                 <Link href="/">
                   <p
-                    className={`text-white mx-8 font-semibold cursor-pointer text-sm ${router.pathname === "/search" ? "active-link " : ""
-                      }`}
+                    className={`text-white mx-8 font-semibold cursor-pointer text-sm ${
+                      router.pathname === '/search' ? 'active-link ' : ''
+                    }`}
                   >
                     Explore
                   </p>
                 </Link>
                 <Link href="/">
                   <p
-                    className={`text-white font-semibold cursor-pointer text-sm ${router.pathname === "/reviews" ? "active-link " : ""
-                      }`}
+                    className={`text-white font-semibold cursor-pointer text-sm ${
+                      router.pathname === '/reviews' ? 'active-link ' : ''
+                    }`}
                   >
                     Reviews
                   </p>
@@ -241,7 +250,7 @@ export default function Navbar() {
             <div className="flex items-center justify-between overflow-hidden h-11">
               <div style={{ marginTop: 7 }}>
                 <Image
-                  src={"/images/Logo.svg"}
+                  src={'/images/Logo.svg'}
                   height={32}
                   width={130}
                   alt="Logo"
@@ -260,6 +269,6 @@ export default function Navbar() {
           </div>
         )}
       </div>
-    );
+    )
   }
 }
