@@ -54,9 +54,8 @@ export default function Index(props: Props) {
   }
 
   useEffect(() => {
-    if (props.games.length === 0) {
-      return
-    } else {
+    if (props.games.length === 0) return
+    else {
       if (props.error) {
         console.log(props.error)
         setLoadingError(true)
@@ -68,6 +67,7 @@ export default function Index(props: Props) {
       }
       store.addPage()
       store.addGames(props.games)
+      setLoadMoreLoading(false)
     }
   }, [props.games, props.error])
 

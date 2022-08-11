@@ -19,7 +19,7 @@ export default function Profile(props: Props) {
     return (
       <VisitedProfile
         reviews={props.reviews}
-        favorites={props.reviews}
+        favorites={props.favorites}
         user={props.user}
       />
     )
