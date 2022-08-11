@@ -68,6 +68,7 @@ export default function Visited(props: Props) {
   }
 
   useEffect(() => {
+    console.log(props)
     setUser(props.user)
     setReviews(props.reviews)
     setFavorites(props.favorites)
