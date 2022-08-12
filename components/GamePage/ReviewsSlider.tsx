@@ -5,6 +5,7 @@ import useWindowSize from '../../lib/functions/hooks/useWindowSize'
 import Review from './Review'
 import { Review_Type } from '../../types/schema'
 import { ObjectId } from 'bson'
+import { useEffect, useState } from 'react'
 
 interface Props {
   reviews: Review_Type[]
@@ -14,10 +15,14 @@ interface Props {
 
 export default function ReviewsSlider(props: Props) {
   const [width] = useWindowSize()
+  const [reviews, setReviews] = useState<Review_Type[]>([])
+
+  useEffect(() => {
+    setReviews(props.reviews)
+  }, [props.reviews])
 
   const settings = {
     infinite: false,
-    // slidesToShow:
     slidesToScroll: 1,
     slidesToShow: props.reviews.length >= 3 ? 3 : props.reviews.length,
     responsive: [
@@ -39,12 +44,13 @@ export default function ReviewsSlider(props: Props) {
   return (
     <Slider
       {...settings}
-      className={`${props.isAnimated
+      className={`${
+        props.isAnimated
           ? 'reviews_animation_enable'
           : 'reviews_animation_disable'
-        }`}
+      }`}
     >
-      {props.reviews.map((review: Review_Type, index: number) => (
+      {reviews.map((review: Review_Type, index: number) => (
         <Review
           key={index}
           _id={review._id}
