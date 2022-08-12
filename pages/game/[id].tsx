@@ -133,17 +133,18 @@ export default function GamePage(props: Props) {
                   height:
                     width > 1400
                       ? reviewsAnimation && !reviews.length
-                        ? '300px'
+                        ? '150px'
                         : '700px'
                       : reviewsAnimation && !reviews.length
-                        ? '150px'
-                        : '410px',
+                      ? '150px'
+                      : '410px',
                 }}
               >
                 <div
                   id="controller"
-                  className={`${screenshotsAnimtion ? 'controller_animation' : ''
-                    }`}
+                  className={`${
+                    screenshotsAnimtion ? 'controller_animation' : ''
+                  }`}
                 />
                 <Screenshots
                   isAnimated={screenshotsAnimtion}
@@ -155,10 +156,11 @@ export default function GamePage(props: Props) {
                     style={{ marginTop: width > 1400 ? '-34rem' : '-20rem' }}
                   >
                     <div
-                      className={`px-20 ${reviewsAnimation
+                      className={`px-20 ${
+                        reviewsAnimation
                           ? 'write_review_animation_enabled'
                           : 'write_review_animation_disabled'
-                        }`}
+                      }`}
                     >
                       <FontAwesomeIcon
                         icon={faPlus}
@@ -178,10 +180,11 @@ export default function GamePage(props: Props) {
                     style={{ marginTop: width > 1400 ? '-34rem' : '-20rem' }}
                   >
                     <div
-                      className={`px-20 ${reviewsAnimation
+                      className={`px-20 ${
+                        reviewsAnimation
                           ? 'write_review_animation_enabled'
                           : 'write_review_animation_disabled'
-                        }`}
+                      }`}
                     >
                       <FontAwesomeIcon
                         icon={faPlus}
@@ -239,10 +242,11 @@ export default function GamePage(props: Props) {
             )}
             {width > 1200 ? (
               <div
-                className={`w-full flex justify-center ${reviewsAnimation
+                className={`w-full flex justify-center ${
+                  reviewsAnimation
                     ? 'button_animation_enabled'
                     : 'button_animation_disabled'
-                  }`}
+                }`}
               >
                 <div className="w-52" id="show_comments_wrapper">
                   <YellowButton
