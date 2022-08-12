@@ -7,8 +7,8 @@ export default function PlatformIcon(props: any) {
         <Image
           id="windows"
           src={'/icons/windows.svg'}
-          width={22}
-          height={22}
+          width={18}
+          height={18}
           alt="windows"
         />
       </div>
