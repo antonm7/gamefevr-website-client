@@ -60,6 +60,11 @@ export default function WriteReview(props: Props) {
     }
   }, [props.isUserRated]);
 
+  const setTextMethod = (eventText: string) => {
+    if (eventText.length > 360) return;
+    setText(eventText);
+  }
+
   const toggleRank = (value: string) => {
     if (rank === value) {
       setRank(null);
@@ -71,9 +76,8 @@ export default function WriteReview(props: Props) {
   return (
     <div
       id="write_review_container"
-      className={`${
-        props.visible ? "fixed " : "hidden "
-      }px-7 py-6 rounded-xl mx-2 w-3/5 z-40`}
+      className={`${props.visible ? "fixed " : "hidden "
+        }px-7 py-6 rounded-xl mx-2 w-3/5 z-40`}
       style={{
         minHeight: "24rem",
         maxHeight: "80%",
@@ -88,64 +92,56 @@ export default function WriteReview(props: Props) {
       <div className="flex flex-wrap my-2">
         <div
           onClick={() => toggleRank("waste_of_time")}
-          className={`simple-transition cursor-pointer flex items-center flex-nowrap rounded-md py-1 px-2 mr-4 mb-4 hover:bg-white ${
-            rank === "waste_of_time" ? "bg-white" : ""
-          }`}
+          className={`simple-transition cursor-pointer flex items-center flex-nowrap rounded-md py-1 px-2 mr-4 mb-4 hover:bg-white ${rank === "waste_of_time" ? "bg-white" : ""
+            }`}
           style={{ border: "solid #e3e3e3", borderWidth: 1 }}
         >
           <span className="pr-2 text-md">😫</span>
           <h2
-            className={`simple-transition text-white text-sm hover:text-black ${
-              rank === "waste_of_time" ? "text-black" : ""
-            }`}
+            className={`simple-transition text-white text-sm hover:text-black ${rank === "waste_of_time" ? "text-black" : ""
+              }`}
           >
             Waste Of Time
           </h2>
         </div>
         <div
           onClick={() => toggleRank("nuh")}
-          className={`simple-transition cursor-pointer flex items-center flex-nowrap rounded-md py-1 px-2 mr-4 mb-4 hover:bg-white ${
-            rank === "nuh" ? "bg-white" : ""
-          }`}
+          className={`simple-transition cursor-pointer flex items-center flex-nowrap rounded-md py-1 px-2 mr-4 mb-4 hover:bg-white ${rank === "nuh" ? "bg-white" : ""
+            }`}
           style={{ border: "solid #e3e3e3", borderWidth: 1 }}
         >
           <span className="pr-2 text-md">😫</span>
           <h2
-            className={`simple-transition text-white text-sm hover:text-black ${
-              rank === "nuh" ? "text-black" : ""
-            }`}
+            className={`simple-transition text-white text-sm hover:text-black ${rank === "nuh" ? "text-black" : ""
+              }`}
           >
             Nuh
           </h2>
         </div>
         <div
           onClick={() => toggleRank("good")}
-          className={`simple-transition cursor-pointer flex items-center flex-nowrap rounded-md py-1 px-2 mr-4 mb-4 hover:bg-white ${
-            rank === "good" ? "bg-white" : ""
-          }`}
+          className={`simple-transition cursor-pointer flex items-center flex-nowrap rounded-md py-1 px-2 mr-4 mb-4 hover:bg-white ${rank === "good" ? "bg-white" : ""
+            }`}
           style={{ border: "solid #e3e3e3", borderWidth: 1 }}
         >
           <span className="pr-2 text-md">😫</span>
           <h2
-            className={`simple-transition text-white text-sm hover:text-black ${
-              rank === "good" ? "text-black" : ""
-            }`}
+            className={`simple-transition text-white text-sm hover:text-black ${rank === "good" ? "text-black" : ""
+              }`}
           >
             Good
           </h2>
         </div>
         <div
           onClick={() => toggleRank("must")}
-          className={`simple-transition cursor-pointer flex items-center flex-nowrap rounded-md py-1 px-2 mr-4 mb-4 hover:bg-white ${
-            rank === "must" ? "bg-white" : ""
-          }`}
+          className={`simple-transition cursor-pointer flex items-center flex-nowrap rounded-md py-1 px-2 mr-4 mb-4 hover:bg-white ${rank === "must" ? "bg-white" : ""
+            }`}
           style={{ border: "solid #e3e3e3", borderWidth: 1 }}
         >
           <span className="pr-2 text-md">😫</span>
           <h2
-            className={`simple-transition text-white text-sm hover:text-black ${
-              rank === "must" ? "text-black" : ""
-            }`}
+            className={`simple-transition text-white text-sm hover:text-black ${rank === "must" ? "text-black" : ""
+              }`}
           >
             Must
           </h2>
@@ -154,10 +150,11 @@ export default function WriteReview(props: Props) {
       <TextareaAutosize
         className="textarea w-full"
         placeholder="Write Your Review"
-        onChange={(e) => setText(e.target.value)}
+        value={text}
+        onChange={(e) => setTextMethod(e.target.value)}
       />
-      <p className="text-xs" style={{ color: "#9da8b6" }}>
-        120 / 366
+      <p className="text-xs opacity-40" style={{ color: "#9da8b6" }}>
+        {text.length} / 360
       </p>
       <div className="h-16 flex justify-end items-center">
         <button
