@@ -10,9 +10,11 @@ import SmallLoader from '../../components/common/SmallLoader'
 import { ShortGame } from '../../types'
 import LoadingError from '../../components/common/LoadingError'
 import cookie from 'cookie'
+import { count } from 'console'
 
 interface Props {
-  games: ShortGame[]
+  games: ShortGame[],
+  count: number,
   error: string | null
 }
 
@@ -67,6 +69,7 @@ export default function Index(props: Props) {
       }
       store.addPage()
       store.addGames(props.games)
+      store.setCount(props.count)
       setLoadMoreLoading(false)
     }
   }, [props.games, props.error])
@@ -93,6 +96,7 @@ export default function Index(props: Props) {
           </div>
         ) : (
           <div className="py-10">
+            <p className='font-bold text-white text-4xl px-24 pb-10'>We found {store.count} games for you</p>
             <div className="flex flex-wrap justify-center">
               {store.games.map((game: ShortGame, index: number) => (
                 <SmallGameBox key={index} game={game} />
@@ -146,6 +150,7 @@ export async function getServerSideProps(context: any) {
   const { yearRange, genres, consoles, search } = context.query
   let filteredString = ''
   let games = []
+  let count = 0
   try {
     if (yearRange || genres || consoles || search) {
       if (search) {
@@ -194,16 +199,21 @@ export async function getServerSideProps(context: any) {
       const getData: any = await axios(
         `https://api.rawg.io/api/games?key=0ffbdb925caf4b20987cd068aa43fd75&ordering=-released&page=1&page_size=20${filteredString}`
       )
+      console.log(getData)
       games = getData.data.results
+      count = getData.data.count
     } else {
       const getData: any = await axios(
         `https://api.rawg.io/api/games?key=0ffbdb925caf4b20987cd068aa43fd75&ordering=-released&dates=1990-01-01,2022-12-31&page=1&page_size=20`
       )
       games = getData.data.results
+      count = getData.data.count
     }
+
     return {
       props: {
         games,
+        count,
         error: null,
       },
     }

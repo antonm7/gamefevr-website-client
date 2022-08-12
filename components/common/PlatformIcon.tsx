@@ -20,8 +20,8 @@ export default function PlatformIcon(props: any) {
         <Image
           id="playstation"
           src={'/icons/playstation.svg'}
-          width={22}
-          height={22}
+          width={16}
+          height={16}
           alt="playstation"
         />
       </div>
@@ -33,8 +33,8 @@ export default function PlatformIcon(props: any) {
         <Image
           id="xbox"
           src={'/icons/xbox.svg'}
-          width={22}
-          height={22}
+          width={16}
+          height={16}
           alt="xbox"
         />
       </div>
@@ -46,8 +46,8 @@ export default function PlatformIcon(props: any) {
         <Image
           id="ios"
           src={'/icons/ios.svg'}
-          width={22}
-          height={22}
+          width={16}
+          height={16}
           alt="ios"
         />
       </div>
@@ -60,8 +60,8 @@ export default function PlatformIcon(props: any) {
           className="icon"
           id="android"
           src={'/icons/android.svg'}
-          width={22}
-          height={22}
+          width={16}
+          height={16}
           alt="android"
         />
       </div>
@@ -73,8 +73,8 @@ export default function PlatformIcon(props: any) {
         <Image
           id="mac"
           src={'/icons/mac.svg'}
-          width={22}
-          height={22}
+          width={16}
+          height={16}
           alt="mac"
         />
       </div>
@@ -86,8 +86,8 @@ export default function PlatformIcon(props: any) {
         <Image
           id="linux"
           src={'/icons/linux.svg'}
-          width={22}
-          height={22}
+          width={16}
+          height={16}
           alt="linux"
         />
       </div>
@@ -99,8 +99,8 @@ export default function PlatformIcon(props: any) {
         <Image
           id="nintendo"
           src={'/icons/nintendo.svg'}
-          width={22}
-          height={22}
+          width={16}
+          height={16}
           alt="nintendo"
         />
       </div>
@@ -112,8 +112,8 @@ export default function PlatformIcon(props: any) {
         <Image
           id="atari"
           src={'/icons/atari.svg'}
-          width={22}
-          height={22}
+          width={16}
+          height={16}
           alt="atari"
         />
       </div>
@@ -125,8 +125,8 @@ export default function PlatformIcon(props: any) {
         <Image
           id="amiga"
           src={'/icons/amiga.svg'}
-          width={22}
-          height={22}
+          width={16}
+          height={16}
           alt="amiga"
         />
       </div>
@@ -138,8 +138,8 @@ export default function PlatformIcon(props: any) {
         <Image
           id="sega"
           src={'/icons/sega.svg'}
-          width={22}
-          height={22}
+          width={16}
+          height={16}
           alt="sega"
         />
       </div>
@@ -151,8 +151,8 @@ export default function PlatformIcon(props: any) {
         <Image
           id="3do"
           src={'/icons/3do.svg'}
-          width={22}
-          height={22}
+          width={16}
+          height={16}
           alt="3do"
         />
       </div>
@@ -164,8 +164,8 @@ export default function PlatformIcon(props: any) {
         <Image
           id="neo"
           src={'/icons/neo.svg'}
-          width={22}
-          height={22}
+          width={16}
+          height={16}
           alt="neo"
         />
       </div>
@@ -177,8 +177,8 @@ export default function PlatformIcon(props: any) {
         <Image
           id="web"
           src={'/icons/web.svg'}
-          width={22}
-          height={22}
+          width={16}
+          height={16}
           alt="web"
         />
       </div>

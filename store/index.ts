@@ -5,6 +5,7 @@ export const useStore = create((set: any) => ({
   games: <any[]>[],
   page: <number>1,
   gameName: <string>'',
+  count: <number>0,
   addGames: (arr: any[]) =>
     set((state: any) => {
       return { games: [...state.games, ...arr] }
@@ -18,6 +19,7 @@ export const useStore = create((set: any) => ({
   changeFilterVisibility: (value: boolean) =>
     set(() => ({ isFilterOn: value })),
   changeGameName: (value: string) => set(() => ({ gameName: value })),
+  setCount: (value: number) => set(() => ({ count: value })),
 }))
 
 export * from './useProgressStore'

@@ -46,6 +46,15 @@ export default function Filters() {
     filtersStore.setYearRange(yearRange)
     store.changeFilterVisibility(false)
   }
+  //close filters on esc keypress
+  useEffect(() => {
+    const keyDownHandler = (e: any) => { e.keyCode === 27 ? store.changeFilterVisibility(false) : null };
+    document.addEventListener("keydown", keyDownHandler);
+    // clean up
+    return () => {
+      document.removeEventListener("keydown", keyDownHandler);
+    };
+  }, []);
 
   useEffect(() => {
     changeYearRange(filtersStore.yearRange)
@@ -142,7 +151,7 @@ export default function Filters() {
           <YellowButton
             active={true}
             onClick={() => search()}
-            title={'search'}
+            title={'Apply'}
           />
         </div>
       </div>
