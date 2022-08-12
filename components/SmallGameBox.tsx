@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { ElementDescription, ShortGame } from '../types'
+import PlatformIcon from './common/PlatformIcon'
 
 type Props = {
   game: ShortGame
@@ -42,19 +43,22 @@ export default function SmallGameBox(props: Props) {
             {game.name}
           </h1>
         </Link>
+
         {/* TODO:Switch platform text to platform icons */}
-        <div className="flex flex-row flex-nowrap">
+        <div className="flex flex-row flex-nowrap pt-2">
           {game?.parent_platforms
             ?.slice(0, 3)
             .map((platform: PlatformParentObject, index: number) => (
-              <h2 key={index} className="pr-1 text-sm text-cool-blue">
-                {platform.platform.name}
-                {index === game.parent_platforms.length - 1 || index === 2
-                  ? ''
-                  : ','}
-              </h2>
+              <PlatformIcon key={index} platform={platform.platform.name} />
+              // <h2 key={index} className="pr-1 text-sm text-cool-blue">
+              //   {platform.platform.name}
+              //   {index === game.parent_platforms.length - 1 || index === 2
+              //     ? ''
+              //     : ','}
+              // </h2>
             ))}
         </div>
+        <PlatformIcon />
         <div className="flex flex-row justify-between pt-6">
           <div className="flex flex-row flex-nowrap">
             {game?.genres
