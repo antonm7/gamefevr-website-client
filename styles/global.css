@@ -35,6 +35,13 @@ div {
   background-repeat: no-repeat;
 }
 
+@media (max-width: 1300px) {
+  #header_bg {
+    background-size: 100%;
+    background-image: url('/illustrations/small_header.svg');
+  }
+}
+
 #search_layout_page::-webkit-scrollbar {
   /* background: red !important; */
   width: 5px;

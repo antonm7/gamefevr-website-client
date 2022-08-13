@@ -27,6 +27,7 @@ import { useGlobalError, useStore } from '../../store'
 import { setCookie } from 'cookies-next'
 import { ObjectId } from 'bson'
 import { useRouter } from 'next/router'
+import NoScreenShots from '../../components/GamePage/NoScreenshots'
 
 type Props = {
   game: DetailedGame
@@ -149,119 +150,127 @@ export default function GamePage(props: Props) {
           </main>
           <div>
             {width > 1200 ? (
-              <div
-                id="game_page_screenshots_controller"
-                className="relative overflow-hidden"
-                style={{
-                  height:
-                    width > 1400
-                      ? reviewsAnimation && !reviews.length
-                        ? '150px'
-                        : '700px'
-                      : reviewsAnimation && !reviews.length
-                      ? '150px'
-                      : '410px',
-                }}
-              >
-                <div
-                  id="controller"
-                  className={`${
-                    screenshotsAnimtion ? 'controller_animation' : ''
-                  }`}
-                />
-                <Screenshots
-                  isAnimated={screenshotsAnimtion}
-                  images={game.screenshots.results}
-                />
-                {reviews.length ? (
-                  <div
-                    className="h-full flex items-center overflow-hidden"
-                    style={{ marginTop: width > 1400 ? '-34rem' : '-20rem' }}
-                  >
-                    <div
-                      className={`px-20 ${
-                        reviewsAnimation
-                          ? 'write_review_animation_enabled'
-                          : 'write_review_animation_disabled'
-                      }`}
-                    >
-                      <FontAwesomeIcon
-                        icon={faPlus}
-                        className="h-16 text-white cursor-pointer opacity-40 hover:opacity-100 simple-transition"
-                        onClick={() => navigateAuth()}
-                      />
-                    </div>
-                    <ReviewsSlider
-                      isAnimated={reviewsAnimation}
-                      reviews={reviews}
-                      deleteReview={(id) => deleteReview(id)}
-                    />
-                  </div>
-                ) : (
-                  <div
-                    className="h-ful  flex justify-center overflow-hidden"
-                    style={{ marginTop: width > 1400 ? '-34rem' : '-20rem' }}
-                  >
-                    <div
-                      className={`px-20 ${
-                        reviewsAnimation
-                          ? 'write_review_animation_enabled'
-                          : 'write_review_animation_disabled'
-                      }`}
-                    >
-                      <FontAwesomeIcon
-                        icon={faPlus}
-                        className="h-16 text-white cursor-pointer opacity-40 hover:opacity-100 simple-transition"
-                        onClick={() => navigateAuth()}
-                      />
-                    </div>
-                  </div>
-                )}
-              </div>
+              <NoScreenShots
+                reviewsAnimation={reviewsAnimation}
+                reviews={reviews}
+                navigateAuth={navigateAuth}
+                deleteReview={(id: ObjectId) => deleteReview(id)}
+              />
             ) : (
-              <div>
+              <>
                 <div
                   id="game_page_screenshots_controller"
                   className="relative overflow-hidden"
-                  style={{ height: '400px' }}
-                >
-                  <div id="controller" />
-                  <Screenshots
-                    isAnimated={false}
-                    images={game.screenshots.results}
-                  />
-                </div>
-                <div
-                  id="game_page_reviews_container"
-                  className="flex flex-col items-center"
+                  style={{
+                    height:
+                      width > 1400
+                        ? reviewsAnimation && !reviews.length
+                          ? '150px'
+                          : '700px'
+                        : reviewsAnimation && !reviews.length
+                        ? '150px'
+                        : '410px',
+                  }}
                 >
                   <div
-                    className="w-72 p-6 flex items-center justify-center rounded-xl mb-8 
-                    cursor-pointer opacity-80 hover:opacity-100"
-                    style={{ backgroundColor: 'rgba(21,21,21,0.6)' }}
+                    id="controller"
+                    className={`${
+                      screenshotsAnimtion ? 'controller_animation' : ''
+                    }`}
+                  />
+                  <Screenshots
+                    isAnimated={screenshotsAnimtion}
+                    images={game.screenshots.results}
+                  />
+                  {reviews.length ? (
+                    <div
+                      className="h-full flex items-center overflow-hidden"
+                      style={{ marginTop: width > 1400 ? '-34rem' : '-20rem' }}
+                    >
+                      <div
+                        className={`px-20 ${
+                          reviewsAnimation
+                            ? 'write_review_animation_enabled'
+                            : 'write_review_animation_disabled'
+                        }`}
+                      >
+                        <FontAwesomeIcon
+                          icon={faPlus}
+                          className="h-16 text-white cursor-pointer opacity-40 hover:opacity-100 simple-transition"
+                          onClick={() => navigateAuth()}
+                        />
+                      </div>
+                      <ReviewsSlider
+                        isAnimated={reviewsAnimation}
+                        reviews={reviews}
+                        deleteReview={(id) => deleteReview(id)}
+                      />
+                    </div>
+                  ) : (
+                    <div
+                      className="h-ful  flex justify-center overflow-hidden"
+                      style={{ marginTop: width > 1400 ? '-34rem' : '-20rem' }}
+                    >
+                      <div
+                        className={`px-20 ${
+                          reviewsAnimation
+                            ? 'write_review_animation_enabled'
+                            : 'write_review_animation_disabled'
+                        }`}
+                      >
+                        <FontAwesomeIcon
+                          icon={faPlus}
+                          className="h-16 text-white cursor-pointer opacity-40 hover:opacity-100 simple-transition"
+                          onClick={() => navigateAuth()}
+                        />
+                      </div>
+                    </div>
+                  )}
+                </div>
+                <div>
+                  <div
+                    id="game_page_screenshots_controller"
+                    className="relative overflow-hidden"
+                    style={{ height: '400px' }}
+                  >
+                    <div id="controller" />
+                    <Screenshots
+                      isAnimated={false}
+                      images={game.screenshots.results}
+                    />
+                  </div>
+                  <div
+                    id="game_page_reviews_container"
+                    className="flex flex-col items-center"
                   >
                     <div
-                      className="flex items-center justify-center"
-                      onClick={() => navigateAuth()}
+                      className="w-72 p-6 flex items-center justify-center rounded-xl mb-8 
+                    cursor-pointer opacity-80 hover:opacity-100"
+                      style={{ backgroundColor: 'rgba(21,21,21,0.6)' }}
                     >
-                      <FontAwesomeIcon
-                        icon={faPlus}
-                        className="h-6 text-white pr-4"
+                      <div
+                        className="flex items-center justify-center"
                         onClick={() => navigateAuth()}
-                      />
-                      <h1 className="text-white text-xl flex items-center">
-                        Add A Review
-                      </h1>
+                      >
+                        <FontAwesomeIcon
+                          icon={faPlus}
+                          className="h-6 text-white pr-4"
+                          onClick={() => navigateAuth()}
+                        />
+                        <h1 className="text-white text-xl flex items-center">
+                          Add A Review
+                        </h1>
+                      </div>
                     </div>
+                    {reviews.length ? (
+                      <VerticalReviewsLoader
+                        reviews={reviews}
+                        deleteReview={(id) => deleteReview(id)}
+                      />
+                    ) : null}
                   </div>
-                  {reviews.length ? (
-                    <VerticalReviewsLoader
-                      reviews={reviews}
-                      deleteReview={(id) => deleteReview(id)}
-                    />
-                  ) : null}
                 </div>
-              </div>
+              </>
             )}
             {width > 1200 ? (
               <div

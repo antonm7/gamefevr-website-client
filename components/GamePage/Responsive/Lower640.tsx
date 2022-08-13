@@ -77,7 +77,7 @@ export default function Lower640({ game, changeIsUserRated }: Props) {
           </div>
           <div
             className="flex flex-wrap w-42 pt-2"
-            style={{ width: '50%' }}
+            style={{ width: '70%' }}
             id="platforms_row"
           >
             <h2

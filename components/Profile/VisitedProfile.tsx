@@ -45,7 +45,7 @@ export default function Visited(props: Props) {
     slidesToShow: props.favorites.length >= 4 ? 4 : props.favorites.length,
     responsive: [
       {
-        breakpoint: 1600,
+        breakpoint: 1700,
         settings: {
           slidesToShow:
             props.favorites.length >= 3 ? 3 : props.favorites.length,
@@ -78,7 +78,7 @@ export default function Visited(props: Props) {
 
   return (
     <SearchLayout>
-      <main className="px-44 py-10" id="profile_page">
+      <main className="px-20 py-10" id="profile_page">
         {store.isFilterOn ? <Filters /> : null}
         <div
           id="profile_page_welcome"
