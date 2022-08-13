@@ -109,27 +109,24 @@ export default function Navbar() {
           <div className="flex pt-0">
             <Link href="/">
               <p
-                className={`text-white font-semibold cursor-pointer text-sm ${
-                  router.pathname === '/' ? 'active-link ' : ''
-                }`}
+                className={`text-white font-semibold cursor-pointer text-sm ${router.pathname === '/' ? 'active-link ' : ''
+                  }`}
               >
                 Home
               </p>
             </Link>
             <Link href="/">
               <p
-                className={`text-white mx-8 font-semibold cursor-pointer text-sm ${
-                  router.pathname === '/search' ? 'active-link ' : ''
-                }`}
+                className={`text-white mx-8 font-semibold cursor-pointer text-sm ${router.pathname === '/search' ? 'active-link ' : ''
+                  }`}
               >
                 Explore
               </p>
             </Link>
             <Link href="/">
               <p
-                className={`text-white font-semibold cursor-pointer text-sm ${
-                  router.pathname === '/reviews' ? 'active-link ' : ''
-                }`}
+                className={`text-white font-semibold cursor-pointer text-sm ${router.pathname === '/reviews' ? 'active-link ' : ''
+                  }`}
               >
                 Reviews
               </p>
@@ -142,13 +139,12 @@ export default function Navbar() {
   } else {
     return (
       <div
-        className={` ${
-          width > 1024 ? 'h-20' : 'h-50'
-        } w-full  z-30 overflow-hidden`}
+        className={` ${width > 1024 ? 'h-20' : 'h-50'
+          } w-full  z-30 overflow-hidden`}
       >
         {width > 1024 ? (
           <div
-            className="h-full w-full flex justify-between pt-4 px-20 items-center"
+            className="h-full w-full flex justify-between pt-4 px-40 items-center"
             id="navbar"
           >
             <div className="flex items-center">
@@ -163,27 +159,24 @@ export default function Navbar() {
               <div id="navbar_links_wrapper" className="flex pl-16">
                 <Link href="/">
                   <p
-                    className={`text-white font-semibold cursor-pointer text-sm ${
-                      router.pathname === '/' ? 'active-link ' : ''
-                    }`}
+                    className={`text-white font-semibold cursor-pointer text-sm ${router.pathname === '/' ? 'active-link ' : ''
+                      }`}
                   >
                     Home
                   </p>
                 </Link>
                 <Link href="/">
                   <p
-                    className={`text-white mx-8 font-semibold cursor-pointer text-sm ${
-                      router.pathname === '/search' ? 'active-link ' : ''
-                    }`}
+                    className={`text-white mx-8 font-semibold cursor-pointer text-sm ${router.pathname === '/search' ? 'active-link ' : ''
+                      }`}
                   >
                     Explore
                   </p>
                 </Link>
                 <Link href="/">
                   <p
-                    className={`text-white font-semibold cursor-pointer text-sm ${
-                      router.pathname === '/reviews' ? 'active-link ' : ''
-                    }`}
+                    className={`text-white font-semibold cursor-pointer text-sm ${router.pathname === '/reviews' ? 'active-link ' : ''
+                      }`}
                   >
                     Reviews
                   </p>
@@ -211,27 +204,24 @@ export default function Navbar() {
               <div id="navbar_links_wrapper" className="flex pl-16">
                 <Link href="/">
                   <p
-                    className={`text-white font-semibold cursor-pointer text-sm ${
-                      router.pathname === '/' ? 'active-link ' : ''
-                    }`}
+                    className={`text-white font-semibold cursor-pointer text-sm ${router.pathname === '/' ? 'active-link ' : ''
+                      }`}
                   >
                     Home
                   </p>
                 </Link>
                 <Link href="/">
                   <p
-                    className={`text-white mx-8 font-semibold cursor-pointer text-sm ${
-                      router.pathname === '/search' ? 'active-link ' : ''
-                    }`}
+                    className={`text-white mx-8 font-semibold cursor-pointer text-sm ${router.pathname === '/search' ? 'active-link ' : ''
+                      }`}
                   >
                     Explore
                   </p>
                 </Link>
                 <Link href="/">
                   <p
-                    className={`text-white font-semibold cursor-pointer text-sm ${
-                      router.pathname === '/reviews' ? 'active-link ' : ''
-                    }`}
+                    className={`text-white font-semibold cursor-pointer text-sm ${router.pathname === '/reviews' ? 'active-link ' : ''
+                      }`}
                   >
                     Reviews
                   </p>

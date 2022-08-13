@@ -2,84 +2,106 @@
   #game_page_background_image_wrapper {
     min-width: 20rem !important;
   }
+
   #game_page_background_image {
     width: 20rem;
     height: 15rem !important;
   }
+
   #game_page_game_name {
     font-size: 4.5rem;
   }
+
   #rate_game {
     width: 13rem;
     height: 7rem;
   }
+
   #span_line {
     padding-top: 0;
     padding-left: 2rem;
     padding-right: 2rem;
     padding-top: 0.2rem;
   }
+
   #rating_label {
     position: absolute;
   }
+
   .rating_label_text {
     font-size: 0.75rem;
   }
+
   #waste_of_time {
     margin-left: 5px !important;
   }
+
   #nuh {
     margin-left: 67px !important;
   }
+
   #good {
     margin-left: 104px !important;
   }
+
   #must {
     margin-left: 143px !important;
   }
+
   #game_page_detail {
     font-size: 0.9rem !important;
   }
+
   #navbar {
     padding-left: 5rem;
     padding-right: 5rem;
   }
+
   #game_page {
     padding-left: 5rem;
     padding-right: 5rem;
   }
+
   #platforms_row {
     width: 100% !important;
   }
+
   #controller {
     height: 400px !important;
     width: 480px;
   }
+
   #review {
     min-width: 40rem !important;
     width: 40rem !important;
     min-height: 23rem !important;
     height: 23rem !important;
   }
+
   #review_bottom_container {
     margin-top: 2rem;
   }
+
   .screenshot {
     width: 100% !important;
     height: 18rem !important;
     margin-top: 3rem;
   }
+
   #favorite-component {
     width: 17rem !important;
   }
+
   #favorite-image {
     position: relative;
     width: 100% !important;
     height: 70% !important;
   }
+
   #favorite-title {
     padding: 1.3rem 1rem;
   }
+
   #profile_page {
     padding-left: 5rem;
     padding-right: 5rem;
@@ -90,15 +112,19 @@
   #navbar_links_wrapper {
     padding-left: 2rem;
   }
+
   #small_search_input_wrapper {
     margin-right: 1rem !important;
   }
+
   #small_search_input {
     width: 20rem;
   }
+
   #profile-review-component {
     width: 100% !important;
   }
+
   #favorite-component {
     width: 90% !important;
   }
@@ -111,9 +137,11 @@
     margin-top: 1rem;
     padding-bottom: 1rem;
   }
+
   #small_search_input {
     width: 100%;
   }
+
   #small_search_input_input {
     width: 100%;
     height: 4rem !important;
@@ -124,48 +152,60 @@
   #game_page_game_name {
     font-size: 3rem;
   }
+
   #game_page_background_image_wrapper {
     min-width: 17rem !important;
   }
+
   #game_page_background_image {
     width: 17rem;
     height: 12rem !important;
   }
+
   #navbar {
     padding-left: 2rem;
     padding-right: 2rem;
   }
+
   #game_page {
     padding-left: 2rem;
     padding-right: 2rem;
   }
+
   #rate_game {
     width: 11rem;
     height: 7rem;
   }
+
   #rate_game_title {
     font-size: 0.72rem;
     line-height: 1rem;
   }
+
   #span_line {
     padding-left: 1rem;
     padding-right: 1rem;
     padding-top: 0.5rem;
   }
+
   #rating_label {
     display: none;
   }
+
   #platforms_row {
     padding-right: 2rem;
   }
+
   #game_page_screenshots_controller {
     height: 320px !important;
     overflow: hidden;
   }
+
   #controller {
     height: 320px !important;
     width: 420px;
   }
+
   .screenshot {
     height: 13rem !important;
   }
@@ -173,30 +213,37 @@
   #game_page_reviews_container {
     margin-top: 4rem;
   }
+
   #review {
     min-width: 99% !important;
     width: 99% !important;
     min-height: 100% !important;
     height: 100% !important;
   }
+
   #game_page_reviews_container {
     padding-left: 2rem;
     padding-right: 2rem;
   }
+
   #profile_page {
     padding-left: 2rem;
     padding-right: 2rem;
   }
+
   #settings_bar {
     width: 100vw !important;
   }
+
   #settings_bar h1 {
     text-align: center;
   }
+
   #settings_bar_inner_container {
     width: 100% !important;
     margin: 0 auto;
   }
+
   #settings_bar_bottom {
     width: 100% !important;
     margin: 0 auto;
@@ -208,6 +255,7 @@
     flex-direction: column;
     align-items: flex-start;
   }
+
   #profile_page_welcome div {
     padding-top: 1rem;
   }
@@ -217,54 +265,68 @@
   #favorite-component {
     width: 100% !important;
   }
+
   #game_page_header {
     flex-direction: column;
     align-items: flex-start;
   }
+
   #game_page_background_image_wrapper {
     min-width: 100% !important;
     padding-top: 1rem;
   }
+
   #game_page_background_image {
     width: 100%;
     height: 18rem !important;
   }
+
   #rate_game {
     width: 15rem;
     height: 8rem;
   }
+
   #rate_game_title {
     padding-left: 0.5rem;
     padding-right: 0.5rem;
     font-size: 0.9rem;
   }
+
   #span_line {
     padding-left: 2.5rem;
     padding-right: 2.5rem;
     padding-top: 0.8rem;
   }
+
   #rating_label {
     display: flex;
     overflow: hidden;
   }
+
   .rating_label_text {
     font-size: 0.75rem;
   }
+
   #waste_of_time {
     margin-left: 9px !important;
   }
+
   #nuh {
     margin-left: 78px !important;
   }
+
   #good {
     margin-left: 121px !important;
   }
+
   #must {
     margin-left: 166px !important;
   }
+
   #game_page_description_wrapper {
     padding-top: 1rem;
   }
+
   #game_page_game_name {
     font-size: 3.6rem;
   }
@@ -274,10 +336,12 @@
   #game_page_screenshots_controller {
     height: 280px !important;
   }
+
   #controller {
     height: 280px !important;
     width: 330px;
   }
+
   .screenshot {
     margin-top: 3.5rem;
     height: 10rem !important;
@@ -288,14 +352,17 @@
   #welcome_title {
     font-size: 1.7rem;
   }
+
   #settings_bar {
     padding: 2rem !important;
     padding-top: 3rem !important;
   }
+
   #settings_bar h1 {
     font-size: 1.2rem;
     white-space: nowrap;
   }
+
   #settings_bar svg {
     top: 25px !important;
     right: 20px !important;
