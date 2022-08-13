@@ -31,7 +31,7 @@ export default function SmallSearchInput() {
           consoles: filtersStore.consoles,
           yearRange:
             filtersStore.yearRange[0] === 1990 &&
-            filtersStore.yearRange[1] === 2022
+              filtersStore.yearRange[1] === 2022
               ? []
               : filtersStore.yearRange,
         },
@@ -44,7 +44,7 @@ export default function SmallSearchInput() {
           consoles: filtersStore.consoles,
           yearRange:
             filtersStore.yearRange[0] === 1990 &&
-            filtersStore.yearRange[1] === 2022
+              filtersStore.yearRange[1] === 2022
               ? []
               : filtersStore.yearRange,
         },
@@ -60,12 +60,12 @@ export default function SmallSearchInput() {
       <FontAwesomeIcon
         onClick={() => store.changeFilterVisibility(true)}
         icon={faSliders}
-        className="absolute h-3 cursor-pointer right-4 text-gray-600"
+        className="absolute h-3 cursor-pointer right-10 text-gray-600"
       />
       <FontAwesomeIcon
         onClick={() => navigate()}
         icon={faMagnifyingGlass}
-        className="absolute h-3 cursor-pointer right-10 text-gray-600"
+        className="absolute h-3 cursor-pointer right-4 text-white"
       />
       <FiltersAppliedCount />
       <input

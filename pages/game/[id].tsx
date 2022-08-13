@@ -6,11 +6,8 @@ import useQuery from '../../lib/functions/hooks/useQuery'
 import {
   DetailedGame,
   ElementDescription,
-  Platform,
   ShortGame,
 } from '../../types'
-import Image from 'next/image'
-import RateGame from '../../components/GamePage/RateGame'
 import useWindowSize from '../../lib/functions/hooks/useWindowSize'
 import YellowButton from '../../components/common/YellowButton'
 import ReviewsSlider from '../../components/GamePage/ReviewsSlider'
@@ -18,13 +15,12 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { useSession } from 'next-auth/react'
 import WriteReview from '../../components/GamePage/WriteReview'
 import VerticalReviewsLoader from '../../components/GamePage/VerticalReviewsLoader'
-import { games_data, Review_Type } from '../../types/schema'
+import { Review_Type } from '../../types/schema'
 import clientPromise from '../../lib/functions/mongodb'
 import Bigger640 from '../../components/GamePage/Responsive/Bigger640'
 import Lower640 from '../../components/GamePage/Responsive/Lower640'
 import Filters from '../../components/Filters'
 import { useGlobalError, useStore } from '../../store'
-import { setCookie } from 'cookies-next'
 import { ObjectId } from 'bson'
 import { useRouter } from 'next/router'
 import NoScreenShots from '../../components/GamePage/NoScreenshots'
@@ -35,23 +31,26 @@ type Props = {
 }
 
 export default function GamePage(props: Props) {
-  const [game, setGame] = useState<DetailedGame | null>(null)
   const [width, height] = useWindowSize()
-  const [screenshotsAnimtion, setScreenshotsAnimtion] = useState<boolean>(false)
-  const [reviewsAnimation, setReviewsAnimation] = useState<boolean>(false)
-  const [writeReviewVisibility, setWriteReviewVisibility] =
-    useState<boolean>(false)
-  const session = useSession()
-  const [isUserRated, setIsUserRated] = useState<string | null>(null)
-  const [reviews, setReviews] = useState<Review_Type[]>([])
   const store = useStore()
   const query = useQuery()
   const router = useRouter()
-
+  const session = useSession()
   const changeGlobalErrorVisibility = useGlobalError(
     (store) => store.setIsVisible
   )
   const changeText = useGlobalError((state) => state.setText)
+
+
+  const [game, setGame] = useState<DetailedGame | null>(null)
+  const [screenshotsAnimtion, setScreenshotsAnimtion] = useState<boolean>(false)
+  const [reviewsAnimation, setReviewsAnimation] = useState<boolean>(false)
+  const [writeReviewVisibility, setWriteReviewVisibility] =
+    useState<boolean>(false)
+  const [isUserRated, setIsUserRated] = useState<string | null>(null)
+  const [reviews, setReviews] = useState<Review_Type[]>([])
+
+
 
   const navigateAuth = () => {
     if (session.status !== 'authenticated') {
@@ -97,10 +96,7 @@ export default function GamePage(props: Props) {
     }
   }
 
-  //TODO:add additional data for the website, like the game stores.
-  //maybe trying accessing another api's like twitch/steam/epicgames.
   return (
-    // TODO: add design shapes on the backgorund
     <SearchLayout>
       {!game ? (
         <div>Erroooor!!!</div>
