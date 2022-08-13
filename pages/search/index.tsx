@@ -10,16 +10,17 @@ import SmallLoader from '../../components/common/SmallLoader'
 import { ShortGame } from '../../types'
 import LoadingError from '../../components/common/LoadingError'
 import cookie from 'cookie'
-import { count } from 'console'
 
 interface Props {
-  games: ShortGame[]
-  count: number
-  error: string | null
+  games: ShortGame[];
+  count: number;
+  error: string | null;
+  nextPage: boolean;
 }
 
 export default function Index(props: Props) {
   const [loadMoreLoading, setLoadMoreLoading] = useState<boolean>(true)
+  const [nextPage, setNextPage] = useState<boolean>(props.nextPage)
   const changeGlobalErrorVisibility = useGlobalError(
     (store) => store.setIsVisible
   )
@@ -46,6 +47,7 @@ export default function Index(props: Props) {
       } else {
         store.addPage()
         store.addGames(getData.data.games)
+        setNextPage(getData.data.nextPage)
       }
       setLoadMoreLoading(false)
     } catch (e) {
@@ -104,20 +106,20 @@ export default function Index(props: Props) {
                 <SmallGameBox key={index} game={game} />
               ))}
             </div>
-            {store.games.length > 0 ? (
-              <div className="w-24 h-16 rounded-lg m-auto mt-8">
-                {loadMoreLoading ? (
-                  <SmallLoader big={false} xCentered={true} />
-                ) : (
-                  <SearchButton
-                    text="Load More"
-                    onClick={() => loadGames(store.page)}
-                  />
-                )}
-              </div>
-            ) : (
-              <SmallLoader big={true} xCentered={true} />
-            )}
+            {nextPage ?
+              store.games.length > 0 ? (
+                <div className="w-24 h-16 rounded-lg m-auto mt-8">
+                  {loadMoreLoading ? (
+                    <SmallLoader big={false} xCentered={true} />
+                  ) : (
+                    <SearchButton
+                      text="Load More"
+                      onClick={() => loadGames(store.page)}
+                    />
+                  )}
+                </div>
+              ) : <SmallLoader big={true} xCentered={true} />
+              : null}
           </div>
         )}
       </div>
@@ -212,10 +214,20 @@ export async function getServerSideProps(context: any) {
       count = getData.data.count
     }
 
+    //calculate function to check if there is next page
+    const isNextPage = (page: number) => {
+      if (page * 30 < count) {
+        return true
+      } else {
+        return false
+      }
+    }
+
     return {
       props: {
         games,
         count,
+        nextPage: isNextPage(1),
         error: null,
       },
     }

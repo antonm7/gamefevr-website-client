@@ -16,6 +16,7 @@ export default async function handler(req: Request, res: Response) {
       const body: BodyReq = req.body;
       const { yearRange, genres, consoles, search } = body.query;
       let games = [];
+      let count = 0;
       let filteredString = "";
       //checking if i got some filter
       if (yearRange || genres || consoles || search) {
@@ -68,13 +69,22 @@ export default async function handler(req: Request, res: Response) {
           `https://api.rawg.io/api/games?key=0ffbdb925caf4b20987cd068aa43fd75&ordering=-released&page=${body.page}&page_size=30${filteredString}`
         );
         games = await getData.json();
+        count = games.count;
       } else {
         const getData = await fetch(
           `https://api.rawg.io/api/games?key=0ffbdb925caf4b20987cd068aa43fd75&ordering=-released&dates=1990-01-01,2022-12-31&page=${body.page}&page_size=30`
         );
         games = await getData.json();
+        count = games.count
       }
-      res.status(200).send({ games: games.results });
+      const isNextPage = (page: number) => {
+        if (page * 30 < count) {
+          return true
+        } else {
+          return false
+        }
+      }
+      res.status(200).send({ games: games.results, nextPage: isNextPage(body.page) });
     } catch (e) {
       console.log(e);
     }
