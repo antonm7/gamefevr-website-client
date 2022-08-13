@@ -1,5 +1,6 @@
 import { ObjectId } from 'bson'
 import { NextApiRequest, NextApiResponse } from 'next'
+import authorize from '../../../../../backend-middlewares/authorize'
 import games_data_document from '../../../../../lib/functions/create/games_data'
 import clientPromise from '../../../../../lib/functions/mongodb'
 import { Review_Type } from '../../../../../types/schema'
@@ -13,10 +14,7 @@ interface ExtendedNextApiRequest extends NextApiRequest {
   }
 }
 
-export default async function handler(
-  req: ExtendedNextApiRequest,
-  res: NextApiResponse
-) {
+async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
     let db = null
     const query = req.body
@@ -110,3 +108,5 @@ export default async function handler(
     }
   }
 }
+
+export default authorize(handler)

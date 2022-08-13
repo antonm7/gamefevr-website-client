@@ -1,5 +1,6 @@
 import { ObjectId } from 'bson'
 import { NextApiRequest, NextApiResponse } from 'next'
+import authorize from '../../../../../backend-middlewares/authorize'
 import clientPromise from '../../../../../lib/functions/mongodb'
 
 interface ExtendedNextApiRequest extends NextApiRequest {
@@ -10,10 +11,7 @@ interface ExtendedNextApiRequest extends NextApiRequest {
   }
 }
 
-export default async function handler(
-  req: ExtendedNextApiRequest,
-  res: NextApiResponse
-) {
+async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
     let db = null
     const query = req.body
@@ -62,3 +60,5 @@ export default async function handler(
     res.status(200).send({ error: null })
   }
 }
+
+export default authorize(handler)
