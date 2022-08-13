@@ -334,3 +334,11 @@ div {
   filter: invert(7%) sepia(26%) saturate(1359%) hue-rotate(177deg)
     brightness(91%) contrast(96%);
 }
+
+#filters::-webkit-scrollbar {
+  width: 0px;
+}
+
+#filters::-webkit-scrollbar-thumb {
+  background: darkgray;
+}

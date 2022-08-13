@@ -48,13 +48,15 @@ export default function Filters() {
   }
   //close filters on esc keypress
   useEffect(() => {
-    const keyDownHandler = (e: any) => { e.keyCode === 27 ? store.changeFilterVisibility(false) : null };
-    document.addEventListener("keydown", keyDownHandler);
+    const keyDownHandler = (e: any) => {
+      e.keyCode === 27 ? store.changeFilterVisibility(false) : null
+    }
+    document.addEventListener('keydown', keyDownHandler)
     // clean up
     return () => {
-      document.removeEventListener("keydown", keyDownHandler);
-    };
-  }, []);
+      document.removeEventListener('keydown', keyDownHandler)
+    }
+  }, [])
 
   useEffect(() => {
     changeYearRange(filtersStore.yearRange)
@@ -67,7 +69,10 @@ export default function Filters() {
   }, [])
 
   return (
-    <div className="fixed z-40 rounded-lg p-6 w-4/6 h-5/6 bg-filtersBg top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+    <div
+      id="filters"
+      className="fixed z-40 rounded-lg p-6 w-4/6 h-5/6 bg-filtersBg top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+    >
       <FontAwesomeIcon
         icon={faXmark}
         className="h-8 float-right cursor-pointer"
