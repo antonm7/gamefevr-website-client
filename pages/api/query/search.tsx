@@ -65,12 +65,12 @@ export default async function handler(req: Request, res: Response) {
           }
         }
         const getData = await fetch(
-          `https://api.rawg.io/api/games?key=0ffbdb925caf4b20987cd068aa43fd75&ordering=-released&page=${body.page}&page_size=20${filteredString}`
+          `https://api.rawg.io/api/games?key=0ffbdb925caf4b20987cd068aa43fd75&ordering=-released&page=${body.page}&page_size=30${filteredString}`
         );
         games = await getData.json();
       } else {
         const getData = await fetch(
-          `https://api.rawg.io/api/games?key=0ffbdb925caf4b20987cd068aa43fd75&ordering=-released&dates=1990-01-01,2022-12-31&page=${body.page}&page_size=20`
+          `https://api.rawg.io/api/games?key=0ffbdb925caf4b20987cd068aa43fd75&ordering=-released&dates=1990-01-01,2022-12-31&page=${body.page}&page_size=30`
         );
         games = await getData.json();
       }

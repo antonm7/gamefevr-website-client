@@ -199,14 +199,14 @@ export async function getServerSideProps(context: any) {
         }
       }
       const getData: any = await axios(
-        `https://api.rawg.io/api/games?key=0ffbdb925caf4b20987cd068aa43fd75&ordering=-released&page=1&page_size=20${filteredString}`
+        `https://api.rawg.io/api/games?key=0ffbdb925caf4b20987cd068aa43fd75&ordering=-released&page=1&page_size=30${filteredString}`
       )
       console.log(getData)
       games = getData.data.results
       count = getData.data.count
     } else {
       const getData: any = await axios(
-        `https://api.rawg.io/api/games?key=0ffbdb925caf4b20987cd068aa43fd75&ordering=-released&dates=1990-01-01,2022-12-31&page=1&page_size=20`
+        `https://api.rawg.io/api/games?key=0ffbdb925caf4b20987cd068aa43fd75&ordering=-released&dates=1990-01-01,2022-12-31&page=1&page_size=30`
       )
       games = getData.data.results
       count = getData.data.count
