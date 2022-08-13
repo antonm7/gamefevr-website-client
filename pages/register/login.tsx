@@ -5,38 +5,42 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import LoginAnimation from "../../components/animations/Login";
+import SmallLoader from "../../components/common/SmallLoader";
 import YellowButton from "../../components/common/YellowButton";
 import StyledInput from "../../components/Register/StyledInput";
 
 const Login: NextPage = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [error, setError] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
 
-  const signin = () => {
-    signIn("credentials", {
-      redirect: false,
-      email,
-      password,
-    })
-      .then((data: any) => {
-        if (data.status === 200) {
-          router.push("/");
-        } else {
-          throw new Error("Error on Login");
-        }
+  const signin = async () => {
+    setError('')
+    setLoading(true)
+    try {
+      const data: any = await signIn("credentials", {
+        redirect: false,
+        email,
+        password,
       })
-      .catch((e) => {
-        console.log("error", e);
-      });
-    //inputs verify
-    //use signIn with 'credentials',
-    //.then((res) => {
-    // setLoading(false)
-    // if(res.error) {
-    //   setLoading(false)
-    //   return setLoginerror('Email or password is invalid')
+      console.log(data)
+      if (data?.status !== 200) {
+        throw new Error()
+      } else {
+        if (data?.error) {
+          return setError(data.error.slice(6, 50))
+        } else {
+          router.push("/");
+        }
+      }
+    } catch (e) {
+      setError('Login Failed, Try Again');
+    }
+    setLoading(false)
   };
+
   return (
     <main className="flex h-screen bg-white">
       <div style={{ zIndex: 2 }} className="px-32 pt-16">
@@ -66,7 +70,7 @@ const Login: NextPage = () => {
             />
           </div>
           <div className="pt-12">
-            <YellowButton onClick={signin} title="Login" />
+            {loading ? <SmallLoader xCentered={true} /> : <YellowButton onClick={signin} title="Login" />}
           </div>
           <div className="text-darkIndigo font-semibold text-base pt-4 flex items-center">
             Don't have an account?
@@ -79,6 +83,7 @@ const Login: NextPage = () => {
               </p>
             </Link>
           </div>
+          <p className="text-xl pt-2 font-semibold text-red-600">{error}</p>
         </div>
       </div>
       <LoginAnimation />

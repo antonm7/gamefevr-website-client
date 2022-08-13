@@ -60,7 +60,9 @@ export default NextAuth({
             userId: result._id,
           };
         } catch (e) {
-          console.log("errororor", e);
+          throw new Error(e)
+
+          // console.log("errororor", e);
         }
       },
     }),
