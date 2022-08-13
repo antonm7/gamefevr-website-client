@@ -95,7 +95,7 @@ export default function Navbar() {
     return (
       <div className="absolute h-20 w-full z-30">
         <div
-          className="h-full w-full flex justify-between pt-4 px-44 items-center"
+          className="h-full w-full flex justify-between pt-4 px-20 items-center"
           id="navbar"
         >
           <div style={{ marginTop: 7 }}>
@@ -148,7 +148,7 @@ export default function Navbar() {
       >
         {width > 1024 ? (
           <div
-            className="h-full w-full flex justify-between pt-4 px-44 items-center"
+            className="h-full w-full flex justify-between pt-4 px-20 items-center"
             id="navbar"
           >
             <div className="flex items-center">
@@ -198,7 +198,7 @@ export default function Navbar() {
             </div>
           </div>
         ) : width > 640 ? (
-          <div className="h-full w-full flex flex-col pt-4 px-44" id="navbar">
+          <div className="h-full w-full flex flex-col pt-4 px-20" id="navbar">
             <div className="flex items-center justify-between overflow-hidden">
               <div style={{ marginTop: 7 }}>
                 <Image
@@ -246,7 +246,7 @@ export default function Navbar() {
             </div>
           </div>
         ) : (
-          <div className="h-full w-full flex flex-col pt-4 px-44" id="navbar">
+          <div className="h-full w-full flex flex-col pt-4 px-20" id="navbar">
             <div className="flex items-center justify-between overflow-hidden h-11">
               <div style={{ marginTop: 7 }}>
                 <Image
