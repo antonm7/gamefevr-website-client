@@ -174,14 +174,17 @@ div {
 .flickity-prev-next-button.previous {
   left: 10px;
 }
+
 .flickity-prev-next-button.next {
   right: 10px;
 }
+
 /* right to left */
 .flickity-rtl .flickity-prev-next-button.previous {
   left: auto;
   right: 10px;
 }
+
 .flickity-rtl .flickity-prev-next-button.next {
   right: auto;
   left: 10px;
@@ -232,16 +235,19 @@ div {
   color: #9da8b6;
   font-weight: 300;
 }
+
 ::-moz-placeholder {
   /* Firefox 19+ */
   color: #9da8b6;
   font-weight: 300;
 }
+
 :-ms-input-placeholder {
   /* IE 10+ */
   color: #9da8b6;
   font-weight: 300;
 }
+
 :-moz-placeholder {
   /* Firefox 18- */
   color: #9da8b6;
@@ -252,6 +258,7 @@ div {
   clip-path: inset(100% 0 0 0);
   transition: 0.4s all;
 }
+
 .opened {
   clip-path: inset(0% 0 0 0) !important;
 }
@@ -297,55 +304,46 @@ div {
 }
 
 #android {
-  filter: invert(7%) sepia(26%) saturate(1359%) hue-rotate(177deg)
-    brightness(70%) contrast(96%);
+  filter: invert(7%) sepia(26%) saturate(1359%) hue-rotate(177deg) brightness(70%) contrast(96%);
 }
 
 #windows {
-  filter: invert(7%) sepia(26%) saturate(1359%) hue-rotate(177deg)
-    brightness(70%) contrast(96%);
+  filter: invert(7%) sepia(26%) saturate(1359%) hue-rotate(177deg) brightness(70%) contrast(96%);
 }
 
 #mac {
-  filter: invert(7%) sepia(26%) saturate(1359%) hue-rotate(177deg)
-    brightness(70%) contrast(96%);
+  filter: invert(7%) sepia(26%) saturate(1359%) hue-rotate(177deg) brightness(70%) contrast(96%);
 }
 
 #linux {
-  filter: invert(7%) sepia(26%) saturate(1359%) hue-rotate(177deg)
-    brightness(70%) contrast(96%);
+  filter: invert(7%) sepia(26%) saturate(1359%) hue-rotate(177deg) brightness(70%) contrast(96%);
 }
 
 #playstation {
-  filter: invert(7%) sepia(26%) saturate(1359%) hue-rotate(177deg)
-    brightness(70%) contrast(96%);
+  filter: invert(7%) sepia(26%) saturate(1359%) hue-rotate(177deg) brightness(70%) contrast(96%);
 }
 
 #xbox {
-  filter: invert(7%) sepia(26%) saturate(1359%) hue-rotate(177deg)
-    brightness(70%) contrast(96%);
+  filter: invert(7%) sepia(26%) saturate(1359%) hue-rotate(177deg) brightness(70%) contrast(96%);
 }
 
 #nintendo,
 #atari {
-  filter: invert(7%) sepia(26%) saturate(1359%) hue-rotate(177deg)
-    brightness(70%) contrast(96%);
+  filter: invert(7%) sepia(26%) saturate(1359%) hue-rotate(177deg) brightness(70%) contrast(96%);
 }
 
 #amiga {
-  filter: invert(7%) sepia(26%) saturate(1359%) hue-rotate(177deg)
-    brightness(70%) contrast(96%);
+  filter: invert(7%) sepia(26%) saturate(1359%) hue-rotate(177deg) brightness(70%) contrast(96%);
 }
 
 #sega {
-  filter: invert(7%) sepia(26%) saturate(1359%) hue-rotate(177deg)
-    brightness(70%) contrast(96%);
+  filter: invert(7%) sepia(26%) saturate(1359%) hue-rotate(177deg) brightness(70%) contrast(96%);
 }
+
 #3do,
 #neo,
 #web {
-  filter: invert(7%) sepia(26%) saturate(1359%) hue-rotate(177deg)
-    brightness(91%) contrast(96%);
+  filter: invert(7%) sepia(26%) saturate(1359%) hue-rotate(177deg) brightness(91%) contrast(96%);
 }
 
 #filters-bg {
@@ -366,4 +364,8 @@ div {
 
 #filters::-webkit-scrollbar-thumb {
   background: darkgray;
+}
+
+#game_box {
+  flex: 1 0 28%;
 }

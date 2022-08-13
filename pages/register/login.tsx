@@ -25,7 +25,6 @@ const Login: NextPage = () => {
         email,
         password,
       })
-      console.log(data)
       if (data?.status !== 200) {
         throw new Error()
       } else {

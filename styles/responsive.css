@@ -3,6 +3,16 @@
     min-width: 20rem !important;
   }
 
+  #games_wrapper {
+    padding-left: 4rem;
+    padding-right: 4rem;
+  }
+
+  #we_found_title {
+    padding-left: 5rem;
+    padding-right: 5rem;
+  }
+
   #game_page_background_image {
     width: 20rem;
     height: 15rem !important;
@@ -113,6 +123,10 @@
     padding-left: 2rem;
   }
 
+  #game_box {
+    flex: 1 0 40%;
+  }
+
   #small_search_input_wrapper {
     margin-right: 1rem !important;
   }
@@ -151,6 +165,16 @@
 @media (max-width: 900px) {
   #game_page_game_name {
     font-size: 3rem;
+  }
+
+  #we_found_title {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+
+  #games_wrapper {
+    padding-left: 2rem;
+    padding-right: 2rem;
   }
 
   #game_page_background_image_wrapper {
@@ -254,6 +278,10 @@
   #profile_page_welcome {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  #game_box {
+    flex: 1 0 100%;
   }
 
   #profile_page_welcome div {

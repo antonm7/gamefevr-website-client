@@ -96,10 +96,10 @@ export default function Index(props: Props) {
           </div>
         ) : (
           <div className="py-10">
-            <p className="font-bold text-white text-4xl px-24 pb-10">
+            <p id="we_found_title" className="font-bold text-white text-4xl px-44 pb-10">
               We found {store.count} games for you
             </p>
-            <div className="flex flex-wrap justify-center">
+            <div id="games_wrapper" className="flex flex-wrap justify-center px-40 ">
               {store.games.map((game: ShortGame, index: number) => (
                 <SmallGameBox key={index} game={game} />
               ))}

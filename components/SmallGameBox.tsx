@@ -18,8 +18,9 @@ export default function SmallGameBox(props: Props) {
 
   return (
     <div
-      className="w-96 h-72 bg-white rounded-lg mx-8 mb-12 overflow-hidden z-10"
-      style={{ height: '1%' }}
+      id="game_box"
+      className="h-72 bg-white rounded-lg mx-8 mb-12 overflow-hidden z-10"
+      style={{ height: '1%', width: '26rem' }}
     >
       <div className="bg-image">
         {!game.background_image ? null : (
