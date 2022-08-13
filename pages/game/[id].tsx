@@ -81,7 +81,6 @@ export default function GamePage(props: Props) {
       setReviews(newReviews)
     }
   }
-
   //TODO:add additional data for the website, like the game stores.
   //maybe trying accessing another api's like twitch/steam/epicgames.
   return (

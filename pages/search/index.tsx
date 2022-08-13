@@ -13,8 +13,8 @@ import cookie from 'cookie'
 import { count } from 'console'
 
 interface Props {
-  games: ShortGame[],
-  count: number,
+  games: ShortGame[]
+  count: number
   error: string | null
 }
 
@@ -56,6 +56,7 @@ export default function Index(props: Props) {
   }
 
   useEffect(() => {
+    setLoadMoreLoading(false)
     if (props.games.length === 0) return
     else {
       if (props.error) {
@@ -70,7 +71,6 @@ export default function Index(props: Props) {
       store.addPage()
       store.addGames(props.games)
       store.setCount(props.count)
-      setLoadMoreLoading(false)
     }
   }, [props.games, props.error])
 
@@ -96,7 +96,9 @@ export default function Index(props: Props) {
           </div>
         ) : (
           <div className="py-10">
-            <p className='font-bold text-white text-4xl px-24 pb-10'>We found {store.count} games for you</p>
+            <p className="font-bold text-white text-4xl px-24 pb-10">
+              We found {store.count} games for you
+            </p>
             <div className="flex flex-wrap justify-center">
               {store.games.map((game: ShortGame, index: number) => (
                 <SmallGameBox key={index} game={game} />

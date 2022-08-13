@@ -18,18 +18,32 @@ export default function ReviewsSlider(props: Props) {
   const [reviews, setReviews] = useState<Review_Type[]>([])
 
   useEffect(() => {
-    setReviews(props.reviews)
+    //added
+    if (props.reviews.length > reviews.length) {
+      setReviews(reviews.splice(0, reviews.length))
+      setReviews(props.reviews)
+    } else {
+      setReviews(props.reviews)
+    }
   }, [props.reviews])
 
   const settings = {
     infinite: false,
     slidesToScroll: 1,
-    slidesToShow: props.reviews.length >= 3 ? 3 : props.reviews.length,
+    slidesToShow: reviews.length
+      ? reviews.length >= 3
+        ? 3
+        : reviews.length
+      : 3,
     responsive: [
       {
         breakpoint: 1600,
         settings: {
-          slidesToShow: props.reviews.length >= 2 ? 2 : props.reviews.length,
+          slidesToShow: reviews.length
+            ? reviews.length >= 2
+              ? 2
+              : reviews.length
+            : 2,
         },
       },
       {
@@ -40,6 +54,8 @@ export default function ReviewsSlider(props: Props) {
       },
     ],
   }
+
+  if (!reviews.length) return null
 
   return (
     <Slider

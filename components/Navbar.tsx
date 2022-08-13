@@ -93,7 +93,7 @@ export default function Navbar() {
 
   if (router.route === '/') {
     return (
-      <div className=" h-20 w-full z-30">
+      <div className="absolute h-20 w-full z-30 px-44">
         <div
           className="h-full w-full flex justify-between pt-4 px-20 items-center"
           id="navbar"
