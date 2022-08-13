@@ -96,6 +96,7 @@ export default function GamePage(props: Props) {
       setReviews(newReviews)
     }
   }
+
   //TODO:add additional data for the website, like the game stores.
   //maybe trying accessing another api's like twitch/steam/epicgames.
   return (
@@ -150,14 +151,7 @@ export default function GamePage(props: Props) {
           </main>
           <div>
             {width > 1200 ? (
-              <NoScreenShots
-                reviewsAnimation={reviewsAnimation}
-                reviews={reviews}
-                navigateAuth={navigateAuth}
-                deleteReview={(id: ObjectId) => deleteReview(id)}
-              />
-            ) : (
-              <>
+              game.screenshots.results.length >= 3 ?
                 <div
                   id="game_page_screenshots_controller"
                   className="relative overflow-hidden"
@@ -168,15 +162,14 @@ export default function GamePage(props: Props) {
                           ? '150px'
                           : '700px'
                         : reviewsAnimation && !reviews.length
-                        ? '150px'
-                        : '410px',
+                          ? '150px'
+                          : '410px',
                   }}
                 >
                   <div
                     id="controller"
-                    className={`${
-                      screenshotsAnimtion ? 'controller_animation' : ''
-                    }`}
+                    className={`${screenshotsAnimtion ? 'controller_animation' : ''
+                      }`}
                   />
                   <Screenshots
                     isAnimated={screenshotsAnimtion}
@@ -188,11 +181,10 @@ export default function GamePage(props: Props) {
                       style={{ marginTop: width > 1400 ? '-34rem' : '-20rem' }}
                     >
                       <div
-                        className={`px-20 ${
-                          reviewsAnimation
-                            ? 'write_review_animation_enabled'
-                            : 'write_review_animation_disabled'
-                        }`}
+                        className={`px-20 ${reviewsAnimation
+                          ? 'write_review_animation_enabled'
+                          : 'write_review_animation_disabled'
+                          }`}
                       >
                         <FontAwesomeIcon
                           icon={faPlus}
@@ -212,11 +204,10 @@ export default function GamePage(props: Props) {
                       style={{ marginTop: width > 1400 ? '-34rem' : '-20rem' }}
                     >
                       <div
-                        className={`px-20 ${
-                          reviewsAnimation
-                            ? 'write_review_animation_enabled'
-                            : 'write_review_animation_disabled'
-                        }`}
+                        className={`px-20 ${reviewsAnimation
+                          ? 'write_review_animation_enabled'
+                          : 'write_review_animation_disabled'
+                          }`}
                       >
                         <FontAwesomeIcon
                           icon={faPlus}
@@ -226,69 +217,72 @@ export default function GamePage(props: Props) {
                       </div>
                     </div>
                   )}
-                </div>
-                <div>
-                  <div
-                    id="game_page_screenshots_controller"
-                    className="relative overflow-hidden"
-                    style={{ height: '400px' }}
-                  >
-                    <div id="controller" />
-                    <Screenshots
-                      isAnimated={false}
-                      images={game.screenshots.results}
-                    />
-                  </div>
-                  <div
-                    id="game_page_reviews_container"
-                    className="flex flex-col items-center"
-                  >
-                    <div
-                      className="w-72 p-6 flex items-center justify-center rounded-xl mb-8 
-                    cursor-pointer opacity-80 hover:opacity-100"
-                      style={{ backgroundColor: 'rgba(21,21,21,0.6)' }}
-                    >
-                      <div
-                        className="flex items-center justify-center"
-                        onClick={() => navigateAuth()}
-                      >
-                        <FontAwesomeIcon
-                          icon={faPlus}
-                          className="h-6 text-white pr-4"
-                          onClick={() => navigateAuth()}
-                        />
-                        <h1 className="text-white text-xl flex items-center">
-                          Add A Review
-                        </h1>
-                      </div>
-                    </div>
-                    {reviews.length ? (
-                      <VerticalReviewsLoader
-                        reviews={reviews}
-                        deleteReview={(id) => deleteReview(id)}
-                      />
-                    ) : null}
-                  </div>
-                </div>
-              </>
-            )}
-            {width > 1200 ? (
-              <div
-                className={`w-full flex justify-center ${
-                  reviewsAnimation
-                    ? 'button_animation_enabled'
-                    : 'button_animation_disabled'
-                }`}
-              >
-                <div className="w-52" id="show_comments_wrapper">
-                  <YellowButton
-                    title="Show Comments"
-                    active={true}
-                    onClick={() => toggleAnimation()}
+                </div> : <NoScreenShots reviewsAnimation={reviewsAnimation}
+                  reviews={reviews}
+                  navigateAuth={navigateAuth}
+                  deleteReview={(id: ObjectId) => deleteReview(id)} />
+            ) : (
+              <div>
+                <div
+                  id="game_page_screenshots_controller"
+                  className="relative overflow-hidden"
+                  style={{ height: '400px' }}
+                >
+                  <div id="controller" />
+                  <Screenshots
+                    isAnimated={false}
+                    images={game.screenshots.results}
                   />
                 </div>
+                <div
+                  id="game_page_reviews_container"
+                  className="flex flex-col items-center"
+                >
+                  <div
+                    className="w-72 p-6 flex items-center justify-center rounded-xl mb-8 
+                    cursor-pointer opacity-80 hover:opacity-100"
+                    style={{ backgroundColor: 'rgba(21,21,21,0.6)' }}
+                  >
+                    <div
+                      className="flex items-center justify-center"
+                      onClick={() => navigateAuth()}
+                    >
+                      <FontAwesomeIcon
+                        icon={faPlus}
+                        className="h-6 text-white pr-4"
+                        onClick={() => navigateAuth()}
+                      />
+                      <h1 className="text-white text-xl flex items-center">
+                        Add A Review
+                      </h1>
+                    </div>
+                  </div>
+                  {reviews.length ? (
+                    <VerticalReviewsLoader
+                      reviews={reviews}
+                      deleteReview={(id) => deleteReview(id)}
+                    />
+                  ) : null}
+                </div>
               </div>
-            ) : null}
+            )}
+            {width < 1200 ? null : game.screenshots.results.length >= 3 ?
+              (
+                <div
+                  className={`w-full flex justify-center ${reviewsAnimation
+                    ? 'button_animation_enabled'
+                    : 'button_animation_disabled'
+                    }`}
+                >
+                  <div className="w-52" id="show_comments_wrapper">
+                    <YellowButton
+                      title="Show Comments"
+                      active={true}
+                      onClick={() => toggleAnimation()}
+                    />
+                  </div>
+                </div>
+              ) : null}
           </div>
         </div>
       )}
