@@ -26,6 +26,7 @@ import Filters from '../../components/Filters'
 import { useStore } from '../../store'
 import { setCookie } from 'cookies-next'
 import { ObjectId } from 'bson'
+import { useRouter } from 'next/router'
 
 type Props = {
   game: DetailedGame
@@ -39,10 +40,19 @@ export default function GamePage(props: Props) {
   const [reviewsAnimation, setReviewsAnimation] = useState<boolean>(false)
   const [writeReviewVisibility, setWriteReviewVisibility] =
     useState<boolean>(false)
+  const session = useSession()
   const [isUserRated, setIsUserRated] = useState<string | null>(null)
   const [reviews, setReviews] = useState<Review_Type[]>([])
   const store = useStore()
   const query = useQuery()
+  const router = useRouter()
+
+  const navigateAuth = () => {
+    if (session.status !== 'authenticated') {
+      return router.push('/register/login')
+    }
+    setWriteReviewVisibility(true)
+  }
 
   const toggleAnimation = () => {
     if (reviewsAnimation) {
@@ -165,7 +175,7 @@ export default function GamePage(props: Props) {
                       <FontAwesomeIcon
                         icon={faPlus}
                         className="h-16 text-white cursor-pointer opacity-40 hover:opacity-100 simple-transition"
-                        onClick={() => setWriteReviewVisibility(true)}
+                        onClick={() => navigateAuth()}
                       />
                     </div>
                     <ReviewsSlider
@@ -189,7 +199,7 @@ export default function GamePage(props: Props) {
                       <FontAwesomeIcon
                         icon={faPlus}
                         className="h-16 text-white cursor-pointer opacity-40 hover:opacity-100 simple-transition"
-                        onClick={() => setWriteReviewVisibility(true)}
+                        onClick={() => navigateAuth()}
                       />
                     </div>
                   </div>
@@ -219,12 +229,12 @@ export default function GamePage(props: Props) {
                   >
                     <div
                       className="flex items-center justify-center"
-                      onClick={() => setWriteReviewVisibility(true)}
+                      onClick={() => navigateAuth()}
                     >
                       <FontAwesomeIcon
                         icon={faPlus}
                         className="h-6 text-white pr-4"
-                        onClick={() => setWriteReviewVisibility(true)}
+                        onClick={() => navigateAuth()}
                       />
                       <h1 className="text-white text-xl flex items-center">
                         Add A Review
