@@ -23,7 +23,7 @@ import clientPromise from '../../lib/functions/mongodb'
 import Bigger640 from '../../components/GamePage/Responsive/Bigger640'
 import Lower640 from '../../components/GamePage/Responsive/Lower640'
 import Filters from '../../components/Filters'
-import { useStore } from '../../store'
+import { useGlobalError, useStore } from '../../store'
 import { setCookie } from 'cookies-next'
 import { ObjectId } from 'bson'
 import { useRouter } from 'next/router'
@@ -47,9 +47,23 @@ export default function GamePage(props: Props) {
   const query = useQuery()
   const router = useRouter()
 
+  const changeGlobalErrorVisibility = useGlobalError(
+    (store) => store.setIsVisible
+  )
+  const changeText = useGlobalError((state) => state.setText)
+
   const navigateAuth = () => {
     if (session.status !== 'authenticated') {
       return router.push('/register/login')
+    }
+    const isAlreadyCommented = reviews.filter(
+      (r) =>
+        JSON.stringify(r.userId) === JSON.stringify(session.data.user.userId)
+    )
+    if (isAlreadyCommented.length > 0) {
+      changeText('You already commented this game')
+      changeGlobalErrorVisibility(true)
+      return
     }
     setWriteReviewVisibility(true)
   }

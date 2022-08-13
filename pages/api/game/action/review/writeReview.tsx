@@ -34,6 +34,19 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
       res.status(500).send({ error: 'Unexpected error' })
       return console.log('error on games_data_document', e)
     }
+    //checks if user already reviewed the game
+    try {
+      const isReviewd = await db
+        .collection('reviews')
+        .findOne({ userId: query.userId, gameId: query.gameId })
+      if (isReviewd) {
+        res.status(200).send({ error: 'You already reviewed this game' })
+        return
+      }
+    } catch (e) {
+      res.status(500).send({ error: 'Unexpected error' })
+      return console.log('error on checkinf if user commented', e)
+    }
     //saves the reviews inside own ranks collection
     try {
       const getData = await fetch(
