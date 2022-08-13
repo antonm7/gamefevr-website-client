@@ -73,7 +73,7 @@ export default function SmallSearchInput() {
         value={search}
         autoSave="true"
         placeholder="Search..."
-        className="w-500 text-white text-xs placeholder-slate-400 outline-0 p-4 h-10 bg-inputBg rounded-lg"
+        className="w-500 text-white text-xs placeholder-slate-400 outline-0 p-4 h-10 bg-main-blue rounded-lg"
         onChange={(e) => changeGameName(e.target.value)}
       />
     </div>

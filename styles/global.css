@@ -29,6 +29,12 @@ div {
   display: inline-block;
 }
 
+#header_bg {
+  background-image: url('/illustrations/header.svg');
+  background-size: 100%;
+  background-repeat: no-repeat;
+}
+
 #search_layout_page::-webkit-scrollbar {
   /* background: red !important; */
   width: 5px;
@@ -333,6 +339,18 @@ div {
 #web {
   filter: invert(7%) sepia(26%) saturate(1359%) hue-rotate(177deg)
     brightness(91%) contrast(96%);
+}
+
+#filters-bg {
+  position: absolute;
+  top: -1%;
+  left: 0;
+  width: 40%;
+  height: 20%;
+  z-index: -1;
+  background-image: url('/illustrations/filters.svg');
+  background-size: 100%;
+  background-repeat: no-repeat;
 }
 
 #filters::-webkit-scrollbar {

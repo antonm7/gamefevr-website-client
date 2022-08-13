@@ -93,7 +93,7 @@ export default function Navbar() {
 
   if (router.route === '/') {
     return (
-      <div className="absolute h-20 w-full z-30">
+      <div className=" h-20 w-full z-30">
         <div
           className="h-full w-full flex justify-between pt-4 px-20 items-center"
           id="navbar"
@@ -142,9 +142,9 @@ export default function Navbar() {
   } else {
     return (
       <div
-        className={`absolute ${
+        className={` ${
           width > 1024 ? 'h-20' : 'h-50'
-        } w-full bg-main-blue z-30 overflow-hidden`}
+        } w-full  z-30 overflow-hidden`}
       >
         {width > 1024 ? (
           <div

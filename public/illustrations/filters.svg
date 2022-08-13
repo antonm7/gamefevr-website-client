@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="445" height="144" viewBox="0 0 445 144">
+  <defs>
+    <clipPath id="clip-path">
+      <rect id="Rectangle" width="768" height="2339" transform="translate(0 0.622)" fill="none"/>
+    </clipPath>
+    <linearGradient id="linear-gradient" x1="0.401" y1="0.503" x2="0.855" y2="-0.263" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#fff"/>
+      <stop offset="1" stop-color="#f8f8f8"/>
+    </linearGradient>
+    <clipPath id="clip-Artboard_2">
+      <rect width="445" height="144"/>
+    </clipPath>
+  </defs>
+  <g id="Artboard_2" data-name="Artboard – 2" clip-path="url(#clip-Artboard_2)">
+    <g id="background_" data-name="background " transform="translate(0 -0.5)">
+      <rect id="Rectangle-2" data-name="Rectangle" width="768" height="2339" transform="translate(0 0.622)" fill="none"/>
+      <g id="background_2" data-name="background " clip-path="url(#clip-path)">
+        <path id="Path_4" data-name="Path 4" d="M661.294,13.355C557.44,15.135,521.934,173.609,354.169,147.79a327.851,327.851,0,0,0-120.694,3.833c-103.692,22.8-172.228,89.738-172.228,112.8,0,31.161-61.247,0-61.247,0V7.122L660.406,0S765.148,11.574,661.294,13.355Z" transform="translate(-81 -88.378)" fill="url(#linear-gradient)"/>
+      </g>
+    </g>
+  </g>
+</svg>

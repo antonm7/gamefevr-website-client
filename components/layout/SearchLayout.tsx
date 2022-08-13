@@ -1,23 +1,23 @@
-import React, { ReactChildren, ReactChild } from "react";
-import useWindowSize from "../../lib/functions/hooks/useWindowSize";
-import Navbar from "../Navbar";
+import React, { ReactChildren, ReactChild } from 'react'
+import useWindowSize from '../../lib/functions/hooks/useWindowSize'
+import Navbar from '../Navbar'
 
 interface AuxProps {
-  children: ReactChild | ReactChildren;
+  children: ReactChild | ReactChildren
 }
 
 export default function SearchLayout({ children }: AuxProps) {
-  const [width] = useWindowSize();
+  const [width] = useWindowSize()
 
   return (
-    <div>
-      <Navbar />
+    <div id="header_bg">
       <main
         id="search_layout_page"
-        className={`h-screen ${width > 1024 ? "py-20" : "py-32"}`}
+        className={`h-screen ${width > 1024 ? 'pb-20' : 'pb-32'}`}
       >
+        <Navbar />
         {children}
       </main>
     </div>
-  );
+  )
 }
