@@ -92,7 +92,11 @@ export default function Visited(props: Props) {
           <div className="flex items-center justify-between">
             <h1 className="text-white font-bold text-3xl">Reviews</h1>
           </div>
-          <div className="mt-12">
+          <div className={`mt-12 
+          ${reviews.length >= 4 ? 'w-full' :
+              reviews.length === 3 ? 'w-3/4' :
+                reviews.length === 2 ? 'w-2/4' : 'w-full'} `}
+          >
             {reviews.length > 0 ? (
               <Slider {...settings}>
                 {reviews.map((review: Review_Type, index: number) => (
@@ -123,7 +127,11 @@ export default function Visited(props: Props) {
           <div className="flex items-center justify-between">
             <h1 className="text-white font-bold text-3xl">Favorite Games</h1>
           </div>
-          <div className="mt-12">
+          <div className={`mt-12 
+          ${favorites.length >= 4 ? 'w-full' :
+              favorites.length === 3 ? 'w-3/4' :
+                favorites.length === 2 ? 'w-2/4' : 'w-full'} `}
+          >
             {favorites.length > 0 ? (
               <Slider {...favoritesSettings}>
                 {favorites.map((review: Favorite_Type, index: number) => (

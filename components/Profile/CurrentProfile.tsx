@@ -86,6 +86,7 @@ export default function CurrentProfile(props: Props) {
       const newReviews = reviews.filter(
         (review: Review_Type) => review._id !== id
       )
+      setReviews(reviews.splice(0, reviews.length))
       setReviews(newReviews)
     }
   }
@@ -95,6 +96,7 @@ export default function CurrentProfile(props: Props) {
       const newFavorites = favorites.filter(
         (favorite: Favorite_Type) => favorite._id !== id
       )
+      setFavorites(favorites.splice(0, favorites.length))
       setFavorites(newFavorites)
     }
   }
@@ -138,7 +140,11 @@ export default function CurrentProfile(props: Props) {
           <div className="flex items-center justify-between">
             <h1 className="text-white font-bold text-3xl">Your Reviews</h1>
           </div>
-          <div className="mt-12">
+          <div className={`mt-12 
+          ${reviews.length >= 4 ? 'w-full' :
+              reviews.length === 3 ? 'w-3/4' :
+                reviews.length === 2 ? 'w-2/4' : 'w-full'} `}
+          >
             {reviews.length > 0 ? (
               <Slider {...settings}>
                 {reviews.map((review: Review_Type, index: number) => (
@@ -169,7 +175,11 @@ export default function CurrentProfile(props: Props) {
           <div className="flex items-center justify-between">
             <h1 className="text-white font-bold text-3xl">Favorite Games</h1>
           </div>
-          <div className="mt-12">
+          <div className={`mt-12 
+          ${favorites.length >= 4 ? 'w-full' :
+              favorites.length === 3 ? 'w-3/4' :
+                favorites.length === 2 ? 'w-2/4' : 'w-full'} `}
+          >
             {favorites.length > 0 ? (
               <Slider {...favoritesSettings}>
                 {favorites.map((review: Favorite_Type, index: number) => (
