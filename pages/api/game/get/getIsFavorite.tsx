@@ -33,4 +33,4 @@ async function handler(req: ExtendedRequest, res: Response) {
   }
 }
 
-export default authorize(handler)
+export default handler

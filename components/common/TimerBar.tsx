@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
 interface Props {
-  start: number
+  start: boolean
 }
 
 export default function TimerBar({ start }: Props) {

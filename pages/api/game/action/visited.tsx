@@ -22,12 +22,15 @@ async function handler(req: ExtendedRequest, res: NextApiResponse) {
       await db
         .collection('games_data')
         .updateOne({ gameId: query.gameId }, { $inc: { visited: 1 } })
-      await db
-        .collection('users')
-        .updateOne(
-          { _id: new ObjectId(query.userId) },
-          { $push: { visited_games: query.gameId } }
-        )
+
+      if (query.userId) {
+        await db
+          .collection('users')
+          .updateOne(
+            { _id: new ObjectId(query.userId) },
+            { $push: { visited_games: query.gameId } }
+          )
+      }
 
       res.status(200).send({ error: null })
     } catch (e) {
@@ -37,4 +40,4 @@ async function handler(req: ExtendedRequest, res: NextApiResponse) {
   }
 }
 
-export default authorize(handler)
+export default handler
