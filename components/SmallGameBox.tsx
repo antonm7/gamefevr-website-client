@@ -59,7 +59,6 @@ export default function SmallGameBox(props: Props) {
               // </h2>
             ))}
         </div>
-        <PlatformIcon />
         <div className="flex flex-row justify-between pt-6">
           <div className="flex flex-row flex-nowrap">
             {game?.genres

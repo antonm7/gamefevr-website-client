@@ -1,21 +1,25 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react'
 
-export default function TimerBar(props: any) {
-  const [w, setW] = useState<number>(0);
+interface Props {
+  start: number
+}
+
+export default function TimerBar({ start }: Props) {
+  const [w, setW] = useState<number>(0)
 
   useEffect(() => {
-    if (props.start) {
+    if (start) {
       setTimeout(() => {
         if (w > 288) {
-          setW(0);
-          return;
+          setW(0)
+          return
         }
-        setW(w + 1);
-      }, 12);
+        setW(w + 1)
+      }, 12)
     } else {
-      setW(0);
+      setW(0)
     }
-  }, [props.start, w]);
+  }, [start, w])
 
   return (
     <div
@@ -24,5 +28,5 @@ export default function TimerBar(props: any) {
     >
       <div></div>
     </div>
-  );
+  )
 }

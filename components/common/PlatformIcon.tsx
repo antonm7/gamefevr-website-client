@@ -1,7 +1,11 @@
 import Image from 'next/image'
 
-export default function PlatformIcon(props: any) {
-  if (props.platform === 'PC') {
+interface Props {
+  platform?: string
+}
+
+export default function PlatformIcon({ platform }: Props) {
+  if (platform === 'PC') {
     return (
       <div className="pr-2 flex items-center">
         <Image
@@ -14,7 +18,7 @@ export default function PlatformIcon(props: any) {
       </div>
     )
   }
-  if (props.platform === 'PlayStation') {
+  if (platform === 'PlayStation') {
     return (
       <div className="pr-2 flex items-center">
         <Image
@@ -27,7 +31,7 @@ export default function PlatformIcon(props: any) {
       </div>
     )
   }
-  if (props.platform === 'Xbox') {
+  if (platform === 'Xbox') {
     return (
       <div className="pr-2 flex items-center">
         <Image
@@ -40,7 +44,7 @@ export default function PlatformIcon(props: any) {
       </div>
     )
   }
-  if (props.platform === 'iOS') {
+  if (platform === 'iOS') {
     return (
       <div className="pr-2 flex items-center">
         <Image
@@ -53,7 +57,7 @@ export default function PlatformIcon(props: any) {
       </div>
     )
   }
-  if (props.platform === 'Android') {
+  if (platform === 'Android') {
     return (
       <div className="pr-2 flex items-center">
         <Image
@@ -67,7 +71,7 @@ export default function PlatformIcon(props: any) {
       </div>
     )
   }
-  if (props.platform === 'Apple Macintosh') {
+  if (platform === 'Apple Macintosh') {
     return (
       <div className="pr-2 flex items-center">
         <Image
@@ -80,7 +84,7 @@ export default function PlatformIcon(props: any) {
       </div>
     )
   }
-  if (props.platform === 'Linux') {
+  if (platform === 'Linux') {
     return (
       <div className="pr-2 flex items-center">
         <Image
@@ -93,7 +97,7 @@ export default function PlatformIcon(props: any) {
       </div>
     )
   }
-  if (props.platform === 'Nintendo') {
+  if (platform === 'Nintendo') {
     return (
       <div className="pr-2 flex items-center">
         <Image
@@ -106,7 +110,7 @@ export default function PlatformIcon(props: any) {
       </div>
     )
   }
-  if (props.platform === 'Atari') {
+  if (platform === 'Atari') {
     return (
       <div className="pr-2 flex items-center">
         <Image
@@ -119,7 +123,7 @@ export default function PlatformIcon(props: any) {
       </div>
     )
   }
-  if (props.platform === 'Amiga') {
+  if (platform === 'Amiga') {
     return (
       <div className="pr-2 flex items-center">
         <Image
@@ -132,7 +136,7 @@ export default function PlatformIcon(props: any) {
       </div>
     )
   }
-  if (props.platform === 'SEGA') {
+  if (platform === 'SEGA') {
     return (
       <div className="pr-2 flex items-center">
         <Image
@@ -145,7 +149,7 @@ export default function PlatformIcon(props: any) {
       </div>
     )
   }
-  if (props.platform === '3DO') {
+  if (platform === '3DO') {
     return (
       <div className="pr-2 flex items-center">
         <Image
@@ -158,7 +162,7 @@ export default function PlatformIcon(props: any) {
       </div>
     )
   }
-  if (props.platform === 'Neo Geo') {
+  if (platform === 'Neo Geo') {
     return (
       <div className="pr-2 flex items-center">
         <Image
@@ -171,7 +175,7 @@ export default function PlatformIcon(props: any) {
       </div>
     )
   }
-  if (props.platform === 'Web') {
+  if (platform === 'Web') {
     return (
       <div className="pr-2 flex items-center">
         <Image

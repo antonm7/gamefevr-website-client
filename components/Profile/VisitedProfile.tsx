@@ -14,7 +14,7 @@ interface Props {
 }
 
 export default function Visited(props: Props) {
-  const [user, setUser] = useState<any>(null)
+  const [user, setUser] = useState<Client_User>()
   const [reviews, setReviews] = useState<Review_Type[]>([])
   const [favorites, setFavorites] = useState<Favorite_Type[]>([])
 
@@ -92,10 +92,17 @@ export default function Visited(props: Props) {
           <div className="flex items-center justify-between">
             <h1 className="text-white font-bold text-3xl">Reviews</h1>
           </div>
-          <div className={`mt-12 
-          ${reviews.length >= 4 ? 'w-full' :
-              reviews.length === 3 ? 'w-3/4' :
-                reviews.length === 2 ? 'w-2/4' : 'w-full'} `}
+          <div
+            className={`mt-12 
+          ${
+            reviews.length >= 4
+              ? 'w-full'
+              : reviews.length === 3
+              ? 'w-3/4'
+              : reviews.length === 2
+              ? 'w-2/4'
+              : 'w-full'
+          } `}
           >
             {reviews.length > 0 ? (
               <Slider {...settings}>
@@ -127,10 +134,17 @@ export default function Visited(props: Props) {
           <div className="flex items-center justify-between">
             <h1 className="text-white font-bold text-3xl">Favorite Games</h1>
           </div>
-          <div className={`mt-12 
-          ${favorites.length >= 4 ? 'w-full' :
-              favorites.length === 3 ? 'w-3/4' :
-                favorites.length === 2 ? 'w-2/4' : 'w-full'} `}
+          <div
+            className={`mt-12 
+          ${
+            favorites.length >= 4
+              ? 'w-full'
+              : favorites.length === 3
+              ? 'w-3/4'
+              : favorites.length === 2
+              ? 'w-2/4'
+              : 'w-full'
+          } `}
           >
             {favorites.length > 0 ? (
               <Slider {...favoritesSettings}>

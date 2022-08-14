@@ -1,7 +1,10 @@
+import { NextApiRequest, NextApiResponse } from 'next'
 import { getToken } from 'next-auth/jwt'
 
-function authorize(handler: any) {
-  return async (req: any, res: any) => {
+function authorize(
+  handler: (req: NextApiRequest, res: NextApiResponse) => Promise<void>
+) {
+  return async (req: NextApiRequest, res: NextApiResponse) => {
     const token = await getToken({ req })
     if (!token) {
       return res.status(401).end()

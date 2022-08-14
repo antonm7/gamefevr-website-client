@@ -1,20 +1,36 @@
 import create from 'zustand'
+import { ShortGame } from '../types'
 
-export const useStore = create((set: any) => ({
+interface State {
+  isFilterOn: boolean
+  games: ShortGame[]
+  page: number
+  gameName: string
+  count: number
+  addGames: (games: ShortGame[]) => void
+  clearGames: () => void
+  addPage: () => void
+  clearPage: () => void
+  changeFilterVisibility: (isFilterOn: boolean) => void
+  changeGameName: (gameName: string) => void
+  setCount: (count: number) => void
+}
+
+export const useStore = create<State>((set) => ({
   isFilterOn: <boolean>false,
-  games: <any[]>[],
+  games: <ShortGame[]>[],
   page: <number>1,
   gameName: <string>'',
   count: <number>0,
-  addGames: (arr: any[]) =>
-    set((state: any) => {
+  addGames: (arr: ShortGame[]) =>
+    set((state) => {
       return { games: [...state.games, ...arr] }
     }),
   clearGames: () =>
-    set((state: any) => {
+    set(() => {
       return { games: [] }
     }),
-  addPage: () => set((state: any) => ({ page: (state.page += 1) })),
+  addPage: () => set((state) => ({ page: (state.page += 1) })),
   clearPage: () => set(() => ({ page: 1 })),
   changeFilterVisibility: (value: boolean) =>
     set(() => ({ isFilterOn: value })),

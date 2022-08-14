@@ -1,8 +1,15 @@
-import create from "zustand";
+import create from 'zustand'
 
-export const useGlobalError = create((set: any) => ({
+interface State {
+  isVisible: boolean
+  text: string
+  setText: (text: string) => void
+  setIsVisible: (isVisible: boolean) => void
+}
+
+export const useGlobalError = create<State>((set) => ({
   isVisible: false,
-  text: "",
-  setText: (text: string) => set(() => ({ text })),
-  setIsVisible: (value: boolean) => set(() => ({ isVisible: value })),
-}));
+  text: '',
+  setText: (text) => set(() => ({ text })),
+  setIsVisible: (value) => set(() => ({ isVisible: value })),
+}))

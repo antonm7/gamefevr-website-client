@@ -2,15 +2,15 @@ import { faMagnifyingGlass, faSliders } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { setCookie } from 'cookies-next'
 import { useRouter } from 'next/router'
-import { useCallback, useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useFiltersStore, useStore } from '../../store'
 import FiltersAppliedCount from './FiltersAppliedCount'
 
 export default function SmallSearchInput() {
   const [search, setSearch] = useState<string>('')
 
-  const store: any = useStore()
-  const router: any = useRouter()
+  const store = useStore()
+  const router = useRouter()
   const filtersStore = useFiltersStore()
 
   const changeGameName = (text: string) => {
@@ -31,7 +31,7 @@ export default function SmallSearchInput() {
           consoles: filtersStore.consoles,
           yearRange:
             filtersStore.yearRange[0] === 1990 &&
-              filtersStore.yearRange[1] === 2022
+            filtersStore.yearRange[1] === 2022
               ? []
               : filtersStore.yearRange,
         },
@@ -44,7 +44,7 @@ export default function SmallSearchInput() {
           consoles: filtersStore.consoles,
           yearRange:
             filtersStore.yearRange[0] === 1990 &&
-              filtersStore.yearRange[1] === 2022
+            filtersStore.yearRange[1] === 2022
               ? []
               : filtersStore.yearRange,
         },

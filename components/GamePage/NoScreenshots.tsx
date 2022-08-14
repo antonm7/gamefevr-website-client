@@ -1,16 +1,22 @@
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import useWindowSize from '../../lib/functions/hooks/useWindowSize'
-import deleteReview from '../../pages/api/game/cancel/review/deleteReview'
+import { ObjectId } from 'bson'
+import { Review_Type } from '../../types/schema'
 import ReviewsSlider from './ReviewsSlider'
+
+interface Props {
+  reviewsAnimation: boolean
+  reviews: Review_Type[]
+  navigateAuth: () => void
+  deleteReview: (reviewId: ObjectId | undefined) => void
+}
 
 export default function NoScreenShots({
   reviewsAnimation,
   reviews,
   navigateAuth,
   deleteReview,
-}: any) {
-  const [width] = useWindowSize()
+}: Props) {
   return (
     <>
       <div

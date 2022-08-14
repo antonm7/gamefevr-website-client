@@ -3,11 +3,7 @@ import { useEffect, useState } from 'react'
 import Screenshots from '../../components/GamePage/Screenshots'
 import SearchLayout from '../../components/layout/SearchLayout'
 import useQuery from '../../lib/functions/hooks/useQuery'
-import {
-  DetailedGame,
-  ElementDescription,
-  ShortGame,
-} from '../../types'
+import { DetailedGame, ElementDescription, ShortGame } from '../../types'
 import useWindowSize from '../../lib/functions/hooks/useWindowSize'
 import YellowButton from '../../components/common/YellowButton'
 import ReviewsSlider from '../../components/GamePage/ReviewsSlider'
@@ -41,7 +37,6 @@ export default function GamePage(props: Props) {
   )
   const changeText = useGlobalError((state) => state.setText)
 
-
   const [game, setGame] = useState<DetailedGame | null>(null)
   const [screenshotsAnimtion, setScreenshotsAnimtion] = useState<boolean>(false)
   const [reviewsAnimation, setReviewsAnimation] = useState<boolean>(false)
@@ -49,8 +44,6 @@ export default function GamePage(props: Props) {
     useState<boolean>(false)
   const [isUserRated, setIsUserRated] = useState<string | null>(null)
   const [reviews, setReviews] = useState<Review_Type[]>([])
-
-
 
   const navigateAuth = () => {
     if (session.status !== 'authenticated') {
@@ -147,7 +140,7 @@ export default function GamePage(props: Props) {
           </main>
           <div>
             {width > 1200 ? (
-              game.screenshots.results.length >= 3 ?
+              game.screenshots.results.length >= 3 ? (
                 <div
                   id="game_page_screenshots_controller"
                   className="relative overflow-hidden"
@@ -158,14 +151,15 @@ export default function GamePage(props: Props) {
                           ? '150px'
                           : '700px'
                         : reviewsAnimation && !reviews.length
-                          ? '150px'
-                          : '410px',
+                        ? '150px'
+                        : '410px',
                   }}
                 >
                   <div
                     id="controller"
-                    className={`${screenshotsAnimtion ? 'controller_animation' : ''
-                      }`}
+                    className={`${
+                      screenshotsAnimtion ? 'controller_animation' : ''
+                    }`}
                   />
                   <Screenshots
                     isAnimated={screenshotsAnimtion}
@@ -177,10 +171,11 @@ export default function GamePage(props: Props) {
                       style={{ marginTop: width > 1400 ? '-34rem' : '-20rem' }}
                     >
                       <div
-                        className={`px-20 ${reviewsAnimation
-                          ? 'write_review_animation_enabled'
-                          : 'write_review_animation_disabled'
-                          }`}
+                        className={`px-20 ${
+                          reviewsAnimation
+                            ? 'write_review_animation_enabled'
+                            : 'write_review_animation_disabled'
+                        }`}
                       >
                         <FontAwesomeIcon
                           icon={faPlus}
@@ -200,10 +195,11 @@ export default function GamePage(props: Props) {
                       style={{ marginTop: width > 1400 ? '-34rem' : '-20rem' }}
                     >
                       <div
-                        className={`px-20 ${reviewsAnimation
-                          ? 'write_review_animation_enabled'
-                          : 'write_review_animation_disabled'
-                          }`}
+                        className={`px-20 ${
+                          reviewsAnimation
+                            ? 'write_review_animation_enabled'
+                            : 'write_review_animation_disabled'
+                        }`}
                       >
                         <FontAwesomeIcon
                           icon={faPlus}
@@ -213,10 +209,15 @@ export default function GamePage(props: Props) {
                       </div>
                     </div>
                   )}
-                </div> : <NoScreenShots reviewsAnimation={reviewsAnimation}
+                </div>
+              ) : (
+                <NoScreenShots
+                  reviewsAnimation={reviewsAnimation}
                   reviews={reviews}
                   navigateAuth={navigateAuth}
-                  deleteReview={(id: ObjectId) => deleteReview(id)} />
+                  deleteReview={(id) => deleteReview(id)}
+                />
+              )
             ) : (
               <div>
                 <div
@@ -262,23 +263,23 @@ export default function GamePage(props: Props) {
                 </div>
               </div>
             )}
-            {width < 1200 ? null : game.screenshots.results.length >= 3 ?
-              (
-                <div
-                  className={`w-full flex justify-center ${reviewsAnimation
+            {width < 1200 ? null : game.screenshots.results.length >= 3 ? (
+              <div
+                className={`w-full flex justify-center ${
+                  reviewsAnimation
                     ? 'button_animation_enabled'
                     : 'button_animation_disabled'
-                    }`}
-                >
-                  <div className="w-52" id="show_comments_wrapper">
-                    <YellowButton
-                      title="Show Comments"
-                      active={true}
-                      onClick={() => toggleAnimation()}
-                    />
-                  </div>
+                }`}
+              >
+                <div className="w-52" id="show_comments_wrapper">
+                  <YellowButton
+                    title="Show Comments"
+                    active={true}
+                    onClick={() => toggleAnimation()}
+                  />
                 </div>
-              ) : null}
+              </div>
+            ) : null}
           </div>
         </div>
       )}
@@ -296,7 +297,7 @@ export async function getStaticPaths() {
   const ids: number[] = []
 
   for (let i = 1; i < 5; i++) {
-    const getData: any = await fetch(
+    const getData = await fetch(
       `https://api.rawg.io/api/games?key=0ffbdb925caf4b20987cd068aa43fd75&ordering=-released&dates=1990-01-01,2022-12-31&page=${i}&page_size=${100}`
     )
     ids.push(

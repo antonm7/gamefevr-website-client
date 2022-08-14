@@ -1,30 +1,40 @@
 import create from 'zustand'
 
-export const useFiltersStore = create((set: any) => ({
+interface State {
+  yearRange: number[]
+  genres: string | number[]
+  consoles: number[]
+  setYearRange: (yearRange: number[]) => void
+  setGenres: (genres: number[]) => void
+  setConsoles: (consoles: number[]) => void
+  clearFilters: () => void
+}
+
+export const useFiltersStore = create<State>((set) => ({
   yearRange: [1990, 2022],
   genres: [],
   consoles: [],
-  setYearRange: (years: number[]) =>
+  setYearRange: (years) =>
     set(() => {
       if (!years || years.length !== 2) {
         return { yearRange: [1990, 2022] }
       }
       return { yearRange: [...years] }
     }),
-  setGenres: (genres: number[]) =>
-    set((state: any) => {
+  setGenres: (genres) =>
+    set(() => {
       if (typeof genres === 'string') {
         return { genres: [parseInt(genres)] }
       } else {
         let loopedArr: number[] = []
         for (const key in genres) {
-          loopedArr = [genres[key]]
+          loopedArr = [...loopedArr, genres[key]]
         }
         return { genres: loopedArr }
       }
     }),
-  setConsoles: (consoles: number[]) =>
-    set((state: any) => {
+  setConsoles: (consoles) =>
+    set(() => {
       if (typeof consoles === 'string') {
         return { consoles: [parseInt(consoles)] }
       } else {
@@ -36,7 +46,7 @@ export const useFiltersStore = create((set: any) => ({
       }
     }),
   clearFilters: () =>
-    set((state: any) => {
+    set(() => {
       return {
         yearRange: [1990, 2022],
         genres: [],

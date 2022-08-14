@@ -3,7 +3,7 @@ import { ElementDescription } from '../types'
 import SelectBox from './common/SelectBox'
 import { Range } from 'rc-slider'
 import 'rc-slider/assets/index.css'
-import { useEffect, useState } from 'react'
+import React, { ButtonHTMLAttributes, useEffect, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { useFiltersStore, useStore } from '../store'
@@ -48,8 +48,8 @@ export default function Filters() {
   }
   //close filters on esc keypress
   useEffect(() => {
-    const keyDownHandler = (e: any) => {
-      e.keyCode === 27 ? store.changeFilterVisibility(false) : null
+    const keyDownHandler = (e: KeyboardEvent) => {
+      e.key === '27' ? store.changeFilterVisibility(false) : null
     }
     document.addEventListener('keydown', keyDownHandler)
     // clean up
@@ -60,12 +60,10 @@ export default function Filters() {
 
   useEffect(() => {
     changeYearRange(filtersStore.yearRange)
-    changeSelectedGenres((v: any) =>
+    changeSelectedGenres(() =>
       filtersStore.genres.map((genre) => parseInt(genre))
     )
-    changeSelectedConsoles((v: any) =>
-      filtersStore.consoles.map((i) => parseInt(i))
-    )
+    changeSelectedConsoles(() => filtersStore.consoles.map((i) => parseInt(i)))
   }, [])
 
   return (

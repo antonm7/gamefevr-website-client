@@ -6,6 +6,7 @@ import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 import CurrentProfile from '../../components/Profile/CurrentProfile'
 import VisitedProfile from '../../components/Profile/VisitedProfile'
+import { GetServerSidePropsContext } from 'next'
 
 interface Props {
   reviews: Review_Type[]
@@ -34,26 +35,36 @@ export default function Profile(props: Props) {
   }
 }
 
-export async function getServerSideProps(context: any) {
+interface Context {
+  // Type 'Context' does not satisfy the constraint 'ParsedUrlQuery'.
+  // Index signature for type 'string' is missing in type 'Context'.ts(2344)
+  [id: string]: string
+  id: string
+}
+
+export async function getServerSideProps(
+  context: GetServerSidePropsContext<Context>
+) {
   const session = await getSession(context)
 
   try {
-    let user: any, reviews, favorites
-    const isVisited = context.params.id !== session?.user?.userId
+    let user, reviews, favorites
+    const isVisited =
+      context?.params?.id !== JSON.stringify(session?.user?.userId)
     const client = await clientPromise
     const db = client.db('gameFevr')
 
     if (isVisited) {
       user = await db
         .collection('users')
-        .findOne({ _id: new ObjectId(context.params.id) })
+        .findOne({ _id: new ObjectId(context?.params?.id) })
       reviews = await db
         .collection('reviews')
-        .find({ userId: context.params.id })
+        .find({ userId: context?.params?.id })
         .toArray()
       favorites = await db
         .collection('favorites')
-        .find({ userId: context.params.id })
+        .find({ userId: context?.params?.id })
         .toArray()
     } else {
       user = await db
@@ -72,11 +83,11 @@ export async function getServerSideProps(context: any) {
       props: {
         user: isVisited
           ? {
-              username: user.username,
+              username: user?.username,
             }
           : {
-              username: user.username,
-              email: user.email,
+              username: user?.username,
+              email: user?.email,
             },
         favorites: JSON.parse(JSON.stringify(favorites)),
         reviews: JSON.parse(JSON.stringify(reviews)),

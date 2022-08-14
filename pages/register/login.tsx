@@ -1,26 +1,26 @@
-import { NextPage } from "next";
-import { signIn } from "next-auth/react";
-import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { useState } from "react";
-import LoginAnimation from "../../components/animations/Login";
-import SmallLoader from "../../components/common/SmallLoader";
-import YellowButton from "../../components/common/YellowButton";
-import StyledInput from "../../components/Register/StyledInput";
+import { NextPage } from 'next'
+import { signIn } from 'next-auth/react'
+import Image from 'next/image'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { useState } from 'react'
+import LoginAnimation from '../../components/animations/Login'
+import SmallLoader from '../../components/common/SmallLoader'
+import YellowButton from '../../components/common/YellowButton'
+import StyledInput from '../../components/Register/StyledInput'
 
 const Login: NextPage = () => {
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [error, setError] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(false);
-  const router = useRouter();
+  const [email, setEmail] = useState<string>('')
+  const [password, setPassword] = useState<string>('')
+  const [error, setError] = useState<string>('')
+  const [loading, setLoading] = useState<boolean>(false)
+  const router = useRouter()
 
   const signin = async () => {
     setError('')
     setLoading(true)
     try {
-      const data: any = await signIn("credentials", {
+      const data: any = await signIn('credentials', {
         redirect: false,
         email,
         password,
@@ -31,19 +31,19 @@ const Login: NextPage = () => {
         if (data?.error) {
           return setError(data.error.slice(6, 50))
         } else {
-          router.push("/");
+          router.push('/')
         }
       }
     } catch (e) {
-      setError('Login Failed, Try Again');
+      setError('Login Failed, Try Again')
     }
     setLoading(false)
-  };
+  }
 
   return (
     <main className="flex h-screen bg-white">
       <div style={{ zIndex: 2 }} className="px-32 pt-16">
-        <Image src={"/images/dLogo.svg"} height={32} width={130} alt="Logo" />
+        <Image src={'/images/dLogo.svg'} height={32} width={130} alt="Logo" />
         <p className="text-darkIndigo font-black text-5xl overflow-hidden pt-32 pb-4">
           Log In
         </p>
@@ -69,13 +69,17 @@ const Login: NextPage = () => {
             />
           </div>
           <div className="pt-12">
-            {loading ? <SmallLoader xCentered={true} /> : <YellowButton onClick={signin} title="Login" />}
+            {loading ? (
+              <SmallLoader xCentered={true} />
+            ) : (
+              <YellowButton onClick={signin} title="Login" />
+            )}
           </div>
           <div className="text-darkIndigo font-semibold text-base pt-4 flex items-center">
             Don't have an account?
-            <Link href={"/register/signup"}>
+            <Link href={'/register/signup'}>
               <p
-                style={{ color: "#38b6cc" }}
+                style={{ color: '#38b6cc' }}
                 className="cursor-pointer pl-1 font-semibold text-base"
               >
                 Sign Up
@@ -87,6 +91,6 @@ const Login: NextPage = () => {
       </div>
       <LoginAnimation />
     </main>
-  );
-};
-export default Login;
+  )
+}
+export default Login

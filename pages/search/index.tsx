@@ -10,12 +10,13 @@ import SmallLoader from '../../components/common/SmallLoader'
 import { ShortGame } from '../../types'
 import LoadingError from '../../components/common/LoadingError'
 import cookie from 'cookie'
+import { GetServerSidePropsContext } from 'next'
 
 interface Props {
-  games: ShortGame[];
-  count: number;
-  error: string | null;
-  nextPage: boolean;
+  games: ShortGame[]
+  count: number
+  error: string | null
+  nextPage: boolean
 }
 
 export default function Index(props: Props) {
@@ -98,15 +99,21 @@ export default function Index(props: Props) {
           </div>
         ) : (
           <div className="py-10">
-            <p id="we_found_title" className="font-bold text-white text-4xl px-44 pb-10">
+            <p
+              id="we_found_title"
+              className="font-bold text-white text-4xl px-44 pb-10"
+            >
               We found {store.count} games for you
             </p>
-            <div id="games_wrapper" className="flex flex-wrap justify-center px-40 ">
+            <div
+              id="games_wrapper"
+              className="flex flex-wrap justify-center px-40 "
+            >
               {store.games.map((game: ShortGame, index: number) => (
                 <SmallGameBox key={index} game={game} />
               ))}
             </div>
-            {nextPage ?
+            {nextPage ? (
               store.games.length > 0 ? (
                 <div className="w-24 h-16 rounded-lg m-auto mt-8">
                   {loadMoreLoading ? (
@@ -118,8 +125,10 @@ export default function Index(props: Props) {
                     />
                   )}
                 </div>
-              ) : <SmallLoader big={true} xCentered={true} />
-              : null}
+              ) : (
+                <SmallLoader big={true} xCentered={true} />
+              )
+            ) : null}
           </div>
         )}
       </div>
@@ -127,22 +136,12 @@ export default function Index(props: Props) {
   )
 }
 
-interface Context {
-  query: {
-    yearRange: string[] | string | undefined
-    genres: string[] | string | undefined
-    consoles: string[] | string | undefined
-    search: string | undefined
-  }
-}
-
-export async function getServerSideProps(context: any) {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
   function parseCookies(req: any) {
     return cookie.parse(req ? req.headers.cookie || '' : document.cookie)
   }
 
-  const cookies: any = parseCookies(context.req)
-  console.log(context.query)
+  const cookies = parseCookies(context.req)
 
   if (cookies.prevRoute === '/game/[id]') {
     return {
@@ -200,14 +199,13 @@ export async function getServerSideProps(context: any) {
           filteredString = filteredString.concat(`&genres=${genresString}`)
         }
       }
-      const getData: any = await axios(
+      const getData = await axios(
         `https://api.rawg.io/api/games?key=0ffbdb925caf4b20987cd068aa43fd75&ordering=-released&page=1&page_size=30${filteredString}`
       )
-      console.log(getData)
       games = getData.data.results
       count = getData.data.count
     } else {
-      const getData: any = await axios(
+      const getData = await axios(
         `https://api.rawg.io/api/games?key=0ffbdb925caf4b20987cd068aa43fd75&ordering=-released&dates=1990-01-01,2022-12-31&page=1&page_size=30`
       )
       games = getData.data.results

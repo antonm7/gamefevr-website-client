@@ -4,27 +4,18 @@ import '../styles/global.css'
 import '../styles/responsive.css'
 import '../styles/animation.css'
 import { setCookie } from 'cookies-next'
-
 import { SessionProvider } from 'next-auth/react'
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Progress from '../components/progress/Progress'
-import {
-  useFiltersStore,
-  useGlobalError,
-  useProgressStore,
-  useStore,
-} from '../store'
+import { useGlobalError, useProgressStore } from '../store'
 import GlobalError from '../components/common/GlobalError'
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   const setIsAnimating = useProgressStore((state) => state.setIsAnimating)
   const isAnimating = useProgressStore((state) => state.isAnimating)
   const isVisible = useGlobalError((state) => state.isVisible)
-  const filtersStore = useFiltersStore()
-
-  const changeGameName = useStore((state) => state.changeGameName)
-  const router: any = useRouter()
+  const router = useRouter()
 
   useEffect(() => {
     const handleStart = () => {
