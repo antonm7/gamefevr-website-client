@@ -21,6 +21,10 @@ import { ObjectId } from 'bson'
 import { useRouter } from 'next/router'
 import NoScreenShots from '../../components/GamePage/NoScreenshots'
 import Error from '../../components/Error'
+import Tags from '../../components/GamePage/Tags'
+import Description from '../../components/GamePage/Description'
+import FooterButtons from '../../components/GamePage/FooterButtons'
+import SmallLoader from '../../components/common/SmallLoader'
 
 type Props = {
   game: DetailedGame
@@ -45,6 +49,7 @@ export default function GamePage(props: Props) {
     useState<boolean>(false)
   const [isUserRated, setIsUserRated] = useState<string | null>(null)
   const [reviews, setReviews] = useState<Review_Type[]>([])
+  const [loading, setLoading] = useState<boolean>(true)
 
   const navigateAuth = () => {
     if (session.status !== 'authenticated') {
@@ -79,6 +84,7 @@ export default function GamePage(props: Props) {
   useEffect(() => {
     setGame(props.game)
     setReviews(props.reviews)
+    setLoading(false)
   }, [query?.id])
 
   const deleteReview = (id: ObjectId | undefined) => {
@@ -96,7 +102,9 @@ export default function GamePage(props: Props) {
 
   return (
     <SearchLayout>
-      {!game ? (
+      {loading ? (
+        <SmallLoader screenCentered={true} />
+      ) : !game ? (
         <Error onLoad={loadAgain} />
       ) : (
         <div>
@@ -121,27 +129,8 @@ export default function GamePage(props: Props) {
                 changeIsUserRated={(value) => setIsUserRated(value)}
               />
             )}
-            <div
-              id="game_page_description_wrapper"
-              className="max-w-2xl leading-8 text-base py-20 text-white font-light"
-              dangerouslySetInnerHTML={{
-                __html: game.description,
-              }}
-            ></div>
-            <div className="flex flex-row flex-wrap pt-2 max-w-lg">
-              <h2 className="text-white font-normal text-1xl opacity-70">
-                Tags:
-              </h2>
-              {game.tags.map((tag: ElementDescription, index: number) => (
-                <h2
-                  key={index}
-                  className="px-1 pb-1 text-white font-semibold text-1xl opacity-60"
-                >
-                  {tag.name}
-                  {index !== game.tags.length - 1 ? ',' : ''}
-                </h2>
-              ))}
-            </div>
+            <Description desc={game.description} />
+            <Tags tags={game.tags} />
           </main>
           <div>
             {width > 1200 ? (
@@ -268,23 +257,11 @@ export default function GamePage(props: Props) {
                 </div>
               </div>
             )}
-            {width < 1200 ? null : game.screenshots.results.length >= 3 ? (
-              <div
-                className={`w-full flex justify-center ${
-                  reviewsAnimation
-                    ? 'button_animation_enabled'
-                    : 'button_animation_disabled'
-                }`}
-              >
-                <div className="w-52" id="show_comments_wrapper">
-                  <YellowButton
-                    title="Show Comments"
-                    active={true}
-                    onClick={() => toggleAnimation()}
-                  />
-                </div>
-              </div>
-            ) : null}
+            <FooterButtons
+              screenshots={game.screenshots}
+              reviewsAnimation={reviewsAnimation}
+              toggleAnimation={toggleAnimation}
+            />
           </div>
         </div>
       )}
@@ -359,7 +336,7 @@ export async function getStaticProps(context: Context) {
     //     //         })
     return {
       props: {
-        game: null,
+        game: finalData,
         reviews: JSON.parse(JSON.stringify(reviews)),
       },
     }
