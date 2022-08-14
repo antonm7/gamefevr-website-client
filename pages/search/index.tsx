@@ -49,6 +49,7 @@ export default function Index(props: Props) {
         store.addPage()
         store.addGames(getData.data.games)
         setNextPage(getData.data.nextPage)
+        store.setCount(getData.data.count)
       }
       setLoadMoreLoading(false)
     } catch (e) {
@@ -60,10 +61,14 @@ export default function Index(props: Props) {
 
   useEffect(() => {
     setLoadMoreLoading(false)
+    if (store.games.length === 0 && props.games.length === 0) {
+      setLoadMoreLoading(true)
+      loadGames(1)
+      return
+    }
     if (props.games.length === 0) return
     else {
       if (props.error) {
-        console.log(props.error)
         setLoadingError(true)
         return
       }
@@ -99,12 +104,14 @@ export default function Index(props: Props) {
           </div>
         ) : (
           <div className="py-10">
-            <p
-              id="we_found_title"
-              className="font-bold text-white text-4xl px-44 pb-10"
-            >
-              We found {store.count} games for you
-            </p>
+            {!loadMoreLoading ? (
+              <p
+                id="we_found_title"
+                className="font-bold text-white text-4xl px-44 pb-10"
+              >
+                We found {store.count} games for you
+              </p>
+            ) : null}
             <div
               id="games_wrapper"
               className="flex flex-wrap justify-center px-40 "

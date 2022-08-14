@@ -20,6 +20,7 @@ import { useGlobalError, useStore } from '../../store'
 import { ObjectId } from 'bson'
 import { useRouter } from 'next/router'
 import NoScreenShots from '../../components/GamePage/NoScreenshots'
+import Error from '../../components/Error'
 
 type Props = {
   game: DetailedGame
@@ -89,10 +90,14 @@ export default function GamePage(props: Props) {
     }
   }
 
+  const loadAgain = async () => {
+    console.log('ree')
+  }
+
   return (
     <SearchLayout>
       {!game ? (
-        <div>Erroooor!!!</div>
+        <Error onLoad={loadAgain} />
       ) : (
         <div>
           {store.isFilterOn ? <Filters /> : null}
@@ -354,7 +359,7 @@ export async function getStaticProps(context: Context) {
     //     //         })
     return {
       props: {
-        game: finalData,
+        game: null,
         reviews: JSON.parse(JSON.stringify(reviews)),
       },
     }
