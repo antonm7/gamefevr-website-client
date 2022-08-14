@@ -78,7 +78,7 @@ export default function Visited(props: Props) {
 
   return (
     <SearchLayout>
-      <main className="px-20 py-10" id="profile_page">
+      <main className="px-44 py-10" id="profile_page">
         {store.isFilterOn ? <Filters /> : null}
         <div
           id="profile_page_welcome"

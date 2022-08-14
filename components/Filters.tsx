@@ -103,17 +103,15 @@ export default function Filters() {
             <div className="bg-white p-4 mt-6 mx-auto h-auto rounded-md filters-column-shadow">
               <div className="flex h-auto items-center justify-center flex-row flex-wrap ">
                 {parentConsoles.map(
-                  (console: ElementDescription, index: number) => {
-                    return (
-                      <SelectBox
-                        isSelected={selectedConsoles.includes(console.id)}
-                        coolBlue={true}
-                        onClick={() => updatedConsoles(console.id)}
-                        key={index}
-                        title={console.name}
-                      />
-                    )
-                  }
+                  (console: ElementDescription, index: number) => (
+                    <SelectBox
+                      isSelected={selectedConsoles.includes(console.id)}
+                      coolBlue={true}
+                      onClick={() => updatedConsoles(console.id)}
+                      key={index}
+                      title={console.name}
+                    />
+                  )
                 )}
               </div>
             </div>
@@ -142,6 +140,19 @@ export default function Filters() {
                 </div>
               </div>
               <Range
+                trackStyle={[{ backgroundColor: '#dd5054' }]}
+                activeDotStyle={{
+                  backgroundColor: '#dd5054 ',
+                  outline: 'none',
+                }}
+                handleStyle={[
+                  {
+                    backgroundColor: 'white',
+                    borderColor: '#dd5054',
+                    outline: 'none',
+                  },
+                  { backgroundColor: 'white', borderColor: '#dd5054' },
+                ]}
                 style={{ width: '83%' }}
                 min={1990}
                 max={2022}

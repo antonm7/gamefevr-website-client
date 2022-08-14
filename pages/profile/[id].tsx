@@ -49,8 +49,7 @@ export async function getServerSideProps(
 
   try {
     let user, reviews, favorites
-    const isVisited =
-      context?.params?.id !== JSON.stringify(session?.user?.userId)
+    const isVisited = context?.params?.id !== session?.user?.userId
     const client = await clientPromise
     const db = client.db('gameFevr')
 

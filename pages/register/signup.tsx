@@ -1,52 +1,59 @@
-import { NextPage } from "next";
-import { signIn } from "next-auth/react";
-import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { useState } from "react";
-import SignupAnimation from "../../components/animations/Signup";
-import YellowButton from "../../components/common/YellowButton";
-import StyledInput from "../../components/Register/StyledInput";
+import axios from 'axios'
+import { NextPage } from 'next'
+import { signIn } from 'next-auth/react'
+import Image from 'next/image'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { useState } from 'react'
+import SignupAnimation from '../../components/animations/Signup'
+import YellowButton from '../../components/common/YellowButton'
+import StyledInput from '../../components/Register/StyledInput'
 
 const Signup: NextPage = () => {
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [username, setUsername] = useState<string>("");
-  const router = useRouter();
+  const [email, setEmail] = useState<string>('')
+  const [password, setPassword] = useState<string>('')
+  const [username, setUsername] = useState<string>('')
+  const [error, setError] = useState<string>('')
+  const router = useRouter()
 
   const signup = async () => {
     try {
-      const reqToServer = await fetch("/api/auth/signup", {
-        method: "POST",
-        headers: {
-          "content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email,
-          password,
-          username,
-        }),
-      });
-      const res = await reqToServer.json();
-      if (res.error) throw new Error(res.error);
-
-      if (reqToServer.status === 201) {
-        signIn("credentials", {
-          redirect: false,
-          email,
-          password,
-        }).then(() => router.push("/"));
+      const { data, status } = await axios.post('/api/auth/signup', {
+        email,
+        password,
+        username,
+      })
+      if (status !== 201 && status !== 200) {
+        throw new Error()
       } else {
-        throw new Error(res.error);
+        if (data.error) {
+          setError(data.error)
+        } else {
+          const data: any = await signIn('credentials', {
+            redirect: false,
+            email,
+            password,
+          })
+          if (data?.status !== 200) {
+            throw new Error()
+          } else {
+            if (data?.error) {
+              return setError(data.error.slice(6, 50))
+            } else {
+              router.push('/')
+            }
+          }
+        }
       }
     } catch (e) {
-      alert(e);
+      setError('Unexpected Error')
     }
-  };
+  }
+
   return (
     <main className="flex h-screen bg-white">
       <div style={{ zIndex: 2 }} className="px-32 pt-16">
-        <Image src={"/images/dLogo.svg"} height={32} width={130} alt="Logo" />
+        <Image src={'/images/dLogo.svg'} height={32} width={130} alt="Logo" />
         <p className="text-darkIndigo font-black text-5xl overflow-hidden pt-12 pb-4">
           Sign Up
         </p>
@@ -84,19 +91,20 @@ const Signup: NextPage = () => {
           </div>
           <div className="text-darkIndigo font-semibold text-base pt-4 flex items-center">
             Already have an account?
-            <Link href={"/register/login"}>
+            <Link href={'/register/login'}>
               <p
-                style={{ color: "#38b6cc" }}
+                style={{ color: '#38b6cc' }}
                 className="cursor-pointer pl-1 font-semibold text-base"
               >
                 Log In
               </p>
             </Link>
           </div>
+          <p className="text-xl pt-2 font-semibold text-red-600">{error}</p>
         </div>
       </div>
       <SignupAnimation />
     </main>
-  );
-};
-export default Signup;
+  )
+}
+export default Signup

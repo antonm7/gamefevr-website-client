@@ -24,7 +24,7 @@ const Home: NextPage = () => {
           consoles: filtersStore.consoles,
           yearRange:
             filtersStore.yearRange[0] === 1990 &&
-              filtersStore.yearRange[1] === 2022
+            filtersStore.yearRange[1] === 2022
               ? []
               : filtersStore.yearRange,
         },
@@ -37,7 +37,7 @@ const Home: NextPage = () => {
           consoles: filtersStore.consoles,
           yearRange:
             filtersStore.yearRange[0] === 1990 &&
-              filtersStore.yearRange[1] === 2022
+            filtersStore.yearRange[1] === 2022
               ? []
               : filtersStore.yearRange,
         },
@@ -61,7 +61,7 @@ const Home: NextPage = () => {
             <div className="z-10 bg-transparent h-full">
               <h1 className="text-white font-black text-7xl overflow-hidden	pt-40 text-center">
                 Search The Best
-                <br /> Game For You
+                <br /> <span className="text-cool-blue">Game For You</span>
               </h1>
               <div className="flex flex-col items-center">
                 <div className="flex pt-8 justify-center">
