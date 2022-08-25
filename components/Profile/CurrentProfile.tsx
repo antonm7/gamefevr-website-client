@@ -1,7 +1,7 @@
 import { faGear } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { ObjectId } from 'bson'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Slider from 'react-slick'
 import { useStore } from '../../store'
 import { Review_Type, Favorite_Type, Client_User } from '../../types/schema'
@@ -10,6 +10,7 @@ import SearchLayout from '../layout/SearchLayout'
 import Favorite from './Favorite'
 import Review from './Review'
 import SettingsBar from './SettingsBar'
+import Image from 'next/image'
 
 interface Props {
   reviews: Review_Type[]
@@ -101,6 +102,9 @@ export default function CurrentProfile(props: Props) {
     }
   }
 
+  const favoriteRef = useRef<any>(null)
+  const reviewsRef = useRef<any>(null)
+
   if (!user) return null
 
   return (
@@ -139,6 +143,26 @@ export default function CurrentProfile(props: Props) {
         <div className="pt-24">
           <div className="flex items-center justify-between">
             <h1 className="text-white font-bold text-3xl">Your Reviews</h1>
+            <div className="mr-4 flex items-center justify-center cursor-pointer">
+              <div className="mr-3">
+                <Image
+                  onClick={() => reviewsRef?.current?.slickPrev()}
+                  src={'/icons/arrow_left.svg'}
+                  width={18}
+                  height={18}
+                  alt="arrow-left"
+                />
+              </div>
+              <div className="brightness-125">
+                <Image
+                  onClick={() => reviewsRef?.current?.slickNext()}
+                  src={'/icons/arrow_right.svg'}
+                  width={18}
+                  height={18}
+                  alt="arrow-left"
+                />
+              </div>
+            </div>
           </div>
           <div
             className={`mt-12 
@@ -153,7 +177,7 @@ export default function CurrentProfile(props: Props) {
           } `}
           >
             {reviews.length > 0 ? (
-              <Slider {...settings}>
+              <Slider {...settings} ref={reviewsRef}>
                 {reviews.map((review: Review_Type, index: number) => (
                   <Review
                     key={index}
@@ -181,6 +205,26 @@ export default function CurrentProfile(props: Props) {
         <div className="pt-14">
           <div className="flex items-center justify-between">
             <h1 className="text-white font-bold text-3xl">Favorite Games</h1>
+            <div className="mr-4 flex items-center justify-center cursor-pointer">
+              <div className="mr-3">
+                <Image
+                  onClick={() => favoriteRef?.current?.slickPrev()}
+                  src={'/icons/arrow_left.svg'}
+                  width={18}
+                  height={18}
+                  alt="arrow-left"
+                />
+              </div>
+              <div className="brightness-125">
+                <Image
+                  onClick={() => favoriteRef?.current?.slickNext()}
+                  src={'/icons/arrow_right.svg'}
+                  width={18}
+                  height={18}
+                  alt="arrow-left"
+                />
+              </div>
+            </div>
           </div>
           <div
             className={`mt-12 
@@ -195,7 +239,7 @@ export default function CurrentProfile(props: Props) {
           } `}
           >
             {favorites.length > 0 ? (
-              <Slider {...favoritesSettings}>
+              <Slider {...favoritesSettings} ref={favoriteRef}>
                 {favorites.map((review: Favorite_Type, index: number) => (
                   <Favorite
                     _id={review._id}
