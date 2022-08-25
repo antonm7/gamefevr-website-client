@@ -25,11 +25,12 @@ import { useGlobalError, useStore } from '../../store'
 import { ObjectId } from 'bson'
 import { useRouter } from 'next/router'
 import NoScreenShots from '../../components/GamePage/NoScreenshots'
-import Error from '../../components/Error'
+import ErrorComponent from '../../components/ErrorComponent'
 import Tags from '../../components/GamePage/Tags'
 import Description from '../../components/GamePage/Description'
 import FooterButtons from '../../components/GamePage/FooterButtons'
 import SmallLoader from '../../components/common/SmallLoader'
+import axios from 'axios'
 
 type Props = {
   game: DetailedGame
@@ -102,7 +103,21 @@ export default function GamePage(props: Props) {
   }
 
   const loadAgain = async () => {
-    console.log('ree')
+    try {
+      setLoading(true)
+      const req = await axios.get(
+        `/api/game/get/getGame?gameId=${router.query.id}`
+      )
+      if (req.status === 200) {
+        setGame(req.data.game)
+        setReviews(req.data.reviews)
+      } else {
+        throw new Error()
+      }
+    } catch (e) {
+      setGame(null)
+    }
+    setLoading(false)
   }
 
   const sliderRef = useRef<any>(null)
@@ -112,7 +127,7 @@ export default function GamePage(props: Props) {
       {loading ? (
         <SmallLoader screenCentered={true} />
       ) : !game ? (
-        <Error onLoad={loadAgain} />
+        <ErrorComponent onLoad={() => loadAgain()} />
       ) : (
         <div>
           {store.isFilterOn ? <Filters /> : null}

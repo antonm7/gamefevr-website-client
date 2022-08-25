@@ -4,7 +4,7 @@ interface Props {
   onLoad: () => void
 }
 
-export default function Error({ onLoad }: Props) {
+export default function ErrorComponent({ onLoad }: Props) {
   return (
     <div className="pt-44">
       <LoadingError
