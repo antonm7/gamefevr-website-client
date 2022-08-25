@@ -18,8 +18,6 @@ export default function SmallSearchInput() {
     store.changeGameName(text)
   }
 
-  // const memoizedNavigate = useCallback(() => navigate(), [])
-
   const navigate = () => {
     setCookie('prevRoute', '/')
     if (store.gameName.length > 0) {

@@ -3,12 +3,11 @@ import { ElementDescription } from '../types'
 import SelectBox from './common/SelectBox'
 import { Range } from 'rc-slider'
 import 'rc-slider/assets/index.css'
-import React, { ButtonHTMLAttributes, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { useFiltersStore, useStore } from '../store'
 import YellowButton from './common/YellowButton'
-import { useRouter } from 'next/router'
 import { setCookie } from 'cookies-next'
 
 export default function Filters() {
@@ -16,7 +15,6 @@ export default function Filters() {
   const [selectedGenres, changeSelectedGenres] = useState<number[]>([])
   const [selectedConsoles, changeSelectedConsoles] = useState<number[]>([])
   const store = useStore()
-  const router = useRouter()
   const filtersStore = useFiltersStore()
 
   const updateGenres = (index: number): void => {
