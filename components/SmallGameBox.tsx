@@ -45,7 +45,6 @@ export default function SmallGameBox(props: Props) {
           </h1>
         </Link>
 
-        {/* TODO:Switch platform text to platform icons */}
         <div className="flex flex-row flex-nowrap pt-2">
           {game?.parent_platforms
             ?.slice(0, 3)

@@ -8,6 +8,7 @@ import { Short_Screenshot } from '../../types'
 interface Props {
   isAnimated: boolean
   images: Short_Screenshot[]
+  setRef?: any
 }
 
 export default function Screenshots(props: Props) {
@@ -22,6 +23,7 @@ export default function Screenshots(props: Props) {
 
   return (
     <Slider
+      ref={props.setRef}
       {...settings}
       className={`ml-32 ${
         props.isAnimated

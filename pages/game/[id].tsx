@@ -1,13 +1,18 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Screenshots from '../../components/GamePage/Screenshots'
 import SearchLayout from '../../components/layout/SearchLayout'
 import useQuery from '../../lib/functions/hooks/useQuery'
-import { DetailedGame, ElementDescription, ShortGame } from '../../types'
+import { DetailedGame, ShortGame } from '../../types'
 import useWindowSize from '../../lib/functions/hooks/useWindowSize'
 import YellowButton from '../../components/common/YellowButton'
 import ReviewsSlider from '../../components/GamePage/ReviewsSlider'
-import { faPlus } from '@fortawesome/free-solid-svg-icons'
+import Image from 'next/image'
+import {
+  faArrowLeftLong,
+  faArrowRightLong,
+  faPlus,
+} from '@fortawesome/free-solid-svg-icons'
 import { useSession } from 'next-auth/react'
 import WriteReview from '../../components/GamePage/WriteReview'
 import VerticalReviewsLoader from '../../components/GamePage/VerticalReviewsLoader'
@@ -100,6 +105,8 @@ export default function GamePage(props: Props) {
     console.log('ree')
   }
 
+  const sliderRef = useRef<any>(null)
+
   return (
     <SearchLayout>
       {loading ? (
@@ -154,8 +161,33 @@ export default function GamePage(props: Props) {
                     className={`${
                       screenshotsAnimtion ? 'controller_animation' : ''
                     }`}
-                  />
+                  >
+                    <div
+                      className="flex items-center absolute"
+                      style={{ bottom: 45, right: 125 }}
+                    >
+                      <div className="mr-4 flex items-center justify-center cursor-pointer">
+                        <Image
+                          onClick={() => sliderRef?.current?.slickNext()}
+                          src={'/icons/arrow_left.svg'}
+                          width={25}
+                          height={18}
+                          alt="arrow-left"
+                        />
+                      </div>
+                      <div className="cursor-pointer bg-white py-3 px-4 flex items-center justify-center rounded-lg">
+                        <Image
+                          onClick={() => sliderRef?.current?.slickPrev()}
+                          src={'/icons/arrow_right.svg'}
+                          width={25}
+                          height={18}
+                          alt="arrow-right"
+                        />
+                      </div>
+                    </div>
+                  </div>
                   <Screenshots
+                    setRef={sliderRef}
                     isAnimated={screenshotsAnimtion}
                     images={game.screenshots.results}
                   />
