@@ -46,6 +46,7 @@ export default function GamePage(props: Props) {
   const [isUserRated, setIsUserRated] = useState<string | null>(null)
   const [reviews, setReviews] = useState<Review_Type[]>([])
   const [loading, setLoading] = useState<boolean>(true)
+  const sliderRef = useRef(null)
 
   const navigateAuth = () => {
     if (session.status !== 'authenticated') {
@@ -110,8 +111,6 @@ export default function GamePage(props: Props) {
     setLoading(false)
   }
 
-  const sliderRef = useRef(null)
-
   return (
     <SearchLayout>
       {loading ? (
@@ -152,15 +151,16 @@ export default function GamePage(props: Props) {
                 reviewsAnimation={reviewsAnimation}
                 screenshotsAnimation={screenshotsAnimtion}
                 sliderRef={sliderRef}
-                deleteReview={id => deleteReview(id)}
+                deleteReview={(id) => deleteReview(id)}
                 navigateAuth={() => navigateAuth()}
               />
             ) : (
               <Lower1200Footer
                 screenshots={game.screenshots.results}
                 navigateAuth={() => navigateAuth()}
-                deleteReview={id => deleteReview(id)}
-                reviews={reviews} />
+                deleteReview={(id) => deleteReview(id)}
+                reviews={reviews}
+              />
             )}
             <FooterButtons
               screenshots={game.screenshots}

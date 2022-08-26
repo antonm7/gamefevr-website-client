@@ -16,7 +16,7 @@ export default function FooterButtons({
 }: Props) {
   const [width] = useWindowSize()
 
-  if (width < 1200) null
+  if (width < 1200) return null
 
   if (screenshots.results.length >= 3) {
     return (
@@ -29,7 +29,7 @@ export default function FooterButtons({
       >
         <div className="w-52" id="show_comments_wrapper">
           <YellowButton
-            title="Show Comments"
+            title={reviewsAnimation ? 'Show Screenshots' : 'Show Reviews'}
             active={true}
             onClick={() => toggleAnimation()}
           />
