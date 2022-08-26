@@ -6,9 +6,10 @@ import 'slick-carousel/slick/slick-theme.css'
 
 interface Props {
   games: ShortGame[]
+  setRef: any
 }
 
-export default function ExploreScroll({ games }: Props) {
+export default function ExploreScroll({ games, setRef }: Props) {
   const settings = {
     className: 'center',
     centerMode: false,
@@ -22,10 +23,10 @@ export default function ExploreScroll({ games }: Props) {
   return (
     <div
       id="explore_wrapper"
-      className="overflow-hidden mt-20"
+      className="overflow-hidden mt-4"
       style={{ width: '60%', height: '42rem' }}
     >
-      <Slider {...settings}>
+      <Slider {...settings} ref={setRef}>
         {games.map((game: ShortGame, index: number) => (
           <GameBox game={game} key={index} />
         ))}

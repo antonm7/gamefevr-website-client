@@ -21,8 +21,6 @@ export default function GameBox(props: Props) {
   const game = props.game
   if (!game) return null
 
-  console.log(game)
-
   return (
     <div
       className="relative bg-darkIndigo rounded-lg  overflow-hidden p-12"
@@ -37,7 +35,7 @@ export default function GameBox(props: Props) {
           <Link href={`/game/${props.game.id}`}>
             <h1
               style={{ lineBreak: 'anywhere' }}
-              className="font-semibold text-6xl overflow-hidden hover:text-gray-500 text-white cursor-pointer  whitespace-normal"
+              className="pb-2 font-semibold text-6xl overflow-hidden hover:text-gray-500 text-white cursor-pointer  whitespace-normal"
             >
               {game.name}
             </h1>
