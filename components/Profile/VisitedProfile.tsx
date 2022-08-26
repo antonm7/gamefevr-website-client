@@ -7,6 +7,7 @@ import SearchLayout from '../layout/SearchLayout'
 import Favorite from './Favorite'
 import Review from './Review'
 import Image from 'next/image'
+import Arrows from './Arrows'
 
 interface Props {
   reviews: Review_Type[]
@@ -95,26 +96,7 @@ export default function Visited(props: Props) {
         <div className="pt-24">
           <div className="flex items-center justify-between">
             <h1 className="text-white font-bold text-3xl">Reviews</h1>
-            <div className="mr-4 flex items-center justify-center cursor-pointer">
-              <div className="mr-3">
-                <Image
-                  onClick={() => reviewsRef?.current?.slickPrev()}
-                  src={'/icons/arrow_left.svg'}
-                  width={18}
-                  height={18}
-                  alt="arrow-left"
-                />
-              </div>
-              <div className="brightness-125">
-                <Image
-                  onClick={() => reviewsRef?.current?.slickNext()}
-                  src={'/icons/arrow_right.svg'}
-                  width={18}
-                  height={18}
-                  alt="arrow-left"
-                />
-              </div>
-            </div>
+            <Arrows count={reviews.length} componentRef={reviewsRef} />
           </div>
           <div
             className={`mt-12 
@@ -158,24 +140,7 @@ export default function Visited(props: Props) {
           <div className="flex items-center justify-between">
             <h1 className="text-white font-bold text-3xl">Favorite Games</h1>
           </div>
-          <div>
-            <div className="mr-4 flex items-center justify-center cursor-pointer">
-              <Image
-                onClick={() => favoriteRef?.current?.slickNext()}
-                src={'/icons/arrow_left.svg'}
-                width={25}
-                height={18}
-                alt="arrow-left"
-              />
-              <Image
-                onClick={() => favoriteRef?.current?.slickPrev()}
-                src={'/icons/arrow_right.svg'}
-                width={25}
-                height={18}
-                alt="arrow-left"
-              />
-            </div>
-          </div>
+          <Arrows count={favorites.length} componentRef={favoriteRef} />
           <div
             className={`mt-12 
           ${

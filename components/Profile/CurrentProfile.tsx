@@ -10,7 +10,7 @@ import SearchLayout from '../layout/SearchLayout'
 import Favorite from './Favorite'
 import Review from './Review'
 import SettingsBar from './SettingsBar'
-import Image from 'next/image'
+import Arrows from './Arrows'
 
 interface Props {
   reviews: Review_Type[]
@@ -52,6 +52,7 @@ export default function CurrentProfile(props: Props) {
   const favoritesSettings = {
     infinite: false,
     slidesToShow: props.favorites.length >= 4 ? 4 : props.favorites.length,
+
     responsive: [
       {
         breakpoint: 1600,
@@ -102,8 +103,8 @@ export default function CurrentProfile(props: Props) {
     }
   }
 
-  const favoriteRef = useRef<any>(null)
-  const reviewsRef = useRef<any>(null)
+  const favoriteRef = useRef(null)
+  const reviewsRef = useRef(null)
 
   if (!user) return null
 
@@ -143,26 +144,7 @@ export default function CurrentProfile(props: Props) {
         <div className="pt-24">
           <div className="flex items-center justify-between">
             <h1 className="text-white font-bold text-3xl">Your Reviews</h1>
-            <div className="mr-4 flex items-center justify-center cursor-pointer">
-              <div className="mr-3">
-                <Image
-                  onClick={() => reviewsRef?.current?.slickPrev()}
-                  src={'/icons/arrow_left.svg'}
-                  width={18}
-                  height={18}
-                  alt="arrow-left"
-                />
-              </div>
-              <div className="brightness-125">
-                <Image
-                  onClick={() => reviewsRef?.current?.slickNext()}
-                  src={'/icons/arrow_right.svg'}
-                  width={18}
-                  height={18}
-                  alt="arrow-left"
-                />
-              </div>
-            </div>
+            <Arrows count={reviews.length} componentRef={reviewsRef} />
           </div>
           <div
             className={`mt-12 
@@ -205,26 +187,7 @@ export default function CurrentProfile(props: Props) {
         <div className="pt-14">
           <div className="flex items-center justify-between">
             <h1 className="text-white font-bold text-3xl">Favorite Games</h1>
-            <div className="mr-4 flex items-center justify-center cursor-pointer">
-              <div className="mr-3">
-                <Image
-                  onClick={() => favoriteRef?.current?.slickPrev()}
-                  src={'/icons/arrow_left.svg'}
-                  width={18}
-                  height={18}
-                  alt="arrow-left"
-                />
-              </div>
-              <div className="brightness-125">
-                <Image
-                  onClick={() => favoriteRef?.current?.slickNext()}
-                  src={'/icons/arrow_right.svg'}
-                  width={18}
-                  height={18}
-                  alt="arrow-left"
-                />
-              </div>
-            </div>
+            <Arrows count={favorites.length} componentRef={favoriteRef} />
           </div>
           <div
             className={`mt-12 
