@@ -70,7 +70,6 @@ export default function Visited(props: Props) {
   }
 
   useEffect(() => {
-    console.log(props)
     setUser(props.user)
     setReviews(props.reviews)
     setFavorites(props.favorites)
@@ -100,15 +99,14 @@ export default function Visited(props: Props) {
           </div>
           <div
             className={`mt-12 
-          ${
-            reviews.length >= 4
-              ? 'w-full'
-              : reviews.length === 3
-              ? 'w-3/4'
-              : reviews.length === 2
-              ? 'w-2/4'
-              : 'w-full'
-          } `}
+          ${reviews.length >= 4
+                ? 'w-full'
+                : reviews.length === 3
+                  ? 'w-3/4'
+                  : reviews.length === 2
+                    ? 'w-2/4'
+                    : 'w-full'
+              } `}
           >
             {reviews.length > 0 ? (
               <Slider {...settings} ref={reviewsRef}>
@@ -143,15 +141,14 @@ export default function Visited(props: Props) {
           <Arrows count={favorites.length} componentRef={favoriteRef} />
           <div
             className={`mt-12 
-          ${
-            favorites.length >= 4
-              ? 'w-full'
-              : favorites.length === 3
-              ? 'w-3/4'
-              : favorites.length === 2
-              ? 'w-2/4'
-              : 'w-full'
-          } `}
+          ${favorites.length >= 4
+                ? 'w-full'
+                : favorites.length === 3
+                  ? 'w-3/4'
+                  : favorites.length === 2
+                    ? 'w-2/4'
+                    : 'w-full'
+              } `}
           >
             {favorites.length > 0 ? (
               <Slider {...favoritesSettings} ref={favoriteRef}>
