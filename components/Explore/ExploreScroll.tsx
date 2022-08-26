@@ -1,5 +1,5 @@
 import Slider from 'react-slick'
-import { ShortGame } from '../../types'
+import { DetailedGame, ShortGame } from '../../types'
 import GameBox from './GameBox'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
@@ -22,8 +22,8 @@ export default function ExploreScroll({ games }: Props) {
   return (
     <div
       id="explore_wrapper"
-      className="overflow-hidden"
-      style={{ width: '75%' }}
+      className="overflow-hidden mt-20"
+      style={{ width: '60%', height: '42rem' }}
     >
       <Slider {...settings}>
         {games.map((game: ShortGame, index: number) => (

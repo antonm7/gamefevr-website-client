@@ -1,6 +1,13 @@
-import { ElementDescription, ShortGame } from '../../types'
+import {
+  DetailedGame,
+  ElementDescription,
+  Platform,
+  ShortGame,
+  Short_Screenshot,
+} from '../../types'
 import Image from 'next/image'
 import Link from 'next/link'
+import Tags from '../GamePage/Tags'
 
 interface Props {
   game: ShortGame
@@ -14,65 +21,116 @@ export default function GameBox(props: Props) {
   const game = props.game
   if (!game) return null
 
+  console.log(game)
+
   return (
     <div
-      className="relative bg-gray-400 rounded-lg  overflow-hidden h-96"
-      style={{ height: '40rem' }}
+      className="relative bg-darkIndigo rounded-lg  overflow-hidden p-12"
+      style={{ height: '42rem' }}
     >
-      <div className="bg-image">
-        {!game.background_image ? null : (
-          <Image
-            quality="1"
-            loading="eager"
-            className="z-0"
-            src={game.background_image}
-            layout="fill"
-            objectFit="cover"
-            alt="Not Working!"
-          />
-        )}
-      </div>
-      <div className="flex-grow p-4">
-        <Link href={`/game/${props.game.id}`}>
-          <h1
-            style={{ lineBreak: 'anywhere' }}
-            className="font-semibold text-xl whitespace-pre-wrap hover:text-gray-500"
-          >
-            {game.name}
-          </h1>
-        </Link>
-        <div className="flex flex-row flex-nowrap">
-          {game?.parent_platforms
-            ?.slice(0, 3)
-            .map((platform: PlatformParentObject, index: number) => (
-              <h2 key={index} className="pr-1 text-sm text-cool-blue">
-                {platform.platform.name}
-                {index === game.parent_platforms.length - 1 || index === 2
-                  ? ''
-                  : ','}
+      <div className="flex justify-between">
+        <div className="pr-6 ">
+          <h3 className="text-white font-normal text-1xl opacity-40">
+            {' '}
+            {game?.released?.slice(0, 4)}
+          </h3>
+          <Link href={`/game/${props.game.id}`}>
+            <h1
+              style={{ lineBreak: 'anywhere' }}
+              className="font-semibold text-6xl overflow-hidden hover:text-gray-500 text-white cursor-pointer  whitespace-normal"
+            >
+              {game.name}
+            </h1>
+          </Link>
+          <div>
+            <div className="flex flex-row flex-no-wrap pt-2">
+              <h2
+                id="game_page_detail"
+                className="text-white font-normal text-1xl opacity-70"
+              >
+                Genres:
               </h2>
-            ))}
-        </div>
-        <div className="flex flex-row justify-between pt-6">
-          <div className="flex flex-row flex-nowrap">
-            {game.genres
-              .slice(0, 3)
-              .map((genre: ElementDescription, index: number) => (
+              {game.genres.map((genre: ElementDescription, index: number) => (
                 <h2
                   key={index}
-                  className="pr-1 text-sm"
-                  style={{ color: '#919191' }}
+                  id="game_page_detail"
+                  className="pl-1 text-white font-semibold text-1xl"
                 >
                   {genre.name}
-                  {index === game.genres.length - 1 || index === 2 ? '' : ','}
+                  {index !== game.genres.length - 1 ? ',' : ''}
                 </h2>
               ))}
+            </div>
+            <div
+              className="flex flex-wrap w-42 pt-2"
+              style={{ width: '70%' }}
+              id="platforms_row"
+            >
+              <h2
+                id="game_page_detail"
+                className="text-white font-normal text-1xl opacity-70"
+              >
+                Platforms:
+              </h2>
+              {game.platforms.map((platform: Platform, index: number) => (
+                <h2
+                  key={index}
+                  id="game_page_detail"
+                  className="pl-1 text-white font-semibold text-1xl whitespace-nowrap"
+                >
+                  {platform.platform.name}
+                  {index !== game.platforms.length - 1 ? ',' : ''}
+                </h2>
+              ))}
+            </div>
+            <Tags tags={game.tags} />
           </div>
-          <h2 className="pr-1 text-sm" style={{ color: '#919191' }}>
-            {game.released.slice(0, 4)}
-          </h2>
         </div>
+        <div
+          className="bg-cover rounded-xl bg-center bg-no-repeat"
+          style={{
+            height: '19rem',
+            minWidth: '23rem',
+            backgroundImage: `url(${game.background_image})`,
+          }}
+        />
       </div>
+      {game.short_screenshots.length <= 2 ? (
+        <div
+          className="flex flex-nowrap justify-between "
+          style={{ marginTop: '5rem', width: '50%' }}
+        >
+          {game.short_screenshots.map((s: Short_Screenshot) => (
+            <Image
+              key={s.id}
+              src={s.image}
+              height={160}
+              width={210}
+              style={{
+                borderRadius: 15,
+                marginRight: 150,
+              }}
+            />
+          ))}
+        </div>
+      ) : (
+        <div
+          className="flex flex-nowrap justify-between "
+          style={{ margin: '0 auto', marginTop: '5rem', width: '90%' }}
+        >
+          {game.short_screenshots.slice(0, 3).map((s: Short_Screenshot) => (
+            <Image
+              key={s.id}
+              src={s.image}
+              height={160}
+              width={250}
+              style={{
+                borderRadius: 15,
+              }}
+            />
+          ))}
+        </div>
+      )}
     </div>
   )
 }
