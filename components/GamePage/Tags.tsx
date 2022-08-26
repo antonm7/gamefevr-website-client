@@ -5,8 +5,9 @@ interface Props {
 }
 
 export default function Tags({ tags }: Props) {
+  if (tags.length === 0) return null
   return (
-    <div className="flex flex-row flex-wrap pt-2 max-w-lg">
+    <div className="flex flex-row flex-wrap pt-2 max-w-lg pr-12">
       <h2 className="text-white font-normal text-1xl opacity-70">Tags:</h2>
       {tags.map((tag: ElementDescription, index: number) => (
         <h2
