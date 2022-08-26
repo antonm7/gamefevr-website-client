@@ -1,21 +1,10 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useEffect, useRef, useState } from 'react'
-import Screenshots from '../../components/GamePage/Screenshots'
 import SearchLayout from '../../components/layout/SearchLayout'
 import useQuery from '../../lib/functions/hooks/useQuery'
 import { DetailedGame, ShortGame } from '../../types'
 import useWindowSize from '../../lib/functions/hooks/useWindowSize'
-import YellowButton from '../../components/common/YellowButton'
-import ReviewsSlider from '../../components/GamePage/ReviewsSlider'
-import Image from 'next/image'
-import {
-  faArrowLeftLong,
-  faArrowRightLong,
-  faPlus,
-} from '@fortawesome/free-solid-svg-icons'
 import { useSession } from 'next-auth/react'
 import WriteReview from '../../components/GamePage/WriteReview'
-import VerticalReviewsLoader from '../../components/GamePage/VerticalReviewsLoader'
 import { Review_Type } from '../../types/schema'
 import clientPromise from '../../lib/functions/mongodb'
 import Bigger640 from '../../components/GamePage/Responsive/Bigger640'
@@ -24,13 +13,14 @@ import Filters from '../../components/Filters'
 import { useGlobalError, useStore } from '../../store'
 import { ObjectId } from 'bson'
 import { useRouter } from 'next/router'
-import NoScreenShots from '../../components/GamePage/NoScreenshots'
 import ErrorComponent from '../../components/ErrorComponent'
 import Tags from '../../components/GamePage/Tags'
 import Description from '../../components/GamePage/Description'
 import FooterButtons from '../../components/GamePage/FooterButtons'
 import SmallLoader from '../../components/common/SmallLoader'
 import axios from 'axios'
+import Lower1200Footer from '../../components/GamePage/Responsive/Lower1200Footer'
+import Bigger1200Footer from '../../components/GamePage/Responsive/Bigger1200Footer'
 
 type Props = {
   game: DetailedGame
@@ -38,7 +28,7 @@ type Props = {
 }
 
 export default function GamePage(props: Props) {
-  const [width, height] = useWindowSize()
+  const [width] = useWindowSize()
   const store = useStore()
   const query = useQuery()
   const router = useRouter()
@@ -120,7 +110,7 @@ export default function GamePage(props: Props) {
     setLoading(false)
   }
 
-  const sliderRef = useRef<any>(null)
+  const sliderRef = useRef(null)
 
   return (
     <SearchLayout>
@@ -156,153 +146,21 @@ export default function GamePage(props: Props) {
           </main>
           <div>
             {width > 1200 ? (
-              game.screenshots.results.length >= 3 ? (
-                <div
-                  id="game_page_screenshots_controller"
-                  className="relative overflow-hidden"
-                  style={{
-                    height:
-                      width > 1400
-                        ? reviewsAnimation && !reviews.length
-                          ? '150px'
-                          : '700px'
-                        : reviewsAnimation && !reviews.length
-                        ? '150px'
-                        : '410px',
-                  }}
-                >
-                  <div
-                    id="controller"
-                    className={`${
-                      screenshotsAnimtion ? 'controller_animation' : ''
-                    }`}
-                  >
-                    <div
-                      className="flex items-center absolute"
-                      style={{ bottom: 45, right: 125 }}
-                    >
-                      <div className="mr-4 flex items-center justify-center cursor-pointer">
-                        <Image
-                          onClick={() => sliderRef?.current?.slickNext()}
-                          src={'/icons/arrow_left.svg'}
-                          width={25}
-                          height={18}
-                          alt="arrow-left"
-                        />
-                      </div>
-                      <div className="cursor-pointer bg-white py-3 px-4 flex items-center justify-center rounded-lg">
-                        <Image
-                          onClick={() => sliderRef?.current?.slickPrev()}
-                          src={'/icons/arrow_right.svg'}
-                          width={25}
-                          height={18}
-                          alt="arrow-right"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <Screenshots
-                    setRef={sliderRef}
-                    isAnimated={screenshotsAnimtion}
-                    images={game.screenshots.results}
-                  />
-                  {reviews.length ? (
-                    <div
-                      className="h-full flex items-center overflow-hidden"
-                      style={{ marginTop: width > 1400 ? '-34rem' : '-20rem' }}
-                    >
-                      <div
-                        className={`px-20 ${
-                          reviewsAnimation
-                            ? 'write_review_animation_enabled'
-                            : 'write_review_animation_disabled'
-                        }`}
-                      >
-                        <FontAwesomeIcon
-                          icon={faPlus}
-                          className="h-16 text-white cursor-pointer opacity-40 hover:opacity-100 simple-transition"
-                          onClick={() => navigateAuth()}
-                        />
-                      </div>
-                      <ReviewsSlider
-                        isAnimated={reviewsAnimation}
-                        reviews={reviews}
-                        deleteReview={(id) => deleteReview(id)}
-                      />
-                    </div>
-                  ) : (
-                    <div
-                      className="h-ful  flex justify-center overflow-hidden"
-                      style={{ marginTop: width > 1400 ? '-34rem' : '-20rem' }}
-                    >
-                      <div
-                        className={`px-20 ${
-                          reviewsAnimation
-                            ? 'write_review_animation_enabled'
-                            : 'write_review_animation_disabled'
-                        }`}
-                      >
-                        <FontAwesomeIcon
-                          icon={faPlus}
-                          className="h-16 text-white cursor-pointer opacity-40 hover:opacity-100 simple-transition"
-                          onClick={() => navigateAuth()}
-                        />
-                      </div>
-                    </div>
-                  )}
-                </div>
-              ) : (
-                <NoScreenShots
-                  reviewsAnimation={reviewsAnimation}
-                  reviews={reviews}
-                  navigateAuth={navigateAuth}
-                  deleteReview={(id) => deleteReview(id)}
-                />
-              )
+              <Bigger1200Footer
+                screenshots={game.screenshots.results}
+                reviews={reviews}
+                reviewsAnimation={reviewsAnimation}
+                screenshotsAnimation={screenshotsAnimtion}
+                sliderRef={sliderRef}
+                deleteReview={id => deleteReview(id)}
+                navigateAuth={() => navigateAuth()}
+              />
             ) : (
-              <div>
-                <div
-                  id="game_page_screenshots_controller"
-                  className="relative overflow-hidden"
-                  style={{ height: '400px' }}
-                >
-                  <div id="controller" />
-                  <Screenshots
-                    isAnimated={false}
-                    images={game.screenshots.results}
-                  />
-                </div>
-                <div
-                  id="game_page_reviews_container"
-                  className="flex flex-col items-center"
-                >
-                  <div
-                    className="w-72 p-6 flex items-center justify-center rounded-xl mb-8 
-                    cursor-pointer opacity-80 hover:opacity-100"
-                    style={{ backgroundColor: 'rgba(21,21,21,0.6)' }}
-                  >
-                    <div
-                      className="flex items-center justify-center"
-                      onClick={() => navigateAuth()}
-                    >
-                      <FontAwesomeIcon
-                        icon={faPlus}
-                        className="h-6 text-white pr-4"
-                        onClick={() => navigateAuth()}
-                      />
-                      <h1 className="text-white text-xl flex items-center">
-                        Add A Review
-                      </h1>
-                    </div>
-                  </div>
-                  {reviews.length ? (
-                    <VerticalReviewsLoader
-                      reviews={reviews}
-                      deleteReview={(id) => deleteReview(id)}
-                    />
-                  ) : null}
-                </div>
-              </div>
+              <Lower1200Footer
+                screenshots={game.screenshots.results}
+                navigateAuth={() => navigateAuth()}
+                deleteReview={id => deleteReview(id)}
+                reviews={reviews} />
             )}
             <FooterButtons
               screenshots={game.screenshots}
