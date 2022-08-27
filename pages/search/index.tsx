@@ -76,6 +76,8 @@ export default function Index(props: Props) {
         setNoResults(true)
         return
       }
+      //making sure there is no dublicate games on initial search
+      store.clearGames()
       store.addPage()
       store.addGames(props.games)
       store.setCount(props.count)
