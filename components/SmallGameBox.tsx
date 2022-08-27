@@ -49,13 +49,12 @@ export default function SmallGameBox(props: Props) {
           {game?.parent_platforms
             ?.slice(0, 3)
             .map((platform: PlatformParentObject, index: number) => (
-              <PlatformIcon key={index} platform={platform.platform.name} />
-              // <h2 key={index} className="pr-1 text-sm text-cool-blue">
-              //   {platform.platform.name}
-              //   {index === game.parent_platforms.length - 1 || index === 2
-              //     ? ''
-              //     : ','}
-              // </h2>
+              <h2 key={index} className="pr-1 text-sm text-cool-blue">
+                {platform.platform.name}
+                {index === game.parent_platforms.length - 1 || index === 2
+                  ? ''
+                  : ','}
+              </h2>
             ))}
         </div>
         <div className="flex flex-row justify-between pt-6">
