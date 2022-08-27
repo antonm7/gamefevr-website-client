@@ -1,6 +1,8 @@
 import { faArrowDown, faArrowUp } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useRef } from 'react'
+import axios from 'axios'
+import { useEffect, useRef, useState } from 'react'
+import SmallLoader from '../../components/common/SmallLoader'
 import ExploreScroll from '../../components/Explore/ExploreScroll'
 import SearchLayout from '../../components/layout/SearchLayout'
 import getRandomInt from '../../lib/functions/generateRandom'
@@ -12,27 +14,63 @@ interface Props {
 }
 
 export default function Index(props: Props) {
-  if (!props.games) return null
-
+  const [games, setGames] = useState<ShortGame[]>([])
+  const [current, setCurrent] = useState<number>(1)
   const exploreScrollRef: any = useRef()
+
+  useEffect(() => {
+    setGames(props.games)
+  }, [])
+
+  useEffect(() => {
+    if (!games.length) return
+    if (current >= games.length - 15) {
+      loadMore()
+    }
+  }, [current])
+
+  const loadMore = async () => {
+    try {
+      const req = await axios.get('/api/explore/get/search')
+      if (req.status !== 200) throw new Error()
+      if (!req.data.results.length) throw new Error()
+      setGames((arr) => [...arr, ...req.data.results])
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  if (!games) return <SmallLoader screenCentered={true} big={true} />
 
   return (
     <SearchLayout>
       <div className="flex flex-col items-center justify-center overflow-hidden">
-        <div className='flex justify-center items-center bg-white w-12 h-12 rounded-full mt-8 cursor-pointer opacity-60 hover:opacity-90'>
-          <FontAwesomeIcon onClick={() => exploreScrollRef?.current?.slickPrev()} icon={faArrowUp} className="text-darkIndigo h-6" />
+        <div className="flex justify-center items-center bg-white w-12 h-12 rounded-full mt-2 cursor-pointer opacity-60 hover:opacity-90">
+          <FontAwesomeIcon
+            onClick={() => exploreScrollRef?.current?.slickPrev()}
+            icon={faArrowUp}
+            className="text-darkIndigo h-6"
+          />
         </div>
-        <ExploreScroll setRef={exploreScrollRef} games={props.games} />
-        <div className='flex justify-center items-center bg-white  w-12 h-12 rounded-full mt-8 cursor-pointer opacity-60 hover:opacity-90'>
-          <FontAwesomeIcon onClick={() => exploreScrollRef?.current?.slickNext()} icon={faArrowDown} className="text-darkIndigo h-6" />
+        <ExploreScroll
+          onUpdate={(c: number) => setCurrent(c)}
+          setRef={exploreScrollRef}
+          games={games}
+        />
+        <div className="flex justify-center items-center bg-white w-12 h-12 rounded-full mt-8 cursor-pointer opacity-60 hover:opacity-90">
+          <FontAwesomeIcon
+            onClick={() => exploreScrollRef?.current?.slickNext()}
+            icon={faArrowDown}
+            className="text-darkIndigo h-6"
+          />
         </div>
       </div>
-    </SearchLayout >
+    </SearchLayout>
   )
 }
 
 export async function getServerSideProps() {
-  const limit = 5
+  const limit = 50
   const page = Math.round(getRandomInt(0, 760000) / limit)
   let filteredString = ''
 
@@ -63,6 +101,7 @@ export async function getServerSideProps() {
   const getData = await fetch(
     `https://api.rawg.io/api/games?key=0ffbdb925caf4b20987cd068aa43fd75&page=${page}&page_size=${limit}`
   )
+
   const games = await getData.json()
   return {
     props: {
