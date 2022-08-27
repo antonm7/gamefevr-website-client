@@ -56,6 +56,7 @@ async function handler(req: Request, res: Response) {
         reviews: [],
         ranks: [],
         visited_games: [],
+        visited_explore: [],
       })
 
       res.status(201).send({ error: null })
