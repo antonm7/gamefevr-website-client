@@ -44,25 +44,30 @@ export default function Index(props: Props) {
 
   return (
     <SearchLayout>
-      <div className="flex flex-col items-center justify-center overflow-hidden">
-        <div className="flex justify-center items-center bg-white w-12 h-12 rounded-full mt-2 cursor-pointer opacity-60 hover:opacity-90">
-          <FontAwesomeIcon
-            onClick={() => exploreScrollRef?.current?.slickPrev()}
-            icon={faArrowUp}
-            className="text-darkIndigo h-6"
+      <div>
+        <h1 id="navbar" className="text-white text-2xl font-semibold px-40">
+          You have explored 0 new games
+        </h1>
+        <div className="flex flex-col items-center justify-center">
+          <div className="flex justify-center items-center bg-white w-12 h-12 rounded-full mt-2 cursor-pointer opacity-60 hover:opacity-90">
+            <FontAwesomeIcon
+              onClick={() => exploreScrollRef?.current?.slickPrev()}
+              icon={faArrowUp}
+              className="text-darkIndigo h-6"
+            />
+          </div>
+          <ExploreScroll
+            onUpdate={(c: number) => setCurrent(c)}
+            setRef={exploreScrollRef}
+            games={games}
           />
-        </div>
-        <ExploreScroll
-          onUpdate={(c: number) => setCurrent(c)}
-          setRef={exploreScrollRef}
-          games={games}
-        />
-        <div className="flex justify-center items-center bg-white w-12 h-12 rounded-full mt-8 cursor-pointer opacity-60 hover:opacity-90">
-          <FontAwesomeIcon
-            onClick={() => exploreScrollRef?.current?.slickNext()}
-            icon={faArrowDown}
-            className="text-darkIndigo h-6"
-          />
+          <div className="flex justify-center items-center bg-white w-12 h-12 rounded-full mt-8 cursor-pointer opacity-60 hover:opacity-90">
+            <FontAwesomeIcon
+              onClick={() => exploreScrollRef?.current?.slickNext()}
+              icon={faArrowDown}
+              className="text-darkIndigo h-6"
+            />
+          </div>
         </div>
       </div>
     </SearchLayout>
