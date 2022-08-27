@@ -19,9 +19,11 @@ export default function Arrows({ componentRef, count }: Props) {
 
   if (!show()) return null
 
+  if (width < 380) return null
+
   return (
     <div className="mr-4 flex items-center justify-center cursor-pointer">
-      <div className="mr-3">
+      <div className="mr-3 flex items-center">
         <Image
           onClick={() => componentRef?.current?.slickPrev()}
           src={'/icons/arrow_left.svg'}
@@ -30,7 +32,7 @@ export default function Arrows({ componentRef, count }: Props) {
           alt="arrow-left"
         />
       </div>
-      <div className="brightness-125">
+      <div className="brightness-125 flex items-center">
         <Image
           onClick={() => componentRef?.current?.slickNext()}
           src={'/icons/arrow_right.svg'}
