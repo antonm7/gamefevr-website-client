@@ -137,7 +137,7 @@ export default function SettingsBar(props: Props) {
           type="password"
         />
       </div>
-      <div id="settings_bar_bottom" style={{ marginBottom: '6rem' }}>
+      <div id="settings_bar_bottom" style={{ marginBottom: '12rem' }}>
         <YellowButton
           active={checkActive()}
           title="Save Changes"

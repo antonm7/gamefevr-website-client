@@ -111,7 +111,7 @@ export default function Index(props: Props) {
                 id="we_found_title"
                 className="font-bold text-white text-4xl px-44 pb-10"
               >
-                We found {store.count} games for you
+                We found {store.count.toLocaleString()} games for you
               </p>
             ) : null}
             <div

@@ -76,7 +76,7 @@ export default function Index(props: Props) {
           </div>
         </div>
       </div>
-    </SearchLayout >
+    </SearchLayout>
   )
 }
 
@@ -117,7 +117,9 @@ export async function getServerSideProps(context: any) {
   const db = client.db('gameFevr')
   const session = await getSession(context)
 
-  const user: any = await db.collection('users').findOne({ _id: new ObjectId(session?.user.userId) })
+  const user: any = await db
+    .collection('users')
+    .findOne({ _id: new ObjectId(session?.user.userId) })
 
   const explored = user?.visited_explore?.length
 
@@ -125,7 +127,7 @@ export async function getServerSideProps(context: any) {
   return {
     props: {
       games: games.results,
-      explored: explored ? explored : 0
+      explored: explored ? explored : 0,
     },
   }
 }
