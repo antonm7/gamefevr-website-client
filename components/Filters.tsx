@@ -93,8 +93,8 @@ export default function Filters() {
         </div>
       </div>
       <div className="flex flex-col items-center">
-        <div className="flex justify-between w-5/6">
-          <div className="py-6 w-2/4 px-6">
+        <div id="filters_lower_line" className="flex justify-between w-5/6">
+          <div id="filters_consoles_wrapper" className="py-6 w-2/4 px-6">
             <h1 className="text-3xl truncate font-semibold text-center">
               Consoles
             </h1>
@@ -114,11 +114,11 @@ export default function Filters() {
               </div>
             </div>
           </div>
-          <div className="w-2/4 ml-12 px-6">
-            <h1 className="text-3xl truncate font-semibold text-center py-6">
+          <div id="filters_release_wrapper" className="w-2/4 ml-12 px-6">
+            <h1 className="text-3xl truncate font-semibold text-center ">
               Release Date
             </h1>
-            <div className="bg-white h-52 flex flex-col items-center justify-center rounded-md filters-column-shadow">
+            <div className="bg-white h-52 flex flex-col items-center justify-center rounded-md filters-column-shadow mt-6">
               <div className="flex flex-row justify-between pb-8 w-5/6">
                 <div
                   className="w-16 h-10 border flex items-center justify-center rounded-lg"

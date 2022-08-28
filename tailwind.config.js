@@ -5,6 +5,9 @@ module.exports = {
     './components/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
+    screens: {
+      tablet: '1600px',
+    },
     extend: {
       colors: {
         inputBg: '#0c203a',

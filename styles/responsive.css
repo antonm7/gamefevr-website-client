@@ -1,3 +1,16 @@
+@media (max-width: 1600px) {
+  #filters_lower_line {
+    flex-direction: column;
+  }
+  #filters_consoles_wrapper {
+    width: 100%;
+  }
+  #filters_release_wrapper {
+    width: 100%;
+    margin: 0;
+  }
+}
+
 @media (max-width: 1400px) {
   #game_page_background_image_wrapper {
     min-width: 20rem !important;
@@ -145,6 +158,9 @@
 }
 
 @media (max-width: 1024px) {
+  #filters {
+    width: 85%;
+  }
   #small_search_input_wrapper {
     width: 100%;
     margin-right: 0 !important;
