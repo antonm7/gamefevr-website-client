@@ -15,7 +15,6 @@ interface PlatformParentObject {
 export default function SmallGameBox(props: Props) {
   const game = props.game
   if (!game) return null
-
   return (
     <div
       id="game_box"
@@ -25,7 +24,7 @@ export default function SmallGameBox(props: Props) {
       <div className="bg-image">
         {!game.background_image ? null : (
           <Image
-            quality={75}
+            quality={55}
             loading="eager"
             className="z-0"
             src={game.background_image}

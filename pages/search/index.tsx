@@ -211,13 +211,13 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
         }
       }
       const getData = await axios(
-        `https://api.rawg.io/api/games?key=0ffbdb925caf4b20987cd068aa43fd75&ordering=-released&page=1&page_size=30${filteredString}`
+        `https://api.rawg.io/api/games?key=0ffbdb925caf4b20987cd068aa43fd75&ordering=-released&page=1&page_size=28${filteredString}`
       )
       games = getData.data.results
       count = getData.data.count
     } else {
       const getData = await axios(
-        `https://api.rawg.io/api/games?key=0ffbdb925caf4b20987cd068aa43fd75&ordering=-released&dates=1990-01-01,2023-12-31&page=1&page_size=30`
+        `https://api.rawg.io/api/games?key=0ffbdb925caf4b20987cd068aa43fd75&ordering=-released&dates=1990-01-01,2023-12-31&page=1&page_size=28`
       )
       games = getData.data.results
       count = getData.data.count
@@ -225,7 +225,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
     //calculate function to check if there is next page
     const isNextPage = (page: number) => {
-      if (page * 30 < count) {
+      if (page * 28 < count) {
         return true
       } else {
         return false
