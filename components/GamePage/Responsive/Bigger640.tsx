@@ -2,6 +2,7 @@ import { DetailedGame, ElementDescription, Platform } from '../../../types'
 import RateGame from '../RateGame'
 import Image from 'next/image'
 import AddFavorite from '../AddFavorite'
+import Link from 'next/link'
 
 interface Props {
   game: DetailedGame
@@ -83,6 +84,14 @@ export default function Bigger640({ game, changeIsUserRated }: Props) {
               </h2>
             ))}
           </div>
+          <Link href={game.website}>
+            <h2
+              id="game_page_detail"
+              className="text-white cursor-pointer underline font-normal text-1xl opacity-70 pt-2"
+            >
+              Game Website
+            </h2>
+          </Link>
         </div>
         <div className="flex items-center pt-6">
           <div

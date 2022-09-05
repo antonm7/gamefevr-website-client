@@ -49,6 +49,8 @@ export default function GamePage(props: Props) {
   const [loading, setLoading] = useState<boolean>(true)
   const sliderRef = useRef(null)
 
+  console.log(props.game)
+
   const navigateAuth = () => {
     if (session.status !== 'authenticated') {
       return router.push('/register/login')
