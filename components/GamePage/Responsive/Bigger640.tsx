@@ -115,13 +115,18 @@ export default function Bigger640({ game, changeIsUserRated }: Props) {
         className="flex flex-col items-center"
         style={{ minWidth: '24rem' }}
       >
-        {game.trailers?.results[0]?.data?.max ?
-          <div className="video-container rounded-xl">
-            <video autoPlay muted loop style={{ width: '384px', height: '450px', marginTop: '-5rem' }}>
+        {game.trailers?.results[0]?.data?.max ? (
+          <div className="video-container rounded-xl overflow-hidden">
+            <video
+              autoPlay
+              muted
+              loop
+              style={{ width: '24rem', height: '19rem', marginTop: '0rem' }}
+            >
               <source src={game.trailers.results[0].data.max} />
             </video>
           </div>
-          :
+        ) : (
           <div
             id="game_page_background_image"
             className="h-60 w-96 bg-cover rounded-xl bg-center bg-no-repeat"
@@ -130,11 +135,11 @@ export default function Bigger640({ game, changeIsUserRated }: Props) {
               backgroundImage: `url(${game.background_image})`,
             }}
           />
-        }
+        )}
         <RateGame
           updateIsUserRated={(value: string) => changeIsUserRated(value)}
         />{' '}
       </div>
-    </div >
+    </div>
   )
 }

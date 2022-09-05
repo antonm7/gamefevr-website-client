@@ -27,14 +27,27 @@ export default function Lower640({ game, changeIsUserRated }: Props) {
           className="flex flex-col items-center"
           style={{ minWidth: '24rem' }}
         >
-          <div
-            id="game_page_background_image"
-            className="h-60 w-96 bg-cover rounded-xl bg-center bg-no-repeat"
-            style={{
-              height: '19rem',
-              backgroundImage: `url(${game.background_image})`,
-            }}
-          />
+          {game.trailers?.results[0]?.data?.max ? (
+            <div className="video-container rounded-xl overflow-hidden">
+              <video
+                autoPlay
+                muted
+                loop
+                style={{ width: '24rem', height: '19rem', marginTop: '0rem' }}
+              >
+                <source src={game.trailers.results[0].data.max} />
+              </video>
+            </div>
+          ) : (
+            <div
+              id="game_page_background_image"
+              className="h-60 w-96 bg-cover rounded-xl bg-center bg-no-repeat"
+              style={{
+                height: '19rem',
+                backgroundImage: `url(${game.background_image})`,
+              }}
+            />
+          )}
         </div>
         <div className="pt-8 ">
           <div className="flex flex-row flex-no-wrap">

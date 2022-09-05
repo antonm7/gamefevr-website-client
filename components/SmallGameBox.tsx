@@ -19,13 +19,13 @@ export default function SmallGameBox(props: Props) {
   return (
     <div
       id="game_box"
-      className="h-72 bg-white rounded-lg mx-8 mb-12 overflow-hidden z-10"
-      style={{ height: '1%', width: '26rem' }}
+      className="h-72 rounded-lg mx-3 mb-10 overflow-hidden z-10"
+      style={{ height: '1%', width: '26rem', backgroundColor: '#0e3462   ' }}
     >
       <div className="bg-image">
         {!game.background_image ? null : (
           <Image
-            quality="1"
+            quality={75}
             loading="eager"
             className="z-0"
             src={game.background_image}
@@ -39,7 +39,7 @@ export default function SmallGameBox(props: Props) {
         <Link href={`/game/${props.game.id}`}>
           <h1
             style={{ lineBreak: 'anywhere' }}
-            className="font-semibold text-xl whitespace-pre-wrap hover:text-gray-500"
+            className="font-semibold text-white text-xl whitespace-pre-wrap hover:text-gray-500"
           >
             {game.name}
           </h1>
@@ -62,17 +62,13 @@ export default function SmallGameBox(props: Props) {
             {game?.genres
               .slice(0, 3)
               .map((genre: ElementDescription, index: number) => (
-                <h2
-                  key={index}
-                  className="pr-1 text-sm"
-                  style={{ color: '#919191' }}
-                >
+                <h2 key={index} className="pr-1 text-sm text-white opacity-90">
                   {genre.name}
                   {index === game?.genres.length - 1 || index === 2 ? '' : ','}
                 </h2>
               ))}
           </div>
-          <h2 className="pr-1 text-sm" style={{ color: '#919191' }}>
+          <h2 className="pr-1 text-sm text-white opacity-90">
             {game.released?.slice(0, 4)}
           </h2>
         </div>
