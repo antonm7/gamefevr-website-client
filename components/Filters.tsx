@@ -11,7 +11,7 @@ import YellowButton from './common/YellowButton'
 import { setCookie } from 'cookies-next'
 
 export default function Filters() {
-  const [yearRange, changeYearRange] = useState<number[]>([1990, 2022])
+  const [yearRange, changeYearRange] = useState<number[]>([1990, 2023])
   const [selectedGenres, changeSelectedGenres] = useState<number[]>([])
   const [selectedConsoles, changeSelectedConsoles] = useState<number[]>([])
   const store = useStore()
@@ -153,7 +153,7 @@ export default function Filters() {
                 ]}
                 style={{ width: '83%' }}
                 min={1990}
-                max={2022}
+                max={2023}
                 value={yearRange}
                 onChange={changeYearRange}
               />

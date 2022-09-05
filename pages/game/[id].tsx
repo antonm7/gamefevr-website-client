@@ -188,7 +188,7 @@ export async function getStaticPaths() {
 
   for (let i = 1; i < 5; i++) {
     const getData = await fetch(
-      `https://api.rawg.io/api/games?key=0ffbdb925caf4b20987cd068aa43fd75&ordering=-released&dates=1990-01-01,2022-12-31&page=${i}&page_size=${100}`
+      `https://api.rawg.io/api/games?key=0ffbdb925caf4b20987cd068aa43fd75&ordering=-released&dates=1990-01-01,2023-12-31&page=${i}&page_size=${100}`
     )
     ids.push(
       ...(await getData.json()).results.map((game: ShortGame) => game.id)

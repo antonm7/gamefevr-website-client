@@ -11,13 +11,13 @@ import create from 'zustand'
 // }
 
 export const useFiltersStore = create((set: any) => ({
-  yearRange: [1990, 2022],
+  yearRange: [1990, 2023],
   genres: [],
   consoles: [],
   setYearRange: (years: number[]) =>
     set(() => {
       if (!years || years.length !== 2) {
-        return { yearRange: [1990, 2022] }
+        return { yearRange: [1990, 2023] }
       }
       return { yearRange: [...years] }
     }),
@@ -48,7 +48,7 @@ export const useFiltersStore = create((set: any) => ({
   clearFilters: () =>
     set(() => {
       return {
-        yearRange: [1990, 2022],
+        yearRange: [1990, 2023],
         genres: [],
         consoles: [],
       }

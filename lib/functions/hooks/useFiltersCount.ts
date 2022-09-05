@@ -13,7 +13,7 @@ export default function useFiltersCount() {
     if (genres.length > 0) {
       setCount((n) => (n += genres.length))
     }
-    if (yearRange[0] === 1990 && yearRange[1] === 2022) {
+    if (yearRange[0] === 1990 && yearRange[1] === 2023) {
       return
     } else {
       setCount((n) => (n += 1))

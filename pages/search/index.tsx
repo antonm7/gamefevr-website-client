@@ -217,7 +217,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       count = getData.data.count
     } else {
       const getData = await axios(
-        `https://api.rawg.io/api/games?key=0ffbdb925caf4b20987cd068aa43fd75&ordering=-released&dates=1990-01-01,2022-12-31&page=1&page_size=30`
+        `https://api.rawg.io/api/games?key=0ffbdb925caf4b20987cd068aa43fd75&ordering=-released&dates=1990-01-01,2023-12-31&page=1&page_size=30`
       )
       games = getData.data.results
       count = getData.data.count
