@@ -132,6 +132,9 @@
 }
 
 @media (max-width: 1200px) {
+  #write_review_container {
+    width: 90%;
+  }
   #navbar_links_wrapper {
     padding-left: 2rem;
   }
@@ -318,6 +321,12 @@
 }
 
 @media (max-width: 640px) {
+  #write_review_footer {
+    flex-direction: column;
+    align-items: flex-start;
+    min-height: 4rem;
+    margin-top: 1rem;
+  }
   #favorite-component {
     width: 100% !important;
   }

@@ -65,7 +65,7 @@ export default function Lower1200Footer({
         className="flex flex-col items-center"
       >
         <div
-          className="w-72 p-6 flex items-center justify-center rounded-xl mb-8 
+          className="w-72 p-6 flex items-center justify-center rounded-xl my-4  
             cursor-pointer opacity-80 hover:opacity-100"
           style={{ backgroundColor: 'rgba(21,21,21,0.6)' }}
         >

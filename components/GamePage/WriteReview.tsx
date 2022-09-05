@@ -82,7 +82,7 @@ export default function WriteReview(props: Props) {
       id="write_review_container"
       className={`${
         props.visible ? 'fixed ' : 'hidden '
-      }px-7 py-6 rounded-xl mx-2 w-3/5 z-40`}
+      }px-7 py-6 rounded-xl mx-2 w-3/5 z-30`}
       style={{
         minHeight: '24rem',
         maxHeight: '80%',
@@ -169,13 +169,34 @@ export default function WriteReview(props: Props) {
       <p className="text-xs opacity-40" style={{ color: '#9da8b6' }}>
         {text.length} / 360
       </p>
-      <div className="h-16 flex justify-end items-center">
-        <button
-          className="w-32 h-12 bg-specialYellow rounded-lg text-white text-lg font-normal"
-          onClick={() => writeReviewAction()}
-        >
-          Send
-        </button>
+      <div
+        id="write_review_footer"
+        className="h-16 flex justify-between items-center"
+        style={{ minHeight: '7rem' }}
+      >
+        <ul className="list-disc list-inside">
+          <li
+            className="text-white text-sm font-medium "
+            style={{ color: '#9da8b6', opacity: rank ? 1 : 0.4 }}
+          >
+            You need to choose a rank for the game
+          </li>
+          <li
+            className="text-white text-sm font-medium opacity-40"
+            style={{ color: '#9da8b6', opacity: text.length >= 60 ? 1 : 0.4 }}
+          >
+            At least 60 charecters
+          </li>
+        </ul>
+        <div className="h-full flex items-end">
+          <button
+            disabled={!rank || text.length < 60 ? true : false}
+            className="disabled:opacity-40 w-32 h-12 bg-specialYellow rounded-lg text-white text-lg font-normal"
+            onClick={() => writeReviewAction()}
+          >
+            Send
+          </button>
+        </div>
       </div>
     </div>
   )
