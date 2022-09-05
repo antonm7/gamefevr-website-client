@@ -84,6 +84,7 @@ export default function GamePage(props: Props) {
     setGame(props.game)
     setReviews(props.reviews)
     setLoading(false)
+    console.log(props.game)
   }, [query?.id])
 
   const deleteReview = (id: ObjectId | undefined) => {
@@ -210,8 +211,12 @@ export async function getStaticProps(context: Context) {
     const getScreenshots = await fetch(
       `https://api.rawg.io/api/games/${context.params.id}/screenshots?key=0ffbdb925caf4b20987cd068aa43fd75`
     )
+    const getTrailers = await fetch(`https://api.rawg.io/api/games/${context.params.id}/movies?key=0ffbdb925caf4b20987cd068aa43fd75`)
+
+
     const gameData = await getData.json()
     const screenshots = await getScreenshots.json()
+    const trailers = await getTrailers.json()
 
     const finalData: DetailedGame = {
       id: gameData.id,
@@ -228,6 +233,7 @@ export async function getStaticProps(context: Context) {
       screenshots,
       tags: gameData.tags,
       website: gameData.website,
+      trailers
     }
 
     const client = await clientPromise

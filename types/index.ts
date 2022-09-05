@@ -78,6 +78,7 @@ export type DetailedGame = {
   };
   publishers: ElementDescription[];
   screenshots: Screenshot;
+  trailers: any;
   tags: ElementDescription[];
   website: string;
 };
