@@ -18,7 +18,7 @@ export default function Bigger640({ game, changeIsUserRated }: Props) {
         </h3>
         <h1
           id="game_page_game_name"
-          className="text-white text-8xl font-bold overflow-hidden h-auto"
+          className="text-white text-8xl font-bold overflow-hidden h-auto pb-6"
         >
           {game.name}
         </h1>
