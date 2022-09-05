@@ -87,10 +87,15 @@ export default function SettingsBar(props: Props) {
   return (
     <div
       id="settings_bar"
-      className={`h-full fixed z-10 bg-darkIndigo right-0 rounded-2xl p-16 ${
+      className={`absolute bottom-0 z-10 bg-darkIndigo right-0 rounded-2xl p-16 ${
         props.isOpened ? 'opened' : ''
       }`}
-      style={{ width: '28rem' }}
+      style={{
+        width: '28rem',
+        height: '87vh',
+        borderBottomLeftRadius: 0,
+        borderBottomRightRadius: 0,
+      }}
     >
       <FontAwesomeIcon
         onClick={() => props.close()}
@@ -137,7 +142,7 @@ export default function SettingsBar(props: Props) {
           type="password"
         />
       </div>
-      <div id="settings_bar_bottom" style={{ marginBottom: '12rem' }}>
+      <div id="settings_bar_bottom">
         <YellowButton
           active={checkActive()}
           title="Save Changes"

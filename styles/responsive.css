@@ -176,6 +176,9 @@
     width: 100%;
     height: 4rem !important;
   }
+  #settings_bar {
+    height: 78vh !important;
+  }
 }
 
 @media (max-width: 900px) {
@@ -273,6 +276,7 @@
 
   #settings_bar {
     width: 100vw !important;
+    height: 83vh !important;
   }
 
   #settings_bar h1 {
