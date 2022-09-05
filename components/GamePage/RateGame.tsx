@@ -2,6 +2,7 @@ import axios from 'axios'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import { useGlobalError } from '../../store'
 
 interface Props {
   updateIsUserRated: (isUserRated: string) => void
@@ -13,7 +14,7 @@ export default function RateGame(props: Props) {
   const [good, setGood] = useState<boolean>(false)
   const [must, setMust] = useState<boolean>(false)
   const [isUserRated, setIsUserRated] = useState<string | null>(null)
-
+  const globalErrorState = useGlobalError((state) => state)
   const session = useSession()
   const router = useRouter()
 
@@ -38,7 +39,7 @@ export default function RateGame(props: Props) {
           throw new Error(req.data.error)
         }
       } catch (e) {
-        console.log('error', e)
+        return
       }
     }
     isUserRated()
@@ -75,7 +76,10 @@ export default function RateGame(props: Props) {
         if (req.status !== 201) throw new Error(req.data.error)
       }
     } catch (e) {
-      console.log('error', e)
+      setIsUserRated(null)
+      globalErrorState.setType('error')
+      globalErrorState.setText('error ranking the game, try again')
+      globalErrorState.setIsVisible(true)
     }
   }
 

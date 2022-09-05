@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
 import axios from 'axios'
 import { useRouter } from 'next/router'
+import { useGlobalError } from '../../store'
 
 interface Props {
   gameId: number
@@ -13,6 +14,7 @@ interface Props {
 export default function AddFavorite(props: Props) {
   const session = useSession()
   const router = useRouter()
+  const globalErrorState = useGlobalError((state) => state)
   const [isFavorite, setIsFavorite] = useState<boolean>(false)
 
   const navigateAuth = () => {
@@ -48,7 +50,9 @@ export default function AddFavorite(props: Props) {
         }
       }
     } catch (e) {
-      console.log(e)
+      globalErrorState.setType('error')
+      globalErrorState.setText(`oops, can't add game for favorites`)
+      globalErrorState.setIsVisible(true)
     }
   }
 
@@ -66,7 +70,7 @@ export default function AddFavorite(props: Props) {
             throw new Error(req.data.error)
           }
         } catch (e) {
-          console.log('error', e)
+          return
         }
       }
       checkIsFavorite()

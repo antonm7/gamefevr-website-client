@@ -42,7 +42,7 @@ export default function Error({ visibility, text }: Props) {
           </div>
           <div>
             <p className=" text-lg font- leading-6" style={{ color: 'black' }}>
-              Error
+              Unexpected Error
             </p>
             <p
               className="text-white text-md font-medium "

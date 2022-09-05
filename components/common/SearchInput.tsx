@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import axios from 'axios'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { useStore } from '../../store'
+import { useGlobalError, useStore } from '../../store'
 import { NamedGame } from '../../types'
 import FiltersAppliedCount from './FiltersAppliedCount'
 
@@ -11,6 +11,7 @@ export default function SearchInput() {
   const store = useStore()
   const [searchTerm, setSearchTerm] = useState<string>('')
   const [games, setGames] = useState<NamedGame[]>([])
+  const globalErrorState = useGlobalError((state) => state)
 
   const fetchData = async (name: string) => {
     try {
@@ -18,7 +19,9 @@ export default function SearchInput() {
       const games: NamedGame[] = getData.data.games
       setGames(games)
     } catch (e) {
-      console.log('error,', e)
+      globalErrorState.setType('error')
+      globalErrorState.setText('error getting games, try again')
+      globalErrorState.setIsVisible(true)
     }
   }
 

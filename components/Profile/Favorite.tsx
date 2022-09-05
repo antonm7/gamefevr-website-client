@@ -42,7 +42,9 @@ export default function Favorite(props: Props) {
           throw new Error('Unexpected Error')
         }
       } catch (e) {
-        console.log(e)
+        state.setType('error')
+        state.setText('error removing the favorite, try again')
+        state.setIsVisible(true)
       }
     }
   }

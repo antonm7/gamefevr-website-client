@@ -38,7 +38,9 @@ export default function Reviews(props: Props) {
           props.deleteReview(props._id)
         }
       } catch (e) {
-        console.log(e)
+        state.setType('error')
+        state.setText('error removing the review, try again')
+        state.setIsVisible(true)
       }
     }
   }

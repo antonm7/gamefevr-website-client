@@ -24,7 +24,7 @@ export default function GlobalError(props: Props) {
         setTimeout(() => {
           setVisibility(false)
           changeGlobalErrorVisibility(false)
-        }, 4000)
+        }, 1900)
       }
     } else {
       setVisibility(false)

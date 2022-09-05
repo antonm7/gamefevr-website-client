@@ -5,6 +5,7 @@ import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import TextareaAutosize from 'react-textarea-autosize'
+import { useGlobalError } from '../../store'
 import { Review_Type } from '../../types/schema'
 
 interface Props {
@@ -19,6 +20,7 @@ export default function WriteReview(props: Props) {
   const [rank, setRank] = useState<string | null>(null)
   const session = useSession()
   const router = useRouter()
+  const globalErrorState = useGlobalError((state) => state)
 
   const writeReviewAction = async () => {
     try {
@@ -50,7 +52,9 @@ export default function WriteReview(props: Props) {
         throw new Error(rankGameRequest.data.error)
       props.insertNewReview(writeReviewRequest.data.review)
     } catch (e) {
-      console.log('error', e)
+      globalErrorState.setType('error')
+      globalErrorState.setText('error posting the review, try again')
+      globalErrorState.setIsVisible(true)
     }
   }
 

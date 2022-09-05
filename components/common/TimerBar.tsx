@@ -11,12 +11,12 @@ export default function TimerBar({ start, color }: Props) {
   useEffect(() => {
     if (start) {
       setTimeout(() => {
-        if (w > 288) {
+        if (w > 550) {
           setW(0)
           return
         }
         setW(w + 1)
-      }, 12)
+      }, 4)
     } else {
       setW(0)
     }

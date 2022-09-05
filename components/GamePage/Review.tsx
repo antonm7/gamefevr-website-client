@@ -12,6 +12,7 @@ import axios from 'axios'
 import { ObjectId } from 'bson'
 import { useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
+import { useGlobalError } from '../../store'
 import { Review_Type } from '../../types/schema'
 
 interface Props extends Review_Type {
@@ -26,6 +27,7 @@ export default function Review(props: Props) {
   const [isUserDisliked, setIsUserDisliked] = useState<boolean>(false)
   const [likes, setLikes] = useState<ObjectId[]>([])
   const [dislikes, setDislikes] = useState<ObjectId[]>([])
+  const globalErrorState = useGlobalError((state) => state)
 
   useEffect(() => {
     if (session.status === 'authenticated') {
@@ -66,7 +68,9 @@ export default function Review(props: Props) {
       }
       props.deleteReview(props._id)
     } catch (e) {
-      console.log('error', e)
+      globalErrorState.setType('error')
+      globalErrorState.setText('oops, error deleting review, try again')
+      globalErrorState.setIsVisible(true)
     }
   }
 
@@ -107,7 +111,9 @@ export default function Review(props: Props) {
         if (req.status !== 200) throw new Error(req.data.error)
       }
     } catch (e) {
-      console.log('error', e)
+      globalErrorState.setType('error')
+      globalErrorState.setText('error liking the review, try again')
+      globalErrorState.setIsVisible(true)
     }
   }
 
@@ -146,7 +152,11 @@ export default function Review(props: Props) {
         if (req.status !== 200) throw new Error(req.data.error)
       }
     } catch (e) {
-      console.log('error', e)
+      setDislikes([...dislikes])
+      setIsUserDisliked(false)
+      globalErrorState.setType('error')
+      globalErrorState.setText('error disliking the review, try again')
+      globalErrorState.setIsVisible(true)
     }
   }
 
