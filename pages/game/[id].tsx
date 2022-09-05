@@ -161,6 +161,7 @@ export default function GamePage(props: Props) {
                 screenshots={game.screenshots.results}
                 navigateAuth={() => navigateAuth()}
                 deleteReview={(id) => deleteReview(id)}
+                sliderRef={sliderRef}
                 reviews={reviews}
               />
             )}

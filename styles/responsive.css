@@ -107,8 +107,8 @@
 
   .screenshot {
     width: 100% !important;
-    height: 18rem !important;
-    margin-top: 3rem;
+    height: 16rem !important;
+    margin-top: 2rem;
   }
 
   #favorite-component {
