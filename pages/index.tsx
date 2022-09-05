@@ -1,7 +1,6 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
 import Car from '../components/animations/Car'
 import SearchButton from '../components/common/SearchButton'
 import SearchInput from '../components/common/SearchInput'
