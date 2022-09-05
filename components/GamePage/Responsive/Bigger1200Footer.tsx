@@ -58,7 +58,7 @@ export default function Bigger1200Footer({
                         >
                             <div className="mr-4 flex items-center justify-center cursor-pointer">
                                 <Image
-                                    onClick={() => sliderRef?.current?.slickNext()}
+                                    onClick={() => sliderRef?.current?.slickPrev()}
                                     src={'/icons/arrow_left.svg'}
                                     width={25}
                                     height={18}
@@ -67,7 +67,7 @@ export default function Bigger1200Footer({
                             </div>
                             <div className="cursor-pointer bg-white py-3 px-4 flex items-center justify-center rounded-lg">
                                 <Image
-                                    onClick={() => sliderRef?.current?.slickPrev()}
+                                    onClick={() => sliderRef?.current?.slickNext()}
                                     src={'/icons/arrow_right.svg'}
                                     width={25}
                                     height={18}

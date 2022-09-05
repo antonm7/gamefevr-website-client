@@ -114,7 +114,7 @@ export default function Filters() {
               </div>
             </div>
           </div>
-          <div id="filters_release_wrapper" className="w-2/4 ml-12 px-6">
+          <div id="filters_release_wrapper" className="w-2/4 ml-12 p-6">
             <h1 className="text-3xl truncate font-semibold text-center ">
               Release Date
             </h1>
