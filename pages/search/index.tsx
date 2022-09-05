@@ -25,6 +25,7 @@ export default function Index(props: Props) {
   const changeGlobalErrorVisibility = useGlobalError(
     (store) => store.setIsVisible
   )
+  const changeGlobalErrorType = useGlobalError((store) => store.setType)
   //2 types of errors
   const [loadingError, setLoadingError] = useState<boolean>(false)
   const [noResults, setNoResults] = useState<boolean>(false)
@@ -55,6 +56,7 @@ export default function Index(props: Props) {
     } catch (e) {
       setLoadMoreLoading(false)
       changeGlobalErrorVisibility(true)
+      changeGlobalErrorType('error')
       console.log('ERROR', e)
     }
   }

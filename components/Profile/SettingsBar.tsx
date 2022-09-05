@@ -21,6 +21,7 @@ export default function SettingsBar(props: Props) {
   const changeGlobalErrorVisibility = useGlobalError(
     (state) => state.setIsVisible
   )
+  const changeGlobalErrorType = useGlobalError((state) => state.setType)
   const changeText = useGlobalError((state) => state.setText)
 
   const saveChanges = async () => {
@@ -29,9 +30,11 @@ export default function SettingsBar(props: Props) {
       if (oldPassword === '') {
         changeText('Old password is required')
         changeGlobalErrorVisibility(true)
+        changeGlobalErrorType('error')
         return
       } else if (newPassword === '') {
         changeGlobalErrorVisibility(true)
+        changeGlobalErrorType('error')
         changeText('New password is required')
         return
       }
@@ -51,6 +54,7 @@ export default function SettingsBar(props: Props) {
           alert('Username changed')
         } else {
           changeText(req.data.error)
+          changeGlobalErrorType('error')
           changeGlobalErrorVisibility(true)
         }
       }
@@ -58,11 +62,13 @@ export default function SettingsBar(props: Props) {
       if (oldPassword !== '' || newPassword !== '') {
         if (oldPassword === newPassword) {
           changeGlobalErrorVisibility(true)
+          changeGlobalErrorType('error')
           changeText('New password must be different from old password')
           return
         }
       }
     } catch (e) {
+      changeGlobalErrorType('error')
       changeGlobalErrorVisibility(true)
     }
   }

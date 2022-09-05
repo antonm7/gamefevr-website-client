@@ -112,6 +112,7 @@ export default function CurrentProfile(props: Props) {
     <SearchLayout>
       <main className="px-44 py-10" id="profile_page">
         {store.isFilterOn ? <Filters /> : null}
+
         <SettingsBar
           user={props.user}
           isOpened={isOpened}

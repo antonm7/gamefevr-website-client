@@ -9,12 +9,13 @@ import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Progress from '../components/progress/Progress'
 import { useGlobalError, useProgressStore } from '../store'
-import GlobalError from '../components/common/GlobalError'
+import GlobalError from '../components/common/GlobalError/Index'
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   const setIsAnimating = useProgressStore((state) => state.setIsAnimating)
   const isAnimating = useProgressStore((state) => state.isAnimating)
   const isVisible = useGlobalError((state) => state.isVisible)
+  const type = useGlobalError((state) => state.type)
   const router = useRouter()
 
   useEffect(() => {
@@ -58,7 +59,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
 
   return (
     <>
-      <GlobalError isVisible={isVisible} />
+      <GlobalError type={type} isVisible={isVisible} />
       <Progress isAnimating={isAnimating} />
       <SessionProvider session={session}>
         <div className="bg-main-blue">

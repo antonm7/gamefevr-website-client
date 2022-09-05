@@ -2,9 +2,10 @@ import { useEffect, useState } from 'react'
 
 interface Props {
   start: boolean
+  color: string
 }
 
-export default function TimerBar({ start }: Props) {
+export default function TimerBar({ start, color }: Props) {
   const [w, setW] = useState<number>(0)
 
   useEffect(() => {
@@ -23,8 +24,8 @@ export default function TimerBar({ start }: Props) {
 
   return (
     <div
-      className="h-1 bg-red-200 absolute "
-      style={{ bottom: 0, left: 0, width: `${w}px` }}
+      className="h-1 absolute  opacity-75"
+      style={{ bottom: 0, left: 0, width: `${w}px`, backgroundColor: color }}
     >
       <div></div>
     </div>

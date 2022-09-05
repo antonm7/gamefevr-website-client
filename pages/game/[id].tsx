@@ -36,6 +36,7 @@ export default function GamePage(props: Props) {
   const changeGlobalErrorVisibility = useGlobalError(
     (store) => store.setIsVisible
   )
+  const changeGlobalErrorType = useGlobalError((store) => store.setType)
   const changeText = useGlobalError((state) => state.setText)
 
   const [game, setGame] = useState<DetailedGame | null>(null)
@@ -59,6 +60,7 @@ export default function GamePage(props: Props) {
     if (isAlreadyCommented.length > 0) {
       changeText('You already commented this game')
       changeGlobalErrorVisibility(true)
+      changeGlobalErrorType('warning')
       return
     }
     setWriteReviewVisibility(true)
