@@ -21,6 +21,7 @@ import SmallLoader from '../../components/common/SmallLoader'
 import axios from 'axios'
 import Lower1200Footer from '../../components/GamePage/Responsive/Lower1200Footer'
 import Bigger1200Footer from '../../components/GamePage/Responsive/Bigger1200Footer'
+import SameSeries from '../../components/GamePage/SameSeries'
 
 type Props = {
   game: DetailedGame
@@ -84,7 +85,6 @@ export default function GamePage(props: Props) {
     setGame(props.game)
     setReviews(props.reviews)
     setLoading(false)
-    console.log(props.game)
   }, [query?.id])
 
   const deleteReview = (id: ObjectId | undefined) => {
@@ -143,7 +143,10 @@ export default function GamePage(props: Props) {
                 changeIsUserRated={(value) => setIsUserRated(value)}
               />
             )}
-            <Description desc={game.description} />
+            <div className="flex justify-between">
+              <Description desc={game.description} />
+              <SameSeries games={game.same_series} />
+            </div>
             <Tags tags={game.tags} />
           </main>
           <div>
@@ -215,9 +218,14 @@ export async function getStaticProps(context: Context) {
       `https://api.rawg.io/api/games/${context.params.id}/movies?key=0ffbdb925caf4b20987cd068aa43fd75`
     )
 
+    const getSeries = await fetch(
+      `https://api.rawg.io/api/games/${context.params.id}/game-series?key=0ffbdb925caf4b20987cd068aa43fd75`
+    )
+
     const gameData = await getData.json()
     const screenshots = await getScreenshots.json()
     const trailers = await getTrailers.json()
+    const same_series = await getSeries.json()
 
     const finalData: DetailedGame = {
       id: gameData.id,
@@ -235,6 +243,7 @@ export async function getStaticProps(context: Context) {
       tags: gameData.tags,
       website: gameData.website,
       trailers,
+      same_series,
     }
 
     const client = await clientPromise
@@ -243,6 +252,8 @@ export async function getStaticProps(context: Context) {
       .collection('reviews')
       .find({ gameId: context.params.id })
       .toArray()
+
+    console.log(gameData)
 
     // fetch(`/api/game/action/visited?gameId=${query.id}`, {
     //     //             headers:{

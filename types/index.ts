@@ -62,6 +62,13 @@ export type ShortGame = {
   background_image: string
 }
 
+export type same_series_type = {
+  count: number
+  next: boolean
+  previus: boolean
+  results: ShortGame[]
+}
+
 export type DetailedGame = {
   id: number
   name: string
@@ -89,6 +96,7 @@ export type DetailedGame = {
   trailers: any
   tags: ElementDescription[]
   website: string
+  same_series: same_series_type
 }
 
 export type NamedGame = {
