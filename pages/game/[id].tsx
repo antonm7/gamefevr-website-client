@@ -143,7 +143,7 @@ export default function GamePage(props: Props) {
                 changeIsUserRated={(value) => setIsUserRated(value)}
               />
             )}
-            <div className="flex justify-between">
+            <div className="flex justify-between" id="game_description_row">
               <Description desc={game.description} />
               <SameSeries games={game.same_series} />
             </div>

@@ -138,6 +138,21 @@
 }
 
 @media (max-width: 1200px) {
+  #game_description_row {
+    flex-direction: column;
+  }
+
+  #same_series {
+    padding-top: 0;
+    padding-bottom: 4rem;
+    width: 100% !important;
+  }
+
+  #same_series_inner {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+  }
 
   #write_review_container {
     width: 90%;
