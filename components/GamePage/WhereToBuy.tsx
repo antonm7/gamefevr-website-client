@@ -21,6 +21,8 @@ export default function WhereToBuy({ stores }: Props) {
     document.location.href = `https://${url}`
   }
 
+  if (!stores.length) return null
+
   return (
     <div className="flex ">
       <h2
