@@ -3,6 +3,7 @@ import RateGame from '../RateGame'
 import Image from 'next/image'
 import AddFavorite from '../AddFavorite'
 import Link from 'next/link'
+import WhereToBuy from '../WhereToBuy'
 
 interface Props {
   game: DetailedGame
@@ -119,6 +120,7 @@ export default function Lower640({ game, changeIsUserRated }: Props) {
               Game Website
             </h2>
           </Link>
+          <WhereToBuy stores={game.stores} />
         </div>
         <div className="flex items-center pt-6">
           <div
