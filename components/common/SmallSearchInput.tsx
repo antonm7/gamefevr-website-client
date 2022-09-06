@@ -34,7 +34,7 @@ export default function SmallSearchInput() {
           consoles: filtersStore.consoles,
           yearRange:
             filtersStore.yearRange[0] === 1990 &&
-            filtersStore.yearRange[1] === 2023
+              filtersStore.yearRange[1] === 2023
               ? []
               : filtersStore.yearRange,
         },
@@ -47,7 +47,7 @@ export default function SmallSearchInput() {
           consoles: filtersStore.consoles,
           yearRange:
             filtersStore.yearRange[0] === 1990 &&
-            filtersStore.yearRange[1] === 2023
+              filtersStore.yearRange[1] === 2023
               ? []
               : filtersStore.yearRange,
         },
@@ -82,6 +82,11 @@ export default function SmallSearchInput() {
 
     return () => clearTimeout(delayDebounceFn)
   }, [search])
+
+  //clear games state on navigation
+  useEffect(() => {
+    setGames([])
+  }, [router])
 
   return (
     <div>
