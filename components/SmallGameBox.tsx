@@ -2,6 +2,9 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { ElementDescription, ShortGame } from '../types'
 import PlatformIcon from './common/PlatformIcon'
+import { useEffect, useState } from 'react'
+import axios from 'axios'
+import BackgroundGameImage from './BackgroundGameImage'
 
 type Props = {
   game: ShortGame
@@ -15,14 +18,47 @@ interface PlatformParentObject {
 export default function SmallGameBox(props: Props) {
   const game = props.game
   if (!game) return null
+
+  const [movieUrl, setMovieUrl] = useState<string | null>(null)
+
+  const loadMovie = async () => {
+    try {
+      const req = await axios.get(
+        `https://api.rawg.io/api/games/${game.id}/movies?key=0ffbdb925caf4b20987cd068aa43fd75`
+      )
+      if (req.status !== 200) throw new Error()
+      if (req.data.count > 0) {
+        setMovieUrl(req.data.results[0].data.max)
+      }
+    } catch (e) {
+      return
+    }
+  }
+
+  useEffect(() => {
+    loadMovie()
+  }, [])
+
   return (
     <div
       id="game_box"
       className="h-72 rounded-lg mx-3 mb-10 overflow-hidden z-10"
       style={{ height: '1%', width: '26rem', backgroundColor: '#0e3462   ' }}
     >
-      <div className="bg-image">
-        {!game.background_image ? null : (
+      <BackgroundGameImage bg={game.background_image} movieUrl={movieUrl} />
+      {/* <div className="bg-image overflow-hidden">
+        {!game.background_image ? null : movieUrl ? (
+          <div className="video-container rounded-xl overflow-hidden">
+            <video
+              autoPlay
+              muted
+              loop
+              style={{ width: '24rem', height: '19rem', marginTop: '0rem' }}
+            >
+              <source src={movieUrl} />
+            </video>
+          </div>
+        ) : (
           <Image
             quality={55}
             loading="eager"
@@ -33,12 +69,12 @@ export default function SmallGameBox(props: Props) {
             alt="Not Working!"
           />
         )}
-      </div>
+      </div> */}
       <div className="flex-grow p-4">
         <Link href={`/game/${props.game.id}`}>
           <h1
             style={{ lineBreak: 'anywhere' }}
-            className="font-semibold text-white text-xl whitespace-pre-wrap hover:text-gray-500"
+            className="cursor-pointer font-semibold text-white text-xl whitespace-pre-wrap hover:text-gray-500"
           >
             {game.name}
           </h1>

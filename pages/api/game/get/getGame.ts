@@ -21,11 +21,18 @@ async function handler(req: ExtendedRequest, res: Response) {
         `https://api.rawg.io/api/games/${query.gameId}/screenshots?key=0ffbdb925caf4b20987cd068aa43fd75`
       )
 
-      const getTrailers = await fetch(`https://api.rawg.io/api/games/${query.gameId}/movies?key=0ffbdb925caf4b20987cd068aa43fd75`)
+      const getTrailers = await fetch(
+        `https://api.rawg.io/api/games/${query.gameId}/movies?key=0ffbdb925caf4b20987cd068aa43fd75`
+      )
+
+      const getSeries = await fetch(
+        `https://api.rawg.io/api/games/${query.gameId}/game-series?key=0ffbdb925caf4b20987cd068aa43fd75`
+      )
 
       const gameData = await getData.json()
       const screenshots = await getScreenshots.json()
       const trailers = await getTrailers.json()
+      const same_series = await getSeries.json()
 
       const finalData: DetailedGame = {
         id: gameData.id,
@@ -41,6 +48,7 @@ async function handler(req: ExtendedRequest, res: Response) {
         publishers: gameData.publishers,
         screenshots,
         trailers,
+        same_series,
         tags: gameData.tags,
         website: gameData.website,
       }

@@ -52,6 +52,10 @@ div {
   background: lightblue;
 }
 
+#game_cover:hover {
+  background-color: rgba(21, 21, 21, 0.6);
+}
+
 .bg-image {
   position: relative;
   width: 100% !important;
