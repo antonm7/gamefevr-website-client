@@ -213,7 +213,7 @@ export default function Review(props: Props) {
           className="h-4 cursor-pointer text-red-500 opacity-40 hover:opacity-100"
         />
       </div>
-      <p className="text-white font-base pt-2" style={{ minHeight: '60%' }}>
+      <p className="w-3/5  font-base pt-2 bg-red-200 " style={{ minHeight: '60%' }}>
         {props.text}
       </p>
       <div
