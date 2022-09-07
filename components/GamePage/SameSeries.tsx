@@ -21,7 +21,7 @@ export default function SameSeries({ games }: Props) {
     <div
       id="same_series"
       className="text-center pt-12"
-      style={{ width: '27%' }}
+      style={{ width: '24%' }}
     >
       <RenderedTitle />
       <div id="same_series_inner">
@@ -35,31 +35,4 @@ export default function SameSeries({ games }: Props) {
       </div>
     </div>
   )
-
-  // if (games.results.length >= 4) {
-  //   return (
-  //     <div>
-  //       <RenderedTitle />
-  //       <div className="flex">
-  //         <GameCover game={games.results[0]} />
-  //         <GameCover game={games.results[1]} />
-  //       </div>
-  //       <div className="flex">
-  //         <GameCover game={games.results[2]} />
-  //         <GameCover game={games.results[3]} />
-  //       </div>
-  //     </div>
-  //   )
-  // } else {
-  //   return (
-  //     <div>
-  //       <RenderedTitle />
-  //       <div className="flex flex-wrap">
-  //         {games.results.map((game) => (
-  //           <GameCover game={game} key={game.id} />
-  //         ))}
-  //       </div>
-  //     </div>
-  //   )
-  // }
 }

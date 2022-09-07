@@ -7,8 +7,6 @@ interface AuxProps {
 }
 
 export default function SearchLayout({ children }: AuxProps) {
-  const [width] = useWindowSize()
-
   return (
     <div id="header_bg">
       <main id="search_layout_page" className={`h-screen pb-20`}>
