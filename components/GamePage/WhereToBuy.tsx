@@ -24,22 +24,12 @@ export default function WhereToBuy({ stores }: Props) {
   if (!stores.length) return null
 
   return (
-    <div className="flex ">
-      <h2
-        id="game_page_detail"
-        className="text-white font-normal text-1xl opacity-70 pt-2"
-      >
-        Where To Buy:
-      </h2>
+    <div id="where_to_buy" className="flex flex-wrap mr-4">
       {stores.map((store) => (
-        <div
-          onClick={() => navigate(store.store.domain)}
-          key={store.id}
-          className=" inline-block"
-        >
+        <div onClick={() => navigate(store.store.domain)} key={store.id}>
           <h2
             id="game_page_detail"
-            className="text-white underline font-normal text-1xl opacity-70 pt-2 mx-2 cursor-pointer"
+            className="text-white underline font-normal text-1xl opacity-70 pt-2 mr-3 cursor-pointer whitespace-nowrap"
           >
             {store.store.name}
           </h2>
