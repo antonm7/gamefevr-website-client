@@ -46,30 +46,6 @@ export default function SmallGameBox(props: Props) {
       style={{ height: '1%', width: '26rem', backgroundColor: '#0e3462   ' }}
     >
       <BackgroundGameImage bg={game.background_image} movieUrl={movieUrl} />
-      {/* <div className="bg-image overflow-hidden">
-        {!game.background_image ? null : movieUrl ? (
-          <div className="video-container rounded-xl overflow-hidden">
-            <video
-              autoPlay
-              muted
-              loop
-              style={{ width: '24rem', height: '19rem', marginTop: '0rem' }}
-            >
-              <source src={movieUrl} />
-            </video>
-          </div>
-        ) : (
-          <Image
-            quality={55}
-            loading="eager"
-            className="z-0"
-            src={game.background_image}
-            layout="fill"
-            objectFit="cover"
-            alt="Not Working!"
-          />
-        )}
-      </div> */}
       <div className="flex-grow p-4">
         <Link href={`/game/${props.game.id}`}>
           <h1
