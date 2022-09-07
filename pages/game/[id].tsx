@@ -253,8 +253,6 @@ export async function getStaticProps(context: Context) {
       .find({ gameId: context.params.id })
       .toArray()
 
-    console.log(gameData)
-
     // fetch(`/api/game/action/visited?gameId=${query.id}`, {
     //     //             headers:{
     //     //                 userId:session.data?.user?.userId
