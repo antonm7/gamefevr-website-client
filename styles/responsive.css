@@ -114,7 +114,7 @@
   .screenshot {
     width: 100% !important;
     height: 16rem !important;
-    margin-top: 2rem;
+    margin-top: 3rem;
   }
 
   #favorite-component {
@@ -289,10 +289,6 @@
     height: 13rem !important;
   }
 
-  #game_page_reviews_container {
-    margin-top: 4rem;
-  }
-
   #review {
     min-width: 99% !important;
     width: 99% !important;
@@ -327,6 +323,14 @@
   #settings_bar_bottom {
     width: 100% !important;
     margin: 0 auto;
+  }
+
+  .slick-slider {
+    margin-left: 2rem;
+  }
+
+  .screenshot {
+    margin-top: 2rem;
   }
 }
 
@@ -438,8 +442,12 @@
   }
 
   .screenshot {
-    margin-top: 3.5rem;
+    margin-top: 1.5rem;
     height: 10rem !important;
+  }
+
+  .slick-slider {
+    margin-left: 0.5rem;
   }
 }
 

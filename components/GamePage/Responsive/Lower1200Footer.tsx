@@ -32,23 +32,23 @@ export default function Lower1200Footer({
         <div id="controller">
           <div
             className="flex items-center absolute"
-            style={{ bottom: 45, right: 125 }}
+            style={{ bottom: 30, right: 125 }}
           >
             <div className="mr-4 flex items-center justify-center cursor-pointer">
               <Image
                 onClick={() => sliderRef?.current?.slickPrev()}
                 src={'/icons/arrow_left.svg'}
-                width={25}
-                height={18}
+                width={18}
+                height={16}
                 alt="arrow-left"
               />
             </div>
-            <div className="cursor-pointer bg-white py-3 px-4 flex items-center justify-center rounded-lg">
+            <div className="cursor-pointer bg-white py-2 px-3 flex items-center justify-center rounded-lg">
               <Image
                 onClick={() => sliderRef?.current?.slickNext()}
                 src={'/icons/arrow_right.svg'}
-                width={25}
-                height={18}
+                width={18}
+                height={16}
                 alt="arrow-right"
               />
             </div>
@@ -62,10 +62,10 @@ export default function Lower1200Footer({
       </div>
       <div
         id="game_page_reviews_container"
-        className="flex flex-col items-center"
+        className="flex flex-col items-center pt-4 "
       >
         <div
-          className="w-72 p-6 flex items-center justify-center rounded-xl my-4  
+          className="w-72 p-4 flex items-center justify-center rounded-xl my-4  
             cursor-pointer opacity-80 hover:opacity-100"
           style={{ backgroundColor: 'rgba(21,21,21,0.6)' }}
         >

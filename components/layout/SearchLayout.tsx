@@ -11,10 +11,7 @@ export default function SearchLayout({ children }: AuxProps) {
 
   return (
     <div id="header_bg">
-      <main
-        id="search_layout_page"
-        className={`h-screen ${width > 1024 ? 'pb-20' : 'pb-32'}`}
-      >
+      <main id="search_layout_page" className={`h-screen pb-20`}>
         <Navbar />
         {children}
       </main>
