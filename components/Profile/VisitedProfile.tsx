@@ -99,14 +99,15 @@ export default function Visited(props: Props) {
           </div>
           <div
             className={`mt-12 
-          ${reviews.length >= 4
-                ? 'w-full'
-                : reviews.length === 3
-                  ? 'w-3/4'
-                  : reviews.length === 2
-                    ? 'w-2/4'
-                    : 'w-full'
-              } `}
+          ${
+            reviews.length >= 4
+              ? 'w-full'
+              : reviews.length === 3
+              ? 'w-3/4'
+              : reviews.length === 2
+              ? 'w-2/4'
+              : 'w-full'
+          } `}
           >
             {reviews.length > 0 ? (
               <Slider {...settings} ref={reviewsRef}>
@@ -124,6 +125,7 @@ export default function Visited(props: Props) {
                     game_name={review.game_name}
                     game_image={review.game_image}
                     visited={true}
+                    user_name={review.user_name}
                   />
                 ))}
               </Slider>
@@ -141,17 +143,22 @@ export default function Visited(props: Props) {
           <Arrows count={favorites.length} componentRef={favoriteRef} />
           <div
             className={`mt-12 
-          ${favorites.length >= 4
-                ? 'w-full'
-                : favorites.length === 3
-                  ? 'w-3/4'
-                  : favorites.length === 2
-                    ? 'w-2/4'
-                    : 'w-full'
-              } `}
+          ${
+            favorites.length >= 4
+              ? 'w-full'
+              : favorites.length === 3
+              ? 'w-3/4'
+              : favorites.length === 2
+              ? 'w-2/4'
+              : 'w-full'
+          } `}
           >
             {favorites.length > 0 ? (
-              <Slider {...favoritesSettings} ref={favoriteRef}>
+              <Slider
+                className="ml-48"
+                {...favoritesSettings}
+                ref={favoriteRef}
+              >
                 {favorites.map((review: Favorite_Type, index: number) => (
                   <Favorite
                     _id={review._id}

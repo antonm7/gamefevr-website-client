@@ -175,6 +175,7 @@ export default function CurrentProfile(props: Props) {
                     game_name={review.game_name}
                     game_image={review.game_image}
                     deleteReview={(id) => deleteReview(id)}
+                    user_name={review.user_name}
                   />
                 ))}
               </Slider>

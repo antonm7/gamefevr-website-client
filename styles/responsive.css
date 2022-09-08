@@ -324,9 +324,8 @@
     width: 100% !important;
     margin: 0 auto;
   }
-
-  .slick-slider {
-    margin-left: 2rem;
+  #game_page_screenshots_controller .slick-slider {
+    margin-left: 2rem !important;
   }
 
   .screenshot {

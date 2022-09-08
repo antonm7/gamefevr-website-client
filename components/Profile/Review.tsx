@@ -133,12 +133,14 @@ export default function Reviews(props: Props) {
           }}
         >
           {width > 1200
-            ? slicedParagrap(props.text, 330, 330)
+            ? slicedParagrap(props.text, 190, 190)
+            : width < 360
+            ? slicedParagrap(props.text, 40, 40)
             : width < 600
-            ? slicedParagrap(props.text, 150, 150)
+            ? slicedParagrap(props.text, 100, 100)
             : width < 900
-            ? slicedParagrap(props.text, 400, 400)
-            : slicedParagrap(props.text, 600, 600)}
+            ? slicedParagrap(props.text, 260, 260)
+            : slicedParagrap(props.text, 450, 450)}
         </p>
         <p className="text-base text-white opacity-60 whitespace-nowrap">
           Sep 12,2022
