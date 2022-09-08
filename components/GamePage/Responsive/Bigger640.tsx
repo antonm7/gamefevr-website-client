@@ -134,7 +134,7 @@ export default function Bigger640({ game, changeIsUserRated }: Props) {
               loop
               style={{ width: '24rem', height: '19rem', marginTop: '0rem' }}
             >
-              <source src={game.trailers.results[0].data.max} />
+              <source src={game.trailers.results[0]?.data.max} />
             </video>
           </div>
         ) : (
