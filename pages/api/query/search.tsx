@@ -7,6 +7,7 @@ interface BodyReq {
     genres: string[] | string | undefined
     consoles: string[] | string | undefined
     search: string | undefined
+    sort: string | undefined
   }
 }
 //TODO:change for get method
@@ -14,7 +15,7 @@ export default async function handler(req: Request, res: Response) {
   if (req.method === 'POST') {
     try {
       const body: BodyReq = req.body
-      const { yearRange, genres, consoles, search } = body.query
+      const { yearRange, genres, consoles, search, sort } = body.query
       let games = []
       let count = 0
       let filteredString = ''
@@ -65,14 +66,17 @@ export default async function handler(req: Request, res: Response) {
             filteredString = filteredString.concat(`&genres=${genresString}`)
           }
         }
+        if (sort === 'year') {
+          filteredString = filteredString.concat('&ordering=-released')
+        }
         const getData = await fetch(
-          `https://api.rawg.io/api/games?key=0ffbdb925caf4b20987cd068aa43fd75&ordering=-released&page=${body.page}&page_size=30${filteredString}`
+          `https://api.rawg.io/api/games?key=0ffbdb925caf4b20987cd068aa43fd75&dates=1990-01-01,2023-12-31page=${body.page}&page_size=30${filteredString}`
         )
         games = await getData.json()
         count = games.count
       } else {
         const getData = await fetch(
-          `https://api.rawg.io/api/games?key=0ffbdb925caf4b20987cd068aa43fd75&ordering=-released&dates=1990-01-01,2023-12-31&page=${body.page}&page_size=30`
+          `https://api.rawg.io/api/games?key=0ffbdb925caf4b20987cd068aa43fd75&dates=1990-01-01,2023-12-31&page=${body.page}&page_size=30`
         )
         games = await getData.json()
         count = games.count

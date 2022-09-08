@@ -57,7 +57,6 @@ export default function Index(props: Props) {
       setLoadMoreLoading(false)
       changeGlobalErrorVisibility(true)
       changeGlobalErrorType('error')
-      console.log('ERROR', e)
     }
   }
 
@@ -109,12 +108,18 @@ export default function Index(props: Props) {
         ) : (
           <div className="py-10">
             {!loadMoreLoading ? (
-              <p
-                id="we_found_title"
-                className="font-bold text-white text-4xl px-44 pb-10"
-              >
-                We found {store.count.toLocaleString()} games for you
-              </p>
+              <div className="flex justify-between items-center">
+                <p
+                  id="we_found_title"
+                  className="font-bold text-white text-4xl px-44 pb-10"
+                >
+                  We found {store.count.toLocaleString()} games for you
+                </p>
+                <div className="px-44 pb-10 text-white">
+                  <span className="opacity-60">Sort by:</span>{' '}
+                  <span className="font-semibold  cursor-pointer">Year</span>
+                </div>
+              </div>
             ) : null}
             <div
               id="games_wrapper"
@@ -161,12 +166,12 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       },
     }
   }
-  const { yearRange, genres, consoles, search } = context.query
+  const { yearRange, genres, consoles, search, sort } = context.query
   let filteredString = ''
   let games = []
   let count = 0
   try {
-    if (yearRange || genres || consoles || search) {
+    if (yearRange || genres || consoles || search || sort) {
       if (search) {
         filteredString += `&search=${search}&`
       }
@@ -210,14 +215,19 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
           filteredString = filteredString.concat(`&genres=${genresString}`)
         }
       }
+
+      if (sort === 'year') {
+        filteredString = filteredString.concat('&ordering=-released')
+      }
+
       const getData = await axios(
-        `https://api.rawg.io/api/games?key=0ffbdb925caf4b20987cd068aa43fd75&ordering=-released&page=1&page_size=28${filteredString}`
+        `https://api.rawg.io/api/games?key=0ffbdb925caf4b20987cd068aa43fd75&dates=1990-01-01,2023-12-31&page=1&page_size=28${filteredString}`
       )
       games = getData.data.results
       count = getData.data.count
     } else {
       const getData = await axios(
-        `https://api.rawg.io/api/games?key=0ffbdb925caf4b20987cd068aa43fd75&ordering=-released&dates=1990-01-01,2023-12-31&page=1&page_size=28`
+        `https://api.rawg.io/api/games?key=0ffbdb925caf4b20987cd068aa43fd75&dates=1990-01-01,2023-12-31&page=1&page_size=28`
       )
       games = getData.data.results
       count = getData.data.count
