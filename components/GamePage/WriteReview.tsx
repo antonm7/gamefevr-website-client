@@ -65,7 +65,7 @@ export default function WriteReview(props: Props) {
   }, [props.isUserRated])
 
   const setTextMethod = (eventText: string) => {
-    if (eventText.length > 360) return
+    if (eventText.length > 760) return
     setText(eventText)
   }
 
@@ -167,7 +167,7 @@ export default function WriteReview(props: Props) {
         onChange={(e) => setTextMethod(e.target.value)}
       />
       <p className="text-xs opacity-40" style={{ color: '#9da8b6' }}>
-        {text.length} / 360
+        {text.length} / 760
       </p>
       <div
         id="write_review_footer"
