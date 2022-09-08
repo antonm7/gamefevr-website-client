@@ -41,7 +41,8 @@ export default function SearchInput() {
 
   return (
     <div>
-      <div className="flex items-center relative">
+      <div className="flex items-center relative ">
+        <div className="absolute h-full w-1 rounded-tl-xl rounded-bl-xl bg-specialYellow"></div>
         <FontAwesomeIcon
           onClick={() => store.changeFilterVisibility(true)}
           icon={faSliders}
@@ -49,11 +50,12 @@ export default function SearchInput() {
         />
         <FiltersAppliedCount bigInput={true} />
         <input
+          id="search_input_wrapper"
           autoSave="true"
           onChange={(e) => setSearchTerm(e.target.value)}
           autoFocus={true}
           placeholder="Search..."
-          className="w-700 text-white placeholder-slate-400 outline-0 p-4 h-16 bg-inputBg rounded-lg"
+          className="w-700 text-white placeholder-slate-400 outline-0 p-4 pl-6 h-16 bg-inputBg rounded-lg"
         />
       </div>
       {games.length === 0 ? (
