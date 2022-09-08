@@ -68,10 +68,22 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
             return 'Good'
         }
       }
+      let user_name
+
+      try {
+        const userName: any = await db
+          .collection('users')
+          .findOne({ _id: new ObjectId(query.userId) })
+        user_name = userName.username
+      } catch (e) {
+        res.status(500).send({ error: 'Unexpected error' })
+        return console.log('error on checkinf if user commented', e)
+      }
 
       const review: Review_Type = {
         userId: query.userId,
         gameId: query.gameId,
+        user_name,
         game_name: gameData.name,
         game_image: gameData.background_image,
         created_at: 'time',

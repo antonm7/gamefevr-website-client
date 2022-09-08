@@ -18,6 +18,7 @@ export type Review_Type = {
   gameId: string
   userId: string
   created_at: string
+  user_name: string
   game_name: string
   game_image: string
   text: string
