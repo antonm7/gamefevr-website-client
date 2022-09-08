@@ -149,15 +149,14 @@ export default function CurrentProfile(props: Props) {
           </div>
           <div
             className={`mt-12 
-          ${
-            reviews.length >= 4
-              ? 'w-full'
-              : reviews.length === 3
-              ? 'w-3/4'
-              : reviews.length === 2
-              ? 'w-2/4'
-              : 'w-full'
-          } `}
+          ${reviews.length >= 4
+                ? 'w-full'
+                : reviews.length === 3
+                  ? 'w-full'
+                  : reviews.length === 2
+                    ? 'w-4/6'
+                    : 'w-full'
+              } `}
           >
             {reviews.length > 0 ? (
               <Slider {...settings} ref={reviewsRef}>
@@ -193,15 +192,14 @@ export default function CurrentProfile(props: Props) {
           </div>
           <div
             className={`mt-12 
-          ${
-            favorites.length >= 4
-              ? 'w-full'
-              : favorites.length === 3
-              ? 'w-3/4'
-              : favorites.length === 2
-              ? 'w-2/4'
-              : 'w-full'
-          } `}
+          ${favorites.length >= 4
+                ? 'w-full'
+                : favorites.length === 3
+                  ? 'w-3/4'
+                  : favorites.length === 2
+                    ? 'w-2/4'
+                    : 'w-full'
+              } `}
           >
             {favorites.length > 0 ? (
               <Slider {...favoritesSettings} ref={favoriteRef}>

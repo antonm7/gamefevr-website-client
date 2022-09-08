@@ -1,3 +1,4 @@
+import { ObjectId } from 'bson'
 import create from 'zustand'
 
 interface State {
@@ -5,7 +6,9 @@ interface State {
   text: string
   type: 'error' | 'warning' | 'request' | undefined
   answer: 'yes' | 'no' | undefined
+  id: ObjectId | null
   setAnswer: (value: 'yes' | 'no' | undefined) => void
+  setId: (value: ObjectId) => void
   setType: (text: 'error' | 'warning' | 'request' | undefined) => void
   setText: (text: string) => void
   setIsVisible: (isVisible: boolean) => void
@@ -17,6 +20,8 @@ export const useGlobalError = create<State>((set) => ({
   text: '',
   type: undefined,
   answer: undefined,
+  id: null,
+  setId: (value) => set(() => ({ id: value })),
   setAnswer: (value) => set(() => ({ answer: value })),
   setText: (text) => set(() => ({ text })),
   setIsVisible: (value) => set(() => ({ isVisible: value })),
@@ -27,5 +32,6 @@ export const useGlobalError = create<State>((set) => ({
       text: '',
       type: undefined,
       answer: undefined,
+      id: null
     })),
 }))

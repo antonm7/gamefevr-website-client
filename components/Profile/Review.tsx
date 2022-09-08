@@ -19,10 +19,12 @@ export default function Reviews(props: Props) {
   const state = useGlobalError((state) => state)
   //creating the alert
   const deleteReview = () => {
+    if (!props._id) return
     state.setAnswer(undefined)
     state.setType('request')
     state.setText('Remove the review?')
     state.setIsVisible(true)
+    state.setId(props._id)
   }
 
   const deleteReviewMethod = async () => {
@@ -46,7 +48,7 @@ export default function Reviews(props: Props) {
   }
   //catches the globalRequest user answer after he presses.
   useEffect(() => {
-    if (state.type === 'request' && state.answer === 'yes') {
+    if (state.type === 'request' && state.answer === 'yes' && state.id === props._id) {
       deleteReviewMethod()
     } else {
       state.closeRequest()
@@ -70,8 +72,8 @@ export default function Reviews(props: Props) {
               {width > 1200
                 ? slicedParagrap(props.game_name, 22, 22)
                 : width < 600
-                ? slicedParagrap(props.game_name, 22, 22)
-                : props.game_name}
+                  ? slicedParagrap(props.game_name, 22, 22)
+                  : props.game_name}
             </h1>
           </Link>
         </div>
@@ -110,8 +112,8 @@ export default function Reviews(props: Props) {
               {width > 1200
                 ? slicedParagrap(props.game_name, 22, 22)
                 : width < 600
-                ? slicedParagrap(props.game_name, 22, 22)
-                : props.game_name}
+                  ? slicedParagrap(props.game_name, 22, 22)
+                  : props.game_name}
             </h1>
           </Link>
           <FontAwesomeIcon
@@ -135,12 +137,12 @@ export default function Reviews(props: Props) {
           {width > 1200
             ? slicedParagrap(props.text, 190, 190)
             : width < 360
-            ? slicedParagrap(props.text, 40, 40)
-            : width < 600
-            ? slicedParagrap(props.text, 100, 100)
-            : width < 900
-            ? slicedParagrap(props.text, 260, 260)
-            : slicedParagrap(props.text, 450, 450)}
+              ? slicedParagrap(props.text, 40, 40)
+              : width < 600
+                ? slicedParagrap(props.text, 100, 100)
+                : width < 900
+                  ? slicedParagrap(props.text, 260, 260)
+                  : slicedParagrap(props.text, 450, 450)}
         </p>
         <p className="text-base text-white opacity-60 whitespace-nowrap">
           Sep 12,2022

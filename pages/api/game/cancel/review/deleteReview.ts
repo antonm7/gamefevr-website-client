@@ -15,7 +15,6 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
     let db = null
     const query = req.body
-    let savedReview
     //initializing database
     try {
       const client = await clientPromise
@@ -24,7 +23,7 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
       res.status(500).send({ error: 'Unexpected error' })
       return console.log('error on initializing database', e)
     }
-    //saves the reviews inside own ranks collection
+    //deletes the reviews inside own ranks collection
     try {
       await db
         .collection('reviews')

@@ -18,10 +18,12 @@ export default function Favorite(props: Props) {
   const state = useGlobalError((state) => state)
   //creating the alert
   const deleteFavorite = () => {
+    if (!props._id) return
     state.setAnswer(undefined)
     state.setType('request')
     state.setText('Remove from favorite?')
     state.setIsVisible(true)
+    state.setId(props._id)
   }
 
   const deleteFavoriteMethod = async () => {
