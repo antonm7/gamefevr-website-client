@@ -80,6 +80,7 @@ export default function ReviewsSlider(props: Props) {
           game_name={''}
           game_image={''}
           deleteReview={(id) => props.deleteReview(id)}
+          user_name={review.user_name}
         />
       ))}
     </Slider>

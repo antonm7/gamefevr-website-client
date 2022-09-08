@@ -1,6 +1,5 @@
 import { ShortGame } from '../../types'
 import Link from 'next/link'
-import slicedParagrap from '../../lib/functions/slicedParagraph'
 import Image from 'next/image'
 interface Props {
   game: ShortGame
@@ -10,7 +9,7 @@ export default function GameCover({ game }: Props) {
   return (
     <div
       id="game_cover"
-      className="flex items-center flex-nowrap mt-4 cursor-pointer"
+      className="flex items-center flex-nowrap mt-4 cursor-pointer mr-4"
     >
       <Image src={game.background_image} width={48} height={48} quality={85} />
       <Link href={`/game/${game.id}`}>

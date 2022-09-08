@@ -194,7 +194,7 @@ export default function Review(props: Props) {
   return (
     <div
       id="review"
-      className="px-7 py-6 rounded-xl relative mx-2"
+      className="scrollbar px-7 py-4 rounded-xl relative mx-2"
       style={{
         width: '32rem',
         minWidth: '32rem',
@@ -213,15 +213,18 @@ export default function Review(props: Props) {
           className="h-4 cursor-pointer text-red-500 opacity-40 hover:opacity-100"
         />
       </div>
-      <p className="w-3/5  font-base pt-2 bg-red-200 " style={{ minHeight: '60%' }}>
+      <p
+        className="w-full text-white font-base pt-2"
+        style={{ minHeight: '60%', overflowWrap: 'break-word' }}
+      >
         {props.text}
       </p>
       <div
         id="review_bottom_container"
         className="flex flex-grow  items-center justify-between mt-20 "
       >
-        <div>
-          <p className="text-cool-blue font-semibold">Anton Migolko</p>
+        <div id="review_bottom_container_names">
+          <p className="text-cool-blue font-semibold">{props.user_name}</p>
           <p className="text-white opacity-50">19 Aug, 2022</p>
         </div>
         <div className="flex items-center">

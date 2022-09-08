@@ -23,6 +23,7 @@ export default function VerticalReviewsLoader(props: {
             game_name={review.game_name}
             game_image={review.game_image}
             deleteReview={(id) => props.deleteReview(id)}
+            user_name={review.user_name}
           />
         </div>
       ))}

@@ -42,13 +42,19 @@ div {
   }
 }
 
+.scrollbar::-webkit-scrollbar {
+  width: 2px;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  background: darkgray;
+}
+
 #search_layout_page::-webkit-scrollbar {
-  /* background: red !important; */
   width: 5px;
 }
 
 #search_layout_page::-webkit-scrollbar-thumb {
-  /* Foreground */
   background: lightblue;
 }
 

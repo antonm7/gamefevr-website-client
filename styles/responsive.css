@@ -290,8 +290,8 @@
   }
 
   #review {
-    min-width: 99% !important;
-    width: 99% !important;
+    min-width: 70vw !important;
+    width: 70vw !important;
     min-height: 100% !important;
     height: 100% !important;
   }
@@ -452,6 +452,13 @@
 }
 
 @media (max-width: 440px) {
+  #review_bottom_container {
+    flex-direction: column-reverse;
+    align-items: flex-start;
+  }
+  #review_bottom_container_names {
+    padding-top: 2rem;
+  }
   #welcome_title {
     font-size: 1.7rem;
   }
