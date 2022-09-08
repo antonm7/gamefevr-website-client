@@ -85,6 +85,19 @@ export default function Index(props: Props) {
     }
   }, [props.games, props.error])
 
+  const sort = () => {
+    if (router.query.sort) {
+      const { pathname, query }: any = router;
+      const params = new URLSearchParams(query);
+      params.delete('sort');
+      router.replace(
+        { pathname, query: params.toString() }
+      )
+    } else {
+      router.push({ pathname: router.pathname, query: { sort: 'year' } })
+    }
+  }
+
   return (
     <SearchLayout>
       <div>
@@ -115,9 +128,9 @@ export default function Index(props: Props) {
                 >
                   We found {store.count.toLocaleString()} games for you
                 </p>
-                <div className="px-44 pb-10 text-white">
+                <div className={`px-44 pb-10 text-white ${router.query.sort ? 'underline' : ''}`}>
                   <span className="opacity-60">Sort by:</span>{' '}
-                  <span className="font-semibold  cursor-pointer">Year</span>
+                  <span className="font-semibold  cursor-pointer" onClick={() => sort()}>Year</span>
                 </div>
               </div>
             ) : null}
