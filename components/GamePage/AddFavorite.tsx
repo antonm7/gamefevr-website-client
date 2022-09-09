@@ -78,12 +78,12 @@ export default function AddFavorite(props: Props) {
   }, [session.status, props.gameId])
 
   return (
-    <div>
-      <FontAwesomeIcon
-        className="h-4 text-white cursor-pointer"
-        icon={isFavorite ? solid : regular}
-        onClick={() => navigateAuth()}
-      />
+    <div
+      onClick={() => navigateAuth()}
+      className="flex items-center justify-center w-36 h-10  mt-4 rounded-md cursor-pointer opacity-70 hover:opacity-100"
+      style={{ backgroundColor: '#0c284a' }}
+    >
+      <p className="whitespace-nowrap text-sm text-white">Add To Favorite</p>
     </div>
   )
 }
