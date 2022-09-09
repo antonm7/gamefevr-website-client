@@ -2,6 +2,7 @@ import { faPlay } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Image from 'next/image'
 import { useState } from 'react'
+import useWindowSize from '../lib/functions/hooks/useWindowSize'
 interface Props {
   bg: string | null
   movieUrl: string | null
@@ -9,6 +10,8 @@ interface Props {
 
 export default function BackgroundGameImage({ bg, movieUrl }: Props) {
   if (!bg) return <div className="bg-image overflow-hidden"></div>
+
+  const [width] = useWindowSize()
 
   if (!movieUrl)
     return (
@@ -35,12 +38,7 @@ export default function BackgroundGameImage({ bg, movieUrl }: Props) {
     >
       {movieVisibility ? (
         <div className="video-container rounded-xl overflow-hidden">
-          <video
-            autoPlay
-            muted
-            loop
-            style={{ width: '24rem', height: '14rem' }}
-          >
+          <video autoPlay muted loop style={{ width: '100%', height: '14rem' }}>
             <source src={movieUrl} />
           </video>
         </div>
