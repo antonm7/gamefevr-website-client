@@ -1,5 +1,5 @@
-import React, { ReactElement, useEffect } from 'react'
-import { same_series_type } from '../../types'
+import React, { ReactElement, useEffect, useState, useMemo } from 'react'
+import { same_series_type, ShortGame } from '../../types'
 import GameCover from './GameCover'
 
 interface Props {
@@ -15,7 +15,23 @@ const RenderedTitle = (): ReactElement => {
 }
 
 export default function SameSeries({ games }: Props) {
-  if (games.results.length === 0) return null
+  const [gs, setGs] = useState<ShortGame[]>([])
+
+  useEffect(() => {
+    setGs(games.results)
+  }, [games])
+
+  const splicedGames = (g: ShortGame[]): ShortGame[] => {
+    if (g.length > 5) {
+      return g.splice(0, 5)
+    } else {
+      return g
+    }
+  }
+
+  const memoizedGamesCount = useMemo(() => splicedGames(gs), [gs])
+
+  if (gs.length === 0) return null
 
   return (
     <div
@@ -25,13 +41,14 @@ export default function SameSeries({ games }: Props) {
     >
       <RenderedTitle />
       <div id="same_series_inner">
-        {games.results.length > 5
-          ? games.results
+        {memoizedGamesCount.map((game) => (
+          <GameCover game={game} key={game.id} />
+        ))}
+        {/* {gs.length > 5
+          ? gs
               .splice(0, 5)
               .map((game) => <GameCover game={game} key={game.id} />)
-          : games.results.map((game) => (
-              <GameCover game={game} key={game.id} />
-            ))}
+          : gs.map((game) => <GameCover game={game} key={game.id} />)} */}
       </div>
     </div>
   )
