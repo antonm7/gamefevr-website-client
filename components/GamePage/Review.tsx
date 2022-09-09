@@ -207,11 +207,13 @@ export default function Review(props: Props) {
         <h1 className="text-white font-bold text-3xl  underline">
           {props.rank}
         </h1>
-        <FontAwesomeIcon
-          onClick={() => deleteReview()}
-          icon={faTrash}
-          className="h-4 cursor-pointer text-red-500 opacity-40 hover:opacity-100"
-        />
+        {props.userId !== JSON.stringify(session.data?.user.userId) ? null : (
+          <FontAwesomeIcon
+            onClick={() => deleteReview()}
+            icon={faTrash}
+            className="h-4 cursor-pointer text-red-500 opacity-40 hover:opacity-100"
+          />
+        )}
       </div>
       <p
         className="w-full text-white font-base pt-2"
@@ -227,27 +229,41 @@ export default function Review(props: Props) {
           <p className="text-cool-blue font-semibold">{props.user_name}</p>
           <p className="text-white opacity-50">19 Aug, 2022</p>
         </div>
-        <div className="flex items-center">
-          <FontAwesomeIcon
-            onClick={() => likeReview()}
-            onMouseEnter={() => setLike(true)}
-            onMouseLeave={() => setLike(false)}
-            icon={like || isUserLiked ? faThumbsUpSolid : faThumbsUpRegular}
-            className="h-8 text-green-400 cursor-pointer"
-          />
-          <CalculateCount />
-          <FontAwesomeIcon
-            onClick={() => dislikeReview()}
-            onMouseEnter={() => setDislike(true)}
-            onMouseLeave={() => setDislike(false)}
-            icon={
-              dislike || isUserDisliked
-                ? faThumbsDownSolid
-                : faThumbsDownRegular
-            }
-            className="h-8 text-red-400 cursor-pointer"
-          />
-        </div>
+        {props.userId !== JSON.stringify(session.data?.user.userId) ? (
+          <div className="flex items-center">
+            <FontAwesomeIcon
+              icon={faThumbsUpRegular}
+              className="h-8 text-green-400 cursor-pointer"
+            />
+            <CalculateCount />
+            <FontAwesomeIcon
+              icon={faThumbsDownRegular}
+              className="h-8 text-red-400 cursor-pointer"
+            />
+          </div>
+        ) : (
+          <div className="flex items-center">
+            <FontAwesomeIcon
+              onClick={() => likeReview()}
+              onMouseEnter={() => setLike(true)}
+              onMouseLeave={() => setLike(false)}
+              icon={like || isUserLiked ? faThumbsUpSolid : faThumbsUpRegular}
+              className="h-8 text-green-400 cursor-pointer"
+            />
+            <CalculateCount />
+            <FontAwesomeIcon
+              onClick={() => dislikeReview()}
+              onMouseEnter={() => setDislike(true)}
+              onMouseLeave={() => setDislike(false)}
+              icon={
+                dislike || isUserDisliked
+                  ? faThumbsDownSolid
+                  : faThumbsDownRegular
+              }
+              className="h-8 text-red-400 cursor-pointer"
+            />
+          </div>
+        )}
       </div>
     </div>
   )
