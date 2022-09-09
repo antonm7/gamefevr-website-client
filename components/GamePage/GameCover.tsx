@@ -21,8 +21,7 @@ export default function GameCover({ game }: Props) {
         />
       ) : null}
       <Link href={`/game/${game.id}`}>
-        <h1 className="font-medium text-md  text-white whitespace-nowrap pl-4 py-3">
-          {/* {slicedParagrap(game.name, 22, 60)} */}
+        <h1 className="font-medium text-md text-white whitespace-nowrap pl-4 py-3">
           {game.name}
         </h1>
       </Link>
