@@ -1,7 +1,5 @@
 import Link from 'next/link'
-import Image from 'next/image'
 import { ElementDescription, ShortGame } from '../types'
-import PlatformIcon from './common/PlatformIcon'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import BackgroundGameImage from './BackgroundGameImage'
@@ -55,7 +53,6 @@ export default function SmallGameBox(props: Props) {
             {game.name}
           </h1>
         </Link>
-
         <div className="flex flex-row flex-nowrap pt-2">
           {game?.parent_platforms
             ?.slice(0, 3)
