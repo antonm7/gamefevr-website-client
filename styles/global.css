@@ -35,6 +35,10 @@ div {
   background-repeat: no-repeat;
 }
 
+.w-80p {
+  width: 80%;
+}
+
 @media (max-width: 1300px) {
   #header_bg {
     background-size: 100%;
@@ -404,7 +408,7 @@ div {
 
 .video-container {
   height: 19rem;
-  width: 24rem;
+  /* width: 24rem; */
   position: relative;
 }
 

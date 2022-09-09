@@ -27,7 +27,7 @@
     padding-right: 4rem;
   }
 
-  #we_found_title {
+  .we_found_padding {
     padding-left: 5rem;
     padding-right: 5rem;
   }
@@ -138,6 +138,9 @@
 }
 
 @media (max-width: 1200px) {
+  #we_found_title {
+    font-size: 1.6rem !important;
+  }
   #game_description_row {
     flex-direction: column;
   }
@@ -222,7 +225,8 @@
     font-size: 3rem;
   }
 
-  #we_found_title {
+  .we_found_padding {
+    white-space: nowrap !important;
     padding-left: 2rem;
     padding-right: 2rem;
   }
@@ -334,6 +338,16 @@
 }
 
 @media (max-width: 700px) {
+  #we_found_title_wrapper {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  #we_found_title {
+    font-size: 1.8rem !important;
+    padding-bottom: 1rem;
+  }
+
   #profile_page_welcome {
     flex-direction: column;
     align-items: flex-start;
@@ -349,6 +363,14 @@
 }
 
 @media (max-width: 640px) {
+  #we_found_title {
+    /* font-size: 1.2rem !important; */
+    padding-bottom: 1rem;
+    line-height: 2rem;
+    white-space: pre-wrap !important;
+    padding-right: 2rem !important;
+  }
+
   #write_review_footer {
     flex-direction: column;
     align-items: flex-start;
@@ -451,6 +473,9 @@
 }
 
 @media (max-width: 440px) {
+  #write_review_footer {
+    min-height: 10rem !important;
+  }
   #review_bottom_container {
     flex-direction: column-reverse;
     align-items: flex-start;
