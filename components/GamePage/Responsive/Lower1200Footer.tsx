@@ -34,18 +34,22 @@ export default function Lower1200Footer({
             className="flex items-center absolute"
             style={{ bottom: 30, right: 125 }}
           >
-            <div className="mr-4 flex items-center justify-center cursor-pointer">
+            <div
+              className="mr-4 flex items-center justify-center cursor-pointer"
+              onClick={() => sliderRef?.current?.slickPrev()}
+            >
               <Image
-                onClick={() => sliderRef?.current?.slickPrev()}
                 src={'/icons/arrow_left.svg'}
                 width={18}
                 height={16}
                 alt="arrow-left"
               />
             </div>
-            <div className="cursor-pointer bg-white py-2 px-3 flex items-center justify-center rounded-lg">
+            <div
+              className="cursor-pointer bg-white py-2 px-3 flex items-center justify-center rounded-lg"
+              onClick={() => sliderRef?.current?.slickNext()}
+            >
               <Image
-                onClick={() => sliderRef?.current?.slickNext()}
                 src={'/icons/arrow_right.svg'}
                 width={18}
                 height={16}
