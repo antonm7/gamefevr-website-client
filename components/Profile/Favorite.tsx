@@ -52,7 +52,11 @@ export default function Favorite(props: Props) {
   }
   //catches the globalRequest user answer after he presses.
   useEffect(() => {
-    if (state.type === 'request' && state.answer === 'yes') {
+    if (
+      state.type === 'request' &&
+      state.answer === 'yes' &&
+      state.id === props._id
+    ) {
       deleteFavoriteMethod()
     } else {
       state.closeRequest()

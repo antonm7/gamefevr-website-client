@@ -11,6 +11,7 @@ import Favorite from './Favorite'
 import Review from './Review'
 import SettingsBar from './SettingsBar'
 import Arrows from './Arrows'
+import useWindowSize from '../../lib/functions/hooks/useWindowSize'
 
 interface Props {
   reviews: Review_Type[]
@@ -23,7 +24,7 @@ export default function CurrentProfile(props: Props) {
   const [user, setUser] = useState<Client_User>()
   const [reviews, setReviews] = useState<Review_Type[]>([])
   const [favorites, setFavorites] = useState<Favorite_Type[]>([])
-
+  const [width] = useWindowSize()
   const store = useStore()
 
   const changeVisibleSettings = (value: boolean) => {
@@ -149,14 +150,15 @@ export default function CurrentProfile(props: Props) {
           </div>
           <div
             className={`mt-12 
-          ${reviews.length >= 4
-                ? 'w-full'
-                : reviews.length === 3
-                  ? 'w-full'
-                  : reviews.length === 2
-                    ? 'w-4/6'
-                    : 'w-full'
-              } `}
+          ${
+            reviews.length >= 4
+              ? 'w-full'
+              : reviews.length === 3
+              ? 'w-full'
+              : reviews.length === 2 && width < 1300
+              ? 'w-full'
+              : 'w-4/6'
+          } `}
           >
             {reviews.length > 0 ? (
               <Slider {...settings} ref={reviewsRef}>
@@ -192,14 +194,15 @@ export default function CurrentProfile(props: Props) {
           </div>
           <div
             className={`mt-12 
-          ${favorites.length >= 4
-                ? 'w-full'
-                : favorites.length === 3
-                  ? 'w-3/4'
-                  : favorites.length === 2
-                    ? 'w-2/4'
-                    : 'w-full'
-              } `}
+          ${
+            favorites.length >= 4
+              ? 'w-full'
+              : favorites.length === 3
+              ? 'w-full'
+              : favorites.length === 2 && width < 1300
+              ? 'w-full'
+              : 'w-4/6'
+          } `}
           >
             {favorites.length > 0 ? (
               <Slider {...favoritesSettings} ref={favoriteRef}>
