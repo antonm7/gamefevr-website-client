@@ -31,7 +31,7 @@ type Props = {
 export default function GamePage(props: Props) {
   const [width] = useWindowSize()
   const store = useStore()
-  const query = useQuery()
+  // const query = useQuery()
   const router = useRouter()
   const session = useSession()
   const changeGlobalErrorVisibility = useGlobalError(
@@ -49,6 +49,14 @@ export default function GamePage(props: Props) {
   const [reviews, setReviews] = useState<Review_Type[]>([])
   const [loading, setLoading] = useState<boolean>(true)
   const sliderRef = useRef(null)
+
+  useEffect(() => {
+    setReviewsAnimation(false)
+    setScreenshotsAnimtion(false)
+    setGame(props.game)
+    setReviews(props.reviews)
+    setLoading(false)
+  }, [router.query.id, props.game])
 
   const navigateAuth = () => {
     if (session.status !== 'authenticated') {
@@ -80,12 +88,6 @@ export default function GamePage(props: Props) {
       }, 450)
     }
   }
-
-  useEffect(() => {
-    setGame(props.game)
-    setReviews(props.reviews)
-    setLoading(false)
-  }, [query?.id])
 
   const deleteReview = (id: ObjectId | undefined) => {
     if (id) {
@@ -207,69 +209,83 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(context: Context) {
+  let gameData, screenshots, trailers, same_series
+
   try {
     const getData = await fetch(
       `https://api.rawg.io/api/games/${context.params.id}?key=0ffbdb925caf4b20987cd068aa43fd75`
     )
+    gameData = await getData.json()
+  } catch (e) {
+    console.log('error on getting gameData', e)
+    gameData = null
+  }
+
+  try {
     const getScreenshots = await fetch(
       `https://api.rawg.io/api/games/${context.params.id}/screenshots?key=0ffbdb925caf4b20987cd068aa43fd75`
     )
+    screenshots = await getScreenshots.json()
+  } catch (e) {
+    console.log('error on getting screenshots', e)
+    screenshots = null
+  }
+
+  try {
     const getTrailers = await fetch(
       `https://api.rawg.io/api/games/${context.params.id}/movies?key=0ffbdb925caf4b20987cd068aa43fd75`
     )
+    trailers = await getTrailers.json()
+  } catch (e) {
+    console.log('error on getting treilers', e)
+    trailers = null
+  }
 
+  try {
     const getSeries = await fetch(
       `https://api.rawg.io/api/games/${context.params.id}/game-series?key=0ffbdb925caf4b20987cd068aa43fd75`
     )
-
-    const gameData = await getData.json()
-    const screenshots = await getScreenshots.json()
-    const trailers = await getTrailers.json()
-    const same_series = await getSeries.json()
-
-    const finalData: DetailedGame = {
-      id: gameData.id,
-      name: gameData.name,
-      released: gameData.released,
-      background_image: gameData.background_image,
-      description: gameData.description,
-      genres: gameData.genres,
-      developers: gameData.developers,
-      parent_platforms: gameData.parent_platforms,
-      platforms: gameData.platforms,
-      stores: gameData.stores,
-      publishers: gameData.publishers,
-      screenshots,
-      tags: gameData.tags,
-      website: gameData.website,
-      trailers,
-      same_series,
-    }
-
-    const client = await clientPromise
-    const db = client.db('gameFevr')
-    const reviews = await db
-      .collection('reviews')
-      .find({ gameId: context.params.id })
-      .toArray()
-
-    // fetch(`/api/game/action/visited?gameId=${query.id}`, {
-    //     //             headers:{
-    //     //                 userId:session.data?.user?.userId
-    //     //             }
-    //     //         })
-    return {
-      props: {
-        game: finalData,
-        reviews: JSON.parse(JSON.stringify(reviews)),
-      },
-    }
+    same_series = await getSeries.json()
   } catch (e) {
-    return {
-      props: {
-        game: null,
-        reviews: null,
-      },
-    }
+    console.log('error on getting same_series', e)
+    same_series = null
+  }
+
+  const finalData: DetailedGame = {
+    id: gameData.id,
+    name: gameData.name,
+    released: gameData.released,
+    background_image: gameData.background_image,
+    description: gameData.description,
+    genres: gameData.genres,
+    developers: gameData.developers,
+    parent_platforms: gameData.parent_platforms,
+    platforms: gameData.platforms,
+    stores: gameData.stores,
+    publishers: gameData.publishers,
+    screenshots,
+    tags: gameData.tags,
+    website: gameData.website,
+    trailers,
+    same_series,
+  }
+
+  const client = await clientPromise
+  const db = client.db('gameFevr')
+  const reviews = await db
+    .collection('reviews')
+    .find({ gameId: context.params.id })
+    .toArray()
+  // fetch(`/api/game/action/visited?gameId=${query.id}`, {
+  //     //             headers:{
+  //     //                 userId:session.data?.user?.userId
+  //     //             }
+  //     //         })
+  console.log(finalData.id)
+  return {
+    props: {
+      game: finalData,
+      reviews: JSON.parse(JSON.stringify(reviews)),
+    },
   }
 }
