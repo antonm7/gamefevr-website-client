@@ -64,7 +64,7 @@ export default function AddFavorite(props: Props) {
             `/api/game/get/getIsFavorite?userId=${session.data?.user?.userId}&gameId=${props.gameId}`
           )
           if (req.status === 200) {
-            if (!req.data.isFavorite) return
+            if (!req.data.isFavorite) return setIsFavorite(false)
             setIsFavorite(req.data.isFavorite)
           } else {
             throw new Error(req.data.error)
@@ -75,7 +75,7 @@ export default function AddFavorite(props: Props) {
       }
       checkIsFavorite()
     }
-  }, [session.status])
+  }, [session.status, props.gameId])
 
   return (
     <div>
