@@ -10,7 +10,6 @@ import SearchLayout from '../layout/SearchLayout'
 import Favorite from './Favorite'
 import Review from './Review'
 import SettingsBar from './SettingsBar'
-import Arrows from './Arrows'
 import useWindowSize from '../../lib/functions/hooks/useWindowSize'
 
 interface Props {
@@ -144,10 +143,7 @@ export default function CurrentProfile(props: Props) {
           </div>
         </div>
         <div className="pt-24">
-          <div className="flex items-center justify-between">
-            <h1 className="text-white font-bold text-3xl">Your Reviews</h1>
-            <Arrows count={reviews.length} componentRef={reviewsRef} />
-          </div>
+          <h1 className="text-white font-bold text-3xl">Your Reviews</h1>
           <div
             className={`mt-12 
           ${
@@ -155,9 +151,9 @@ export default function CurrentProfile(props: Props) {
               ? 'w-full'
               : reviews.length === 3
               ? 'w-full'
-              : reviews.length === 2 && width < 1300
+              : reviews.length === 2 && width < 1600
               ? 'w-full'
-              : 'w-4/6'
+              : 'w-80p'
           } `}
           >
             {reviews.length > 0 ? (
@@ -188,10 +184,7 @@ export default function CurrentProfile(props: Props) {
           </div>
         </div>
         <div className="pt-14">
-          <div className="flex items-center justify-between">
-            <h1 className="text-white font-bold text-3xl">Favorite Games</h1>
-            <Arrows count={favorites.length} componentRef={favoriteRef} />
-          </div>
+          <h1 className="text-white font-bold text-3xl">Favorite Games</h1>
           <div
             className={`mt-12 
           ${
@@ -199,9 +192,9 @@ export default function CurrentProfile(props: Props) {
               ? 'w-full'
               : favorites.length === 3
               ? 'w-full'
-              : favorites.length === 2 && width < 1300
+              : favorites.length === 2 && width < 1600
               ? 'w-full'
-              : 'w-4/6'
+              : 'w-80p'
           } `}
           >
             {favorites.length > 0 ? (
