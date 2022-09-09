@@ -86,15 +86,16 @@ export default function Index(props: Props) {
   }, [props.games, props.error])
 
   const sort = () => {
+    const { pathname, query }: any = router
+    const params = new URLSearchParams(query)
     if (router.query.sort) {
-      const { pathname, query }: any = router;
-      const params = new URLSearchParams(query);
-      params.delete('sort');
-      router.replace(
-        { pathname, query: params.toString() }
-      )
+      params.delete('sort')
+      router.replace({ pathname, query: params.toString() })
     } else {
-      router.push({ pathname: router.pathname, query: { sort: 'year' } })
+      router.push({
+        pathname: router.pathname,
+        query: { ...query, sort: 'year' },
+      })
     }
   }
 
@@ -121,16 +122,28 @@ export default function Index(props: Props) {
         ) : (
           <div className="py-10">
             {!loadMoreLoading ? (
-              <div className="flex justify-between items-center">
+              <div
+                id="we_found_title_wrapper"
+                className="flex justify-between items-center"
+              >
                 <p
                   id="we_found_title"
-                  className="font-bold text-white text-4xl px-44 pb-10"
+                  className="we_found_padding font-bold text-white text-4xl px-44 pb-10"
                 >
                   We found {store.count.toLocaleString()} games for you
                 </p>
-                <div className={`px-44 pb-10 text-white ${router.query.sort ? 'underline' : ''}`}>
+                <div
+                  className={`we_found_padding px-44 pb-10 text-white ${
+                    router.query.sort ? 'underline' : ''
+                  }`}
+                >
                   <span className="opacity-60">Sort by:</span>{' '}
-                  <span className="font-semibold  cursor-pointer" onClick={() => sort()}>Year</span>
+                  <span
+                    className="font-semibold  cursor-pointer"
+                    onClick={() => sort()}
+                  >
+                    Year
+                  </span>
                 </div>
               </div>
             ) : null}
