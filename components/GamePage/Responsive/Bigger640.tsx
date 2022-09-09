@@ -24,7 +24,7 @@ export default function Bigger640({ game, changeIsUserRated }: Props) {
         >
           {game.name}
         </h1>
-        <div className="pt-8 ">
+        <div className="pt-4 ">
           <div className="flex flex-row flex-no-wrap">
             <h2
               id="game_page_detail"
@@ -88,38 +88,14 @@ export default function Bigger640({ game, changeIsUserRated }: Props) {
           <Link href={game.website}>
             <h2
               id="game_page_detail"
-              className="text-white cursor-pointer underline font-normal text-1xl opacity-70 pt-2"
+              className="text-white cursor-pointer underline font-normal text-1xl opacity-70 pt-2 inline-block"
             >
               Game Website
             </h2>
           </Link>
           <WhereToBuy stores={game.stores} />
         </div>
-        <div className="flex items-center pt-6">
-          <div
-            className="w-8 h-8 rounded-sm flex items-center justify-center mr-4 cursor-pointer"
-            style={{ backgroundColor: '#38b6cc' }}
-          >
-            <Image
-              id="brand"
-              src={'/icons/twitter.svg'}
-              height={14}
-              width={14}
-            />
-          </div>
-          <div
-            className="w-8 h-8 rounded-sm flex items-center justify-center cursor-pointer mr-4"
-            style={{ backgroundColor: '#38b6cc' }}
-          >
-            <Image
-              id="brand"
-              src={'/icons/facebook.svg'}
-              height={14}
-              width={14}
-            />
-          </div>
-          <AddFavorite gameId={game.id} />
-        </div>
+        <AddFavorite gameId={game.id} />
       </div>
       <div
         id="game_page_background_image_wrapper"
