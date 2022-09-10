@@ -220,15 +220,21 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       if (consoles) {
         if (typeof consoles === 'string') {
           filteredString = filteredString.concat(
-            `&parent_platforms=${consoles}`
+            `&parent_platforms=${parseInt(JSON.parse(consoles))}`
           )
         } else {
           let consolesString = ''
           for (const key in consoles) {
             if (parseInt(key) !== consoles.length - 1) {
-              consolesString = consolesString.concat(`${consoles[key]}`, ',')
+              consolesString = consolesString.concat(
+                `${parseInt(JSON.parse(consoles[key]))}`,
+                ','
+              )
             } else {
-              consolesString = consolesString.concat(`${consoles[key]}`, '')
+              consolesString = consolesString.concat(
+                `${parseInt(JSON.parse(consoles[key]))}`,
+                ''
+              )
             }
           }
           filteredString = filteredString.concat(`&platforms=${consolesString}`)
@@ -236,14 +242,22 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       }
       if (genres) {
         if (typeof genres === 'string') {
-          filteredString = filteredString.concat(`&genres=${genres}`)
+          filteredString = filteredString.concat(
+            `&genres=${parseInt(JSON.parse(genres))}`
+          )
         } else {
           let genresString = ''
           for (const key in genres) {
             if (parseInt(key) !== genres.length - 1) {
-              genresString = genresString.concat(`${genres[key]}`, ',')
+              genresString = genresString.concat(
+                `${parseInt(JSON.parse(genres[key]))}`,
+                ','
+              )
             } else {
-              genresString = genresString.concat(`${genres[key]}`, '')
+              genresString = genresString.concat(
+                `${parseInt(JSON.parse(genres[key]))}`,
+                ''
+              )
             }
           }
           filteredString = filteredString.concat(`&genres=${genresString}`)
