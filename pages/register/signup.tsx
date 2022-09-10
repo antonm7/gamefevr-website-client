@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import SignupAnimation from '../../components/animations/Signup'
+import SmallLoader from '../../components/common/SmallLoader'
 import YellowButton from '../../components/common/YellowButton'
 import StyledInput from '../../components/Register/StyledInput'
 
@@ -13,10 +14,13 @@ const Signup: NextPage = () => {
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const [username, setUsername] = useState<string>('')
+  const [loading, setLoading] = useState<boolean>(false)
   const [error, setError] = useState<string>('')
   const router = useRouter()
 
-  const signup = async () => {
+  const signup = async (): Promise<void> => {
+    setError('')
+    setLoading(true)
     try {
       const { data, status } = await axios.post('/api/auth/signup', {
         email,
@@ -48,6 +52,7 @@ const Signup: NextPage = () => {
     } catch (e) {
       setError('Unexpected Error')
     }
+    setLoading(false)
   }
 
   return (
@@ -87,7 +92,11 @@ const Signup: NextPage = () => {
             />
           </div>
           <div className="pt-12">
-            <YellowButton onClick={() => signup()} title="Signup" />
+            {loading ? (
+              <SmallLoader xCentered={true} />
+            ) : (
+              <YellowButton onClick={signup} title="Login" />
+            )}
           </div>
           <div className="text-darkIndigo font-semibold text-base pt-4 flex items-center">
             Already have an account?

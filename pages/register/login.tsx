@@ -16,7 +16,7 @@ const Login: NextPage = () => {
   const [loading, setLoading] = useState<boolean>(false)
   const router = useRouter()
 
-  const signin = async () => {
+  const signin = async (): Promise<void> => {
     setError('')
     setLoading(true)
     try {
@@ -25,11 +25,11 @@ const Login: NextPage = () => {
         email,
         password,
       })
-      if (data?.status !== 200) {
+      if (data.status !== 200) {
         throw new Error()
       } else {
-        if (data?.error) {
-          return setError(data.error.slice(6, 50))
+        if (data.error) {
+          setError(data.error.slice(6, 50))
         } else {
           router.push('/')
         }
