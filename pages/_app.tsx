@@ -91,17 +91,11 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
 
       changeGameName(router.query.search ? router.query.search : '')
     }
-  }, [
-    router.query,
-    // router.query.yearRange,
-    // router.query.consoles,
-    // router.query.search,
-    // router.query.genres,
-  ])
+  }, [router.query])
 
   return (
     <>
-      <GlobalError type={type} isVisible={isVisible} />
+      <GlobalError propsType={type} isVisible={isVisible} />
       <Progress isAnimating={isAnimating} />
       <SessionProvider session={session}>
         <div className="bg-main-blue">
