@@ -2,13 +2,18 @@ import { ObjectId } from 'bson'
 import { Review_Type } from '../../types/schema'
 import Review from './Review'
 
-export default function VerticalReviewsLoader(props: {
+interface Props {
   reviews: Review_Type[]
   deleteReview: (reviewId: ObjectId | undefined) => void
-}) {
+}
+
+export default function VerticalReviewsLoader({
+  reviews,
+  deleteReview,
+}: Props) {
   return (
     <>
-      {props.reviews.map((review: Review_Type, index: number) => (
+      {reviews.map((review: Review_Type, index: number) => (
         <div className="my-4" key={index}>
           <Review
             key={index}
@@ -22,7 +27,7 @@ export default function VerticalReviewsLoader(props: {
             rank={review.rank}
             game_name={review.game_name}
             game_image={review.game_image}
-            deleteReview={(id) => props.deleteReview(id)}
+            deleteReviewProps={(id) => deleteReview(id)}
             user_name={review.user_name}
           />
         </div>

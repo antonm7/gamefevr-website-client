@@ -1,6 +1,3 @@
-import Link from 'next/link'
-import { Store } from '../../types'
-
 interface Props {
   stores: {
     id: number

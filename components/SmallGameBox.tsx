@@ -6,16 +6,14 @@ import BackgroundGameImage from './BackgroundGameImage'
 
 type Props = {
   game: ShortGame
-  key: number
 }
 
-export default function SmallGameBox(props: Props) {
-  const game = props.game
+export default function SmallGameBox({ game }: Props) {
   if (!game) return null
 
   const [movieUrl, setMovieUrl] = useState<string | null>(null)
 
-  const loadMovie = async () => {
+  const loadMovie = async (): Promise<void> => {
     try {
       const req = await axios.get(
         `https://api.rawg.io/api/games/${game.id}/movies?key=0ffbdb925caf4b20987cd068aa43fd75`
@@ -41,7 +39,7 @@ export default function SmallGameBox(props: Props) {
     >
       <BackgroundGameImage bg={game.background_image} movieUrl={movieUrl} />
       <div className="flex-grow p-4">
-        <Link href={`/game/${props.game.id}`}>
+        <Link href={`/game/${game.id}`}>
           <h1
             style={{ lineBreak: 'anywhere' }}
             className="cursor-pointer font-semibold text-white text-xl whitespace-pre-wrap hover:text-gray-500"

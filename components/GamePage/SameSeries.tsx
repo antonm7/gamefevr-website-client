@@ -44,11 +44,6 @@ export default function SameSeries({ games }: Props) {
         {memoizedGamesCount.map((game) => (
           <GameCover game={game} key={game.id} />
         ))}
-        {/* {gs.length > 5
-          ? gs
-              .splice(0, 5)
-              .map((game) => <GameCover game={game} key={game.id} />)
-          : gs.map((game) => <GameCover game={game} key={game.id} />)} */}
       </div>
     </div>
   )

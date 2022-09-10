@@ -1,6 +1,5 @@
 import { DetailedGame, ElementDescription, Platform } from '../../../types'
 import RateGame from '../RateGame'
-import Image from 'next/image'
 import AddFavorite from '../AddFavorite'
 import Link from 'next/link'
 import WhereToBuy from '../WhereToBuy'

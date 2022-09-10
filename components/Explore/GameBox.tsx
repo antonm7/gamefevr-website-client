@@ -1,5 +1,4 @@
 import {
-  DetailedGame,
   ElementDescription,
   Platform,
   ShortGame,
@@ -13,12 +12,7 @@ interface Props {
   game: ShortGame
 }
 
-interface PlatformParentObject {
-  platform: ElementDescription
-}
-
-export default function GameBox(props: Props) {
-  const game = props.game
+export default function GameBox({ game }: Props) {
   if (!game) return null
 
   return (
@@ -32,7 +26,7 @@ export default function GameBox(props: Props) {
             {' '}
             {game?.released?.slice(0, 4)}
           </h3>
-          <Link href={`/game/${props.game.id}`}>
+          <Link href={`/game/${game.id}`}>
             <h1
               style={{ lineBreak: 'anywhere' }}
               className="pb-2 font-semibold text-6xl overflow-hidden hover:text-gray-500 text-white cursor-pointer  whitespace-normal"

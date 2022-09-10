@@ -1,6 +1,3 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBookmark as regular } from '@fortawesome/free-regular-svg-icons'
-import { faBookmark as solid } from '@fortawesome/free-solid-svg-icons'
 import { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
 import axios from 'axios'
@@ -11,20 +8,20 @@ interface Props {
   gameId: number
 }
 
-export default function AddFavorite(props: Props) {
+export default function AddFavorite({ gameId }: Props) {
   const session = useSession()
   const router = useRouter()
   const globalErrorState = useGlobalError((state) => state)
   const [isFavorite, setIsFavorite] = useState<boolean>(false)
 
-  const navigateAuth = () => {
+  const navigateAuth = (): void => {
     if (session.status !== 'authenticated') {
-      return router.push('/register/login')
+      router.push('/register/login')
     }
     addFavorite()
   }
 
-  const addFavorite = async () => {
+  const addFavorite = async (): Promise<void> => {
     try {
       //cancel favorite game
       if (isFavorite) {
@@ -33,7 +30,7 @@ export default function AddFavorite(props: Props) {
           '/api/game/cancel/favorite/deleteFavorite',
           {
             userId: session.data?.user?.userId,
-            gameId: props.gameId,
+            gameId: gameId,
             favoriteId: isFavorite,
           }
         )
@@ -41,7 +38,7 @@ export default function AddFavorite(props: Props) {
       } else {
         const response = await axios.post(`/api/game/action/favorite/add`, {
           userId: session.data?.user?.userId,
-          gameId: props.gameId,
+          gameId: gameId,
         })
         if (response.status === 200) {
           setIsFavorite(response.data.favoriteId)
@@ -58,10 +55,10 @@ export default function AddFavorite(props: Props) {
 
   useEffect(() => {
     if (session.status === 'authenticated') {
-      const checkIsFavorite = async () => {
+      const checkIsFavorite = async (): Promise<void> => {
         try {
           const req = await axios.get(
-            `/api/game/get/getIsFavorite?userId=${session.data?.user?.userId}&gameId=${props.gameId}`
+            `/api/game/get/getIsFavorite?userId=${session.data?.user?.userId}&gameId=${gameId}`
           )
           if (req.status === 200) {
             if (!req.data.isFavorite) return setIsFavorite(false)
@@ -75,7 +72,7 @@ export default function AddFavorite(props: Props) {
       }
       checkIsFavorite()
     }
-  }, [session.status, props.gameId])
+  }, [session.status, gameId])
 
   return (
     <div

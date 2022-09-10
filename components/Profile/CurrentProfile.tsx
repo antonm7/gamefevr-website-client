@@ -18,11 +18,11 @@ interface Props {
   user: Client_User
 }
 
-export default function CurrentProfile(props: Props) {
+export default function CurrentProfile({ reviews, favorites, user }: Props) {
   const [isOpened, setIsOpened] = useState<boolean>(false)
-  const [user, setUser] = useState<Client_User>()
-  const [reviews, setReviews] = useState<Review_Type[]>([])
-  const [favorites, setFavorites] = useState<Favorite_Type[]>([])
+  const [userState, setUserState] = useState<Client_User>()
+  const [reviewsState, setReviewsState] = useState<Review_Type[]>([])
+  const [favoritesState, setFavoritesState] = useState<Favorite_Type[]>([])
   const [width] = useWindowSize()
   const store = useStore()
 
@@ -32,12 +32,12 @@ export default function CurrentProfile(props: Props) {
 
   const settings = {
     infinite: false,
-    slidesToShow: props.reviews.length >= 3 ? 3 : props.reviews.length,
+    slidesToShow: reviews.length >= 3 ? 3 : reviews.length,
     responsive: [
       {
         breakpoint: 1700,
         settings: {
-          slidesToShow: props.reviews.length >= 2 ? 2 : props.reviews.length,
+          slidesToShow: reviews.length >= 2 ? 2 : reviews.length,
         },
       },
       {
@@ -51,21 +51,19 @@ export default function CurrentProfile(props: Props) {
 
   const favoritesSettings = {
     infinite: false,
-    slidesToShow: props.favorites.length >= 4 ? 4 : props.favorites.length,
+    slidesToShow: favorites.length >= 4 ? 4 : favorites.length,
 
     responsive: [
       {
         breakpoint: 1600,
         settings: {
-          slidesToShow:
-            props.favorites.length >= 3 ? 3 : props.favorites.length,
+          slidesToShow: favorites.length >= 3 ? 3 : favorites.length,
         },
       },
       {
         breakpoint: 1200,
         settings: {
-          slidesToShow:
-            props.favorites.length >= 2 ? 2 : props.favorites.length,
+          slidesToShow: favorites.length >= 2 ? 2 : favorites.length,
         },
       },
       {
@@ -78,35 +76,35 @@ export default function CurrentProfile(props: Props) {
   }
 
   useEffect(() => {
-    setUser(props.user)
-    setReviews(props.reviews)
-    setFavorites(props.favorites)
-  }, [props.user])
+    setUserState(user)
+    setReviewsState(reviews)
+    setFavoritesState(favorites)
+  }, [user])
 
-  const deleteReview = (id: ObjectId | undefined) => {
+  const deleteReview = (id: ObjectId | undefined): void => {
     if (id) {
-      const newReviews = reviews.filter(
+      const newReviews = reviewsState.filter(
         (review: Review_Type) => review._id !== id
       )
-      setReviews(reviews.splice(0, reviews.length))
-      setReviews(newReviews)
+      setReviewsState(reviewsState.splice(0, reviewsState.length))
+      setReviewsState(newReviews)
     }
   }
 
-  const deleteFavorite = (id: ObjectId | undefined) => {
+  const deleteFavorite = (id: ObjectId | undefined): void => {
     if (id) {
       const newFavorites = favorites.filter(
         (favorite: Favorite_Type) => favorite._id !== id
       )
-      setFavorites(favorites.splice(0, favorites.length))
-      setFavorites(newFavorites)
+      setFavoritesState(favorites.splice(0, favorites.length))
+      setFavoritesState(newFavorites)
     }
   }
 
   const favoriteRef = useRef(null)
   const reviewsRef = useRef(null)
 
-  if (!user) return null
+  if (!userState) return null
 
   return (
     <SearchLayout>
@@ -114,7 +112,7 @@ export default function CurrentProfile(props: Props) {
         {store.isFilterOn ? <Filters /> : null}
 
         <SettingsBar
-          user={props.user}
+          user={user}
           isOpened={isOpened}
           close={() => changeVisibleSettings(false)}
         />
@@ -123,7 +121,7 @@ export default function CurrentProfile(props: Props) {
           className="flex justify-between items-center"
         >
           <h1 id="welcome_title" className="text-white font-bold text-4xl">
-            Welcome {user?.username}!
+            Welcome {userState?.username}!
           </h1>
           <div
             className="flex items-center"
@@ -147,18 +145,18 @@ export default function CurrentProfile(props: Props) {
           <div
             className={`mt-12 
           ${
-            reviews.length >= 4
+            reviewsState.length >= 4
               ? 'w-full'
-              : reviews.length === 3
+              : reviewsState.length === 3
               ? 'w-full'
-              : reviews.length === 2 && width < 1600
+              : reviewsState.length === 2 && width < 1600
               ? 'w-full'
               : 'w-80p'
           } `}
           >
-            {reviews.length > 0 ? (
+            {reviewsState.length > 0 ? (
               <Slider {...settings} ref={reviewsRef}>
-                {reviews.map((review: Review_Type, index: number) => (
+                {reviewsState.map((review: Review_Type, index: number) => (
                   <Review
                     key={index}
                     _id={review._id}
@@ -188,18 +186,18 @@ export default function CurrentProfile(props: Props) {
           <div
             className={`mt-12 
           ${
-            favorites.length >= 4
+            favoritesState.length >= 4
               ? 'w-full'
-              : favorites.length === 3
+              : favoritesState.length === 3
               ? 'w-full'
-              : favorites.length === 2 && width < 1600
+              : favoritesState.length === 2 && width < 1600
               ? 'w-full'
               : 'w-80p'
           } `}
           >
-            {favorites.length > 0 ? (
+            {favoritesState.length > 0 ? (
               <Slider {...favoritesSettings} ref={favoriteRef}>
-                {favorites.map((review: Favorite_Type, index: number) => (
+                {favoritesState.map((review: Favorite_Type, index: number) => (
                   <Favorite
                     _id={review._id}
                     key={index}

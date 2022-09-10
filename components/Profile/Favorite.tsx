@@ -14,32 +14,41 @@ interface Props extends Favorite_Type {
   visited?: boolean
 }
 
-export default function Favorite(props: Props) {
+export default function Favorite({
+  deleteFavorite,
+  userId,
+  gameId,
+  game_image,
+  game_name,
+  visited,
+  _id,
+}: Props) {
   const state = useGlobalError((state) => state)
+
   //creating the alert
-  const deleteFavorite = () => {
-    if (!props._id) return
+  const deleteFavorite_STATE = () => {
+    if (!_id) return
     state.setAnswer(undefined)
     state.setType('request')
     state.setText('Remove from favorite?')
     state.setIsVisible(true)
-    state.setId(props._id)
+    state.setId(_id)
   }
 
-  const deleteFavoriteMethod = async () => {
-    if (props.deleteFavorite) {
+  const deleteFavoriteMethod = async (): Promise<void> => {
+    if (deleteFavorite) {
       state.closeRequest()
       try {
         const req = await axios.post(
           '/api/game/cancel/favorite/deleteFavorite',
           {
-            userId: props.userId,
-            gameId: props.gameId,
-            favoriteId: props._id,
+            userId,
+            gameId,
+            favoriteId: _id,
           }
         )
         if (req.status === 200) {
-          props.deleteFavorite(props._id)
+          deleteFavorite(_id)
         } else {
           throw new Error('Unexpected Error')
         }
@@ -55,7 +64,7 @@ export default function Favorite(props: Props) {
     if (
       state.type === 'request' &&
       state.answer === 'yes' &&
-      state.id === props._id
+      state.id === _id
     ) {
       deleteFavoriteMethod()
     } else {
@@ -63,7 +72,7 @@ export default function Favorite(props: Props) {
     }
   }, [state.answer])
 
-  if (props.visited) {
+  if (visited) {
     return (
       <div
         id="favorite-component"
@@ -75,18 +84,18 @@ export default function Favorite(props: Props) {
             loading="eager"
             objectPosition={'center center'}
             className="z-0"
-            src={props.game_image}
+            src={game_image}
             layout="fill"
             objectFit="cover"
           />
         </div>
-        <Link href={`/game/${props.gameId}`} className="cursor-pointer">
+        <Link href={`/game/${gameId}`} className="cursor-pointer">
           <h1
             id="favorite-title"
             style={{ lineBreak: 'anywhere' }}
             className="font-semibold text-lg whitespace-pre-wrap hover:text-gray-500 px-6 py-3"
           >
-            {slicedParagrap(props.game_name, 25, 25)}
+            {slicedParagrap(game_name, 25, 25)}
           </h1>
         </Link>
       </div>
@@ -101,7 +110,7 @@ export default function Favorite(props: Props) {
           className="h-4 absolute z-10 cursor-pointer"
           icon={faBookmark}
           style={{ color: '#38b6cc', right: 20, top: 15 }}
-          onClick={() => deleteFavorite()}
+          onClick={() => deleteFavorite_STATE()}
         />
         <div id="favorite-image">
           <Image
@@ -109,18 +118,18 @@ export default function Favorite(props: Props) {
             loading="eager"
             objectPosition={'center center'}
             className="z-0"
-            src={props.game_image}
+            src={game_image}
             layout="fill"
             objectFit="cover"
           />
         </div>
-        <Link href={`/game/${props.gameId}`} className="cursor-pointer">
+        <Link href={`/game/${gameId}`} className="cursor-pointer">
           <h1
             id="favorite-title"
             style={{ lineBreak: 'anywhere' }}
             className="font-semibold text-lg whitespace-pre-wrap hover:text-gray-500 px-6 py-4 leading-5"
           >
-            {slicedParagrap(props.game_name, 25, 25)}
+            {slicedParagrap(game_name, 25, 25)}
           </h1>
         </Link>
       </div>

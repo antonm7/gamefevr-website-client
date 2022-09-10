@@ -6,21 +6,22 @@ import Warning from './Warning'
 
 interface Props {
   isVisible: boolean
-  type: 'error' | 'warning' | 'request' | undefined
+  propsType: 'error' | 'warning' | 'request' | undefined
 }
-export default function GlobalError(props: Props) {
-  const [visibility, setVisibility] = useState(props.isVisible)
-  const [type, setType] = useState(props.type)
+
+export default function GlobalError({ isVisible, propsType }: Props) {
+  const [visibility, setVisibility] = useState(isVisible)
+  const [type, setType] = useState(propsType)
   const changeGlobalErrorVisibility = useGlobalError(
     (store) => store.setIsVisible
   )
   const text = useGlobalError((store) => store.text)
 
   useEffect(() => {
-    if (props.isVisible) {
-      setType(props.type)
+    if (isVisible) {
+      setType(type)
       setVisibility(true)
-      if (props.type !== 'request') {
+      if (type !== 'request') {
         setTimeout(() => {
           setVisibility(false)
           changeGlobalErrorVisibility(false)
@@ -29,7 +30,7 @@ export default function GlobalError(props: Props) {
     } else {
       setVisibility(false)
     }
-  }, [props.isVisible])
+  }, [isVisible])
 
   if (type === 'error') return <Error visibility={visibility} text={text} />
 

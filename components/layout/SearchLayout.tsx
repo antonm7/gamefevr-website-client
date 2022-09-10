@@ -1,5 +1,4 @@
 import React, { ReactChildren, ReactChild } from 'react'
-import useWindowSize from '../../lib/functions/hooks/useWindowSize'
 import Navbar from '../Navbar'
 
 interface AuxProps {

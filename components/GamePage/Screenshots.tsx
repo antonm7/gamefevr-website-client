@@ -11,27 +11,27 @@ interface Props {
   setRef?: any
 }
 
-export default function Screenshots(props: Props) {
-  const [width, height] = useWindowSize()
+export default function Screenshots({ isAnimated, images, setRef }: Props) {
+  const [width] = useWindowSize()
 
   const settings = {
     infinite: false,
     slidesToShow: width < 640 ? 2 : 3,
   }
 
-  if (props.images.length === 0) return <div>Loading....</div>
+  if (images.length === 0) return <div>Loading....</div>
 
   return (
     <Slider
-      ref={props.setRef}
+      ref={setRef}
       {...settings}
       className={`ml-32 ${
-        props.isAnimated
+        isAnimated
           ? 'screenshots_animation_enabled'
           : 'screenshots_animation_disabled'
       }`}
     >
-      {props.images.map((s: Short_Screenshot, index: number) => (
+      {images.map((s: Short_Screenshot, index: number) => (
         <div className="screenshot" key={index}>
           <Image
             quality="1"

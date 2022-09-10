@@ -8,7 +8,7 @@ interface Props {
   updateIsUserRated: (isUserRated: string) => void
 }
 
-export default function RateGame(props: Props) {
+export default function RateGame({ updateIsUserRated }: Props) {
   const [wasteOfTime, setWasteOfTime] = useState<boolean>(false)
   const [nuh, setNuh] = useState<boolean>(false)
   const [good, setGood] = useState<boolean>(false)
@@ -34,7 +34,7 @@ export default function RateGame(props: Props) {
         if (req.status === 200) {
           if (!req.data.isUserRated) return
           setIsUserRated(req.data.isUserRated)
-          props.updateIsUserRated(req.data.isUserRated)
+          updateIsUserRated(req.data.isUserRated)
         } else {
           throw new Error(req.data.error)
         }

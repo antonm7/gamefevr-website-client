@@ -1,7 +1,6 @@
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import useWindowSize from '../../../lib/functions/hooks/useWindowSize'
-import deleteReview from '../../../pages/api/game/cancel/review/deleteReview'
 import { Short_Screenshot } from '../../../types'
 import { Review_Type } from '../../../types/schema'
 import NoScreenShots from '../NoScreenshots'

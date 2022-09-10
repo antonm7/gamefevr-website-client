@@ -1,7 +1,6 @@
 import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
-import useWindowSize from '../../lib/functions/hooks/useWindowSize'
 import Review from './Review'
 import { Review_Type } from '../../types/schema'
 import { ObjectId } from 'bson'
@@ -13,19 +12,22 @@ interface Props {
   deleteReview: (reviewId: ObjectId | undefined) => void
 }
 
-export default function ReviewsSlider(props: Props) {
-  const [width] = useWindowSize()
-  const [reviews, setReviews] = useState<Review_Type[]>([])
+export default function ReviewsSlider({
+  reviews,
+  isAnimated,
+  deleteReview,
+}: Props) {
+  const [reviewsState, setReviewsState] = useState<Review_Type[]>([])
 
   useEffect(() => {
     //added
-    if (props.reviews.length > reviews.length) {
-      setReviews(reviews.splice(0, reviews.length))
-      setReviews(props.reviews)
+    if (reviews.length > reviews.length) {
+      setReviewsState(reviews.splice(0, reviews.length))
+      setReviewsState(reviews)
     } else {
-      setReviews(props.reviews)
+      setReviewsState(reviews)
     }
-  }, [props.reviews])
+  }, [reviews])
 
   const settings = {
     infinite: false,
@@ -61,12 +63,10 @@ export default function ReviewsSlider(props: Props) {
     <Slider
       {...settings}
       className={`${
-        props.isAnimated
-          ? 'reviews_animation_enable'
-          : 'reviews_animation_disable'
+        isAnimated ? 'reviews_animation_enable' : 'reviews_animation_disable'
       }`}
     >
-      {reviews.map((review: Review_Type, index: number) => (
+      {reviewsState.map((review: Review_Type, index: number) => (
         <Review
           key={index}
           _id={review._id}
@@ -79,7 +79,7 @@ export default function ReviewsSlider(props: Props) {
           rank={review.rank}
           game_name={''}
           game_image={''}
-          deleteReview={(id) => props.deleteReview(id)}
+          deleteReviewProps={(id: ObjectId | undefined) => deleteReview(id)}
           user_name={review.user_name}
         />
       ))}

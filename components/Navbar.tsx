@@ -13,7 +13,7 @@ export default function Navbar() {
   const router = useRouter()
   const session = useSession()
   const [auth, setAuth] = useState<boolean>(false)
-  const [width, height] = useWindowSize()
+  const [width] = useWindowSize()
 
   useEffect(() => {
     if (session.status === 'authenticated') {

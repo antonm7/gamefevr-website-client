@@ -8,7 +8,7 @@ interface Props {
   bigInput?: boolean
 }
 
-export default function FiltersAppliedCount(props: Props) {
+export default function FiltersAppliedCount({ bigInput }: Props) {
   const [hover, setHover] = useState<boolean>(false)
   const clearFilters = useFiltersStore((store) => store.clearFilters)
   const filtersCount = useFiltersCount()
@@ -21,7 +21,7 @@ export default function FiltersAppliedCount(props: Props) {
         className={`
                 cursor-pointer flex 
                 justify-center items-center ${
-                  props.bigInput ? 'right-12' : 'right-16'
+                  bigInput ? 'right-12' : 'right-16'
                 }
                 absolute bg-cool-blue w-5 h-5 rounded-full 
                 overflow-hidden `}

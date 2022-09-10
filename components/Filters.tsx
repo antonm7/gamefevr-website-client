@@ -38,7 +38,7 @@ export default function Filters() {
     }
   }
 
-  const reset = () => {
+  const reset = (): void => {
     changeSelectedConsoles([])
     changeSelectedGenres([])
     changeYearRange([1990, 2023])
@@ -47,7 +47,7 @@ export default function Filters() {
     filtersStore.setYearRange([1990, 2023])
   }
 
-  const search = () => {
+  const search = (): void => {
     setCookie('prevRoute', '/')
     filtersStore.setConsoles(selectedConsoles)
     filtersStore.setGenres(selectedGenres)

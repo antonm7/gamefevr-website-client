@@ -13,7 +13,7 @@ interface Props {
   close: () => void
 }
 
-export default function SettingsBar(props: Props) {
+export default function SettingsBar({ user, isOpened, close }: Props) {
   const [username, setUsername] = useState<string>('')
   const [email, setEmail] = useState<string>('')
   const [oldPassword, setOldPassword] = useState<string>('')
@@ -24,7 +24,7 @@ export default function SettingsBar(props: Props) {
   const changeGlobalErrorType = useGlobalError((state) => state.setType)
   const changeText = useGlobalError((state) => state.setText)
 
-  const saveChanges = async () => {
+  const saveChanges = async (): Promise<void> => {
     //user tries to change password
     if (oldPassword !== '' || newPassword !== '') {
       if (oldPassword === '') {
@@ -41,13 +41,13 @@ export default function SettingsBar(props: Props) {
     }
     try {
       //user tries to change email
-      if (email !== props.user.email) {
+      if (email !== user.email) {
         console.log('email changed')
       }
       //user tries to change username
-      if (username !== props.user.username) {
+      if (username !== user.username) {
         const req = await axios.post('/api/user/settings/changeUsername', {
-          userId: props.user._id,
+          userId: user._id,
           username,
         })
         if (!req.data.error) {
@@ -74,14 +74,14 @@ export default function SettingsBar(props: Props) {
   }
 
   useEffect(() => {
-    setUsername(props.user.username)
-    setEmail(props.user.email)
-  }, [props.user])
+    setUsername(user.username)
+    setEmail(user.email)
+  }, [user])
 
-  const checkActive = () => {
+  const checkActive = (): boolean => {
     if (
-      username === props.user.username &&
-      email === props.user.email &&
+      username === user.username &&
+      email === user.email &&
       oldPassword === '' &&
       newPassword === ''
     ) {
@@ -94,7 +94,7 @@ export default function SettingsBar(props: Props) {
     <div
       id="settings_bar"
       className={`absolute bottom-0 z-10 bg-darkIndigo right-0 rounded-2xl p-16 ${
-        props.isOpened ? 'opened' : ''
+        isOpened ? 'opened' : ''
       }`}
       style={{
         width: '28rem',
@@ -104,7 +104,7 @@ export default function SettingsBar(props: Props) {
       }}
     >
       <FontAwesomeIcon
-        onClick={() => props.close()}
+        onClick={() => close()}
         icon={faXmark}
         className="absolute cursor-pointer"
         style={{ height: 22, color: '#c7c7c7', right: 35, top: 42 }}

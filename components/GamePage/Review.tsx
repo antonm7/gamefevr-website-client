@@ -16,48 +16,58 @@ import { useGlobalError } from '../../store'
 import { Review_Type } from '../../types/schema'
 
 interface Props extends Review_Type {
-  deleteReview: (reviewId: ObjectId | undefined) => void
+  deleteReviewProps: (reviewId: ObjectId | undefined) => void
 }
 
-export default function Review(props: Props) {
+export default function Review({
+  userId,
+  gameId,
+  likes,
+  dislikes,
+  _id,
+  text,
+  user_name,
+  deleteReviewProps,
+  rank,
+}: Props) {
   const session = useSession()
   const [like, setLike] = useState<boolean>(false)
   const [dislike, setDislike] = useState<boolean>(false)
   const [isUserLiked, setIsUserLiked] = useState<boolean>(false)
   const [isUserDisliked, setIsUserDisliked] = useState<boolean>(false)
-  const [likes, setLikes] = useState<ObjectId[]>([])
-  const [dislikes, setDislikes] = useState<ObjectId[]>([])
+  const [likesState, setLikesState] = useState<ObjectId[]>([])
+  const [dislikesState, setDislikesState] = useState<ObjectId[]>([])
   const globalErrorState = useGlobalError((state) => state)
 
   useEffect(() => {
     if (session.status === 'authenticated') {
-      if (props.likes.includes(session.data?.user?.userId)) {
+      if (likes.includes(session.data?.user?.userId)) {
         setIsUserLiked(true)
       }
-      if (props.dislikes.includes(session.data?.user?.userId)) {
+      if (dislikes.includes(session.data?.user?.userId)) {
         setIsUserDisliked(true)
       }
-      setLikes(props.likes)
-      setDislikes(props.dislikes)
+      setLikesState(likes)
+      setDislikesState(dislikes)
     }
   }, [])
 
-  const deleteReview = async () => {
+  const deleteReviewMethod = async () => {
     try {
       const deleteReviewRequest = await axios.post(
         '/api/game/cancel/review/deleteReview',
         {
-          userId: props.userId,
-          gameId: props.gameId,
-          reviewId: props._id,
+          userId,
+          gameId,
+          reviewId: _id,
         }
       )
       const cancelRankRequest = await axios.post(
         '/api/game/cancel/cancelRank',
         {
-          userId: props.userId,
-          gameId: props.gameId,
-          rankId: props._id,
+          userId,
+          gameId,
+          rankId: _id,
         }
       )
       if (deleteReviewRequest.status !== 200) {
@@ -66,7 +76,7 @@ export default function Review(props: Props) {
       if (cancelRankRequest.status !== 200) {
         throw new Error(deleteReviewRequest.data.error)
       }
-      props.deleteReview(props._id)
+      deleteReviewProps(_id)
     } catch (e) {
       globalErrorState.setType('error')
       globalErrorState.setText('oops, error deleting review, try again')
@@ -79,12 +89,14 @@ export default function Review(props: Props) {
     try {
       //if user already liked that means he want to cancel his like
       if (isUserLiked) {
-        setLikes(likes.filter((like) => like !== session.data?.user?.userId))
+        setLikesState(
+          likes.filter((like) => like !== session.data?.user?.userId)
+        )
         setIsUserLiked(false)
         //sending request to cancel the like
         const req = await axios.post('/api/game/cancel/review/like', {
           userId: session?.data?.user?.userId,
-          reviewId: props._id,
+          reviewId: _id,
         })
         if (req.status !== 200) throw new Error(req.data.error)
       } else {
@@ -92,21 +104,21 @@ export default function Review(props: Props) {
         if (isUserDisliked) {
           setIsUserDisliked(false)
           //removing his dislike from the array
-          setDislikes(
+          setDislikesState(
             dislikes.filter((id) => id !== session.data?.user?.userId)
           )
           //request to cancel the dislike
           const req = await axios.post('/api/game/cancel/review/dislike', {
             userId: session?.data?.user?.userId,
-            reviewId: props._id,
+            reviewId: _id,
           })
           if (req.status !== 200) throw new Error(req.data.error)
         }
         setIsUserLiked(true)
-        setLikes([...likes, session?.data?.user?.userId])
+        setLikesState([...likes, session?.data?.user?.userId])
         const req = await axios.post('/api/game/action/review/like', {
           userId: session?.data?.user?.userId,
-          reviewId: props._id,
+          reviewId: _id,
         })
         if (req.status !== 200) throw new Error(req.data.error)
       }
@@ -122,12 +134,14 @@ export default function Review(props: Props) {
       if (session.status !== 'authenticated') return
       //if user already disliked that means he want to cancel his dislike
       if (isUserDisliked) {
-        setDislikes(likes.filter((like) => like !== session.data?.user?.userId))
+        setDislikesState(
+          likes.filter((like) => like !== session.data?.user?.userId)
+        )
         setIsUserDisliked(false)
         //sending request to cancel the dislike
         const req = await axios.post('/api/game/cancel/review/dislike', {
           userId: session?.data?.user?.userId,
-          reviewId: props._id,
+          reviewId: _id,
         })
         if (req.status !== 200) throw new Error(req.data.error)
       } else {
@@ -135,24 +149,24 @@ export default function Review(props: Props) {
         if (isUserLiked) {
           setIsUserLiked(false)
           //removing his like from the array
-          setLikes(likes.filter((id) => id !== session.data?.user?.userId))
+          setLikesState(likes.filter((id) => id !== session.data?.user?.userId))
           //request to cancel the dislike
           const req = await axios.post('/api/game/cancel/review/like', {
             userId: session?.data?.user?.userId,
-            reviewId: props._id,
+            reviewId: _id,
           })
           if (req.status !== 200) throw new Error(req.data.error)
         }
-        setDislikes([...dislikes, session?.data?.user?.userId])
+        setDislikesState([...dislikes, session?.data?.user?.userId])
         setIsUserDisliked(true)
         const req = await axios.post('/api/game/action/review/dislike', {
           userId: session?.data?.user?.userId,
-          reviewId: props._id,
+          reviewId: _id,
         })
         if (req.status !== 200) throw new Error(req.data.error)
       }
     } catch (e) {
-      setDislikes([...dislikes])
+      setDislikesState([...dislikes])
       setIsUserDisliked(false)
       globalErrorState.setType('error')
       globalErrorState.setText('error disliking the review, try again')
@@ -161,22 +175,22 @@ export default function Review(props: Props) {
   }
 
   const CalculateCount = () => {
-    if (likes.length - dislikes.length > 0) {
+    if (likesState.length - dislikesState.length > 0) {
       return (
         <p
           className="mx-3 text-xl font-extrabold opacity-50"
           style={{ color: ' #8AFFAA' }}
         >
-          +{likes.length - dislikes.length}
+          +{likesState.length - dislikesState.length}
         </p>
       )
-    } else if (likes.length - dislikes.length < 0) {
+    } else if (likesState.length - dislikesState.length < 0) {
       return (
         <p
           className="mx-3 text-xl font-extrabold opacity-50"
           style={{ color: '#d63044' }}
         >
-          {likes.length - dislikes.length}
+          {likesState.length - dislikesState.length}
         </p>
       )
     } else {
@@ -204,12 +218,10 @@ export default function Review(props: Props) {
       }}
     >
       <div className="flex justify-between items-center">
-        <h1 className="text-white font-bold text-3xl  underline">
-          {props.rank}
-        </h1>
-        {props.userId !== JSON.stringify(session.data?.user.userId) ? null : (
+        <h1 className="text-white font-bold text-3xl  underline">{rank}</h1>
+        {userId !== JSON.stringify(session.data?.user.userId) ? null : (
           <FontAwesomeIcon
-            onClick={() => deleteReview()}
+            onClick={() => deleteReviewMethod()}
             icon={faTrash}
             className="h-4 cursor-pointer text-red-500 opacity-40 hover:opacity-100"
           />
@@ -219,17 +231,17 @@ export default function Review(props: Props) {
         className="w-full text-white font-base pt-2"
         style={{ minHeight: '60%', overflowWrap: 'break-word' }}
       >
-        {props.text}
+        {text}
       </p>
       <div
         id="review_bottom_container"
         className="flex flex-grow  items-center justify-between mt-20 "
       >
         <div id="review_bottom_container_names">
-          <p className="text-cool-blue font-semibold">{props.user_name}</p>
+          <p className="text-cool-blue font-semibold">{user_name}</p>
           <p className="text-white opacity-50">19 Aug, 2022</p>
         </div>
-        {props.userId !== JSON.stringify(session.data?.user.userId) ? (
+        {userId !== JSON.stringify(session.data?.user.userId) ? (
           <div className="flex items-center">
             <FontAwesomeIcon
               icon={faThumbsUpRegular}

@@ -9,7 +9,6 @@ import { useGlobalError } from '../../../store'
 interface Props {
   visibility: boolean
   text: string
-  answer: (value: 'yes' | 'no') => void
 }
 
 export default function Request({ visibility, text }: Props) {

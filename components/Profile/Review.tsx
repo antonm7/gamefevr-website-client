@@ -14,30 +14,40 @@ interface Props extends Review_Type {
   visited?: boolean
 }
 
-export default function Reviews(props: Props) {
+export default function Reviews({
+  deleteReview,
+  visited,
+  _id,
+  userId,
+  gameId,
+  game_name,
+  rank,
+  text,
+  game_image,
+}: Props) {
   const [width] = useWindowSize()
   const state = useGlobalError((state) => state)
   //creating the alert
-  const deleteReview = () => {
-    if (!props._id) return
+  const deleteReview_STATE = (): void => {
+    if (!_id) return
     state.setAnswer(undefined)
     state.setType('request')
     state.setText('Remove the review?')
     state.setIsVisible(true)
-    state.setId(props._id)
+    state.setId(_id)
   }
 
-  const deleteReviewMethod = async () => {
-    if (props.deleteReview) {
+  const deleteReviewMethod = async (): Promise<void> => {
+    if (deleteReview) {
       try {
         state.closeRequest()
         const req = await axios.post('/api/game/cancel/review/deleteReview', {
-          userId: props.userId,
-          gameId: props.gameId,
-          reviewId: props._id,
+          userId: userId,
+          gameId: gameId,
+          reviewId: _id,
         })
         if (req.status === 200) {
-          props.deleteReview(props._id)
+          deleteReview(_id)
         }
       } catch (e) {
         state.setType('error')
@@ -48,14 +58,18 @@ export default function Reviews(props: Props) {
   }
   //catches the globalRequest user answer after he presses.
   useEffect(() => {
-    if (state.type === 'request' && state.answer === 'yes' && state.id === props._id) {
+    if (
+      state.type === 'request' &&
+      state.answer === 'yes' &&
+      state.id === _id
+    ) {
       deleteReviewMethod()
     } else {
       state.closeRequest()
     }
   }, [state.answer])
 
-  if (props.visited) {
+  if (visited) {
     return (
       <div
         id="profile-review-component"
@@ -65,20 +79,20 @@ export default function Reviews(props: Props) {
         <div className="flex items-center flex-nowrap">
           <div
             className="h-8 w-8 bg-cover bg-center bg-no-repeat"
-            style={{ backgroundImage: `url(${props.game_image})` }}
+            style={{ backgroundImage: `url(${game_image})` }}
           />
-          <Link href={`/game/${props.gameId}`}>
+          <Link href={`/game/${gameId}`}>
             <h1 className="font-semibold text-lg cursor-pointer text-white whitespace-nowrap hover:text-gray-300 px-6 py-3">
               {width > 1200
-                ? slicedParagrap(props.game_name, 22, 22)
+                ? slicedParagrap(game_name, 22, 22)
                 : width < 600
-                  ? slicedParagrap(props.game_name, 22, 22)
-                  : props.game_name}
+                ? slicedParagrap(game_name, 22, 22)
+                : game_name}
             </h1>
           </Link>
         </div>
         <h1 className="inline font-semibold text-lg cursor-pointer text-white opacity-70 whitespace-nowrap hover:text-gray-300 py-1">
-          {props.rank}
+          {rank}
         </h1>
         <p
           className="leading-6 text-base text-white opacity-60"
@@ -88,7 +102,7 @@ export default function Reviews(props: Props) {
             lineBreak: 'anywhere',
           }}
         >
-          {slicedParagrap(props.text, 180, 180)}
+          {slicedParagrap(text, 180, 180)}
         </p>
         <p className="text-base text-white opacity-60 whitespace-nowrap">
           Sep 12,2022
@@ -105,26 +119,26 @@ export default function Reviews(props: Props) {
         <div className="flex items-center flex-nowrap">
           <div
             className="h-8 w-8 bg-cover bg-center bg-no-repeat"
-            style={{ backgroundImage: `url(${props.game_image})` }}
+            style={{ backgroundImage: `url(${game_image})` }}
           />
-          <Link href={`/game/${props.gameId}`}>
+          <Link href={`/game/${gameId}`}>
             <h1 className="font-semibold text-lg cursor-pointer text-white whitespace-nowrap hover:text-gray-300 px-6 py-3">
               {width > 1200
-                ? slicedParagrap(props.game_name, 22, 22)
+                ? slicedParagrap(game_name, 22, 22)
                 : width < 600
-                  ? slicedParagrap(props.game_name, 22, 22)
-                  : props.game_name}
+                ? slicedParagrap(game_name, 22, 22)
+                : game_name}
             </h1>
           </Link>
           <FontAwesomeIcon
-            onClick={() => deleteReview()}
+            onClick={() => deleteReview_STATE()}
             icon={faTrash}
             className="h-4 cursor-pointer text-red-500 opacity-40 hover:opacity-100"
             style={{ marginLeft: 'auto' }}
           />
         </div>
         <h1 className="inline font-semibold text-lg cursor-pointer text-white opacity-70 whitespace-nowrap hover:text-gray-300 py-1">
-          {props.rank}
+          {rank}
         </h1>
         <p
           className="leading-6 text-base text-white opacity-60"
@@ -135,14 +149,14 @@ export default function Reviews(props: Props) {
           }}
         >
           {width > 1200
-            ? slicedParagrap(props.text, 190, 190)
+            ? slicedParagrap(text, 190, 190)
             : width < 360
-              ? slicedParagrap(props.text, 40, 40)
-              : width < 600
-                ? slicedParagrap(props.text, 100, 100)
-                : width < 900
-                  ? slicedParagrap(props.text, 260, 260)
-                  : slicedParagrap(props.text, 450, 450)}
+            ? slicedParagrap(text, 40, 40)
+            : width < 600
+            ? slicedParagrap(text, 100, 100)
+            : width < 900
+            ? slicedParagrap(text, 260, 260)
+            : slicedParagrap(text, 450, 450)}
         </p>
         <p className="text-base text-white opacity-60 whitespace-nowrap">
           Sep 12,2022

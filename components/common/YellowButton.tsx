@@ -4,18 +4,16 @@ interface Props {
   onClick: () => void
 }
 
-export default function YellowButton(props: Props) {
+export default function YellowButton({ title, active, onClick }: Props) {
   return (
     <button
       className={`w-full h-12 bg-specialYellow rounded-lg text-white text-lg font-normal ${
-        !props.active && props.active !== undefined
-          ? 'opacity-50 cursor-not-allowed'
-          : ''
+        !active && active !== undefined ? 'opacity-50 cursor-not-allowed' : ''
       }`}
-      onClick={props.onClick}
-      title={props.title}
+      onClick={onClick}
+      title={title}
     >
-      {props.title}
+      {title}
     </button>
   )
 }

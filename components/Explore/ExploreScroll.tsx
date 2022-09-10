@@ -24,7 +24,7 @@ export default function ExploreScroll({ games, setRef, onUpdate }: Props) {
     afterChange: (curr: number) => changeUpdate(curr),
   }
 
-  const changeUpdate = async (curr: number) => {
+  const changeUpdate = async (curr: number): Promise<void> => {
     try {
       onUpdate(curr)
       axios.post('/api/explore/action/visited', {

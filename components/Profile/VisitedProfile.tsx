@@ -14,22 +14,21 @@ interface Props {
   user: Client_User
 }
 
-export default function Visited(props: Props) {
-  const [user, setUser] = useState<Client_User>()
-  const [reviews, setReviews] = useState<Review_Type[]>([])
-  const [favorites, setFavorites] = useState<Favorite_Type[]>([])
+export default function Visited({ reviews, favorites, user }: Props) {
+  const [userState, setUserState] = useState<Client_User>()
+  const [reviewsState, setReviewsState] = useState<Review_Type[]>([])
+  const [favoritesState, setFavoritesState] = useState<Favorite_Type[]>([])
   const [width] = useWindowSize()
   const store = useStore()
 
   const settings = {
     infinite: false,
-    slidesToShow: props.reviews.length >= 3 ? 3 : props.reviews.length,
+    slidesToShow: reviews.length >= 3 ? 3 : reviews.length,
     responsive: [
       {
         breakpoint: 1700,
         settings: {
-          slidesToShow:
-            props.favorites.length >= 2 ? 2 : props.favorites.length,
+          slidesToShow: favorites.length >= 2 ? 2 : favorites.length,
         },
       },
       {
@@ -43,20 +42,18 @@ export default function Visited(props: Props) {
 
   const favoritesSettings = {
     infinite: false,
-    slidesToShow: props.favorites.length >= 4 ? 4 : props.favorites.length,
+    slidesToShow: favorites.length >= 4 ? 4 : favorites.length,
     responsive: [
       {
         breakpoint: 1700,
         settings: {
-          slidesToShow:
-            props.favorites.length >= 3 ? 3 : props.favorites.length,
+          slidesToShow: favorites.length >= 3 ? 3 : favorites.length,
         },
       },
       {
         breakpoint: 1200,
         settings: {
-          slidesToShow:
-            props.favorites.length >= 2 ? 2 : props.favorites.length,
+          slidesToShow: favorites.length >= 2 ? 2 : favorites.length,
         },
       },
       {
@@ -69,15 +66,15 @@ export default function Visited(props: Props) {
   }
 
   useEffect(() => {
-    setUser(props.user)
-    setReviews(props.reviews)
-    setFavorites(props.favorites)
-  }, [props.user])
+    setUserState(user)
+    setReviewsState(reviews)
+    setFavoritesState(favorites)
+  }, [user])
 
   const favoriteRef = useRef<any>(null)
   const reviewsRef = useRef<any>(null)
 
-  if (!user) return null
+  if (!userState) return null
 
   return (
     <SearchLayout>
@@ -88,7 +85,7 @@ export default function Visited(props: Props) {
           className="flex justify-between items-center"
         >
           <h1 id="welcome_title" className="text-white font-bold text-4xl">
-            Welcome to {user.username} profile!
+            Welcome to {userState.username} profile!
           </h1>
         </div>
         <div className="pt-24">
@@ -96,18 +93,18 @@ export default function Visited(props: Props) {
           <div
             className={`mt-12 
             ${
-              reviews.length >= 4
+              reviewsState.length >= 4
                 ? 'w-full'
-                : reviews.length === 3
+                : reviewsState.length === 3
                 ? 'w-full'
-                : reviews.length === 2 && width < 1600
+                : reviewsState.length === 2 && width < 1600
                 ? 'w-full'
                 : 'w-80p'
             } `}
           >
-            {reviews.length > 0 ? (
+            {reviewsState.length > 0 ? (
               <Slider {...settings} ref={reviewsRef}>
-                {reviews.map((review: Review_Type, index: number) => (
+                {reviewsState.map((review: Review_Type, index: number) => (
                   <Review
                     key={index}
                     _id={review._id}
@@ -137,22 +134,22 @@ export default function Visited(props: Props) {
           <div
             className={`mt-12 
             ${
-              favorites.length >= 4
+              favoritesState.length >= 4
                 ? 'w-full'
-                : favorites.length === 3
+                : favoritesState.length === 3
                 ? 'w-full'
-                : favorites.length === 2 && width < 1600
+                : favoritesState.length === 2 && width < 1600
                 ? 'w-full'
                 : 'w-80p'
             } `}
           >
-            {favorites.length > 0 ? (
+            {favoritesState.length > 0 ? (
               <Slider
                 className="ml-48"
                 {...favoritesSettings}
                 ref={favoriteRef}
               >
-                {favorites.map((review: Favorite_Type, index: number) => (
+                {favoritesState.map((review: Favorite_Type, index: number) => (
                   <Favorite
                     _id={review._id}
                     key={index}

@@ -15,18 +15,23 @@ interface Props {
   visible: boolean
 }
 
-export default function WriteReview(props: Props) {
+export default function WriteReview({
+  onClose,
+  insertNewReview,
+  isUserRated,
+  visible,
+}: Props) {
   const [text, setText] = useState<string>('')
   const [rank, setRank] = useState<string | null>(null)
   const session = useSession()
   const router = useRouter()
   const globalErrorState = useGlobalError((state) => state)
 
-  const writeReviewAction = async () => {
+  const writeReviewAction = async (): Promise<void> => {
     try {
       //if user already rated the game, and if the raview
       // ranking is different then needs to cancel the ranking
-      if (props.isUserRated && rank !== props.isUserRated) {
+      if (isUserRated && rank !== isUserRated) {
         await axios.post('/api/game/cancel/cancelRank', {
           userId: session.data?.user?.userId,
           gameId: router.query.id,
@@ -51,8 +56,8 @@ export default function WriteReview(props: Props) {
       if (rankGameRequest.status !== 201)
         throw new Error(rankGameRequest.data.error)
       setText('')
-      props.onClose()
-      props.insertNewReview(writeReviewRequest.data.review)
+      onClose()
+      insertNewReview(writeReviewRequest.data.review)
     } catch (e) {
       globalErrorState.setType('error')
       globalErrorState.setText('error posting the review, try again')
@@ -61,17 +66,17 @@ export default function WriteReview(props: Props) {
   }
 
   useEffect(() => {
-    if (props.isUserRated) {
-      setRank(props.isUserRated)
+    if (isUserRated) {
+      setRank(isUserRated)
     }
-  }, [props.isUserRated])
+  }, [isUserRated])
 
-  const setTextMethod = (eventText: string) => {
+  const setTextMethod = (eventText: string): void => {
     if (eventText.length > 760) return
     setText(eventText)
   }
 
-  const toggleRank = (value: string) => {
+  const toggleRank = (value: string): void => {
     if (rank === value) {
       setRank(null)
     } else {
@@ -83,7 +88,7 @@ export default function WriteReview(props: Props) {
     <div
       id="write_review_container"
       className={`scrollbar ${
-        props.visible ? 'fixed ' : 'hidden '
+        visible ? 'fixed ' : 'hidden '
       }px-7 py-6 rounded-xl w-3/5 z-30`}
       style={{
         minHeight: '24rem',
@@ -92,7 +97,7 @@ export default function WriteReview(props: Props) {
       }}
     >
       <FontAwesomeIcon
-        onClick={props.onClose}
+        onClick={onClose}
         icon={faXmark}
         className="h-6 absolute white text-white right-6 cursor-pointer"
       />
