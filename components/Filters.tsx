@@ -12,12 +12,12 @@ import { setCookie } from 'cookies-next'
 
 export default function Filters() {
   const [yearRange, changeYearRange] = useState<number[]>([1990, 2023])
-  const [selectedGenres, changeSelectedGenres] = useState<number[]>([])
-  const [selectedConsoles, changeSelectedConsoles] = useState<number[]>([])
+  const [selectedGenres, changeSelectedGenres] = useState<string[]>([])
+  const [selectedConsoles, changeSelectedConsoles] = useState<string[]>([])
   const store = useStore()
   const filtersStore = useFiltersStore()
 
-  const updateGenres = (index: number): void => {
+  const updateGenres = (index: string): void => {
     if (selectedGenres.includes(index)) {
       //removes
       changeSelectedGenres(selectedGenres.filter((genre) => genre !== index))
@@ -27,14 +27,24 @@ export default function Filters() {
     }
   }
 
-  const updatedConsoles = (index: number): void => {
+  const updatedConsoles = (index: string): void => {
     if (selectedConsoles.includes(index)) {
       //removes
       changeSelectedConsoles(selectedConsoles.filter((i) => i !== index))
     } else {
       //adds
-      changeSelectedConsoles([...selectedConsoles, index])
+      console.log('thats the index', index)
+      changeSelectedConsoles((old) => [...old, index])
     }
+  }
+
+  const reset = () => {
+    changeSelectedConsoles([])
+    changeSelectedGenres([])
+    changeYearRange([1990, 2023])
+    filtersStore.setConsoles([])
+    filtersStore.setGenres([])
+    filtersStore.setYearRange([1990, 2023])
   }
 
   const search = () => {
@@ -58,10 +68,8 @@ export default function Filters() {
 
   useEffect(() => {
     changeYearRange(filtersStore.yearRange)
-    changeSelectedGenres(() =>
-      filtersStore.genres.map((genre) => parseInt(genre))
-    )
-    changeSelectedConsoles(() => filtersStore.consoles.map((i) => parseInt(i)))
+    changeSelectedGenres(filtersStore.genres)
+    changeSelectedConsoles(filtersStore.consoles)
   }, [])
 
   return (
@@ -82,8 +90,8 @@ export default function Filters() {
             {genres.map((genre: ElementDescription, index: number) => {
               return (
                 <SelectBox
-                  isSelected={selectedGenres.includes(genre.id)}
-                  onClick={() => updateGenres(genre.id)}
+                  isSelected={selectedGenres.includes(JSON.stringify(genre.id))}
+                  onClick={() => updateGenres(JSON.stringify(genre.id))}
                   key={index}
                   title={genre.name}
                 />
@@ -103,10 +111,14 @@ export default function Filters() {
                 {parentConsoles.map(
                   (console: ElementDescription, index: number) => (
                     <SelectBox
-                      isSelected={selectedConsoles.includes(console.id)}
+                      isSelected={selectedConsoles.includes(
+                        JSON.stringify(console.id)
+                      )}
                       coolBlue={true}
-                      onClick={() => updatedConsoles(console.id)}
-                      key={index}
+                      onClick={() =>
+                        updatedConsoles(JSON.stringify(console.id))
+                      }
+                      key={JSON.stringify(index)}
                       title={console.name}
                     />
                   )
@@ -160,12 +172,18 @@ export default function Filters() {
             </div>
           </div>
         </div>
-        <div className="w-44 h-16 mt-12">
+        <div className="text-center h-auto overflow-hidden w-44  mt-12">
           <YellowButton
             active={true}
             onClick={() => search()}
             title={'Apply'}
           />
+          <h1
+            onClick={() => reset()}
+            className="text-sm pt-2 underline inline-block cursor-pointer opacity-70 hover:opacity-100"
+          >
+            reset filters
+          </h1>
         </div>
       </div>
     </div>

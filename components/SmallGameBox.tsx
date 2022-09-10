@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { ElementDescription, ShortGame } from '../types'
+import { ElementDescription, ParentPlatform, ShortGame } from '../types'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import BackgroundGameImage from './BackgroundGameImage'
@@ -7,10 +7,6 @@ import BackgroundGameImage from './BackgroundGameImage'
 type Props = {
   game: ShortGame
   key: number
-}
-
-interface PlatformParentObject {
-  platform: ElementDescription
 }
 
 export default function SmallGameBox(props: Props) {
@@ -56,7 +52,7 @@ export default function SmallGameBox(props: Props) {
         <div className="flex flex-row flex-nowrap pt-2">
           {game?.parent_platforms
             ?.slice(0, 3)
-            .map((platform: PlatformParentObject, index: number) => (
+            .map((platform: ParentPlatform, index: number) => (
               <h2 key={index} className="pr-1 text-sm text-cool-blue">
                 {platform.platform.name}
                 {index === game.parent_platforms.length - 1 || index === 2
