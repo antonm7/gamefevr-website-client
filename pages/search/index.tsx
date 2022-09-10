@@ -134,9 +134,8 @@ export default function Index(props: Props) {
                   We found {store.count.toLocaleString()} games for you
                 </p>
                 <div
-                  className={`we_found_padding px-44 pb-10 text-white ${
-                    router.query.sort ? 'underline' : ''
-                  }`}
+                  className={`we_found_padding px-44 pb-10 text-white ${router.query.sort ? 'underline' : ''
+                    }`}
                 >
                   <span className="opacity-60">Sort by:</span>{' '}
                   <span
@@ -269,14 +268,14 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       }
 
       const getData = await axios(
-        `https://api.rawg.io/api/games?key=0ffbdb925caf4b20987cd068aa43fd75&dates=1990-01-01,2023-12-31&page=1&page_size=28${filteredString}`
+        `https://api.rawg.io/api/games?key=39a2bd3750804b5a82669025ed9986a8&dates=1990-01-01,2023-12-31&page=1&page_size=28${filteredString}`
       )
       console.log(filteredString)
       games = getData.data.results
       count = getData.data.count
     } else {
       const getData = await axios(
-        `https://api.rawg.io/api/games?key=0ffbdb925caf4b20987cd068aa43fd75&dates=1990-01-01,2023-12-31&page=1&page_size=28`
+        `https://api.rawg.io/api/games?key=39a2bd3750804b5a82669025ed9986a8&dates=1990-01-01,2023-12-31&page=1&page_size=28`
       )
       games = getData.data.results
       count = getData.data.count

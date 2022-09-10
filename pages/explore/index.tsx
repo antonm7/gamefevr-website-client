@@ -110,7 +110,7 @@ export async function getServerSideProps(context: any) {
   }
 
   const getData = await fetch(
-    `https://api.rawg.io/api/games?key=0ffbdb925caf4b20987cd068aa43fd75&page=${page}&page_size=${limit}`
+    `https://api.rawg.io/api/games?key=39a2bd3750804b5a82669025ed9986a8&page=${page}&page_size=${limit}`
   )
 
   const client = await clientPromise

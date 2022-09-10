@@ -15,18 +15,18 @@ async function handler(req: ExtendedRequest, res: Response) {
     const query = req.query
     try {
       const getData = await fetch(
-        `https://api.rawg.io/api/games/${query.gameId}?key=0ffbdb925caf4b20987cd068aa43fd75`
+        `https://api.rawg.io/api/games/${query.gameId}?key=39a2bd3750804b5a82669025ed9986a8`
       )
       const getScreenshots = await fetch(
-        `https://api.rawg.io/api/games/${query.gameId}/screenshots?key=0ffbdb925caf4b20987cd068aa43fd75`
+        `https://api.rawg.io/api/games/${query.gameId}/screenshots?key=39a2bd3750804b5a82669025ed9986a8`
       )
 
       const getTrailers = await fetch(
-        `https://api.rawg.io/api/games/${query.gameId}/movies?key=0ffbdb925caf4b20987cd068aa43fd75`
+        `https://api.rawg.io/api/games/${query.gameId}/movies?key=39a2bd3750804b5a82669025ed9986a8`
       )
 
       const getSeries = await fetch(
-        `https://api.rawg.io/api/games/${query.gameId}/game-series?key=0ffbdb925caf4b20987cd068aa43fd75`
+        `https://api.rawg.io/api/games/${query.gameId}/game-series?key=39a2bd3750804b5a82669025ed9986a8`
       )
 
       const gameData = await getData.json()

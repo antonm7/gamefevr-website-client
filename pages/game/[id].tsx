@@ -193,7 +193,7 @@ export async function getStaticPaths() {
 
   for (let i = 1; i < 5; i++) {
     const getData = await fetch(
-      `https://api.rawg.io/api/games?key=0ffbdb925caf4b20987cd068aa43fd75&dates=1990-01-01,2023-12-31&page=${i}&page_size=${100}`
+      `https://api.rawg.io/api/games?key=39a2bd3750804b5a82669025ed9986a8&dates=1990-01-01,2023-12-31&page=${i}&page_size=${100}`
     )
     ids.push(
       ...(await getData.json()).results.map((game: ShortGame) => game.id)
@@ -212,7 +212,7 @@ export async function getStaticProps(context: Context) {
 
   try {
     const getData = await fetch(
-      `https://api.rawg.io/api/games/${context.params.id}?key=0ffbdb925caf4b20987cd068aa43fd75`
+      `https://api.rawg.io/api/games/${context.params.id}?key=39a2bd3750804b5a82669025ed9986a8`
     )
     gameData = await getData.json()
   } catch (e) {
@@ -222,7 +222,7 @@ export async function getStaticProps(context: Context) {
 
   try {
     const getScreenshots = await fetch(
-      `https://api.rawg.io/api/games/${context.params.id}/screenshots?key=0ffbdb925caf4b20987cd068aa43fd75`
+      `https://api.rawg.io/api/games/${context.params.id}/screenshots?key=39a2bd3750804b5a82669025ed9986a8`
     )
     screenshots = await getScreenshots.json()
   } catch (e) {
@@ -232,7 +232,7 @@ export async function getStaticProps(context: Context) {
 
   try {
     const getTrailers = await fetch(
-      `https://api.rawg.io/api/games/${context.params.id}/movies?key=0ffbdb925caf4b20987cd068aa43fd75`
+      `https://api.rawg.io/api/games/${context.params.id}/movies?key=39a2bd3750804b5a82669025ed9986a8`
     )
     trailers = await getTrailers.json()
   } catch (e) {
@@ -242,7 +242,7 @@ export async function getStaticProps(context: Context) {
 
   try {
     const getSeries = await fetch(
-      `https://api.rawg.io/api/games/${context.params.id}/game-series?key=0ffbdb925caf4b20987cd068aa43fd75`
+      `https://api.rawg.io/api/games/${context.params.id}/game-series?key=39a2bd3750804b5a82669025ed9986a8`
     )
     same_series = await getSeries.json()
   } catch (e) {

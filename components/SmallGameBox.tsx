@@ -16,7 +16,7 @@ export default function SmallGameBox({ game }: Props) {
   const loadMovie = async (): Promise<void> => {
     try {
       const req = await axios.get(
-        `https://api.rawg.io/api/games/${game.id}/movies?key=0ffbdb925caf4b20987cd068aa43fd75`
+        `https://api.rawg.io/api/games/${game.id}/movies?key=39a2bd3750804b5a82669025ed9986a8`
       )
       if (req.status !== 200) throw new Error()
       if (req.data.count > 0) {
