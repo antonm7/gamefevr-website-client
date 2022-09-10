@@ -62,6 +62,7 @@ export default function Index(props: Props) {
 
   useEffect(() => {
     setLoadMoreLoading(false)
+    setLoadingError(false)
     if (store.games.length === 0 && props.games.length === 0) {
       setLoadMoreLoading(true)
       loadGames(1)
@@ -202,10 +203,17 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
         filteredString += `&search=${search}&`
       }
       if (yearRange) {
-        filteredString = filteredString.concat(
-          '',
-          `&dates=${yearRange[0]}-01-01,${yearRange[1]}-12-31`
-        )
+        if (!Array.isArray(yearRange)) {
+          filteredString = filteredString.concat(
+            '',
+            `&dates=1990-01-01,2023-12-31`
+          )
+        } else {
+          filteredString = filteredString.concat(
+            '',
+            `&dates=${yearRange[0]}-01-01,${yearRange[1]}-12-31`
+          )
+        }
       }
       //simetimes from the client i get consoles as string, but i need an array
       //thats why i am checkinf the type of the consoles
@@ -249,6 +257,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       const getData = await axios(
         `https://api.rawg.io/api/games?key=0ffbdb925caf4b20987cd068aa43fd75&dates=1990-01-01,2023-12-31&page=1&page_size=28${filteredString}`
       )
+      console.log(filteredString)
       games = getData.data.results
       count = getData.data.count
     } else {
@@ -258,7 +267,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       games = getData.data.results
       count = getData.data.count
     }
-
     //calculate function to check if there is next page
     const isNextPage = (page: number) => {
       if (page * 28 < count) {
