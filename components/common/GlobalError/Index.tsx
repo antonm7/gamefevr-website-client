@@ -36,13 +36,6 @@ export default function GlobalError({ isVisible, propsType }: Props) {
 
   if (type === 'warning') return <Warning visibility={visibility} text={text} />
 
-  if (type === 'request')
-    return (
-      <Request
-        visibility={visibility}
-        answer={(val) => console.log(val)}
-        text={text}
-      />
-    )
+  if (type === 'request') return <Request visibility={visibility} text={text} />
   return null
 }
