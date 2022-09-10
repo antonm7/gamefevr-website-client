@@ -12,7 +12,7 @@ interface State {
   addPage: () => void
   clearPage: () => void
   changeFilterVisibility: (isFilterOn: boolean) => void
-  changeGameName: (gameName: string) => void
+  changeGameName: (gameName: any) => void
   setCount: (count: number) => void
 }
 

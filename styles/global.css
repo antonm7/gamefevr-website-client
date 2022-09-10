@@ -408,7 +408,7 @@ div {
 
 .video-container {
   height: 19rem;
-  /* width: 24rem; */
+  width: 100%;
   position: relative;
 }
 

@@ -1,5 +1,5 @@
 export type ElementDescription = {
-  id: number
+  id: string
   games_count?: number
   image_background?: string
   slug?: string
