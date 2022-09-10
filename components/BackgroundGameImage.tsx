@@ -9,9 +9,8 @@ interface Props {
 }
 
 export default function BackgroundGameImage({ bg, movieUrl }: Props) {
+  const [movieVisibility, setMovieVisibility] = useState<boolean>(false)
   if (!bg) return <div className="bg-image overflow-hidden"></div>
-
-  const [width] = useWindowSize()
 
   if (!movieUrl)
     return (
@@ -27,8 +26,6 @@ export default function BackgroundGameImage({ bg, movieUrl }: Props) {
         />
       </div>
     )
-
-  const [movieVisibility, setMovieVisibility] = useState<boolean>(false)
 
   return (
     <div
