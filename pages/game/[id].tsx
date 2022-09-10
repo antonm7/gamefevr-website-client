@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
 import SearchLayout from '../../components/layout/SearchLayout'
-import useQuery from '../../lib/functions/hooks/useQuery'
 import { DetailedGame, ShortGame } from '../../types'
 import useWindowSize from '../../lib/functions/hooks/useWindowSize'
 import { useSession } from 'next-auth/react'
