@@ -30,7 +30,6 @@ type Props = {
 export default function GamePage(props: Props) {
   const [width] = useWindowSize()
   const store = useStore()
-  // const query = useQuery()
   const router = useRouter()
   const session = useSession()
   const changeGlobalErrorVisibility = useGlobalError(
@@ -55,6 +54,7 @@ export default function GamePage(props: Props) {
     setGame(props.game)
     setReviews(props.reviews)
     setLoading(false)
+    console.log(props.reviews)
   }, [router.query.id, props.game])
 
   const navigateAuth = () => {
@@ -280,7 +280,8 @@ export async function getStaticProps(context: Context) {
   //     //                 userId:session.data?.user?.userId
   //     //             }
   //     //         })
-  console.log(finalData.id)
+
+  console.log(reviews)
   return {
     props: {
       game: finalData,
