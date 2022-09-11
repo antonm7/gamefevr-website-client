@@ -9,6 +9,7 @@ interface Props {
   reviews: Review_Type[]
   navigateAuth: () => void
   deleteReview: (reviewId: ObjectId | undefined) => void
+  isUserCommented: boolean
 }
 
 export default function NoScreenShots({
@@ -49,6 +50,7 @@ export default function NoScreenShots({
             isAnimated={true}
             reviews={reviews}
             deleteReview={(id) => deleteReview(id)}
+            isUserCommented={false}
           />
         </div>
       ) : (

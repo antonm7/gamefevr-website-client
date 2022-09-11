@@ -185,6 +185,7 @@ export default function Bigger1200Footer({
         </div>
       ) : (
         <NoScreenShots
+          isUserCommented={isUserCommented()}
           reviewsAnimation={reviewsAnimation}
           reviews={reviews}
           navigateAuth={navigateAuth}
