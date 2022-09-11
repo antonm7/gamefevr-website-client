@@ -10,19 +10,21 @@ interface Props {
   reviews: Review_Type[]
   isAnimated: boolean
   deleteReview: (reviewId: ObjectId | undefined) => void
+  isUserCommented: boolean
 }
 
 export default function ReviewsSlider({
   reviews,
   isAnimated,
   deleteReview,
+  isUserCommented,
 }: Props) {
   const [reviewsState, setReviewsState] = useState<Review_Type[]>([])
 
   useEffect(() => {
     //added
-    if (reviews.length > reviews.length) {
-      setReviewsState(reviews.splice(0, reviews.length))
+    if (reviews.length > reviewsState.length) {
+      setReviewsState(reviews.splice(0, reviewsState.length))
       setReviewsState(reviews)
     } else {
       setReviewsState(reviews)
@@ -32,19 +34,19 @@ export default function ReviewsSlider({
   const settings = {
     infinite: false,
     slidesToScroll: 1,
-    slidesToShow: reviews.length
-      ? reviews.length >= 3
+    slidesToShow: reviewsState.length
+      ? reviewsState.length >= 3
         ? 3
-        : reviews.length
+        : reviewsState.length
       : 3,
     responsive: [
       {
         breakpoint: 1600,
         settings: {
-          slidesToShow: reviews.length
-            ? reviews.length >= 2
+          slidesToShow: reviewsState.length
+            ? reviewsState.length >= 2
               ? 2
-              : reviews.length
+              : reviewsState.length
             : 2,
         },
       },
@@ -57,13 +59,14 @@ export default function ReviewsSlider({
     ],
   }
 
-  if (!reviews.length) return null
-
+  if (!reviewsState.length) return null
   return (
     <Slider
       {...settings}
       className={`${
-        isAnimated ? 'reviews_animation_enable' : 'reviews_animation_disable'
+        isAnimated
+          ? `${isUserCommented ? 'px-44' : ''} reviews_animation_enable`
+          : 'reviews_animation_disable'
       }`}
     >
       {reviewsState.map((review: Review_Type, index: number) => (

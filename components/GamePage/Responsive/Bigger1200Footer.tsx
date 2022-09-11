@@ -8,6 +8,8 @@ import ReviewsSlider from '../ReviewsSlider'
 import Screenshots from '../Screenshots'
 import Image from 'next/image'
 import { ObjectId } from 'bson'
+import { useSession } from 'next-auth/react'
+import { useMemo } from 'react'
 
 interface Props {
   screenshots: Short_Screenshot[]
@@ -29,6 +31,39 @@ export default function Bigger1200Footer({
   deleteReview,
 }: Props) {
   const [width] = useWindowSize()
+  const session = useSession()
+
+  const isUserCommented = (): boolean => {
+    const filtered: Review_Type[] = reviews.filter(
+      (r) =>
+        JSON.stringify(r.userId) === JSON.stringify(session.data?.user.userId)
+    )
+    if (filtered.length) return true
+    return false
+  }
+
+  const RenderAddButton = (): JSX.Element | null => {
+    const filtered: Review_Type[] = reviews.filter(
+      (r) =>
+        JSON.stringify(r.userId) === JSON.stringify(session.data?.user.userId)
+    )
+    if (filtered.length) return null
+    return (
+      <div
+        className={`px-20 ${
+          reviewsAnimation
+            ? 'write_review_animation_enabled'
+            : 'write_review_animation_disabled'
+        }`}
+      >
+        <FontAwesomeIcon
+          icon={faPlus}
+          className="h-16 text-white cursor-pointer opacity-40 hover:opacity-100 simple-transition"
+          onClick={navigateAuth}
+        />
+      </div>
+    )
+  }
 
   return (
     <div>
@@ -115,20 +150,9 @@ export default function Bigger1200Footer({
               className="h-full flex items-center overflow-hidden"
               style={{ marginTop: width > 1400 ? '-34rem' : '-20rem' }}
             >
-              <div
-                className={`px-20 ${
-                  reviewsAnimation
-                    ? 'write_review_animation_enabled'
-                    : 'write_review_animation_disabled'
-                }`}
-              >
-                <FontAwesomeIcon
-                  icon={faPlus}
-                  className="h-16 text-white cursor-pointer opacity-40 hover:opacity-100 simple-transition"
-                  onClick={navigateAuth}
-                />
-              </div>
+              {RenderAddButton()}
               <ReviewsSlider
+                isUserCommented={isUserCommented()}
                 isAnimated={reviewsAnimation}
                 reviews={reviews}
                 deleteReview={(id) => deleteReview(id)}
@@ -137,20 +161,24 @@ export default function Bigger1200Footer({
           ) : (
             <div
               className="h-ful  flex justify-center overflow-hidden"
-              style={{ marginTop: width > 1400 ? '-32rem' : '-15rem' }}
+              style={{ marginTop: width > 1400 ? '-32rem' : '-16rem' }}
             >
               <div
-                className={`px-20 ${
+                className={`px-20 text-center opacity-40
+                hover:opacity-100  ${
                   reviewsAnimation
-                    ? 'write_review_animation_enabled'
+                    ? 'write_review_animation_enabled '
                     : 'write_review_animation_disabled'
                 }`}
               >
                 <FontAwesomeIcon
                   icon={faPlus}
-                  className="h-16 text-white cursor-pointer opacity-40 hover:opacity-100 simple-transition"
+                  className="h-16 text-white  simple-transition cursor-pointer"
                   onClick={() => navigateAuth()}
                 />
+                <h1 className="text-center text-white  simple-transition cursor-pointer">
+                  Write Review
+                </h1>
               </div>
             </div>
           )}
@@ -163,7 +191,6 @@ export default function Bigger1200Footer({
           deleteReview={(id) => deleteReview(id)}
         />
       )}
-      )
     </div>
   )
 }

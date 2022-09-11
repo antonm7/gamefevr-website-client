@@ -50,7 +50,7 @@ export default function Review({
       setLikesState(likes)
       setDislikesState(dislikes)
     }
-  }, [])
+  }, [session.status])
 
   const deleteReviewMethod = async () => {
     try {
@@ -219,7 +219,8 @@ export default function Review({
     >
       <div className="flex justify-between items-center">
         <h1 className="text-white font-bold text-3xl  underline">{rank}</h1>
-        {userId !== JSON.stringify(session.data?.user.userId) ? null : (
+        {JSON.stringify(userId) !==
+        JSON.stringify(session.data?.user.userId) ? null : (
           <FontAwesomeIcon
             onClick={() => deleteReviewMethod()}
             icon={faTrash}
@@ -241,7 +242,8 @@ export default function Review({
           <p className="text-cool-blue font-semibold">{user_name}</p>
           <p className="text-white opacity-50">19 Aug, 2022</p>
         </div>
-        {userId !== JSON.stringify(session.data?.user.userId) ? (
+        {JSON.stringify(userId) ===
+        JSON.stringify(session.data?.user.userId) ? (
           <div className="flex items-center">
             <FontAwesomeIcon
               icon={faThumbsUpRegular}
