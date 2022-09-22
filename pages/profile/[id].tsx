@@ -15,22 +15,14 @@ interface Props {
   visited: boolean
 }
 
-export default function Profile(props: Props) {
-  if (props.visited) {
+export default function Profile({ reviews, favorites, user, visited }: Props) {
+  if (visited) {
     return (
-      <VisitedProfile
-        reviews={props.reviews}
-        favorites={props.favorites}
-        user={props.user}
-      />
+      <VisitedProfile reviews={reviews} favorites={favorites} user={user} />
     )
   } else {
     return (
-      <CurrentProfile
-        reviews={props.reviews}
-        favorites={props.favorites}
-        user={props.user}
-      />
+      <CurrentProfile reviews={reviews} favorites={favorites} user={user} />
     )
   }
 }

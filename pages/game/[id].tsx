@@ -88,7 +88,7 @@ export default function GamePage(props: Props) {
     }
   }
 
-  const deleteReview = (id: ObjectId | undefined) => {
+  const deleteReview = (id: ObjectId | undefined): void => {
     if (id) {
       const newReviews = reviews.filter(
         (review: Review_Type) => review._id !== id
@@ -97,7 +97,7 @@ export default function GamePage(props: Props) {
     }
   }
 
-  const loadAgain = async () => {
+  const loadAgain = async (): Promise<void> => {
     try {
       setLoading(true)
       const req = await axios.get(

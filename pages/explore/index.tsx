@@ -2,6 +2,7 @@ import { faArrowDown, faArrowUp } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import axios from 'axios'
 import { ObjectId } from 'bson'
+import { GetServerSidePropsContext } from 'next'
 import { getSession } from 'next-auth/react'
 import { useEffect, useRef, useState } from 'react'
 import SmallLoader from '../../components/common/SmallLoader'
@@ -80,7 +81,7 @@ export default function Index(props: Props) {
   )
 }
 
-export async function getServerSideProps(context: any) {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
   const limit = 50
   const page = Math.round(getRandomInt(0, 760000) / limit)
   let filteredString = ''
