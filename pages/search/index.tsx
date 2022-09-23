@@ -29,6 +29,7 @@ export default function Index(props: Props) {
   //2 types of errors
   const [loadingError, setLoadingError] = useState<boolean>(false)
   const [noResults, setNoResults] = useState<boolean>(false)
+  const [showLoadMoreButton, setShowLoadMoreButton] = useState<boolean>(true)
 
   const router = useRouter()
   const store = useStore()
@@ -45,8 +46,12 @@ export default function Index(props: Props) {
         query: router.query,
       })
       if (getData.data.games.length === 0) {
-        setNoResults(true)
+        //if there no games from server, dont update the games state
+        //and remove the loadMore button
+        // setNoResults(true)
+        setShowLoadMoreButton(false)
       } else {
+        setShowLoadMoreButton(true)
         store.addPage()
         store.addGames(getData.data.games)
         setNextPage(getData.data.nextPage)
@@ -63,6 +68,7 @@ export default function Index(props: Props) {
   useEffect(() => {
     setLoadMoreLoading(false)
     setLoadingError(false)
+    setShowLoadMoreButton(true)
     if (store.games.length === 0 && props.games.length === 0) {
       setLoadMoreLoading(true)
       loadGames(1)
@@ -160,12 +166,12 @@ export default function Index(props: Props) {
                 <div className="w-24 h-16 rounded-lg m-auto mt-8">
                   {loadMoreLoading ? (
                     <SmallLoader big={false} xCentered={true} />
-                  ) : (
+                  ) : showLoadMoreButton ? (
                     <SearchButton
                       text="Load More"
                       onClick={() => loadGames(store.page)}
                     />
-                  )}
+                  ) : null}
                 </div>
               ) : (
                 <SmallLoader big={true} xCentered={true} />

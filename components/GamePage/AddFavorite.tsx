@@ -3,6 +3,9 @@ import { useSession } from 'next-auth/react'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import { useGlobalError } from '../../store'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faBookmark as regular } from '@fortawesome/free-regular-svg-icons'
+import { faBookmark as solid } from '@fortawesome/free-solid-svg-icons'
 
 interface Props {
   gameId: number
@@ -73,14 +76,29 @@ export default function AddFavorite({ gameId }: Props) {
       checkIsFavorite()
     }
   }, [session.status, gameId])
+  console.log(isFavorite)
+  if (!isFavorite) {
+    return (
+      <div
+        onClick={() => navigateAuth()}
+        className="flex items-center justify-center w-40 h-10  mt-6 rounded-md cursor-pointer opacity-70 hover:opacity-100"
+        style={{ backgroundColor: '#0c284a' }}
+      >
+        <FontAwesomeIcon icon={regular} className="h-4 text-white pr-2" />
+        <p className="whitespace-nowrap text-sm text-white">Add To Favorite</p>
+      </div>
+    )
+  } else {
+    return (
+      <div
+        onClick={() => navigateAuth()}
+        className="flex items-center justify-center w-40 h-10  mt-6 rounded-md cursor-pointer opacity-70 hover:opacity-100"
+        style={{ backgroundColor: '#50c878' }}
+      >
+        <FontAwesomeIcon icon={solid} className="h-4 text-white pr-2" />
+        <p className="whitespace-nowrap text-sm text-white">Favorite</p>
+      </div>
+    )
+  }
 
-  return (
-    <div
-      onClick={() => navigateAuth()}
-      className="flex items-center justify-center w-36 h-10  mt-4 rounded-md cursor-pointer opacity-70 hover:opacity-100"
-      style={{ backgroundColor: '#0c284a' }}
-    >
-      <p className="whitespace-nowrap text-sm text-white">Add To Favorite</p>
-    </div>
-  )
 }
