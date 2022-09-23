@@ -76,7 +76,7 @@ export default function AddFavorite({ gameId }: Props) {
       checkIsFavorite()
     }
   }, [session.status, gameId])
-  console.log(isFavorite)
+
   if (!isFavorite) {
     return (
       <div
@@ -100,5 +100,4 @@ export default function AddFavorite({ gameId }: Props) {
       </div>
     )
   }
-
 }
