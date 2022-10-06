@@ -45,7 +45,6 @@ export default function Index(props: Props) {
         page: cur,
         query: router.query,
       })
-      console.log('daraL', getData)
       if (getData.data.games.length === 0) {
         //if there no games from server, dont update the games state
         //and remove the loadMore button
@@ -205,9 +204,11 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     }
   }
   const { yearRange, genres, consoles, search, sort } = context.query
+
   let filteredString = ''
   let games = []
   let count = 0
+
   try {
     if (yearRange || genres || consoles || search || sort) {
       if (search) {
@@ -278,14 +279,14 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       if (sort === 'year') {
         filteredString = filteredString.concat('&ordering=-released')
       }
-
+      //if some filters is applies
       const getData = await axios(
         `https://api.rawg.io/api/games?key=39a2bd3750804b5a82669025ed9986a8&dates=1990-01-01,2023-12-31&page=1&page_size=28${filteredString}`
       )
-      console.log(filteredString)
       games = getData.data.results
       count = getData.data.count
     } else {
+      //empty filters search
       const getData = await axios(
         `https://api.rawg.io/api/games?key=39a2bd3750804b5a82669025ed9986a8&dates=1990-01-01,2023-12-31&page=1&page_size=28`
       )

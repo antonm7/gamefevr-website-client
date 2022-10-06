@@ -18,12 +18,12 @@ export default function SmallSearchInput() {
   const router = useRouter()
   const filtersStore = useFiltersStore()
 
-  const changeGameName = (text: string) => {
+  const changeGameName = (text: string): void => {
     setSearch(text)
     store.changeGameName(text)
   }
 
-  const navigate = () => {
+  const navigate = (): void => {
     setCookie('prevRoute', '/')
     if (store.gameName.length > 0) {
       router.push({
@@ -34,7 +34,7 @@ export default function SmallSearchInput() {
           consoles: filtersStore.consoles,
           yearRange:
             filtersStore.yearRange[0] === 1990 &&
-            filtersStore.yearRange[1] === 2023
+              filtersStore.yearRange[1] === 2023
               ? []
               : filtersStore.yearRange,
         },
@@ -47,7 +47,7 @@ export default function SmallSearchInput() {
           consoles: filtersStore.consoles,
           yearRange:
             filtersStore.yearRange[0] === 1990 &&
-            filtersStore.yearRange[1] === 2023
+              filtersStore.yearRange[1] === 2023
               ? []
               : filtersStore.yearRange,
         },
@@ -58,7 +58,7 @@ export default function SmallSearchInput() {
     store.changeFilterVisibility(false)
   }
 
-  const fetchData = async (name: string) => {
+  const fetchData = async (name: string): Promise<void> => {
     try {
       const getData = await axios.get(`/api/query/name?search=${name}`)
       const games: NamedGame[] = getData.data.games

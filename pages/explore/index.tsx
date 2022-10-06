@@ -31,12 +31,14 @@ export default function Index(props: Props) {
 
   useEffect(() => {
     if (!games.length) return
+    //TODO:where does 15 come from, need to be more dynaimc 
+    //number and not hradly coded
     if (current >= games.length - 15) {
       loadMore()
     }
   }, [current])
 
-  const loadMore = async () => {
+  const loadMore = async (): Promise<void> => {
     try {
       const req = await axios.get('/api/explore/get/search')
       if (req.status !== 200) throw new Error()

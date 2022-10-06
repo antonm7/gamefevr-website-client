@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import { useCallback } from 'react'
 import useWindowSize from '../../lib/functions/hooks/useWindowSize'
 
 interface Props {
@@ -9,17 +10,15 @@ interface Props {
 export default function Arrows({ componentRef, count }: Props) {
   const [width] = useWindowSize()
 
-  const show = () => {
+  const show = useCallback(() => {
     if (width > 1600 && count > 4) return true
     if (width <= 1600 && width >= 1200 && count > 3) return true
     if (width < 1200 && width >= 640 && count > 2) return true
     if (width < 640 && count > 1) return true
     return false
-  }
+  }, [width])
 
-  if (!show()) return null
-
-  if (width < 380) return null
+  if (!show() || width < 380) return null
 
   return (
     <div className="mr-4 flex items-center justify-center cursor-pointer">

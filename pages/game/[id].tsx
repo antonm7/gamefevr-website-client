@@ -54,7 +54,6 @@ export default function GamePage(props: Props) {
     setGame(props.game)
     setReviews(props.reviews)
     setLoading(false)
-    console.log(props.reviews)
   }, [router.query.id, props.game])
 
   const navigateAuth = () => {

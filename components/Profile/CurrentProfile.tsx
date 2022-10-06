@@ -26,7 +26,7 @@ export default function CurrentProfile({ reviews, favorites, user }: Props) {
   const [width] = useWindowSize()
   const store = useStore()
 
-  const changeVisibleSettings = (value: boolean) => {
+  const changeVisibleSettings = (value: boolean): void => {
     setIsOpened(value)
   }
 
@@ -144,15 +144,14 @@ export default function CurrentProfile({ reviews, favorites, user }: Props) {
           <h1 className="text-white font-bold text-3xl">Your Reviews</h1>
           <div
             className={`mt-12 
-          ${
-            reviewsState.length >= 4
-              ? 'w-full'
-              : reviewsState.length === 3
-              ? 'w-full'
-              : reviewsState.length === 2 && width < 1600
-              ? 'w-full'
-              : 'w-80p'
-          } `}
+          ${reviewsState.length >= 4
+                ? 'w-full'
+                : reviewsState.length === 3
+                  ? 'w-full'
+                  : reviewsState.length === 2 && width < 1600
+                    ? 'w-full'
+                    : 'w-80p'
+              } `}
           >
             {reviewsState.length > 0 ? (
               <Slider {...settings} ref={reviewsRef}>
@@ -185,15 +184,14 @@ export default function CurrentProfile({ reviews, favorites, user }: Props) {
           <h1 className="text-white font-bold text-3xl">Favorite Games</h1>
           <div
             className={`mt-12 
-          ${
-            favoritesState.length >= 4
-              ? 'w-full'
-              : favoritesState.length === 3
-              ? 'w-full'
-              : favoritesState.length === 2 && width < 1600
-              ? 'w-full'
-              : 'w-80p'
-          } `}
+          ${favoritesState.length >= 4
+                ? 'w-full'
+                : favoritesState.length === 3
+                  ? 'w-full'
+                  : favoritesState.length === 2 && width < 1600
+                    ? 'w-full'
+                    : 'w-80p'
+              } `}
           >
             {favoritesState.length > 0 ? (
               <Slider {...favoritesSettings} ref={favoriteRef}>

@@ -13,7 +13,7 @@ export default function SearchInput() {
   const [games, setGames] = useState<NamedGame[]>([])
   const globalErrorState = useGlobalError((state) => state)
 
-  const fetchData = async (name: string) => {
+  const fetchData = async (name: string): Promise<void> => {
     try {
       const getData = await axios.get(`/api/query/name?search=${name}`)
       const games: NamedGame[] = getData.data.games
