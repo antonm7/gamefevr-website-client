@@ -45,10 +45,10 @@ export default function Index(props: Props) {
         page: cur,
         query: router.query,
       })
+      console.log('daraL', getData)
       if (getData.data.games.length === 0) {
         //if there no games from server, dont update the games state
         //and remove the loadMore button
-        // setNoResults(true)
         setShowLoadMoreButton(false)
       } else {
         setShowLoadMoreButton(true)
@@ -69,14 +69,20 @@ export default function Index(props: Props) {
     setLoadMoreLoading(false)
     setLoadingError(false)
     setShowLoadMoreButton(true)
+    if (props.error) {
+      setLoadingError(true)
+      return
+    }
     if (store.games.length === 0 && props.games.length === 0) {
       setLoadMoreLoading(true)
       loadGames(1)
       return
     }
-    if (props.games.length === 0) return
+    console.log(props)
+    if (props.games.length === 0 && !props.error) return
     else {
       if (props.error) {
+        console.log(props.error)
         setLoadingError(true)
         return
       }
