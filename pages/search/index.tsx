@@ -98,11 +98,13 @@ export default function Index(props: Props) {
   }, [props.games, props.error])
 
   const sort = () => {
-    const { pathname, query }: any = router
-    const params = new URLSearchParams(query)
+    const { query }: any = router
     if (router.query.sort) {
-      params.delete('sort')
-      router.replace({ pathname, query: params.toString() })
+      router.query.sort = []
+      router.push({
+        pathname: router.pathname,
+        query: { ...query },
+      })
     } else {
       router.push({
         pathname: router.pathname,
@@ -145,8 +147,9 @@ export default function Index(props: Props) {
                   We found {store.count.toLocaleString()} games for you
                 </p>
                 <div
-                  className={`we_found_padding px-44 pb-10 text-white ${router.query.sort ? 'underline' : ''
-                    }`}
+                  className={`we_found_padding px-44 pb-10 text-white ${
+                    router.query.sort ? 'underline' : ''
+                  }`}
                 >
                   <span className="opacity-60">Sort by:</span>{' '}
                   <span
