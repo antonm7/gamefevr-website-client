@@ -11,7 +11,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import axios from 'axios'
 import { ObjectId } from 'bson'
 import { useSession } from 'next-auth/react'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useGlobalError } from '../../store'
 import { Review_Type } from '../../types/schema'
 
@@ -39,6 +39,8 @@ export default function Review({
   const [dislikesState, setDislikesState] = useState<ObjectId[]>([])
   const globalErrorState = useGlobalError((state) => state)
 
+  const state = useGlobalError((state) => state)
+
   useEffect(() => {
     if (session.status === 'authenticated') {
       if (likes.includes(session.data?.user?.userId)) {
@@ -50,7 +52,17 @@ export default function Review({
       setLikesState(likes)
       setDislikesState(dislikes)
     }
-  }, [session.status])
+    return
+  }, [session.status, likes, dislikes])
+
+  const deleteReview_STATE = (): void => {
+    if (!_id) return
+    state.setAnswer(undefined)
+    state.setType('request')
+    state.setText('Remove the review?')
+    state.setIsVisible(true)
+    state.setId(_id)
+  }
 
   const deleteReviewMethod = async () => {
     try {
@@ -84,6 +96,18 @@ export default function Review({
     }
   }
 
+  useEffect(() => {
+    if (
+      state.type === 'request' &&
+      state.answer === 'yes' &&
+      state.id === _id
+    ) {
+      deleteReviewMethod()
+    } else {
+      state.closeRequest()
+    }
+  }, [state.answer])
+
   const likeReview = async () => {
     if (session.status !== 'authenticated') return
     try {
@@ -105,7 +129,7 @@ export default function Review({
           setIsUserDisliked(false)
           //removing his dislike from the array
           setDislikesState(
-            dislikes.filter((id) => id !== session.data?.user?.userId)
+            dislikesState.filter((id) => id !== session.data?.user?.userId)
           )
           //request to cancel the dislike
           const req = await axios.post('/api/game/cancel/review/dislike', {
@@ -115,7 +139,7 @@ export default function Review({
           if (req.status !== 200) throw new Error(req.data.error)
         }
         setIsUserLiked(true)
-        setLikesState([...likes, session?.data?.user?.userId])
+        setLikesState([...likesState, session?.data?.user?.userId])
         const req = await axios.post('/api/game/action/review/like', {
           userId: session?.data?.user?.userId,
           reviewId: _id,
@@ -149,7 +173,11 @@ export default function Review({
         if (isUserLiked) {
           setIsUserLiked(false)
           //removing his like from the array
-          setLikesState(likes.filter((id) => id !== session.data?.user?.userId))
+          setLikesState((arr) =>
+            arr.filter((id) => {
+              return id !== session.data?.user?.userId
+            })
+          )
           //request to cancel the dislike
           const req = await axios.post('/api/game/cancel/review/like', {
             userId: session?.data?.user?.userId,
@@ -157,7 +185,7 @@ export default function Review({
           })
           if (req.status !== 200) throw new Error(req.data.error)
         }
-        setDislikesState([...dislikes, session?.data?.user?.userId])
+        setDislikesState([...dislikesState, session?.data?.user?.userId])
         setIsUserDisliked(true)
         const req = await axios.post('/api/game/action/review/dislike', {
           userId: session?.data?.user?.userId,
@@ -166,7 +194,7 @@ export default function Review({
         if (req.status !== 200) throw new Error(req.data.error)
       }
     } catch (e) {
-      setDislikesState([...dislikes])
+      setDislikesState([...dislikesState])
       setIsUserDisliked(false)
       globalErrorState.setType('error')
       globalErrorState.setText('error disliking the review, try again')
@@ -205,6 +233,11 @@ export default function Review({
     }
   }
 
+  const CalculateCountMemoized = useMemo(
+    () => <CalculateCount />,
+    [likesState, dislikesState]
+  )
+
   return (
     <div
       id="review"
@@ -222,7 +255,7 @@ export default function Review({
         {JSON.stringify(userId) !==
         JSON.stringify(session.data?.user.userId) ? null : (
           <FontAwesomeIcon
-            onClick={() => deleteReviewMethod()}
+            onClick={() => deleteReview_STATE()}
             icon={faTrash}
             className="h-4 cursor-pointer text-red-500 opacity-40 hover:opacity-100"
           />
@@ -249,7 +282,7 @@ export default function Review({
               icon={faThumbsUpRegular}
               className="h-8 text-green-400 cursor-pointer"
             />
-            <CalculateCount />
+            {CalculateCountMemoized}
             <FontAwesomeIcon
               icon={faThumbsDownRegular}
               className="h-8 text-red-400 cursor-pointer"
@@ -264,7 +297,7 @@ export default function Review({
               icon={like || isUserLiked ? faThumbsUpSolid : faThumbsUpRegular}
               className="h-8 text-green-400 cursor-pointer"
             />
-            <CalculateCount />
+            {CalculateCountMemoized}
             <FontAwesomeIcon
               onClick={() => dislikeReview()}
               onMouseEnter={() => setDislike(true)}
