@@ -19,7 +19,6 @@ export default async function handler(req: ExtendedRequest, res: Response) {
         .collection('reviews')
         .find({ gameId: query.gameId })
         .toArray()
-
       if (!docs.length) {
         res.status(200).send({ error: null, reviews: [] })
       } else {
