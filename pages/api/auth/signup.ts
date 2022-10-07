@@ -65,9 +65,8 @@ async function handler(req: Request, res: Response) {
           const msg = {
             to: 'migolkoanton@gmail.com', // Change to your recipient
             from: 'gameFevrr@gmail.com           ', // Change to your verified sender
-            subject: 'Sending with SendGrid is Fun',
-            text: 'and easy to do anywhere, even with Node.js',
-            html: '<strong>and easy to do anywhere, even with Node.js</strong>',
+            subject: 'Welcome To GameFevrr!',
+            templateId: 'd-d1b6d37ebdb445358fef35980ded4f6f',
           }
           const send = await sgMail.send(msg)
           console.log('seded', send)

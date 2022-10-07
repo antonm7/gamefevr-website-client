@@ -23,7 +23,7 @@ const Home: NextPage = () => {
           consoles: filtersStore.consoles,
           yearRange:
             filtersStore.yearRange[0] === 1990 &&
-            filtersStore.yearRange[1] === 2023
+              filtersStore.yearRange[1] === 2023
               ? []
               : filtersStore.yearRange,
         },
@@ -36,7 +36,7 @@ const Home: NextPage = () => {
           consoles: filtersStore.consoles,
           yearRange:
             filtersStore.yearRange[0] === 1990 &&
-            filtersStore.yearRange[1] === 2023
+              filtersStore.yearRange[1] === 2023
               ? []
               : filtersStore.yearRange,
         },
