@@ -164,7 +164,7 @@ export default function Bigger1200Footer({
               style={{ marginTop: width > 1400 ? '-32rem' : '-16rem' }}
             >
               <div
-                className={`px-20 text-center opacity-40
+                className={`px-20 flex flex-col items-center text-center opacity-40
                 hover:opacity-100  ${
                   reviewsAnimation
                     ? 'write_review_animation_enabled '
