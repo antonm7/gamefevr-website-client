@@ -122,6 +122,16 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
       res.status(500).send({ error: 'Unexpected error' })
       return console.log('error on updating games_data document', e)
     }
+    //updating the rank 
+    try {
+      await db
+        .collection('ranks')
+        .updateOne({ gameId: query.gameId, userId: query.userId }, { $set: { rank: query.rank } })
+    } catch (e) {
+      res.status(500).send({ error: 'Unexpected error' })
+      return console.log('error updating the game review after posting the review', e)
+    }
+
     try {
       const review = await db
         .collection('reviews')

@@ -88,9 +88,8 @@ export default function WriteReview({
   return (
     <div
       id="write_review_container"
-      className={`scrollbar ${
-        visible ? 'fixed ' : 'hidden '
-      }px-7 py-6 rounded-xl w-3/5 z-30`}
+      className={`scrollbar ${visible ? 'fixed ' : 'hidden '
+        }px-7 py-6 rounded-xl w-3/5 z-30`}
       style={{
         minHeight: '24rem',
         maxHeight: '80%',
@@ -105,64 +104,56 @@ export default function WriteReview({
       <div className="flex flex-wrap my-2">
         <div
           onClick={() => toggleRank('waste_of_time')}
-          className={`simple-transition cursor-pointer flex items-center flex-nowrap rounded-md py-1 px-2 mr-4 mb-4 hover:bg-white ${
-            rank === 'waste_of_time' ? 'bg-white' : ''
-          }`}
+          className={`simple-transition cursor-pointer flex items-center flex-nowrap rounded-md py-1 px-2 mr-4 mb-4 hover:bg-white ${rank === 'waste_of_time' ? 'bg-white' : ''
+            }`}
           style={{ border: 'solid #e3e3e3', borderWidth: 1 }}
         >
           <span className="pr-2 text-md">😫</span>
           <h2
-            className={`simple-transition text-white text-sm hover:text-black ${
-              rank === 'waste_of_time' ? 'text-black' : ''
-            }`}
+            className={`simple-transition text-white text-sm hover:text-black ${rank === 'waste_of_time' ? 'text-black' : ''
+              }`}
           >
             Waste Of Time
           </h2>
         </div>
         <div
           onClick={() => toggleRank('nuh')}
-          className={`simple-transition cursor-pointer flex items-center flex-nowrap rounded-md py-1 px-2 mr-4 mb-4 hover:bg-white ${
-            rank === 'nuh' ? 'bg-white' : ''
-          }`}
+          className={`simple-transition cursor-pointer flex items-center flex-nowrap rounded-md py-1 px-2 mr-4 mb-4 hover:bg-white ${rank === 'nuh' ? 'bg-white' : ''
+            }`}
           style={{ border: 'solid #e3e3e3', borderWidth: 1 }}
         >
           <span className="pr-2 text-md">😫</span>
           <h2
-            className={`simple-transition text-white text-sm hover:text-black ${
-              rank === 'nuh' ? 'text-black' : ''
-            }`}
+            className={`simple-transition text-white text-sm hover:text-black ${rank === 'nuh' ? 'text-black' : ''
+              }`}
           >
             Nuh
           </h2>
         </div>
         <div
           onClick={() => toggleRank('good')}
-          className={`simple-transition cursor-pointer flex items-center flex-nowrap rounded-md py-1 px-2 mr-4 mb-4 hover:bg-white ${
-            rank === 'good' ? 'bg-white' : ''
-          }`}
+          className={`simple-transition cursor-pointer flex items-center flex-nowrap rounded-md py-1 px-2 mr-4 mb-4 hover:bg-white ${rank === 'good' ? 'bg-white' : ''
+            }`}
           style={{ border: 'solid #e3e3e3', borderWidth: 1 }}
         >
           <span className="pr-2 text-md">😫</span>
           <h2
-            className={`simple-transition text-white text-sm hover:text-black ${
-              rank === 'good' ? 'text-black' : ''
-            }`}
+            className={`simple-transition text-white text-sm hover:text-black ${rank === 'good' ? 'text-black' : ''
+              }`}
           >
             Good
           </h2>
         </div>
         <div
           onClick={() => toggleRank('must')}
-          className={`simple-transition cursor-pointer flex items-center flex-nowrap rounded-md py-1 px-2 mr-4 mb-4 hover:bg-white ${
-            rank === 'must' ? 'bg-white' : ''
-          }`}
+          className={`simple-transition cursor-pointer flex items-center flex-nowrap rounded-md py-1 px-2 mr-4 mb-4 hover:bg-white ${rank === 'must' ? 'bg-white' : ''
+            }`}
           style={{ border: 'solid #e3e3e3', borderWidth: 1 }}
         >
           <span className="pr-2 text-md">😫</span>
           <h2
-            className={`simple-transition text-white text-sm hover:text-black ${
-              rank === 'must' ? 'text-black' : ''
-            }`}
+            className={`simple-transition text-white text-sm hover:text-black ${rank === 'must' ? 'text-black' : ''
+              }`}
           >
             Must
           </h2>

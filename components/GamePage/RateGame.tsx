@@ -92,10 +92,8 @@ export default function RateGame({ updateIsUserRated, reviews }: Props) {
     if (session.status === 'authenticated') {
       const currReview_ids: string[] = []
       const propsReview_ids: string[] = []
-
-      currReview_ids.push(...reviewsState.map((r) => r.userId))
-      propsReview_ids.push(...reviews.map((r) => r.userId))
-
+      currReview_ids.push(...reviewsState.map((r) => JSON.stringify(r.userId)))
+      propsReview_ids.push(...reviews.map((r) => JSON.stringify(r.userId)))
       //if the incoming reviews from props doesnt includes the usersReview and at the current state there
       //is user Review that means user has deleted his review
       //meaning the rating should be cleared, because thats what we do in the server.
@@ -115,9 +113,24 @@ export default function RateGame({ updateIsUserRated, reviews }: Props) {
       ) {
         let usersReview: Review_Type | null = null
         usersReview = reviews.filter(
-          (r) => r.userId === JSON.stringify(session.data.user.userId)
+          (r) => JSON.stringify(r.userId) === JSON.stringify(session.data.user.userId)
         )[0]
-        setIsUserRated(usersReview.rank)
+
+        const generateRank = (rank: string) => {
+          switch (rank) {
+            case 'Waste Of Time':
+              return 'waste_of_time'
+            case 'Nuh':
+              return 'nuh'
+            case 'Good':
+              return 'good'
+            case 'Must':
+              return 'must'
+            default:
+              return 'good'
+          }
+        }
+        setIsUserRated(generateRank(usersReview.rank))
       }
     }
     setReviewsState(reviews)
@@ -137,11 +150,10 @@ export default function RateGame({ updateIsUserRated, reviews }: Props) {
         </h1>
         <div id="span_line" className="flex justify-between px-16 pt-3">
           <span
-            className={`text-xl cursor-pointer opacity-40 ${
-              wasteOfTime || isUserRated === 'waste_of_time'
-                ? 'opacity-100'
-                : ''
-            }`}
+            className={`text-xl cursor-pointer opacity-40 ${wasteOfTime || isUserRated === 'waste_of_time'
+              ? 'opacity-100'
+              : ''
+              }`}
             onMouseEnter={() => setWasteOfTime(true)}
             onMouseLeave={() => setWasteOfTime(false)}
             onClick={() => navigateAuth('waste_of_time')}
@@ -149,9 +161,8 @@ export default function RateGame({ updateIsUserRated, reviews }: Props) {
             😫
           </span>
           <span
-            className={`text-xl cursor-pointer opacity-40 ${
-              nuh || isUserRated === 'nuh' ? 'opacity-100' : ''
-            }`}
+            className={`text-xl cursor-pointer opacity-40 ${nuh || isUserRated === 'nuh' ? 'opacity-100' : ''
+              }`}
             onMouseEnter={() => setNuh(true)}
             onMouseLeave={() => setNuh(false)}
             onClick={() => navigateAuth('nuh')}
@@ -159,9 +170,8 @@ export default function RateGame({ updateIsUserRated, reviews }: Props) {
             🙁
           </span>
           <span
-            className={`text-xl cursor-pointer opacity-40 ${
-              good || isUserRated === 'good' ? 'opacity-100' : ''
-            }`}
+            className={`text-xl cursor-pointer opacity-40 ${good || isUserRated === 'good' ? 'opacity-100' : ''
+              }`}
             onMouseEnter={() => setGood(true)}
             onMouseLeave={() => setGood(false)}
             onClick={() => navigateAuth('good')}
@@ -169,9 +179,8 @@ export default function RateGame({ updateIsUserRated, reviews }: Props) {
             😐
           </span>
           <span
-            className={`text-xl cursor-pointer opacity-40 ${
-              must || isUserRated === 'must' ? 'opacity-100' : ''
-            }`}
+            className={`text-xl cursor-pointer opacity-40 ${must || isUserRated === 'must' ? 'opacity-100' : ''
+              }`}
             onMouseEnter={() => setMust(true)}
             onMouseLeave={() => setMust(false)}
             onClick={() => navigateAuth('must')}
