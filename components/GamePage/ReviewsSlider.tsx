@@ -22,13 +22,7 @@ export default function ReviewsSlider({
   const [reviewsState, setReviewsState] = useState<Review_Type[]>([])
 
   useEffect(() => {
-    //added
-    if (reviews.length > reviewsState.length) {
-      setReviewsState(reviews.splice(0, reviewsState.length))
-      setReviewsState(reviews)
-    } else {
-      setReviewsState(reviews)
-    }
+    setReviewsState(reviews)
   }, [reviews])
 
   const settings = {
