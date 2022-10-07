@@ -66,6 +66,7 @@ export default function Review({
 
   const deleteReviewMethod = async () => {
     try {
+      state.closeRequest()
       const deleteReviewRequest = await axios.post(
         '/api/game/cancel/review/deleteReview',
         {
@@ -253,7 +254,7 @@ export default function Review({
       <div className="flex justify-between items-center">
         <h1 className="text-white font-bold text-3xl  underline">{rank}</h1>
         {JSON.stringify(userId) !==
-        JSON.stringify(session.data?.user.userId) ? null : (
+          JSON.stringify(session.data?.user.userId) ? null : (
           <FontAwesomeIcon
             onClick={() => deleteReview_STATE()}
             icon={faTrash}
@@ -276,7 +277,7 @@ export default function Review({
           <p className="text-white opacity-50">19 Aug, 2022</p>
         </div>
         {JSON.stringify(userId) ===
-        JSON.stringify(session.data?.user.userId) ? (
+          JSON.stringify(session.data?.user.userId) ? (
           <div className="flex items-center">
             <FontAwesomeIcon
               icon={faThumbsUpRegular}
