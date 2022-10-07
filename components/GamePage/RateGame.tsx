@@ -3,18 +3,23 @@ import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { useGlobalError } from '../../store'
+import { Review_Type } from '../../types/schema'
 
 interface Props {
+  reviews: Review_Type[]
   updateIsUserRated: (isUserRated: string) => void
 }
 
-export default function RateGame({ updateIsUserRated }: Props) {
+export default function RateGame({ updateIsUserRated, reviews }: Props) {
   const [wasteOfTime, setWasteOfTime] = useState<boolean>(false)
   const [nuh, setNuh] = useState<boolean>(false)
   const [good, setGood] = useState<boolean>(false)
   const [must, setMust] = useState<boolean>(false)
+  const [reviewsState, setReviewsState] = useState<Review_Type[]>([])
   const [isUserRated, setIsUserRated] = useState<string | null>(null)
+
   const globalErrorState = useGlobalError((state) => state)
+
   const session = useSession()
   const router = useRouter()
 
@@ -82,6 +87,41 @@ export default function RateGame({ updateIsUserRated }: Props) {
       globalErrorState.setIsVisible(true)
     }
   }
+
+  useEffect(() => {
+    if (session.status === 'authenticated') {
+      const currReview_ids: string[] = []
+      const propsReview_ids: string[] = []
+
+      currReview_ids.push(...reviewsState.map((r) => r.userId))
+      propsReview_ids.push(...reviews.map((r) => r.userId))
+
+      //if the incoming reviews from props doesnt includes the usersReview and at the current state there
+      //is user Review that means user has deleted his review
+      //meaning the rating should be cleared, because thats what we do in the server.
+      //If I will not update it on here, that means the server will clear the rating and only after refresh of the page, the rating will
+      //be cleared on client >> SERVER WONT BE SYNCED WITHT HE CLIENT
+      if (
+        !propsReview_ids.includes(JSON.stringify(session.data.user.userId)) &&
+        currReview_ids.includes(JSON.stringify(session.data.user.userId))
+      ) {
+        setIsUserRated('')
+      }
+      //doing here the same but only if user creats new review and the current state,
+      // is not update here. If user creates new review, its need to update the ranking
+      if (
+        propsReview_ids.includes(JSON.stringify(session.data.user.userId)) &&
+        !currReview_ids.includes(JSON.stringify(session.data.user.userId))
+      ) {
+        let usersReview: Review_Type | null = null
+        usersReview = reviews.filter(
+          (r) => r.userId === JSON.stringify(session.data.user.userId)
+        )[0]
+        setIsUserRated(usersReview.rank)
+      }
+    }
+    setReviewsState(reviews)
+  }, [session.status, reviews])
 
   return (
     <div id="rate_game" className="h-32 overflow-hidden">
