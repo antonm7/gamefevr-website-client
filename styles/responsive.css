@@ -184,10 +184,6 @@
   #profile-review-component {
     width: 100% !important;
   }
-
-  #favorite-component {
-    width: 90% !important;
-  }
 }
 
 @media (max-width: 1024px) {
@@ -334,6 +330,10 @@
 
   .screenshot {
     margin-top: 2rem;
+  }
+
+  #favorite-component {
+    width: 100% !important;
   }
 }
 

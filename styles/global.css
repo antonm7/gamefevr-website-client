@@ -317,6 +317,15 @@ div {
   overflow: hidden !important;
 }
 
+.slick-track {
+  float: left !important;
+  width: 100%;
+}
+
+.slick-list {
+  min-width: 100% !important;
+}
+
 #android {
   filter: invert(7%) sepia(26%) saturate(1359%) hue-rotate(177deg)
     brightness(70%) contrast(96%);
