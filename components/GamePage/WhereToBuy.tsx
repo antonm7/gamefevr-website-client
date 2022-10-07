@@ -1,3 +1,5 @@
+import { memo } from 'react'
+
 interface Props {
   stores: {
     id: number
@@ -13,10 +15,8 @@ interface Props {
   }[]
 }
 
-export default function WhereToBuy({ stores }: Props) {
-  const navigate = (url: string) => {
-    document.location.href = `https://${url}`
-  }
+const WhereToBuy: React.FC<Props> = ({ stores }) => {
+  const navigate = (url: string) => (document.location.href = `https://${url}`)
 
   if (!stores.length) return null
 
@@ -35,3 +35,5 @@ export default function WhereToBuy({ stores }: Props) {
     </div>
   )
 }
+
+export default memo(WhereToBuy)

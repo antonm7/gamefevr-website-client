@@ -1,10 +1,11 @@
+import { memo } from 'react'
 import { ElementDescription } from '../../types'
 
 interface Props {
   tags: ElementDescription[]
 }
 
-export default function Tags({ tags }: Props) {
+const Tags: React.FC<Props> = ({ tags }) => {
   if (tags.length === 0) return null
   return (
     <div className="flex flex-row flex-wrap pt-2 max-w-lg pr-12">
@@ -21,3 +22,5 @@ export default function Tags({ tags }: Props) {
     </div>
   )
 }
+
+export default memo(Tags)

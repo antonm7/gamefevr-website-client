@@ -1,7 +1,9 @@
+import { memo } from 'react'
 interface Props {
   desc: string
 }
-export default function Description({ desc }: Props) {
+
+const Description: React.FC<Props> = ({ desc }) => {
   return (
     <div
       id="game_page_description_wrapper"
@@ -12,3 +14,5 @@ export default function Description({ desc }: Props) {
     />
   )
 }
+
+export default memo(Description)

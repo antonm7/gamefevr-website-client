@@ -16,7 +16,7 @@ import {
 } from '../store'
 import GlobalError from '../components/common/GlobalError/Index'
 
-function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
+function MyApp({ Component, pageProps: { session, ...pageProps } }: any) {
   const changeGameName = useStore((state) => state.changeGameName)
   const filtersStore = useFiltersStore((state) => state)
   const setIsAnimating = useProgressStore((state) => state.setIsAnimating)

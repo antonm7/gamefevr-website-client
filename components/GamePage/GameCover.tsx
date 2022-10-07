@@ -1,12 +1,13 @@
 import { ShortGame } from '../../types'
 import Link from 'next/link'
 import Image from 'next/image'
+import { memo } from 'react'
 
 interface Props {
   game: ShortGame
 }
 
-export default function GameCover({ game }: Props) {
+const GameCover: React.FC<Props> = ({ game }) => {
   return (
     <div
       id="game_cover"
@@ -15,7 +16,7 @@ export default function GameCover({ game }: Props) {
       {game.background_image ? (
         <Image
           className="rounded-md"
-          src={game?.background_image}
+          src={game.background_image}
           width={48}
           height={48}
           quality={100}
@@ -29,3 +30,5 @@ export default function GameCover({ game }: Props) {
     </div>
   )
 }
+
+export default memo(GameCover)
