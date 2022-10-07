@@ -50,7 +50,7 @@ export default function GamePage(props: Props) {
 
   const loadReviews = async () => {
     try {
-      const req = await axios.get(`/api/game/get/getReviews?${router.query.id}`)
+      const req = await axios.get(`/api/game/get/getReviews?gameId=${router.query.id}`)
       if (req.status === 200) {
         if (req.data.error) throw new Error(req.data.error)
         setReviews(req.data.reviews)
