@@ -5,7 +5,7 @@ import '../styles/responsive.css'
 import '../styles/animation.css'
 import { setCookie } from 'cookies-next'
 import { SessionProvider } from 'next-auth/react'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import Progress from '../components/progress/Progress'
 import {
@@ -25,6 +25,9 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   const type = useGlobalError((state) => state.type)
   const router: any = useRouter()
 
+  const [globalErrorVisibility, setGlobalErrorVisibilit] =
+    useState<boolean>(false)
+
   useEffect(() => {
     const handleStart = () => {
       setIsAnimating(true)
@@ -42,7 +45,6 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
 
     //follow any changes to the query, and update the store
     //because the filters component takes data from the store and not the query
-
     return () => {
       router.events.off('routeChangeStart', handleStart)
       router.events.off('routeChangeComplete', handleStop)
@@ -93,9 +95,13 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
     }
   }, [router.query])
 
+  useEffect(() => {
+    setGlobalErrorVisibilit(isVisible)
+  }, [isVisible])
+
   return (
     <>
-      <GlobalError propsType={type} isVisible={isVisible} />
+      <GlobalError propsType={type} isVisible={globalErrorVisibility} />
       <Progress isAnimating={isAnimating} />
       <SessionProvider session={session}>
         <div className="bg-main-blue">
