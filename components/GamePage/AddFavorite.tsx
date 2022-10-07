@@ -6,6 +6,7 @@ import { useGlobalError } from '../../store'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBookmark as regular } from '@fortawesome/free-regular-svg-icons'
 import { faBookmark as solid } from '@fortawesome/free-solid-svg-icons'
+import { faXmark } from '@fortawesome/free-solid-svg-icons'
 
 interface Props {
   gameId: number
@@ -16,6 +17,7 @@ export default function AddFavorite({ gameId }: Props) {
   const router = useRouter()
   const globalErrorState = useGlobalError((state) => state)
   const [isFavorite, setIsFavorite] = useState<boolean>(false)
+  const [mouseOver, setMouseOver] = useState<boolean>(false)
 
   const navigateAuth = (): void => {
     if (session.status !== 'authenticated') {
@@ -77,6 +79,10 @@ export default function AddFavorite({ gameId }: Props) {
     }
   }, [session.status, gameId])
 
+  useEffect(() => {
+    setMouseOver(false)
+  }, [isFavorite])
+
   if (!isFavorite) {
     return (
       <div
@@ -84,18 +90,25 @@ export default function AddFavorite({ gameId }: Props) {
         className="flex items-center justify-center w-40 h-10  mt-6 rounded-md cursor-pointer opacity-70 hover:opacity-100"
         style={{ backgroundColor: '#0c284a' }}
       >
-        <FontAwesomeIcon icon={regular} className="h-4 text-white pr-2" />
+        <FontAwesomeIcon
+          icon={regular}
+          className="h-4 text-white pr-2"
+        />
         <p className="whitespace-nowrap text-sm text-white">Add To Favorite</p>
       </div>
     )
   } else {
     return (
       <div
+        onMouseEnter={() => setMouseOver(true)}
+        onMouseLeave={() => setMouseOver(false)}
         onClick={() => navigateAuth()}
         className="flex items-center justify-center w-40 h-10  mt-6 rounded-md cursor-pointer opacity-70 hover:opacity-100"
-        style={{ backgroundColor: '#50c878' }}
+        style={{ backgroundColor: mouseOver ? 'rgb(239 68 68)' : '#50c878' }}
       >
-        <FontAwesomeIcon icon={solid} className="h-4 text-white pr-2" />
+        <FontAwesomeIcon
+          icon={mouseOver ? faXmark : solid}
+          className={`${mouseOver ? 'h-5' : 'h-4'} text-white pr-2`} />
         <p className="whitespace-nowrap text-sm text-white">Favorite</p>
       </div>
     )
