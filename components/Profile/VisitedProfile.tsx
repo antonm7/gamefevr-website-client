@@ -21,18 +21,24 @@ export default function Visited({ reviews, favorites, user }: Props) {
   const [width] = useWindowSize()
   const store = useStore()
 
-  const settings = {
+  const reviewSettings = {
     infinite: false,
-    slidesToShow: reviews.length >= 3 ? 3 : reviews.length,
+    slidesToShow: 3,
     responsive: [
       {
         breakpoint: 1700,
         settings: {
-          slidesToShow: favorites.length >= 2 ? 2 : favorites.length,
+          slidesToShow: reviews.length >= 2 ? 2 : reviews.length,
         },
       },
       {
         breakpoint: 1200,
+        settings: {
+          slidesToShow: reviews.length >= 2 ? 2 : reviews.length,
+        },
+      },
+      {
+        breakpoint: 640,
         settings: {
           slidesToShow: 1,
         },
@@ -45,7 +51,7 @@ export default function Visited({ reviews, favorites, user }: Props) {
     slidesToShow: favorites.length >= 4 ? 4 : favorites.length,
     responsive: [
       {
-        breakpoint: 1700,
+        breakpoint: 1650,
         settings: {
           slidesToShow: favorites.length >= 3 ? 3 : favorites.length,
         },
@@ -91,40 +97,138 @@ export default function Visited({ reviews, favorites, user }: Props) {
         <div className="pt-24">
           <h1 className="text-white font-bold text-3xl">Reviews</h1>
           <div
-            className={`mt-12 
-            ${
-              reviewsState.length >= 4
+            className={`mt-12 ${reviewsState.length === 2 && width > 1200
+              ? 'w-[80%]'
+              : reviewsState.length === 3
                 ? 'w-full'
-                : reviewsState.length === 3
-                ? 'w-full'
-                : reviewsState.length === 2 && width < 1600
-                ? 'w-full'
-                : 'w-80p'
-            } `}
+                : 'w-full'
+              }`}
           >
             {reviewsState.length > 0 ? (
-              <Slider {...settings} ref={reviewsRef}>
-                {reviewsState.map((review: Review_Type, index: number) => (
-                  <Review
-                    key={index}
-                    _id={review._id}
-                    likes={review.likes}
-                    dislikes={review.dislikes}
-                    gameId={review.gameId}
-                    userId={review.userId}
-                    created_at={review.created_at}
-                    text={review.text}
-                    rank={review.rank}
-                    game_name={review.game_name}
-                    game_image={review.game_image}
-                    visited={true}
-                    user_name={review.user_name}
-                  />
-                ))}
-              </Slider>
+              reviewsState.length === 2 ? (
+                <div
+                  className={`flex flex-nowrap ${width < 1650 ? 'justify-between' : 'justify-between'
+                    }`}
+                >
+                  {reviewsState.map((review: Review_Type, index: number) =>
+                    width < 1200 ? (
+                      <div className="w-2/4">
+                        <Review
+                          _id={review._id}
+                          key={index}
+                          userId={review.userId}
+                          created_at={review.created_at}
+                          gameId={review.gameId}
+                          game_name={review.game_name}
+                          game_image={review.game_image}
+                          user_name={review.user_name}
+                          text={review.text}
+                          rank={review.rank}
+                          likes={review.likes}
+                          dislikes={review.dislikes}
+                        />
+                      </div>
+                    ) : (
+                      <Review
+                        _id={review._id}
+                        key={index}
+                        userId={review.userId}
+                        created_at={review.created_at}
+                        gameId={review.gameId}
+                        game_name={review.game_name}
+                        game_image={review.game_image}
+                        user_name={review.user_name}
+                        text={review.text}
+                        rank={review.rank}
+                        likes={review.likes}
+                        dislikes={review.dislikes}
+                      />
+                    )
+                  )}
+                </div>
+              ) : reviewsState.length <= 3 && width > 1700 ? (
+                <div
+                  className={`flex flex-nowrap ${width < 1700 ? 'justify-start' : 'justify-between'
+                    }`}
+                >
+                  {reviewsState.map((review: Review_Type, index: number) => (
+                    <Review
+                      _id={review._id}
+                      key={index}
+                      userId={review.userId}
+                      created_at={review.created_at}
+                      gameId={review.gameId}
+                      game_name={review.game_name}
+                      game_image={review.game_image}
+                      user_name={review.user_name}
+                      text={review.text}
+                      rank={review.rank}
+                      likes={review.likes}
+                      dislikes={review.dislikes}
+                    />
+                  ))}
+                </div>
+              ) : reviewsState.length === 1 && width < 1200 && width > 800 ? (
+                reviewsState.map((review: Review_Type, index: number) => (
+                  <div className="w-2/5">
+                    <Review
+                      _id={review._id}
+                      key={index}
+                      userId={review.userId}
+                      created_at={review.created_at}
+                      gameId={review.gameId}
+                      game_name={review.game_name}
+                      game_image={review.game_image}
+                      user_name={review.user_name}
+                      text={review.text}
+                      rank={review.rank}
+                      likes={review.likes}
+                      dislikes={review.dislikes}
+                    />
+                  </div>
+                ))
+              ) : reviewsState.length === 1 && width < 800 ? (
+                reviewsState.map((review: Review_Type, index: number) => (
+                  <div className="w-full">
+                    <Review
+                      _id={review._id}
+                      key={index}
+                      userId={review.userId}
+                      created_at={review.created_at}
+                      gameId={review.gameId}
+                      game_name={review.game_name}
+                      game_image={review.game_image}
+                      user_name={review.user_name}
+                      text={review.text}
+                      rank={review.rank}
+                      likes={review.likes}
+                      dislikes={review.dislikes}
+                    />
+                  </div>
+                ))
+              ) : (
+                <Slider {...reviewSettings} ref={reviewsRef}>
+                  {reviewsState.map((review: Review_Type, index: number) => (
+                    <Review
+                      _id={review._id}
+                      key={index}
+                      userId={review.userId}
+                      created_at={review.created_at}
+                      gameId={review.gameId}
+                      game_name={review.game_name}
+                      game_image={review.game_image}
+                      user_name={review.user_name}
+                      text={review.text}
+                      rank={review.rank}
+                      likes={review.likes}
+                      dislikes={review.dislikes}
+                    />
+                  ))}
+                </Slider>
+              )
             ) : (
               <div className="text-md text-white font-semibold opacity-30">
-                No Reviews
+                You don't have favorite games yet!
               </div>
             )}
           </div>
@@ -132,39 +236,112 @@ export default function Visited({ reviews, favorites, user }: Props) {
         <div className="pt-14">
           <h1 className="text-white font-bold text-3xl">Favorite Games</h1>
           <div
-            className={`mt-12 
-            ${
-              favoritesState.length >= 4
-                ? 'w-full'
-                : favoritesState.length === 3
-                ? 'w-full'
-                : favoritesState.length === 2 && width < 1600
-                ? 'w-full'
-                : 'w-80p'
-            } `}
+            className={`mt-12 ${favoritesState.length === 2 && width > 1200
+              ? 'w-[60%]'
+              : favoritesState.length === 3 && width > 1650
+                ? 'w-[65%]'
+                : 'w-full'
+              }`}
           >
             {favoritesState.length > 0 ? (
-              <Slider
-                className="ml-48"
-                {...favoritesSettings}
-                ref={favoriteRef}
-              >
-                {favoritesState.map((review: Favorite_Type, index: number) => (
-                  <Favorite
-                    _id={review._id}
-                    key={index}
-                    userId={review.userId}
-                    created_at={review.created_at}
-                    gameId={review.gameId}
-                    game_name={review.game_name}
-                    game_image={review.game_image}
-                    visited={true}
-                  />
-                ))}
-              </Slider>
+              favoritesState.length === 2 ? (
+                <div
+                  className={`flex flex-nowrap ${width < 1650 ? 'justify-between' : 'justify-between'
+                    }`}
+                >
+                  {favoritesState.map((review: Favorite_Type, index: number) =>
+                    width < 1200 ? (
+                      <div className="w-2/4">
+                        <Favorite
+                          _id={review._id}
+                          key={index}
+                          userId={review.userId}
+                          created_at={review.created_at}
+                          gameId={review.gameId}
+                          game_name={review.game_name}
+                          game_image={review.game_image}
+                        />
+                      </div>
+                    ) : (
+                      <Favorite
+                        _id={review._id}
+                        key={index}
+                        userId={review.userId}
+                        created_at={review.created_at}
+                        gameId={review.gameId}
+                        game_name={review.game_name}
+                        game_image={review.game_image}
+                      />
+                    )
+                  )}
+                </div>
+              ) : favoritesState.length <= 4 && width > 1650 ? (
+                <div
+                  className={`flex flex-nowrap ${width < 1650 ? 'justify-start' : 'justify-between'
+                    }`}
+                >
+                  {favoritesState.map(
+                    (review: Favorite_Type, index: number) => (
+                      <Favorite
+                        _id={review._id}
+                        key={index}
+                        userId={review.userId}
+                        created_at={review.created_at}
+                        gameId={review.gameId}
+                        game_name={review.game_name}
+                        game_image={review.game_image}
+                      />
+                    )
+                  )}
+                </div>
+              ) : favoritesState.length === 1 && width < 1200 && width > 800 ? (
+                favoritesState.map((review: Favorite_Type, index: number) => (
+                  <div className="w-2/5">
+                    <Favorite
+                      _id={review._id}
+                      key={index}
+                      userId={review.userId}
+                      created_at={review.created_at}
+                      gameId={review.gameId}
+                      game_name={review.game_name}
+                      game_image={review.game_image}
+                    />
+                  </div>
+                ))
+              ) : favoritesState.length === 1 && width < 800 ? (
+                favoritesState.map((review: Favorite_Type, index: number) => (
+                  <div className="w-full">
+                    <Favorite
+                      _id={review._id}
+                      key={index}
+                      userId={review.userId}
+                      created_at={review.created_at}
+                      gameId={review.gameId}
+                      game_name={review.game_name}
+                      game_image={review.game_image}
+                    />
+                  </div>
+                ))
+              ) : (
+                <Slider {...favoritesSettings} ref={favoriteRef}>
+                  {favoritesState.map(
+                    (review: Favorite_Type, index: number) => (
+                      <Favorite
+                        _id={review._id}
+                        key={index}
+                        userId={review.userId}
+                        created_at={review.created_at}
+                        gameId={review.gameId}
+                        game_name={review.game_name}
+                        game_image={review.game_image}
+                      />
+                    )
+                  )}
+                </Slider>
+              )
             ) : (
               <div className="text-md text-white font-semibold opacity-30">
-                No Favorite Games
+                You don't have favorite games yet!
               </div>
             )}
           </div>
