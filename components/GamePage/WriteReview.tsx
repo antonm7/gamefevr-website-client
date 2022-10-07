@@ -56,6 +56,7 @@ export default function WriteReview({
       if (rankGameRequest.status !== 201)
         throw new Error(rankGameRequest.data.error)
       setText('')
+      setRank(null)
       onClose()
       insertNewReview(writeReviewRequest.data.review)
     } catch (e) {
