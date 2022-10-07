@@ -91,7 +91,7 @@ export default async function handler(req: Request, res: Response) {
           filteredString = filteredString.concat('&ordering=-released')
         }
         const getData = await fetch(
-          `https://api.rawg.io/api/games?key=39a2bd3750804b5a82669025ed9986a8&dates=1990-01-01,2023-12-31page=${body.page}&page_size=30${filteredString}`
+          `https://api.rawg.io/api/games?key=39a2bd3750804b5a82669025ed9986a8&dates=1990-01-01,2023-12-31&page=${body.page}&page_size=30${filteredString}`
         )
         games = await getData.json()
         count = games.count
