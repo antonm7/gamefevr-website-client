@@ -87,8 +87,8 @@ export default function Reviews({
               {width > 1200
                 ? slicedParagrap(game_name, 22, 22)
                 : width < 600
-                ? slicedParagrap(game_name, 22, 22)
-                : game_name}
+                  ? slicedParagrap(game_name, 22, 22)
+                  : game_name}
             </h1>
           </Link>
         </div>
@@ -127,8 +127,8 @@ export default function Reviews({
               {width > 1200
                 ? slicedParagrap(game_name, 22, 22)
                 : width < 600
-                ? slicedParagrap(game_name, 22, 22)
-                : game_name}
+                  ? slicedParagrap(game_name, 22, 22)
+                  : game_name}
             </h1>
           </Link>
           <FontAwesomeIcon
@@ -152,12 +152,12 @@ export default function Reviews({
           {width > 1200
             ? slicedParagrap(text, 190, 190)
             : width < 360
-            ? slicedParagrap(text, 40, 40)
-            : width < 600
-            ? slicedParagrap(text, 100, 100)
-            : width < 900
-            ? slicedParagrap(text, 260, 260)
-            : slicedParagrap(text, 450, 450)}
+              ? slicedParagrap(text, 40, 40)
+              : width < 600
+                ? slicedParagrap(text, 100, 100)
+                : width < 900
+                  ? slicedParagrap(text, 260, 260)
+                  : slicedParagrap(text, 450, 450)}
         </p>
         <p className="text-base text-white opacity-60 whitespace-nowrap">
           Sep 12,2022

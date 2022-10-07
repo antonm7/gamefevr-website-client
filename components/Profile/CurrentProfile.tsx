@@ -86,17 +86,17 @@ export default function CurrentProfile({ reviews, favorites, user }: Props) {
       const newReviews = reviewsState.filter(
         (review: Review_Type) => review._id !== id
       )
-      setReviewsState(reviewsState.splice(0, reviewsState.length))
       setReviewsState(newReviews)
     }
   }
 
   const deleteFavorite = (id: ObjectId | undefined): void => {
+    console.log(id)
     if (id) {
       const newFavorites = favorites.filter(
         (favorite: Favorite_Type) => favorite._id !== id
       )
-      setFavoritesState(favorites.splice(0, favorites.length))
+      console.log(favoritesState, newFavorites)
       setFavoritesState(newFavorites)
     }
   }
