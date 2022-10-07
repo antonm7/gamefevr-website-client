@@ -3,13 +3,15 @@ import RateGame from '../RateGame'
 import AddFavorite from '../AddFavorite'
 import Link from 'next/link'
 import WhereToBuy from '../WhereToBuy'
+import { Review_Type } from '../../../types/schema'
 
 interface Props {
   game: DetailedGame
+  reviews: Review_Type[]
   changeIsUserRated: (isUserRated: string) => void
 }
 
-export default function Lower640({ game, changeIsUserRated }: Props) {
+export default function Lower640({ game, changeIsUserRated, reviews }: Props) {
   return (
     <div id="game_page_header" className="flex flex-row justify-between">
       <div>
@@ -124,6 +126,7 @@ export default function Lower640({ game, changeIsUserRated }: Props) {
         <AddFavorite gameId={game.id} />
         <div className="relative h-48 pt-5 overflow-hidden">
           <RateGame
+            reviews={reviews}
             updateIsUserRated={(value: string) => changeIsUserRated(value)}
           />{' '}
         </div>
