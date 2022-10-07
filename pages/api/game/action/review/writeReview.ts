@@ -77,7 +77,7 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
         user_name = userName.username
       } catch (e) {
         res.status(500).send({ error: 'Unexpected error' })
-        return console.log('error on checkinf if user commented', e)
+        return console.log('error on checkinf if user commenteds', e)
       }
 
       const review: Review_Type = {

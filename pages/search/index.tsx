@@ -77,7 +77,6 @@ export default function Index(props: Props) {
       loadGames(1)
       return
     }
-    console.log(props)
     if (props.games.length === 0 && !props.error) return
     else {
       if (props.error) {

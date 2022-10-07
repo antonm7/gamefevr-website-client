@@ -33,7 +33,6 @@ export default function Filters() {
       changeSelectedConsoles(selectedConsoles.filter((i) => i !== index))
     } else {
       //adds
-      console.log('thats the index', index)
       changeSelectedConsoles((old) => [...old, index])
     }
   }
