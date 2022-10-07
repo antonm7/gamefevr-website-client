@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import clientPromise from '../../../lib/functions/mongodb'
 import { hash } from 'bcrypt'
+import sgMail from '@sendgrid/mail'
 
 interface ReqBody {
   email: string
@@ -22,7 +23,7 @@ async function handler(req: Request, res: Response) {
           /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
         return re.test(email)
       }
-      console.log(req.body)
+
       if (!validateEmail(email))
         return res.status(200).send({ error: 'Please enter valid email' })
 
@@ -58,6 +59,24 @@ async function handler(req: Request, res: Response) {
         visited_games: [],
         visited_explore: [],
       })
+      if (process.env.SENDGRID_API_KEY) {
+        sgMail.setApiKey(process.env.SENDGRID_API_KEY)
+        try {
+          const msg = {
+            to: 'migolkoanton@gmail.com', // Change to your recipient
+            from: 'gameFevrr@gmail.com           ', // Change to your verified sender
+            subject: 'Sending with SendGrid is Fun',
+            text: 'and easy to do anywhere, even with Node.js',
+            html: '<strong>and easy to do anywhere, even with Node.js</strong>',
+          }
+          const send = await sgMail.send(msg)
+          console.log('seded', send)
+        } catch (e: any) {
+          console.log('error sending email', e.response.body)
+        }
+      }
+
+
 
       res.status(201).send({ error: null })
     } catch (e) {

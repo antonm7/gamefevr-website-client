@@ -14,6 +14,7 @@
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@fullpage/react-fullpage": "^0.1.26",
     "@prisma/client": "^3.13.0",
+    "@sendgrid/mail": "^7.7.0",
     "@tanem/react-nprogress": "^5.0.5",
     "@types/react-slick": "^0.23.8",
     "axios": "^0.25.0",
