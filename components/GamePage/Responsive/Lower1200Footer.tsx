@@ -2,8 +2,10 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { ObjectId } from 'bson'
 import Image from 'next/image'
+import { useEffect, useState } from 'react'
 import { Short_Screenshot } from '../../../types'
 import { Review_Type } from '../../../types/schema'
+import SmallLoader from '../../common/SmallLoader'
 import Screenshots from '../Screenshots'
 import VerticalReviewsLoader from '../VerticalReviewsLoader'
 
@@ -12,6 +14,7 @@ interface Props {
   navigateAuth: () => void
   deleteReview: (id: ObjectId | undefined) => void
   reviews: Review_Type[]
+  reviewsLoading: boolean
   sliderRef: any
 }
 
@@ -20,6 +23,7 @@ export default function Lower1200Footer({
   navigateAuth,
   reviews,
   deleteReview,
+  reviewsLoading,
   sliderRef,
 }: Props) {
   return (
@@ -68,26 +72,30 @@ export default function Lower1200Footer({
         id="game_page_reviews_container"
         className="flex flex-col items-center pt-4 "
       >
-        <div
-          className="w-72 p-4 flex items-center justify-center rounded-xl my-4  
-            cursor-pointer opacity-80 hover:opacity-100"
-          style={{ backgroundColor: 'rgba(21,21,21,0.6)' }}
-        >
+        {reviewsLoading ? (
+          <SmallLoader xCentered={true} />
+        ) : (
           <div
-            className="flex items-center justify-center"
-            onClick={navigateAuth}
+            className="w-72 p-4 flex items-center justify-center rounded-xl my-4  
+            cursor-pointer opacity-80 hover:opacity-100"
+            style={{ backgroundColor: 'rgba(21,21,21,0.6)' }}
           >
-            <FontAwesomeIcon
-              icon={faPlus}
-              className="h-6 text-white pr-4"
+            <div
+              className="flex items-center justify-center"
               onClick={navigateAuth}
-            />
-            <h1 className="text-white text-xl flex items-center">
-              Add A Review
-            </h1>
+            >
+              <FontAwesomeIcon
+                icon={faPlus}
+                className="h-6 text-white pr-4"
+                onClick={navigateAuth}
+              />
+              <h1 className="text-white text-xl flex items-center">
+                Add A Review
+              </h1>
+            </div>
           </div>
-        </div>
-        {reviews.length ? (
+        )}
+        {reviewsLoading ? null : reviews.length ? (
           <VerticalReviewsLoader
             reviews={reviews}
             deleteReview={(id) => deleteReview(id)}

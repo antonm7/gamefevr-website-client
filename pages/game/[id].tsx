@@ -24,7 +24,6 @@ import SameSeries from '../../components/GamePage/SameSeries'
 
 type Props = {
   game: DetailedGame
-  reviews: Review_Type[]
 }
 
 export default function GamePage(props: Props) {
@@ -46,14 +45,30 @@ export default function GamePage(props: Props) {
   const [isUserRated, setIsUserRated] = useState<string | null>(null)
   const [reviews, setReviews] = useState<Review_Type[]>([])
   const [loading, setLoading] = useState<boolean>(true)
+  const [reviewsLoading, setReviewsLoading] = useState<boolean>(true)
   const sliderRef = useRef(null)
+
+  const loadReviews = async () => {
+    try {
+      const req = await axios.get(`/api/game/get/getReviews?${router.query.id}`)
+      if (req.status === 200) {
+        if (req.data.error) throw new Error(req.data.error)
+        setReviews(req.data.reviews)
+      } else {
+        throw new Error()
+      }
+    } catch (e) {
+      console.log('error loading game reviews', e)
+    }
+    setReviewsLoading(false)
+  }
 
   useEffect(() => {
     setReviewsAnimation(false)
     setScreenshotsAnimtion(false)
     setGame(props.game)
-    setReviews(props.reviews)
     setLoading(false)
+    loadReviews()
   }, [router.query.id, props.game])
 
   const navigateAuth = () => {
@@ -134,11 +149,13 @@ export default function GamePage(props: Props) {
             />
             {width > 640 ? (
               <Bigger640
+                reviews={reviews}
                 game={game}
                 changeIsUserRated={(value) => setIsUserRated(value)}
               />
             ) : (
               <Lower640
+                reviews={reviews}
                 game={game}
                 changeIsUserRated={(value) => setIsUserRated(value)}
               />
@@ -162,6 +179,7 @@ export default function GamePage(props: Props) {
               />
             ) : (
               <Lower1200Footer
+                reviewsLoading={reviewsLoading}
                 screenshots={game.screenshots.results}
                 navigateAuth={() => navigateAuth()}
                 deleteReview={(id) => deleteReview(id)}
@@ -170,6 +188,7 @@ export default function GamePage(props: Props) {
               />
             )}
             <FooterButtons
+              reviewsLoading={reviewsLoading}
               screenshots={game.screenshots}
               reviewsAnimation={reviewsAnimation}
               toggleAnimation={toggleAnimation}
@@ -268,23 +287,19 @@ export async function getStaticProps(context: Context) {
     same_series,
   }
 
-  const client = await clientPromise
-  const db = client.db('gameFevr')
-  const reviews = await db
-    .collection('reviews')
-    .find({ gameId: context.params.id })
-    .toArray()
+  // const reviews = await db
+  //   .collection('reviews')
+  //   .find({ gameId: context.params.id })
+  //   .toArray()
   // fetch(`/api/game/action/visited?gameId=${query.id}`, {
   //     //             headers:{
   //     //                 userId:session.data?.user?.userId
   //     //             }
   //     //         })
 
-  console.log(reviews)
   return {
     props: {
       game: finalData,
-      reviews: JSON.parse(JSON.stringify(reviews)),
     },
   }
 }

@@ -6,12 +6,14 @@ import YellowButton from '../common/YellowButton'
 interface Props {
   screenshots: { results: Short_Screenshot[] }
   reviewsAnimation: boolean
+  reviewsLoading: boolean
   toggleAnimation: () => void
 }
 
 export default function FooterButtons({
   screenshots,
   reviewsAnimation,
+  reviewsLoading,
   toggleAnimation,
 }: Props) {
   const [width] = useWindowSize()
@@ -29,9 +31,21 @@ export default function FooterButtons({
       >
         <div className="w-52" id="show_comments_wrapper">
           <YellowButton
-            title={reviewsAnimation ? 'Show Screenshots' : 'Show Reviews'}
-            active={true}
-            onClick={() => toggleAnimation()}
+            title={
+              reviewsAnimation
+                ? 'Show Screenshots'
+                : reviewsLoading
+                ? 'Loading Reviews..'
+                : 'Show Reviews'
+            }
+            active={reviewsAnimation ? true : reviewsLoading ? false : true}
+            onClick={() =>
+              reviewsAnimation
+                ? toggleAnimation()
+                : reviewsLoading
+                ? null
+                : toggleAnimation()
+            }
           />
         </div>
       </div>
