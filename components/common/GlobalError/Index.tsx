@@ -19,9 +19,9 @@ export default function GlobalError({ isVisible, propsType }: Props) {
 
   useEffect(() => {
     if (isVisible) {
-      setType(type)
+      setType(propsType)
       setVisibility(true)
-      if (type !== 'request') {
+      if (propsType !== 'request') {
         setTimeout(() => {
           setVisibility(false)
           changeGlobalErrorVisibility(false)
@@ -37,5 +37,6 @@ export default function GlobalError({ isVisible, propsType }: Props) {
   if (type === 'warning') return <Warning visibility={visibility} text={text} />
 
   if (type === 'request') return <Request visibility={visibility} text={text} />
+
   return null
 }
