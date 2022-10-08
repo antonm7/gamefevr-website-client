@@ -7,7 +7,7 @@ import authorize from '../../../../backend-middlewares/authorize'
 
 interface ExtendedNextApiRequest extends NextApiRequest {
   body: {
-    userId: string
+    email: string
     oldPassword: string
     newPassword: string
   }
@@ -35,14 +35,14 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
     try {
       const user = await db
         .collection('users')
-        .findOne({ _id: new ObjectId(body.userId) })
+        .findOne({ email: body.email })
       if (!user) {
         res.status(404).send({ error: 'User not found' })
         throw new Error('User not found')
       }
       const isValid = await compare(body.oldPassword, user.password)
       if (!isValid) {
-        return res.status(200).send({ error: 'Wrong password' })
+        return res.status(200).send({ error: 'Please enter the corect password' })
       }
     } catch (e) {
       console.log('error on comparing password', e)
@@ -54,7 +54,7 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
       await db
         .collection('users')
         .updateOne(
-          { _id: new ObjectId(body.userId) },
+          { email: body.email },
           { $set: { password: hashedPassword } }
         )
       res.status(200).send({ error: null })
