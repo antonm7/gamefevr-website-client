@@ -4,7 +4,7 @@ import { ObjectId } from 'bson'
 import { useEffect, useRef, useState } from 'react'
 import Slider from 'react-slick'
 import { useStore } from '../../store'
-import { Review_Type, Favorite_Type, Client_User } from '../../types/schema'
+import { Review_Type, Favorite_Type } from '../../types/schema'
 import Filters from '../Filters'
 import SearchLayout from '../layout/SearchLayout'
 import Favorite from './Favorite'
@@ -15,12 +15,22 @@ import useWindowSize from '../../lib/functions/hooks/useWindowSize'
 interface Props {
   reviews: Review_Type[]
   favorites: Favorite_Type[]
-  user: Client_User
+  user: {
+    email: string
+    username: string
+  }
 }
+
+interface User {
+  email: string
+  username: string
+}
+
 
 export default function CurrentProfile({ reviews, favorites, user }: Props) {
   const [isOpened, setIsOpened] = useState<boolean>(false)
-  const [userState, setUserState] = useState<Client_User>()
+  const [userState, setUserState] = useState<User | null>(null)
+  const [username, setUsername] = useState<string>('')
   const [reviewsState, setReviewsState] = useState<Review_Type[]>([])
   const [favoritesState, setFavoritesState] = useState<Favorite_Type[]>([])
   const [width] = useWindowSize()
@@ -81,6 +91,7 @@ export default function CurrentProfile({ reviews, favorites, user }: Props) {
   }
 
   useEffect(() => {
+    setUsername(user.username)
     setUserState(user)
     setReviewsState(reviews)
     setFavoritesState(favorites)
@@ -113,8 +124,8 @@ export default function CurrentProfile({ reviews, favorites, user }: Props) {
     <SearchLayout>
       <main className="px-44 py-10" id="profile_page">
         {store.isFilterOn ? <Filters /> : null}
-
         <SettingsBar
+          onUsernameChange={name => setUsername(name)}
           user={user}
           isOpened={isOpened}
           close={() => changeVisibleSettings(false)}
@@ -124,7 +135,7 @@ export default function CurrentProfile({ reviews, favorites, user }: Props) {
           className="flex justify-between items-center"
         >
           <h1 id="welcome_title" className="text-white font-bold text-4xl">
-            Welcome {userState?.username}!
+            Welcome {username}!
           </h1>
           <div
             className="flex items-center"
@@ -146,20 +157,18 @@ export default function CurrentProfile({ reviews, favorites, user }: Props) {
         <div className="pt-24">
           <h1 className="text-white font-bold text-3xl">Your Reviews</h1>
           <div
-            className={`mt-12 ${
-              reviewsState.length === 2 && width > 1200
-                ? 'w-[80%]'
-                : reviewsState.length === 3
+            className={`mt-12 ${reviewsState.length === 2 && width > 1200
+              ? 'w-[80%]'
+              : reviewsState.length === 3
                 ? 'w-full'
                 : 'w-full'
-            }`}
+              }`}
           >
             {reviewsState.length > 0 ? (
               reviewsState.length === 2 ? (
                 <div
-                  className={`flex flex-nowrap ${
-                    width < 1650 ? 'justify-between' : 'justify-between'
-                  }`}
+                  className={`flex flex-nowrap ${width < 1650 ? 'justify-between' : 'justify-between'
+                    }`}
                 >
                   {reviewsState.map((review: Review_Type, index: number) =>
                     width < 1200 ? (
@@ -201,9 +210,8 @@ export default function CurrentProfile({ reviews, favorites, user }: Props) {
                 </div>
               ) : reviewsState.length <= 3 && width > 1700 ? (
                 <div
-                  className={`flex flex-nowrap ${
-                    width < 1700 ? 'justify-start' : 'justify-between'
-                  }`}
+                  className={`flex flex-nowrap ${width < 1700 ? 'justify-start' : 'justify-between'
+                    }`}
                 >
                   {reviewsState.map((review: Review_Type, index: number) => (
                     <Review
@@ -294,20 +302,18 @@ export default function CurrentProfile({ reviews, favorites, user }: Props) {
         <div className="pt-14">
           <h1 className="text-white font-bold text-3xl">Favorite Games</h1>
           <div
-            className={`mt-12 ${
-              favoritesState.length === 2 && width > 1200
-                ? 'w-[60%]'
-                : favoritesState.length === 3 && width > 1650
+            className={`mt-12 ${favoritesState.length === 2 && width > 1200
+              ? 'w-[60%]'
+              : favoritesState.length === 3 && width > 1650
                 ? 'w-[65%]'
                 : 'w-full'
-            }`}
+              }`}
           >
             {favoritesState.length > 0 ? (
               favoritesState.length === 2 ? (
                 <div
-                  className={`flex flex-nowrap ${
-                    width < 1650 ? 'justify-between' : 'justify-between'
-                  }`}
+                  className={`flex flex-nowrap ${width < 1650 ? 'justify-between' : 'justify-between'
+                    }`}
                 >
                   {favoritesState.map((review: Favorite_Type, index: number) =>
                     width < 1200 ? (
@@ -339,9 +345,8 @@ export default function CurrentProfile({ reviews, favorites, user }: Props) {
                 </div>
               ) : favoritesState.length <= 4 && width > 1650 ? (
                 <div
-                  className={`flex flex-nowrap ${
-                    width < 1650 ? 'justify-start' : 'justify-between'
-                  }`}
+                  className={`flex flex-nowrap ${width < 1650 ? 'justify-start' : 'justify-between'
+                    }`}
                 >
                   {favoritesState.map(
                     (review: Favorite_Type, index: number) => (
