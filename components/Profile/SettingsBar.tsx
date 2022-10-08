@@ -3,17 +3,20 @@ import SettingsInput from './SettingsInput'
 import YellowButton from '../common/YellowButton'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
-import { Client_User } from '../../types/schema'
 import { useGlobalError } from '../../store'
 import axios from 'axios'
 
 interface Props {
-  user: Client_User
+  user: {
+    username: string
+    email: string
+  }
   isOpened: boolean
+  onUsernameChange: (name: string) => void
   close: () => void
 }
 
-export default function SettingsBar({ user, isOpened, close }: Props) {
+export default function SettingsBar({ user, isOpened, close, onUsernameChange }: Props) {
   const [username, setUsername] = useState<string>('')
   const [email, setEmail] = useState<string>('')
   const [oldPassword, setOldPassword] = useState<string>('')
@@ -38,6 +41,27 @@ export default function SettingsBar({ user, isOpened, close }: Props) {
         changeText('New password is required')
         return
       }
+      try {
+        const req = await axios.post('/api/user/settings/changePassword', {
+          email,
+          oldPassword,
+          newPassword
+        })
+        if (!req.data.error) {
+          changeText('Password has changed')
+          changeGlobalErrorType('success')
+          changeGlobalErrorVisibility(true)
+        } else {
+          changeText(req.data.error)
+          changeGlobalErrorType('error')
+          changeGlobalErrorVisibility(true)
+        }
+      } catch (e) {
+        changeText('Unexpected Error')
+        changeGlobalErrorType('error')
+        changeGlobalErrorVisibility(true)
+      }
+
     }
     try {
       //user tries to change email
@@ -47,10 +71,11 @@ export default function SettingsBar({ user, isOpened, close }: Props) {
       //user tries to change username
       if (username !== user.username) {
         const req = await axios.post('/api/user/settings/changeUsername', {
-          userId: user._id,
+          email: user.email,
           username
         })
         if (!req.data.error) {
+          onUsernameChange(username)
           changeText('Username has changed')
           changeGlobalErrorType('success')
           changeGlobalErrorVisibility(true)
@@ -141,8 +166,8 @@ export default function SettingsBar({ user, isOpened, close }: Props) {
         />
         <SettingsInput
           value={newPassword}
-          label="Confirm Password"
-          placeholder="Confirm Your Password"
+          label="New Password"
+          placeholder="Enter Your New Password"
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setNewPassword(e.target.value)
           }
