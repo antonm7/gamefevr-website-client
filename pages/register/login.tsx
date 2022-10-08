@@ -5,15 +5,18 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import LoginAnimation from '../../components/animations/Login'
+import OnlyLogo from '../../components/common/OnlyLogo'
 import SmallLoader from '../../components/common/SmallLoader'
 import YellowButton from '../../components/common/YellowButton'
 import StyledInput from '../../components/Register/StyledInput'
+import useWindowSize from '../../lib/functions/hooks/useWindowSize'
 
 const Login: NextPage = () => {
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const [error, setError] = useState<string>('')
   const [loading, setLoading] = useState<boolean>(false)
+  const [width] = useWindowSize()
   const router = useRouter()
 
   const signin = async (): Promise<void> => {
@@ -42,17 +45,23 @@ const Login: NextPage = () => {
 
   return (
     <main className="flex h-screen bg-white">
-      <div style={{ zIndex: 2 }} className="px-32 pt-16">
-        <Image src={'/images/dLogo.svg'} height={32} width={130} alt="Logo" />
-        <p className="text-darkIndigo font-black text-5xl overflow-hidden pt-32 pb-4">
+      <div style={{ zIndex: 2 }} className="px-32 pt-16 register-container">
+        {width >= 800 ? (
+          <Image src={'/images/dLogo.svg'} height={32} width={130} alt="Logo" />
+        ) : (
+          <div className="relative overflow-hidden">
+            <OnlyLogo size={width >= 500 ? 'xl' : width >= 360 ? 'lg' : 'sm'} />
+          </div>
+        )}
+        <p className="register-title text-darkIndigo font-black text-5xl overflow-hidden pt-32 pb-4">
           Log In
         </p>
-        <p className="text-darkIndigo opacity-60 font-normal text-base">
+        <p className="register-welcome text-darkIndigo opacity-60 font-normal text-base">
           Welcome Back!
           <br />
           Please login to your account
         </p>
-        <div className="pt-9 w-80">
+        <div className="pt-9 w-80 styled-input">
           <StyledInput
             title="Email"
             placeholder="Enter your email"

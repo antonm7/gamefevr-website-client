@@ -17,7 +17,23 @@
   }
 }
 
+@media (max-width: 1500px) {
+  .signup-animation {
+    height: 75% !important;
+    position: absolute !important;
+    right: 0;
+    top: 0 !important;
+  }
+}
+
 @media (max-width: 1400px) {
+  .login-animation {
+    height: 75% !important;
+    position: absolute !important;
+    right: 0;
+    top: 0 !important;
+  }
+
   #game_page_background_image_wrapper {
     min-width: 20rem !important;
   }
@@ -138,6 +154,9 @@
 }
 
 @media (max-width: 1200px) {
+  .signup-animation {
+    height: 50% !important;
+  }
   #we_found_title {
     font-size: 1.6rem !important;
   }
@@ -214,9 +233,16 @@
   #settings_bar {
     height: 78vh !important;
   }
+
+  .login-animation {
+    height: 50% !important;
+  }
 }
 
 @media (max-width: 900px) {
+  .signup-animation {
+    height: 40% !important;
+  }
   #game_page_game_name {
     font-size: 3rem;
   }
@@ -334,6 +360,26 @@
 
   #favorite-component {
     width: 100% !important;
+  }
+}
+
+@media (max-width: 800px) {
+  .register-container {
+    padding: 2rem;
+  }
+
+  .login-animation {
+    top: -5rem !important;
+    height: 40% !important;
+  }
+
+  .signup-animation {
+    top: -2rem;
+    height: 30% !important;
+  }
+
+  .register-title {
+    padding-top: 1rem;
   }
 }
 
@@ -470,6 +516,32 @@
   .slick-slider {
     margin-left: 0.5rem;
   }
+
+  .register-title {
+    font-size: 2.4rem;
+  }
+
+  .register-welcome {
+    font-size: 0.9rem;
+    opacity: 0.8;
+  }
+
+  .register-container {
+    padding: 4rem 1rem;
+  }
+
+  #signup-container {
+    padding-top: 5rem;
+  }
+
+  #signup-title {
+    padding-top: 3rem;
+  }
+
+  .signup-animation {
+    top: -3rem !important;
+    height: 30% !important;
+  }
 }
 
 @media (max-width: 440px) {
@@ -500,5 +572,19 @@
   #settings_bar svg {
     top: 25px !important;
     right: 20px !important;
+  }
+
+  .login-animation {
+    height: 30% !important;
+  }
+
+  .styled-input {
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+
+  .signup-animation {
+    top: -1rem !important;
+    height: 20% !important;
   }
 }

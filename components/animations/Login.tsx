@@ -11,7 +11,7 @@ const LoginAnimation = React.memo(() => {
       preserveAspectRatio: 'xMaxYMax meet', // Supports the same options as the svg element's preserveAspectRatio property
       clearCanvas: false,
       hideOnTransparent: true, //Boolean, only svg renderer, hides elements when opacity reaches 0 (defaults to true)
-      className: 'some-css-class-name',
+      className: 'login-animation',
     },
   }
   return (

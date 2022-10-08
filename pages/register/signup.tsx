@@ -6,9 +6,11 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import SignupAnimation from '../../components/animations/Signup'
+import OnlyLogo from '../../components/common/OnlyLogo'
 import SmallLoader from '../../components/common/SmallLoader'
 import YellowButton from '../../components/common/YellowButton'
 import StyledInput from '../../components/Register/StyledInput'
+import useWindowSize from '../../lib/functions/hooks/useWindowSize'
 
 const Signup: NextPage = () => {
   const [email, setEmail] = useState<string>('')
@@ -17,6 +19,8 @@ const Signup: NextPage = () => {
   const [loading, setLoading] = useState<boolean>(false)
   const [error, setError] = useState<string>('')
   const router = useRouter()
+
+  const [width] = useWindowSize()
 
   const signup = async (): Promise<void> => {
     setError('')
@@ -57,17 +61,30 @@ const Signup: NextPage = () => {
 
   return (
     <main className="flex h-screen bg-white">
-      <div style={{ zIndex: 2 }} className="px-32 pt-16">
-        <Image src={'/images/dLogo.svg'} height={32} width={130} alt="Logo" />
-        <p className="text-darkIndigo font-black text-5xl overflow-hidden pt-12 pb-4">
+      <div
+        id="signup-container"
+        style={{ zIndex: 2 }}
+        className="px-32 pt-16 register-container "
+      >
+        {width >= 800 ? (
+          <Image src={'/images/dLogo.svg'} height={32} width={130} alt="Logo" />
+        ) : (
+          <div className="relative overflow-hidden">
+            <OnlyLogo size={width >= 500 ? 'xl' : width >= 360 ? 'lg' : 'sm'} />
+          </div>
+        )}
+        <p
+          id="signup-title"
+          className="register-title text-darkIndigo font-black text-5xl overflow-hidden pt-12 pb-4"
+        >
           Sign Up
         </p>
-        <p className="text-darkIndigo opacity-60 font-normal text-base">
+        <p className="register-welcome text-darkIndigo opacity-60 font-normal text-base">
           Welcome!
           <br />
           Please create your account
         </p>
-        <div className="pt-9 w-80">
+        <div className="pt-9 w-80 styled-input">
           <StyledInput
             title="Username"
             placeholder="Enter your username"

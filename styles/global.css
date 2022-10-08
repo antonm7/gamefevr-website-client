@@ -229,6 +229,10 @@ div {
   direction: rtl;
 }
 
+#triangle {
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+}
+
 .flickity-page-dots .dot {
   display: inline-block;
   width: 10px;
