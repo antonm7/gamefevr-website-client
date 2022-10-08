@@ -1,7 +1,7 @@
 import { getSession } from 'next-auth/react'
 import clientPromise from '../../lib/functions/mongodb'
 import { ObjectId } from 'bson'
-import { Client_User, Favorite_Type, Review_Type } from '../../types/schema'
+import { Favorite_Type, Review_Type } from '../../types/schema'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 import CurrentProfile from '../../components/Profile/CurrentProfile'
@@ -11,7 +11,10 @@ import { GetServerSidePropsContext } from 'next'
 interface Props {
   reviews: Review_Type[]
   favorites: Favorite_Type[]
-  user: Client_User
+  user: {
+    username: string
+    email: string
+  }
   visited: boolean
 }
 
@@ -74,12 +77,12 @@ export async function getServerSideProps(
       props: {
         user: isVisited
           ? {
-              username: user?.username,
-            }
+            username: user?.username,
+          }
           : {
-              username: user?.username,
-              email: user?.email,
-            },
+            username: user?.username,
+            email: user?.email,
+          },
         favorites: JSON.parse(JSON.stringify(favorites)),
         reviews: JSON.parse(JSON.stringify(reviews)),
         visited: isVisited,
