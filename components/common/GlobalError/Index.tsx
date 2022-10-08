@@ -2,11 +2,12 @@ import { useEffect, useState } from 'react'
 import { useGlobalError } from '../../../store'
 import Error from './Error'
 import Request from './Request'
+import Sucssess from './Sucssess'
 import Warning from './Warning'
 
 interface Props {
   isVisible: boolean
-  propsType: 'error' | 'warning' | 'request' | undefined
+  propsType: 'error' | 'warning' | 'request' | 'success' | undefined
 }
 
 export default function GlobalError({ isVisible, propsType }: Props) {
@@ -26,6 +27,7 @@ export default function GlobalError({ isVisible, propsType }: Props) {
           setVisibility(false)
           changeGlobalErrorVisibility(false)
         }, 1900)
+
       }
     } else {
       setVisibility(false)
@@ -37,6 +39,8 @@ export default function GlobalError({ isVisible, propsType }: Props) {
   if (type === 'warning') return <Warning visibility={visibility} text={text} />
 
   if (type === 'request') return <Request visibility={visibility} text={text} />
+
+  if (type === 'success') return <Sucssess visibility={visibility} text={text} />
 
   return null
 }

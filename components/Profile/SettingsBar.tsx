@@ -48,10 +48,12 @@ export default function SettingsBar({ user, isOpened, close }: Props) {
       if (username !== user.username) {
         const req = await axios.post('/api/user/settings/changeUsername', {
           userId: user._id,
-          username,
+          username
         })
         if (!req.data.error) {
-          alert('Username changed')
+          changeText('Username has changed')
+          changeGlobalErrorType('success')
+          changeGlobalErrorVisibility(true)
         } else {
           changeText(req.data.error)
           changeGlobalErrorType('error')
@@ -93,9 +95,8 @@ export default function SettingsBar({ user, isOpened, close }: Props) {
   return (
     <div
       id="settings_bar"
-      className={`absolute bottom-0 z-10 bg-darkIndigo right-0 rounded-2xl p-16 ${
-        isOpened ? 'opened' : ''
-      }`}
+      className={`absolute bottom-0 z-10 bg-darkIndigo right-0 rounded-2xl p-16 ${isOpened ? 'opened' : ''
+        }`}
       style={{
         width: '28rem',
         height: '87vh',

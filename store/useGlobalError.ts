@@ -4,12 +4,12 @@ import create from 'zustand'
 interface State {
   isVisible: boolean
   text: string
-  type: 'error' | 'warning' | 'request' | undefined
+  type: 'error' | 'warning' | 'request' | 'success' | undefined
   answer: 'yes' | 'no' | undefined
   id: ObjectId | null
   setAnswer: (value: 'yes' | 'no' | undefined) => void
   setId: (value: ObjectId) => void
-  setType: (text: 'error' | 'warning' | 'request' | undefined) => void
+  setType: (text: 'error' | 'warning' | 'request' | 'success' | undefined) => void
   setText: (text: string) => void
   setIsVisible: (isVisible: boolean) => void
   closeRequest: () => void

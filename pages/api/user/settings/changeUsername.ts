@@ -7,7 +7,7 @@ import authorize from '../../../../backend-middlewares/authorize'
 interface ExtendedNextApiRequest extends NextApiRequest {
   body: {
     userId: string
-    newUsername: string
+    username: string
   }
 }
 
@@ -15,9 +15,9 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
     try {
       const auth = await checkJWT(req)
-      if (!auth) throw new Error('No token')
+      if (!auth) throw new Error('No token, sending 401')
     } catch (e) {
-      console.log(e)
+      console.log('error on changing username', e)
       return res.status(401)
     }
     let db = null
@@ -35,7 +35,8 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
     try {
       const user = await db
         .collection('users')
-        .findOne({ username: body.newUsername })
+        .findOne({ username: body.username })
+      console.log(body)
       if (user) throw new Error('Username already taken')
     } catch (e) {
       console.log('error on checking if username is already taken', e)
@@ -48,7 +49,7 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
         .collection('users')
         .updateOne(
           { _id: new ObjectId(body.userId) },
-          { $set: { username: body.newUsername } }
+          { $set: { username: body.username } }
         )
       res.status(200).send({ error: null })
     } catch (e) {

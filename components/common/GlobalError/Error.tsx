@@ -10,9 +10,8 @@ export default function Error({ visibility, text }: Props) {
   return (
     <div
       id="global_error"
-      className={`${
-        visibility ? 'global_animation_enabled' : 'global_animation_disabled'
-      } fixed flex z-50 w-96 h-20 pl-4 rounded-lg rounded-r-none`}
+      className={`${visibility ? 'global_animation_enabled' : 'global_animation_disabled'
+        } fixed flex z-50 w-96 h-20 pl-4 rounded-lg rounded-r-none`}
       style={{ backgroundColor: '#faeeeb' }}
     >
       <div className="flex w-full items-center">
@@ -42,7 +41,7 @@ export default function Error({ visibility, text }: Props) {
           </div>
           <div>
             <p className=" text-lg font- leading-6" style={{ color: 'black' }}>
-              Unexpected Error
+              {text ? 'Error' : 'Unexpected Error'}
             </p>
             <p
               className="text-white text-md font-medium "
