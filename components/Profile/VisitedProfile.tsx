@@ -11,11 +11,17 @@ import useWindowSize from '../../lib/functions/hooks/useWindowSize'
 interface Props {
   reviews: Review_Type[]
   favorites: Favorite_Type[]
-  user: Client_User
+  user: {
+    username: string
+  }
+}
+
+interface User {
+  username: string
 }
 
 export default function Visited({ reviews, favorites, user }: Props) {
-  const [userState, setUserState] = useState<Client_User>()
+  const [userState, setUserState] = useState<User>()
   const [reviewsState, setReviewsState] = useState<Review_Type[]>([])
   const [favoritesState, setFavoritesState] = useState<Favorite_Type[]>([])
   const [width] = useWindowSize()
