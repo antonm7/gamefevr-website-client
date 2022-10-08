@@ -6,7 +6,7 @@ import authorize from '../../../../backend-middlewares/authorize'
 
 interface ExtendedNextApiRequest extends NextApiRequest {
   body: {
-    userId: string
+    email: string
     username: string
   }
 }
@@ -36,7 +36,6 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
       const user = await db
         .collection('users')
         .findOne({ username: body.username })
-      console.log(body)
       if (user) throw new Error('Username already taken')
     } catch (e) {
       console.log('error on checking if username is already taken', e)
@@ -48,9 +47,10 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
       await db
         .collection('users')
         .updateOne(
-          { _id: new ObjectId(body.userId) },
+          { email: body.email },
           { $set: { username: body.username } }
         )
+      console.log(body)
       res.status(200).send({ error: null })
     } catch (e) {
       console.log(e)
