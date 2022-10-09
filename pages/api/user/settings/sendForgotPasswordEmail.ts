@@ -1,3 +1,4 @@
+import { ObjectId } from "bson";
 import { Request, Response } from "express";
 import clientPromise from "../../../../lib/functions/mongodb";
 
@@ -27,15 +28,14 @@ export default async function handler(req: Request, res: Response) {
                 throw new Error('No user found with the email')
             } else {
 
-                const generateLink = (userId: string): string => {
-                    const link = `${JSON.stringify(userId)}`
-                    return `${Math.random() * 300}_${link}`
+                const generateLink = (userId: ObjectId): string => {
+                    return `${Math.random() * 300}_${userId}`
                 }
 
                 await db.collection('users').updateOne({
                     email: email
                 }, {
-                    $set: { forgot_password_link: generateLink(JSON.stringify(findingUser._id)) }
+                    $set: { forgot_password_link: generateLink(new ObjectId(findingUser._id)) }
                 })
                 res.status(200).send({ ok: true })
             }
