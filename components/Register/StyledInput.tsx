@@ -19,7 +19,7 @@ export default function StyledInput(props: Props) {
             <p
               style={{ color: '#38b6cc' }}
               onClick={props.onClick}
-              className="cursor-pointer opacity-90 font-regular text-sm pb-4"
+              className="cursor-pointer opacity-90 font-regular text-sm mb-4"
             >
               Forgot Password?
             </p>
