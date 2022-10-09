@@ -22,9 +22,11 @@ export default async function handler(req: Request, res: Response) {
         try {
             const findingUser = await db.collection('users')
                 .findOne({ email })
+            console.log(findingUser)
             if (!findingUser) {
                 throw new Error('No user found with the email')
             } else {
+
                 const generateLink = (userId: string): string => {
                     const link = `${JSON.stringify(userId)}`
                     return `${Math.random() * 300}_${link}`
@@ -33,8 +35,9 @@ export default async function handler(req: Request, res: Response) {
                 await db.collection('users').updateOne({
                     email: email
                 }, {
-                    forgot_password_link: generateLink(JSON.stringify(findingUser._id))
+                    $set: { forgot_password_link: generateLink(JSON.stringify(findingUser._id)) }
                 })
+                res.status(200).send({ ok: true })
             }
         } catch (e) {
             res.status(404).send({ error: e })

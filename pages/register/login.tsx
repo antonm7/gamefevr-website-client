@@ -4,19 +4,18 @@ import { signIn } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import LoginAnimation from '../../components/animations/Login'
 import OnlyLogo from '../../components/common/OnlyLogo'
 import SmallLoader from '../../components/common/SmallLoader'
 import YellowButton from '../../components/common/YellowButton'
+import ForgotPassword from '../../components/Register/ForgotPassword'
 import StyledInput from '../../components/Register/StyledInput'
 import useWindowSize from '../../lib/functions/hooks/useWindowSize'
 
 const Login: NextPage = () => {
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
-  const [forgotEmail, setForgotEmail] = useState<string>('')
-  const [forgotError, setForgotError] = useState<string>('')
   const [error, setError] = useState<string>('')
 
   const [loading, setLoading] = useState<boolean>(false)
@@ -48,43 +47,6 @@ const Login: NextPage = () => {
     setLoading(false)
   }
 
-  const sendForgotPasswordEmail = async (): Promise<void> => {
-    const validateEmail = (email: string): boolean => {
-      const re =
-        // eslint-disable-next-line no-useless-escape
-        /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-      return re.test(email)
-    }
-
-    try {
-      if (!validateEmail(forgotEmail)) {
-        throw new Error('Please Enter Valid Email')
-      } else {
-        const req = await axios.post(
-          '/api/user/settings/sendForgotPasswordEmail',
-          {
-            body: {
-              email: forgotEmail,
-            },
-          }
-        )
-
-        if (req.status === 404) {
-          throw new Error('No User Found With The Email')
-        } else {
-          if (req.status !== 200) {
-            throw new Error('Unexpected Error, Try Again')
-          } else {
-            alert('Please Check Your Email')
-          }
-        }
-      }
-    } catch (e: any) {
-      setLoading(false)
-      setForgotError(e)
-    }
-  }
-
   return (
     <main className="flex h-screen bg-white">
       <div style={{ zIndex: 2 }} className="px-32 pt-16 register-container">
@@ -105,34 +67,7 @@ const Login: NextPage = () => {
         </p>
         <div className="pt-9 w-80 styled-input">
           {forgotPassword ? (
-            <>
-              <StyledInput
-                title="Email"
-                placeholder="Enter your email"
-                type="email"
-                onChange={(e) => setForgotEmail(e.target.value)}
-              />
-              <div className="pt-6">
-                {loading ? (
-                  <SmallLoader xCentered={true} />
-                ) : (
-                  <YellowButton
-                    onClick={() => sendForgotPasswordEmail()}
-                    title="Send Email"
-                  />
-                )}
-              </div>
-              <p
-                style={{ color: '#38b6cc' }}
-                className="inline-block cursor-pointer pl-1 font-semibold text-base pt-2"
-                onClick={() => setForgotPassword(false)}
-              >
-                back to login
-              </p>
-              <p className="text-xl pt-2 font-semibold text-red-600">
-                {forgotError}
-              </p>
-            </>
+            <ForgotPassword goBack={() => setForgotPassword(false)} />
           ) : (
             <>
               <StyledInput
