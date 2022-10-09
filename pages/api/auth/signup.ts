@@ -17,7 +17,7 @@ async function handler(req: Request, res: Response) {
       const client = await clientPromise
       const db = client.db()
 
-      const validateEmail = (email: string) => {
+      const validateEmail = (email: string): boolean => {
         const re =
           // eslint-disable-next-line no-useless-escape
           /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
@@ -74,8 +74,6 @@ async function handler(req: Request, res: Response) {
           console.log('error sending email', e.response.body)
         }
       }
-
-
 
       res.status(201).send({ error: null })
     } catch (e) {
