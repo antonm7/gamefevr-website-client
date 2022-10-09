@@ -1,8 +1,11 @@
+import { useEffect } from "react"
+
 interface Props {
   type?: string
   title: string
   placeholder: string
   forgot?: boolean
+  value?: string
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
   onClick?: () => void
 }
@@ -25,6 +28,7 @@ export default function StyledInput(props: Props) {
             </p>
           </div>
           <input
+            autoComplete="off"
             onChange={props.onChange}
             type={'password'}
             placeholder={props.placeholder}
@@ -40,6 +44,7 @@ export default function StyledInput(props: Props) {
             {props.title}
           </p>
           <input
+            autoComplete="off"
             onChange={props.onChange}
             type={'password'}
             placeholder={props.placeholder}
@@ -56,6 +61,7 @@ export default function StyledInput(props: Props) {
           {props.title}
         </p>
         <input
+          autoComplete="off"
           onChange={props.onChange}
           type={props.type}
           placeholder={props.placeholder}
