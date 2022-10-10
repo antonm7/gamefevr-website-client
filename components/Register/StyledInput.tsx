@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect } from 'react'
 
 interface Props {
   type?: string
@@ -6,6 +6,7 @@ interface Props {
   placeholder: string
   forgot?: boolean
   value?: string
+  titleColor?: string
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
   onClick?: () => void
 }
@@ -16,7 +17,12 @@ export default function StyledInput(props: Props) {
       return (
         <div className="w-80 styled-input">
           <div className="flex w-full justify-between">
-            <p className="text-darkIndigo opacity-90 font-semibold text-sm pb-4">
+            <p
+              className="opacity-90 font-semibold text-sm pb-4"
+              style={{
+                color: props.titleColor ? props.titleColor : 'rgb(12 40 74)',
+              }}
+            >
               {props.title}
             </p>
             <p
@@ -40,7 +46,12 @@ export default function StyledInput(props: Props) {
     } else {
       return (
         <div className="w-80 styled-input">
-          <p className="text-darkIndigo opacity-90 font-semibold text-sm pb-4">
+          <p
+            className="opacity-90 font-semibold text-sm pb-4"
+            style={{
+              color: props.titleColor ? props.titleColor : 'rgb(12 40 74)',
+            }}
+          >
             {props.title}
           </p>
           <input
