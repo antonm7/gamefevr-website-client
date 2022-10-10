@@ -4,7 +4,8 @@ import axios from 'axios'
 import { ObjectId } from 'bson'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useEffect } from 'react'
+import { useEffect, useLayoutEffect } from 'react'
+import useWindowSize from '../../lib/functions/hooks/useWindowSize'
 import slicedParagrap from '../../lib/functions/slicedParagraph'
 import { useGlobalError } from '../../store'
 import { Favorite_Type } from '../../types/schema'
@@ -24,6 +25,7 @@ export default function Favorite({
   _id,
 }: Props) {
   const state = useGlobalError((state) => state)
+  const [width] = useWindowSize()
 
   //creating the alert
   const deleteFavorite_STATE = () => {
@@ -89,13 +91,17 @@ export default function Favorite({
             objectFit="cover"
           />
         </div>
-        <Link href={`/game/${gameId}`} className="cursor-pointer">
+        <Link href={`/game/${gameId}`}>
           <h1
             id="favorite-title"
             style={{ lineBreak: 'anywhere' }}
-            className="font-semibold text-lg whitespace-pre-wrap hover:text-gray-500 px-6 py-3"
+            className="inline-block font-semibold text-lg whitespace-pre-wrap hover:text-gray-500 mx-6 my-3 cursor-pointer"
           >
-            {slicedParagrap(game_name, 25, 25)}
+            {slicedParagrap(
+              game_name,
+              width >= 800 ? 25 : width <= 640 ? 40 : 11,
+              width >= 800 ? 25 : width <= 640 ? 40 : 11
+            )}
           </h1>
         </Link>
       </div>
@@ -123,13 +129,17 @@ export default function Favorite({
             objectFit="cover"
           />
         </div>
-        <Link href={`/game/${gameId}`} className="cursor-pointer">
+        <Link href={`/game/${gameId}`}>
           <h1
             id="favorite-title"
             style={{ lineBreak: 'anywhere' }}
-            className="font-semibold text-lg whitespace-pre-wrap hover:text-gray-500 px-6 py-4 leading-5"
+            className="inline-block font-semibold text-lg whitespace-pre-wrap hover:text-gray-500 mx-6 my-4 leading-5 cursor-pointer"
           >
-            {slicedParagrap(game_name, 25, 25)}
+            {slicedParagrap(
+              game_name,
+              width >= 800 ? 25 : width <= 640 ? 40 : 11,
+              width >= 800 ? 25 : width <= 640 ? 40 : 11
+            )}
           </h1>
         </Link>
       </div>

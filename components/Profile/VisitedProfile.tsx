@@ -69,7 +69,7 @@ export default function Visited({ reviews, favorites, user }: Props) {
         },
       },
       {
-        breakpoint: 640,
+        breakpoint: 800,
         settings: {
           slidesToShow: 1,
         },
@@ -103,18 +103,20 @@ export default function Visited({ reviews, favorites, user }: Props) {
         <div className="pt-24">
           <h1 className="text-white font-bold text-3xl">Reviews</h1>
           <div
-            className={`mt-12 ${reviewsState.length === 2 && width > 1200
-              ? 'w-[80%]'
-              : reviewsState.length === 3
-                ? 'w-full'
+            className={`mt-12 ${
+              reviewsState.length === 2 && width > 1200
+                ? 'w-[60rem]'
+                : reviewsState.length === 3 && width > 1650
+                ? 'w-[65%]'
                 : 'w-full'
-              }`}
+            }`}
           >
             {reviewsState.length > 0 ? (
-              reviewsState.length === 2 ? (
+              reviewsState.length === 2 && width >= 800 ? (
                 <div
-                  className={`flex flex-nowrap ${width < 1650 ? 'justify-between' : 'justify-between'
-                    }`}
+                  className={`flex  flex-nowrap ${
+                    width < 1650 ? 'justify-between' : 'justify-between'
+                  }`}
                 >
                   {reviewsState.map((review: Review_Type, index: number) =>
                     width < 1200 ? (
@@ -154,8 +156,9 @@ export default function Visited({ reviews, favorites, user }: Props) {
                 </div>
               ) : reviewsState.length <= 3 && width > 1700 ? (
                 <div
-                  className={`flex flex-nowrap ${width < 1700 ? 'justify-start' : 'justify-between'
-                    }`}
+                  className={`flex flex-nowrap ${
+                    width < 1700 ? 'justify-start' : 'justify-between'
+                  }`}
                 >
                   {reviewsState.map((review: Review_Type, index: number) => (
                     <Review
@@ -193,9 +196,9 @@ export default function Visited({ reviews, favorites, user }: Props) {
                     />
                   </div>
                 ))
-              ) : reviewsState.length === 1 && width < 800 ? (
-                reviewsState.map((review: Review_Type, index: number) => (
-                  <div className="w-full">
+              ) : width < 800 ? (
+                <Slider {...reviewSettings} ref={reviewsRef}>
+                  {reviewsState.map((review: Review_Type, index: number) => (
                     <Review
                       _id={review._id}
                       key={index}
@@ -210,8 +213,8 @@ export default function Visited({ reviews, favorites, user }: Props) {
                       likes={review.likes}
                       dislikes={review.dislikes}
                     />
-                  </div>
-                ))
+                  ))}
+                </Slider>
               ) : (
                 <Slider {...reviewSettings} ref={reviewsRef}>
                   {reviewsState.map((review: Review_Type, index: number) => (
@@ -242,18 +245,26 @@ export default function Visited({ reviews, favorites, user }: Props) {
         <div className="pt-14">
           <h1 className="text-white font-bold text-3xl">Favorite Games</h1>
           <div
-            className={`mt-12 ${favoritesState.length === 2 && width > 1200
-              ? 'w-[60%]'
-              : favoritesState.length === 3 && width > 1650
-                ? 'w-[65%]'
+            className={`mt-12 ${
+              width < 760
+                ? ''
+                : favoritesState.length === 2 && width >= 1200
+                ? 'w-[44rem]'
+                : favoritesState.length === 3 && width >= 1650
+                ? 'w-[83%]'
+                : favoritesState.length === 2 && width <= 1200
+                ? 'w-[44rem]'
+                : favoritesState.length === 3 && width <= 1200
+                ? 'w-[44rem]'
                 : 'w-full'
-              }`}
+            }`}
           >
             {favoritesState.length > 0 ? (
               favoritesState.length === 2 ? (
                 <div
-                  className={`flex flex-nowrap ${width < 1650 ? 'justify-between' : 'justify-between'
-                    }`}
+                  className={`flex flex-nowrap ${
+                    width < 1650 ? 'justify-between' : 'justify-between'
+                  }`}
                 >
                   {favoritesState.map((review: Favorite_Type, index: number) =>
                     width < 1200 ? (
@@ -283,8 +294,9 @@ export default function Visited({ reviews, favorites, user }: Props) {
                 </div>
               ) : favoritesState.length <= 4 && width > 1650 ? (
                 <div
-                  className={`flex flex-nowrap ${width < 1650 ? 'justify-start' : 'justify-between'
-                    }`}
+                  className={`flex flex-nowrap ${
+                    width < 1650 ? 'justify-start' : 'justify-between'
+                  }`}
                 >
                   {favoritesState.map(
                     (review: Favorite_Type, index: number) => (

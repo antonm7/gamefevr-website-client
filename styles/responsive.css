@@ -133,10 +133,6 @@
     margin-top: 3rem;
   }
 
-  #favorite-component {
-    width: 17rem !important;
-  }
-
   #favorite-image {
     position: relative;
     width: 100% !important;
@@ -144,7 +140,8 @@
   }
 
   #favorite-title {
-    padding: 1.3rem 1rem;
+    padding: 0.5rem 0.8rem;
+    white-space: nowrap !important;
   }
 
   #profile_page {
@@ -154,6 +151,9 @@
 }
 
 @media (max-width: 1200px) {
+  #favorite-component {
+    width: 80% !important;
+  }
   .signup-animation {
     height: 50% !important;
   }
@@ -201,7 +201,7 @@
   }
 
   #profile-review-component {
-    width: 100% !important;
+    width: 80% !important;
   }
 }
 
@@ -357,10 +357,6 @@
   .screenshot {
     margin-top: 2rem;
   }
-
-  #favorite-component {
-    width: 100% !important;
-  }
 }
 
 @media (max-width: 800px) {
@@ -380,6 +376,13 @@
 
   .register-title {
     padding-top: 1rem;
+  }
+  #favorite-component {
+    width: 80% !important;
+  }
+
+  #profile-review-component {
+    width: 98% !important;
   }
 }
 
@@ -425,7 +428,7 @@
   }
 
   #favorite-component {
-    width: 100% !important;
+    width: 98% !important;
   }
 
   #game_page_header {
