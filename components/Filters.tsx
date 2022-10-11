@@ -56,7 +56,7 @@ export default function Filters() {
   //close filters on esc keypress
   useEffect(() => {
     const keyDownHandler = (e: KeyboardEvent) => {
-      e.key === '27' ? store.changeFilterVisibility(false) : null
+      e.key === 'Escape' ? store.changeFilterVisibility(false) : null
     }
     document.addEventListener('keydown', keyDownHandler)
     // clean up
