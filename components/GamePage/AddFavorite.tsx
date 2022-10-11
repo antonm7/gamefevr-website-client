@@ -22,8 +22,9 @@ export default function AddFavorite({ gameId }: Props) {
   const navigateAuth = (): void => {
     if (session.status !== 'authenticated') {
       router.push('/register/login')
+    } else {
+      addFavorite()
     }
-    addFavorite()
   }
 
   const addFavorite = async (): Promise<void> => {
@@ -90,10 +91,7 @@ export default function AddFavorite({ gameId }: Props) {
         className="flex items-center justify-center w-40 h-10  mt-6 rounded-md cursor-pointer opacity-70 hover:opacity-100"
         style={{ backgroundColor: '#0c284a' }}
       >
-        <FontAwesomeIcon
-          icon={regular}
-          className="h-4 text-white pr-2"
-        />
+        <FontAwesomeIcon icon={regular} className="h-4 text-white pr-2" />
         <p className="whitespace-nowrap text-sm text-white">Add To Favorite</p>
       </div>
     )
@@ -108,7 +106,8 @@ export default function AddFavorite({ gameId }: Props) {
       >
         <FontAwesomeIcon
           icon={mouseOver ? faXmark : solid}
-          className={`${mouseOver ? 'h-5' : 'h-4'} text-white pr-2`} />
+          className={`${mouseOver ? 'h-5' : 'h-4'} text-white pr-2`}
+        />
         <p className="whitespace-nowrap text-sm text-white">Favorite</p>
       </div>
     )
