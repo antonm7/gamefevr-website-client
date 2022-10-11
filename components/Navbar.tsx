@@ -119,7 +119,7 @@ export default function Navbar() {
             <Link href="/">
               <p
                 className={`text-white mx-8 font-semibold cursor-pointer text-sm ${
-                  router.pathname === '/search' ? 'active-link ' : ''
+                  router.pathname === '/explore' ? 'active-link ' : ''
                 }`}
               >
                 Explore
