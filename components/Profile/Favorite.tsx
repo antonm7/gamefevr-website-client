@@ -1,10 +1,10 @@
-import { faBookmark } from '@fortawesome/free-solid-svg-icons'
+import { faBookmark, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import axios from 'axios'
 import { ObjectId } from 'bson'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useEffect, useLayoutEffect } from 'react'
+import { useEffect, useLayoutEffect, useState } from 'react'
 import useWindowSize from '../../lib/functions/hooks/useWindowSize'
 import slicedParagrap from '../../lib/functions/slicedParagraph'
 import { useGlobalError } from '../../store'
@@ -26,6 +26,7 @@ export default function Favorite({
 }: Props) {
   const state = useGlobalError((state) => state)
   const [width] = useWindowSize()
+  const [mouseOver, setMouseOver] = useState<boolean>(false)
 
   //creating the alert
   const deleteFavorite_STATE = () => {
@@ -112,12 +113,24 @@ export default function Favorite({
         id="favorite-component"
         className="relative w-80 h-56 rounded-lg bg-white overflow-hidden"
       >
-        <FontAwesomeIcon
-          className="h-4 absolute z-10 cursor-pointer"
-          icon={faBookmark}
-          style={{ color: '#38b6cc', right: 20, top: 15 }}
-          onClick={() => deleteFavorite_STATE()}
-        />
+        {!mouseOver ? (
+          <FontAwesomeIcon
+            onMouseOver={() => setMouseOver(true)}
+            className="h-4 absolute z-10 cursor-pointer"
+            icon={faBookmark}
+            style={{ color: '#38b6cc', right: 20, top: 15 }}
+            // onClick={() => deleteFavorite_STATE()}
+          />
+        ) : (
+          <FontAwesomeIcon
+            onMouseLeave={() => setMouseOver(false)}
+            className="h-4 absolute z-10 cursor-pointer"
+            icon={faTrash}
+            style={{ color: '#38b6cc', right: 20, top: 15 }}
+            onClick={() => deleteFavorite_STATE()}
+          />
+        )}
+
         <div id="favorite-image">
           <Image
             quality="1"
