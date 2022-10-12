@@ -57,7 +57,10 @@ async function handler(req: Request, res: Response) {
         reviews: [],
         ranks: [],
         visited_games: [],
-        visited_explore: [],
+        visited_years: [],
+        visited_genres: [],
+        visited_platforms: [],
+        forgot_password_link: '',
       })
       if (process.env.SENDGRID_API_KEY) {
         sgMail.setApiKey(process.env.SENDGRID_API_KEY)

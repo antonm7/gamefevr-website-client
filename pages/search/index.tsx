@@ -11,6 +11,10 @@ import { ShortGame } from '../../types'
 import LoadingError from '../../components/common/LoadingError'
 import cookie from 'cookie'
 import { GetServerSidePropsContext } from 'next'
+import { getSession } from 'next-auth/react'
+import { visited_years } from '../../types/schema'
+import clientPromise from '../../lib/functions/mongodb'
+import { ObjectId } from 'bson'
 
 interface Props {
   games: ShortGame[]
@@ -211,6 +215,12 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   let games = []
   let count = 0
 
+  const usedYears: visited_years[] = []
+  const usedGenres = []
+  const usedPlatforms = []
+
+  const session = await getSession(context)
+
   try {
     if (yearRange || genres || consoles || search || sort) {
       if (search) {
@@ -227,6 +237,9 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
             '',
             `&dates=${yearRange[0]}-01-01,${yearRange[1]}-12-31`
           )
+          if (session) {
+            usedYears.push({ range_1: yearRange[0], range_2: yearRange[1] })
+          }
         }
       }
       //simetimes from the client i get consoles as string, but i need an array
@@ -236,9 +249,15 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
           filteredString = filteredString.concat(
             `&parent_platforms=${parseInt(JSON.parse(consoles))}`
           )
+          if (session) {
+            usedPlatforms.push(JSON.parse(consoles))
+          }
         } else {
           let consolesString = ''
           for (const key in consoles) {
+            if (session) {
+              usedPlatforms.push(consoles[key])
+            }
             if (parseInt(key) !== consoles.length - 1) {
               consolesString = consolesString.concat(
                 `${parseInt(JSON.parse(consoles[key]))}`,
@@ -259,9 +278,15 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
           filteredString = filteredString.concat(
             `&genres=${parseInt(JSON.parse(genres))}`
           )
+          if (session) {
+            usedGenres.push(JSON.parse(genres))
+          }
         } else {
           let genresString = ''
           for (const key in genres) {
+            if (session) {
+              usedGenres.push(genres[key])
+            }
             if (parseInt(key) !== genres.length - 1) {
               genresString = genresString.concat(
                 `${parseInt(JSON.parse(genres[key]))}`,
@@ -287,6 +312,34 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       )
       games = getData.data.results
       count = getData.data.count
+
+      if (session) {
+        try {
+          const client = await clientPromise
+          const db = client.db('gameFevr')
+
+          if (usedYears) {
+            db.collection('users').updateOne(
+              { _id: new ObjectId(session.user.userId) },
+              { $push: { visited_years: { $each: usedYears } } }
+            )
+          }
+          if (usedPlatforms) {
+            db.collection('users').updateOne(
+              { _id: new ObjectId(session.user.userId) },
+              { $push: { visited_platforms: { $each: usedPlatforms } } }
+            )
+          }
+          if (usedGenres) {
+            db.collection('users').updateOne(
+              { _id: new ObjectId(session.user.userId) },
+              { $push: { visited_genres: { $each: usedGenres } } }
+            )
+          }
+        } catch (e) {
+          console.log('error on updating user fields for used_filters')
+        }
+      }
     } else {
       //empty filters search
       const getData = await axios(

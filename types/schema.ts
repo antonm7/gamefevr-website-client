@@ -62,3 +62,14 @@ export type Client_User = {
   username: string
   email: string
 }
+
+export type visited_filters = {
+  years: visited_years[]
+  genres: string[]
+  platforms: string[]
+}
+
+export type visited_years = {
+  range_1: string
+  range_2: string
+}
