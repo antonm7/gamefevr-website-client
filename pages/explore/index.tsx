@@ -34,12 +34,17 @@ export default function Index({ random_genres, random_platforms }: Props) {
   return (
     <SearchLayout>
       <div className="px-44 pb-10 py-10">
-        <p
-          id="we_found_title"
-          className="we_found_padding font-bold text-white text-4xl "
-        >
-          Start Exploring Games New Games!
-        </p>
+        <div id="explore_wrapper" className='flex h-auto'>
+          <p
+            id="we_found_title"
+            className="explore_title we_found_padding font-bold text-white text-4xl lea"
+          >
+            Start Exploring Games New Games!
+          </p>
+          <div id='explore_helper'>
+            ?
+          </div>
+        </div>
         <FiltersRow genres={genres} platforms={platforms} />
       </div>
     </SearchLayout>
