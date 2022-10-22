@@ -9,6 +9,7 @@ import clientPromise from '../../lib/functions/mongodb'
 import { getSession } from 'next-auth/react'
 import { games_data } from '../../types/schema'
 import SmallGameBox from '../../components/SmallGameBox'
+import axios from 'axios'
 
 interface Props {
   random_genres: ElementDescription[]
@@ -57,11 +58,11 @@ export default function Index({
           below
         </p>
         <FiltersRow genres={genres} platforms={platforms} />
-        <div id="games_wrapper" className="flex flex-wrap justify-center pt-12">
-          {games.map((game: ShortGame, index: number) => (
+        {/* <div id="games_wrapper" className="flex flex-wrap justify-center pt-12">
+          {returned_games.map((game: ShortGame, index: number) => (
             <SmallGameBox key={index} game={game} />
           ))}
-        </div>
+        </div> */}
       </div>
     </SearchLayout>
   )
@@ -123,7 +124,6 @@ export async function getServerSideProps(context: any) {
   try {
     const limit = 25
     const page = Math.round(getRandomInt(2, 100) / limit)
-    let filteredString = ''
 
     const useOrNot = () => {
       const num = Math.round(Math.random())
@@ -133,58 +133,138 @@ export async function getServerSideProps(context: any) {
       return true
     }
 
-    if (useOrNot()) {
-      const consoles = parentConsoles
-      let consolesString = ''
-      const item = consoles[Math.floor(Math.random() * consoles.length)]
-      consolesString = consolesString.concat(`${item.id}`, '')
-      filteredString = filteredString.concat(`&consoles=${consolesString}`)
-    }
-    //add more
-    if (useOrNot()) {
-      const genresData = genres
-      let genresString = ''
-      const item = genresData[Math.floor(Math.random() * genresData.length)]
-      genresString = genresString.concat(`${item.id}`, '')
-      filteredString = filteredString.concat(`&platforms=${genresString}`)
+    //first[]4
+    //second[]4
+    //third[]4
+    //fourth[]4
+
+
+    const genereateFilters = (): string | null => {
+      let filteredString = ''
+      let is_consoles_used = false
+      let is_genres_used = false
+
+      if (useOrNot()) {
+        const consoles = parentConsoles
+        let consolesString = ''
+        const item = consoles[Math.floor(Math.random() * consoles.length)]
+        consolesString = consolesString.concat(`${item.id}`, '')
+        filteredString = filteredString.concat(`&consoles=${consolesString}`)
+        is_consoles_used = true
+      }
+      //add more
+      if (useOrNot()) {
+        const genresData = genres
+        let genresString = ''
+        const item = genresData[Math.floor(Math.random() * genresData.length)]
+        genresString = genresString.concat(`${item.id}`, '')
+        filteredString = filteredString.concat(`&platforms=${genresString}`)
+        is_genres_used = true
+      }
+
+      if (!is_consoles_used && !is_genres_used) {
+        return null
+      } else {
+        return filteredString
+      }
     }
 
-    const getData: any = await fetch(
-      `https://api.rawg.io/api/games?key=39a2bd3750804b5a82669025ed9986a8&page=${page}&page_size=${limit}${filteredString}`
-    )
+    const generateArray = async (): Promise<ShortGame[]> => {
+      const filters = genereateFilters()
+      let result = []
+      if (filters === null) {
+        try {
+          const request: any = await axios.get(
+            `https://api.rawg.io/api/games?key=39a2bd3750804b5a82669025ed9986a8&page=${getRandomInt(10, 200)}&page_size=4`
+          )
+          const data = await request.data.results
+          result = data
+        } catch (e) {
+          console.log('e')
+        }
+      } else {
+        try {
+          const request: any = await axios.get(
+            `https://api.rawg.io/api/games?key=39a2bd3750804b5a82669025ed9986a8&page=${getRandomInt(2, 15)}&page_size=4&${filters}`
+          )
+          const data = await request.data.results
+          result = data
+        } catch (e) {
+          console.log('e')
 
-    const result = await getData.json()
+        }
+      }
+      return result
+    }
+
+    const returned_games = async () => {
+      try {
+        const generator = async () => {
+          const result = await generateArray()
+          if (!result) {
+            const x = `https://api.rawg.io/api/games?key=39a2bd3750804b5a82669025ed9986a8&page=${getRandomInt(10, 200)}&page_size=4`
+
+            const request: any = await axios.get(
+              x)
+            console.log('reeeweeeee', x)
+            const data = await request.data.results
+            return data
+          } else {
+            return result
+          }
+        }
+        const first = await generator()
+        const second = await generator()
+        const third = await generator()
+        const fourth = await generator()
+
+        return [...first, ...second, ...third, ...fourth]
+      } catch (e) {
+
+        return []
+      }
+    }
+
+    //created the first filters
+    //created the second filters
+    //created the third filters
+    //created the fourth filters
+
+    // if (useOrNot()) {
+    //   const consoles = parentConsoles
+    //   let consolesString = ''
+    //   const item = consoles[Math.floor(Math.random() * consoles.length)]
+    //   consolesString = consolesString.concat(`${item.id}`, '')
+    //   filteredString = filteredString.concat(`&consoles=${consolesString}`)
+    // }
+    // //add more
+    // if (useOrNot()) {
+    //   const genresData = genres
+    //   let genresString = ''
+    //   const item = genresData[Math.floor(Math.random() * genresData.length)]
+    //   genresString = genresString.concat(`${item.id}`, '')
+    //   filteredString = filteredString.concat(`&platforms=${genresString}`)
+    // }
+
+    // const getData: any = await fetch(
+    //   `https://api.rawg.io/api/games?key=39a2bd3750804b5a82669025ed9986a8&page=${page}&page_size=${limit}${filteredString}`
+    // )
+
+    // const result = await getData.json()
 
     // const games: ShortGame[] = []
     // const data = await getData.json().results
-
-    const games = []
-
-    if (!result) {
-      const data: any = await fetch(
-        `https://api.rawg.io/api/games?key=39a2bd3750804b5a82669025ed9986a8&page=1&page_size=25`
-      )
-      const secondResult = await data.json()
-      console.log(secondResult)
-      console.log(secondResult.results.length)
-      games.push(...secondResult.results)
-    } else {
-      console.log(result.results.length)
-      games.push(...result.results)
-    }
-
-    console.log(games)
-
+    const games: any = []
     return {
       props: {
         random_genres,
         random_platforms,
-        games,
+        games: await returned_games(),
         error: null,
       },
     }
   } catch (e) {
-    console.log('error on explore page', e)
+
     return {
       props: {
         random_genres,
