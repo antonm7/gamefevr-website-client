@@ -1,50 +1,47 @@
-import { GetServerSideProps } from 'next'
 import { useEffect, useState } from 'react'
 import SearchLayout from '../../components/layout/SearchLayout'
-import { DetailedGame, ElementDescription, ShortGame } from '../../types'
+import { ElementDescription, ShortGame } from '../../types'
 import { genres, parentConsoles } from '../../lib/staticData'
-import FiltersRow from '../../components/Explore/FiltersRow'
 import getRandomInt from '../../lib/functions/generateRandom'
-import clientPromise from '../../lib/functions/mongodb'
-import { getSession } from 'next-auth/react'
-import { games_data } from '../../types/schema'
 import SmallGameBox from '../../components/SmallGameBox'
 import axios from 'axios'
+import SearchButton from '../../components/common/SearchButton'
+import SmallLoader from '../../components/common/SmallLoader'
+import Filters from '../../components/Filters'
+import { useStore } from '../../store'
 
 interface Props {
-  random_genres: ElementDescription[]
-  random_platforms: ElementDescription[]
   games: ShortGame[]
 }
 
-export default function Index({
-  random_genres,
-  random_platforms,
-  games,
-}: Props) {
-  const [genres, setGenres] = useState<ElementDescription[]>([])
-  const [platforms, setPlatforms] = useState<ElementDescription[]>([])
+export default function Index({ games }: Props) {
+  const [loading, setLoading] = useState<boolean>(false)
+  const [localGames, setLocalGames] = useState<ShortGame[]>([])
+
+  const store = useStore((state) => state)
 
   const loadMore = async (): Promise<void> => {
-    // try {
-    //   const req = await axios.get('/api/explore/get/search')
-    //   if (req.status !== 200) throw new Error()
-    //   if (!req.data.results.length) throw new Error()
-    //   setGames((arr) => [...arr, ...req.data.results])
-    // } catch (e) {
-    //   console.log(e)
-    // }
+    try {
+      setLoading(true)
+      const req = await axios.get('/api/explore/get/search')
+      if (req.status !== 200) throw new Error()
+      if (!req.data.results.length) throw new Error()
+      setLocalGames((arr) => [...arr, ...req.data.results])
+      setLoading(false)
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   useEffect(() => {
-    setGenres(random_genres)
-    setPlatforms(random_platforms)
-    console.log(games)
-  }, [])
+    setLocalGames(games)
+  }, [games])
 
   return (
     <SearchLayout>
       <div className="px-44 pb-10 py-10">
+        {store.isFilterOn ? <Filters /> : null}
+
         <div id="explore_wrapper" className="flex h-auto">
           <p
             id="we_found_title"
@@ -57,74 +54,25 @@ export default function Index({
           Discover new games based on your recent changes or use some filters
           below
         </p>
-        <FiltersRow genres={genres} platforms={platforms} />
-        {/* <div id="games_wrapper" className="flex flex-wrap justify-center pt-12">
-          {returned_games.map((game: ShortGame, index: number) => (
+        <div id="games_wrapper" className="flex flex-wrap justify-center pt-12">
+          {localGames.map((game: ShortGame, index: number) => (
             <SmallGameBox key={index} game={game} />
           ))}
-        </div> */}
+        </div>
+        <div className="w-24 h-16 rounded-lg m-auto mt-8">
+          {loading ? (
+            <SmallLoader big={false} xCentered={true} />
+          ) : (
+            <SearchButton text="Load More" onClick={() => loadMore()} />
+          )}
+        </div>
       </div>
     </SearchLayout>
   )
 }
 
-interface ElementExtends extends ElementDescription {
-  type?: string
-}
-
 export async function getServerSideProps(context: any) {
-  //fetch random genres
-
-  const random_genres: ElementExtends[] = []
-  const random_platforms: ElementExtends[] = []
-
-  const shuffle = (
-    currArr: ElementDescription[],
-    list: ElementDescription[],
-    type: 'genres' | 'platforms'
-  ): void => {
-    const chosen = list[Math.floor(Math.random() * list.length)]
-
-    if (type === 'genres') {
-      const filtered = random_genres.filter((r) => r.name === chosen.name)
-      if (filtered.length) {
-        shuffle(currArr, list, type)
-      } else {
-        random_genres.push(chosen)
-      }
-    } else {
-      const filtered = random_platforms.filter((r) => r.name === chosen.name)
-      if (filtered.length) {
-        shuffle(currArr, list, type)
-      } else {
-        random_platforms.push(chosen)
-      }
-    }
-  }
-
-  for (let i = 0; i < 5; i++) {
-    shuffle(random_genres, genres, 'genres')
-    shuffle(random_platforms, parentConsoles, 'platforms')
-  }
-
-  for (const key in random_genres) {
-    random_genres[key] = {
-      ...random_genres[key],
-      type: 'genres',
-    }
-  }
-
-  for (const key in random_platforms) {
-    random_platforms[key] = {
-      ...random_platforms[key],
-      type: 'platforms',
-    }
-  }
-
   try {
-    const limit = 25
-    const page = Math.round(getRandomInt(2, 100) / limit)
-
     const useOrNot = () => {
       const num = Math.round(Math.random())
       if (num === 0) {
@@ -132,12 +80,6 @@ export async function getServerSideProps(context: any) {
       }
       return true
     }
-
-    //first[]4
-    //second[]4
-    //third[]4
-    //fourth[]4
-
 
     const genereateFilters = (): string | null => {
       let filteredString = ''
@@ -168,14 +110,18 @@ export async function getServerSideProps(context: any) {
         return filteredString
       }
     }
-
+    //function for creating array from fetched games
     const generateArray = async (): Promise<ShortGame[]> => {
       const filters = genereateFilters()
       let result = []
+      //if no filters applied \
+      // then it needs to fetch random games by skipping a lot of pages
+
       if (filters === null) {
         try {
+          const randomNumber = getRandomInt(10, 200)
           const request: any = await axios.get(
-            `https://api.rawg.io/api/games?key=39a2bd3750804b5a82669025ed9986a8&page=${getRandomInt(10, 200)}&page_size=4`
+            `https://api.rawg.io/api/games?key=39a2bd3750804b5a82669025ed9986a8&page=${randomNumber}&page_size=25`
           )
           const data = await request.data.results
           result = data
@@ -183,15 +129,15 @@ export async function getServerSideProps(context: any) {
           console.log('e')
         }
       } else {
+        const randomNumber = getRandomInt(2, 15)
         try {
           const request: any = await axios.get(
-            `https://api.rawg.io/api/games?key=39a2bd3750804b5a82669025ed9986a8&page=${getRandomInt(2, 15)}&page_size=4&${filters}`
+            `https://api.rawg.io/api/games?key=39a2bd3750804b5a82669025ed9986a8&page=${randomNumber}&page_size=25&${filters}`
           )
           const data = await request.data.results
           result = data
         } catch (e) {
           console.log('e')
-
         }
       }
       return result
@@ -202,11 +148,12 @@ export async function getServerSideProps(context: any) {
         const generator = async () => {
           const result = await generateArray()
           if (!result) {
-            const x = `https://api.rawg.io/api/games?key=39a2bd3750804b5a82669025ed9986a8&page=${getRandomInt(10, 200)}&page_size=4`
+            const x = `https://api.rawg.io/api/games?key=39a2bd3750804b5a82669025ed9986a8&page=${getRandomInt(
+              10,
+              200
+            )}&page_size=4`
 
-            const request: any = await axios.get(
-              x)
-            console.log('reeeweeeee', x)
+            const request: any = await axios.get(x)
             const data = await request.data.results
             return data
           } else {
@@ -214,61 +161,22 @@ export async function getServerSideProps(context: any) {
           }
         }
         const first = await generator()
-        const second = await generator()
-        const third = await generator()
-        const fourth = await generator()
 
-        return [...first, ...second, ...third, ...fourth]
+        return [...first]
       } catch (e) {
-
         return []
       }
     }
 
-    //created the first filters
-    //created the second filters
-    //created the third filters
-    //created the fourth filters
-
-    // if (useOrNot()) {
-    //   const consoles = parentConsoles
-    //   let consolesString = ''
-    //   const item = consoles[Math.floor(Math.random() * consoles.length)]
-    //   consolesString = consolesString.concat(`${item.id}`, '')
-    //   filteredString = filteredString.concat(`&consoles=${consolesString}`)
-    // }
-    // //add more
-    // if (useOrNot()) {
-    //   const genresData = genres
-    //   let genresString = ''
-    //   const item = genresData[Math.floor(Math.random() * genresData.length)]
-    //   genresString = genresString.concat(`${item.id}`, '')
-    //   filteredString = filteredString.concat(`&platforms=${genresString}`)
-    // }
-
-    // const getData: any = await fetch(
-    //   `https://api.rawg.io/api/games?key=39a2bd3750804b5a82669025ed9986a8&page=${page}&page_size=${limit}${filteredString}`
-    // )
-
-    // const result = await getData.json()
-
-    // const games: ShortGame[] = []
-    // const data = await getData.json().results
-    const games: any = []
     return {
       props: {
-        random_genres,
-        random_platforms,
         games: await returned_games(),
         error: null,
       },
     }
   } catch (e) {
-
     return {
       props: {
-        random_genres,
-        random_platforms,
         games: null,
         error: 'Oops, Unexpected Error',
       },

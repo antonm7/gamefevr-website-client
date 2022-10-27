@@ -37,7 +37,7 @@ const Signup: NextPage = () => {
         if (data.error) {
           setError(data.error)
         } else {
-          const data: any = await signIn('credentials', {
+          const data = await signIn('credentials', {
             redirect: false,
             email,
             password,
