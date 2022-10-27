@@ -116,7 +116,7 @@ export default function Navbar() {
                 Home
               </p>
             </Link>
-            <Link href="/">
+            <Link href="/explore">
               <p
                 className={`text-white mx-8 font-semibold cursor-pointer text-sm ${
                   router.pathname === '/explore' ? 'active-link ' : ''
@@ -170,10 +170,10 @@ export default function Navbar() {
                     Home
                   </p>
                 </Link>
-                <Link href="/">
+                <Link href="/explore">
                   <p
                     className={`text-white mx-8 font-semibold cursor-pointer text-sm ${
-                      router.pathname === '/search' ? 'active-link ' : ''
+                      router.pathname === '/explore' ? 'active-link ' : ''
                     }`}
                   >
                     Explore
@@ -218,10 +218,10 @@ export default function Navbar() {
                     Home
                   </p>
                 </Link>
-                <Link href="/">
+                <Link href="/explore">
                   <p
                     className={`text-white mx-8 font-semibold cursor-pointer text-sm ${
-                      router.pathname === '/search' ? 'active-link ' : ''
+                      router.pathname === '/explore' ? 'active-link ' : ''
                     }`}
                   >
                     Explore
