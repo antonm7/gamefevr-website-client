@@ -4,6 +4,7 @@ import clientPromise from '../../../../../lib/functions/mongodb'
 import games_data_document from '../../../../../lib/functions/create/games_data'
 import { NextApiRequest, NextApiResponse } from 'next'
 import authorize from '../../../../../backend-middlewares/authorize'
+import GenerateError from '../../../../../backend-middlewares/generateError'
 
 interface ExtendedNextApiRequest extends NextApiRequest {
   body: {
@@ -28,6 +29,11 @@ const handler = async (req: ExtendedNextApiRequest, res: NextApiResponse) => {
     try {
       await games_data_document(req.body.gameId)
     } catch (e) {
+      await GenerateError({
+        error: 'error on games_data_document on add/action favorite api',
+        status: 500,
+        e,
+      })
       res.status(500).send({ error: 'Unexpected error' })
       return console.log('error on games_data_document', e)
     }
@@ -46,6 +52,11 @@ const handler = async (req: ExtendedNextApiRequest, res: NextApiResponse) => {
       }
       savedFavorite = await db.collection('favorites').insertOne(favorite)
     } catch (e) {
+      await GenerateError({
+        error: 'error saving the favorite on add/action favorite api',
+        status: 500,
+        e,
+      })
       res.status(500).send({ error: 'Unexpected error' })
       return console.log('error saving the favorite', e)
     }
@@ -58,6 +69,11 @@ const handler = async (req: ExtendedNextApiRequest, res: NextApiResponse) => {
           { $push: { favorites: savedFavorite?.insertedId } }
         )
     } catch (e) {
+      await GenerateError({
+        error: 'error on updating user ranks field on add/action favorite api',
+        status: 500,
+        e,
+      })
       res.status(500).send({ error: 'Unexpected error' })
       return console.log('error on updating user ranks field')
     }
@@ -67,6 +83,11 @@ const handler = async (req: ExtendedNextApiRequest, res: NextApiResponse) => {
         .collection('games_data')
         .updateOne({ gameId: req.body.gameId }, { $inc: { favorites: 1 } })
     } catch (e) {
+      await GenerateError({
+        error: 'error on updating user ranks field on add/action favorite api',
+        status: 500,
+        e,
+      })
       res.status(500).send({ error: 'Unexpected error' })
       return console.log('error on updating games_data document', e)
     }

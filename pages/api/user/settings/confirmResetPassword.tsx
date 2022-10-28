@@ -3,6 +3,7 @@ import { Request, Response } from 'express'
 import clientPromise from '../../../../lib/functions/mongodb'
 import sgMail from '@sendgrid/mail'
 import { hash } from 'bcrypt'
+import GenerateError from '../../../../backend-middlewares/generateError'
 
 interface Body {
   link: string
@@ -39,6 +40,12 @@ export default async function handler(req: Request, res: Response) {
 
       res.status(200).send({ ok: true })
     } catch (e) {
+      await GenerateError({
+        error:
+          'error on confirmResetPassword on user/settings/confirmResetPassword',
+        status: 500,
+        e,
+      })
       console.log('error on confirmResetPassword', e)
       res.status(500).send({ error: 'Unexpected Error' })
     }

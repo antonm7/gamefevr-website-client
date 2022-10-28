@@ -1,5 +1,6 @@
 import { Response } from 'express'
 import { NextApiRequest } from 'next'
+import GenerateError from '../../../../backend-middlewares/generateError'
 import clientPromise from '../../../../lib/functions/mongodb'
 import { DetailedGame } from '../../../../types'
 
@@ -60,16 +61,16 @@ async function handler(req: ExtendedRequest, res: Response) {
         .find({ gameId: query.gameId })
         .toArray()
 
-      // fetch(`/api/game/action/visited?gameId=${query.id}`, {
-      //     //             headers:{
-      //     //                 userId:session.data?.user?.userId
-      //     //             }
-      //     //         })
       res.status(200).send({
         game: finalData,
         reviews: JSON.parse(JSON.stringify(reviews)),
       })
     } catch (e) {
+      await GenerateError({
+        error: 'error getting game on game/get/getGame',
+        status: 500,
+        e,
+      })
       res.status(500).send({
         game: null,
         reviews: null,

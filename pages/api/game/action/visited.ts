@@ -3,6 +3,7 @@ import games_data_document from '../../../../lib/functions/create/games_data'
 import clientPromise from '../../../../lib/functions/mongodb'
 import { NextApiRequest, NextApiResponse } from 'next'
 import authorize from '../../../../backend-middlewares/authorize'
+import GenerateError from '../../../../backend-middlewares/generateError'
 
 type ExtendedRequest = NextApiRequest & {
   query: {
@@ -34,6 +35,11 @@ async function handler(req: ExtendedRequest, res: NextApiResponse) {
 
       res.status(200).send({ error: null })
     } catch (e) {
+      await GenerateError({
+        error: 'Unexpected Error on visited api',
+        status: 500,
+        e,
+      })
       console.log('error on visited', e)
       return res.status(500).send({ error: 'Unexpected Error' })
     }

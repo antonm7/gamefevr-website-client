@@ -3,6 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import clientPromise from '../../../../lib/functions/mongodb'
 import checkJWT from '../../../../lib/functions/checkJWT'
 import authorize from '../../../../backend-middlewares/authorize'
+import GenerateError from '../../../../backend-middlewares/generateError'
 
 interface ExtendedNextApiRequest extends NextApiRequest {
   body: {
@@ -38,6 +39,12 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
         .findOne({ username: body.username })
       if (user) throw new Error('Username already taken')
     } catch (e) {
+      await GenerateError({
+        error:
+          'error on checking if username is already taken on user/settings/changeUsername',
+        status: 500,
+        e,
+      })
       console.log('error on checking if username is already taken', e)
       res.status(200).send({ error: 'username is already taken' })
       return
@@ -46,15 +53,18 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
     try {
       await db
         .collection('users')
-        .updateOne(
-          { email: body.email },
-          { $set: { username: body.username } }
-        )
+        .updateOne({ email: body.email }, { $set: { username: body.username } })
       console.log(body)
       res.status(200).send({ error: null })
     } catch (e) {
+      await GenerateError({
+        error:
+          'error on changing username on user document on user/settings/changeUsername',
+        status: 500,
+        e,
+      })
       console.log(e)
-      res.status(500).send({ error: 'undexpected error on updating username' })
+      res.status(500).send({ error: 'Unexpected Error' })
     }
   }
 }

@@ -1,6 +1,7 @@
 import { ObjectId } from 'bson'
 import { NextApiRequest, NextApiResponse } from 'next'
 import authorize from '../../../../backend-middlewares/authorize'
+import GenerateError from '../../../../backend-middlewares/generateError'
 import games_data_document from '../../../../lib/functions/create/games_data'
 import clientPromise from '../../../../lib/functions/mongodb'
 import { Rank } from '../../../../types/schema'
@@ -30,6 +31,11 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
     try {
       await games_data_document(body.gameId)
     } catch (e) {
+      await GenerateError({
+        error: 'error on games_data_document on rankGame action api',
+        status: 500,
+        e,
+      })
       res.status(500).send({ error: 'Unexpected error' })
       return console.log('error on games_data_document', e)
     }
@@ -43,6 +49,11 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
       }
       savedRank = await db.collection('ranks').insertOne(rank)
     } catch (e) {
+      await GenerateError({
+        error: 'error saving the rank on rankGame action api',
+        status: 500,
+        e,
+      })
       res.status(500).send({ error: 'Unexpected error' })
       return console.log('error saving the rank', e)
     }
@@ -55,6 +66,11 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
           { $push: { ranks: savedRank?.insertedId } }
         )
     } catch (e) {
+      await GenerateError({
+        error: 'error on updating user ranks field on rankGame action api',
+        status: 500,
+        e,
+      })
       res.status(500).send({ error: 'Unexpected error' })
       return console.log('error on updating user ranks field')
     }
@@ -87,6 +103,12 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
           .updateOne({ gameId: req.body.gameId }, { $inc: { must: 1 } })
       }
     } catch (e) {
+      await GenerateError({
+        error: 'error on updating games_data document on rankGame api action',
+        status: 500,
+        e,
+      })
+
       res.status(500).send({ error: 'Unexpected error' })
       return console.log('error on updating games_data document', e)
     }

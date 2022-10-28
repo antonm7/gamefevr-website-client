@@ -1,6 +1,6 @@
-import { Request, Response } from 'express'
+import { Response } from 'express'
 import { NextApiRequest } from 'next'
-import authorize from '../../../../backend-middlewares/authorize'
+import GenerateError from '../../../../backend-middlewares/generateError'
 import clientPromise from '../../../../lib/functions/mongodb'
 
 type ExtendedRequest = NextApiRequest & {
@@ -27,7 +27,12 @@ async function handler(req: ExtendedRequest, res: Response) {
         res.status(200).send({ error: null, isUserRated: doc.value })
       }
     } catch (e) {
-      console.log('error on getRank', e)
+      await GenerateError({
+        error: 'error on getting rank on game/get/getRank',
+        status: 500,
+        e,
+      })
+      console.log('error on getting rank on game/get/getRank', e)
       return res.status(500).send({ erro: 'Unexpected Error' })
     }
   }

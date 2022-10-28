@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import { NextApiRequest } from 'next'
 import authorize from '../../../../backend-middlewares/authorize'
+import GenerateError from '../../../../backend-middlewares/generateError'
 import clientPromise from '../../../../lib/functions/mongodb'
 
 type ExtendedRequest = NextApiRequest & {
@@ -27,7 +28,12 @@ async function handler(req: ExtendedRequest, res: Response) {
         res.status(200).send({ error: null, isFavorite: doc._id })
       }
     } catch (e) {
-      console.log('error on getRank', e)
+      await GenerateError({
+        error: 'error getting isFavorite rank on game/get/getIsFavorite',
+        status: 500,
+        e,
+      })
+      console.log('error getting isFavorite rank on game/get/getIsFavorite', e)
       return res.status(500).send({ erro: 'Unexpected Error' })
     }
   }

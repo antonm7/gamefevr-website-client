@@ -2,6 +2,7 @@ import { ObjectId } from 'bson'
 import { Request, Response } from 'express'
 import clientPromise from '../../../../lib/functions/mongodb'
 import sgMail from '@sendgrid/mail'
+import GenerateError from '../../../../backend-middlewares/generateError'
 
 interface Body {
   email: string
@@ -66,6 +67,11 @@ export default async function handler(req: Request, res: Response) {
         res.status(200).send({ ok: true })
       }
     } catch (e) {
+      await GenerateError({
+        error: 'error on sendForgotrPasswordEmail',
+        status: 404,
+        e,
+      })
       res.status(404).send({ error: e })
     }
   }

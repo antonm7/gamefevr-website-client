@@ -1,6 +1,7 @@
 import { ObjectId } from 'bson'
 import { NextApiRequest, NextApiResponse } from 'next'
 import authorize from '../../../../backend-middlewares/authorize'
+import GenerateError from '../../../../backend-middlewares/generateError'
 import clientPromise from '../../../../lib/functions/mongodb'
 
 interface ExtendedNextApiRequest extends NextApiRequest {
@@ -32,8 +33,16 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
         .collection('ranks')
         .deleteOne({ userId: req.body.userId, gameId: req.body.gameId })
     } catch (e) {
+      await GenerateError({
+        error: 'error cancelling saved rank on game/cancel/cancelRank',
+        status: 500,
+        e,
+      })
       res.status(500).send({ error: 'Unexpected error' })
-      return console.log('error saving the rank', e)
+      return console.log(
+        'error cancelling saved rank on game/cancel/cancelRank',
+        e
+      )
     }
     //updates user's document
     try {
@@ -44,8 +53,15 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
           { $pull: { ranks: removedRank?._id } }
         )
     } catch (e) {
+      await GenerateError({
+        error: 'error updating user rank field on game/cancel/cancelRank',
+        status: 500,
+        e,
+      })
       res.status(500).send({ error: 'Unexpected error' })
-      return console.log('error on updating user ranks field')
+      return console.log(
+        'error updating user rank field on game/cancel/cancelRank'
+      )
     }
     //updates game data document
     try {
@@ -76,6 +92,12 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
           .updateOne({ gameId: req.body.gameId }, { $inc: { must: -1 } })
       }
     } catch (e) {
+      await GenerateError({
+        error:
+          'error on updating games_data document on game/cancel/cancelRank',
+        status: 500,
+        e,
+      })
       res.status(500).send({ error: 'Unexpected error' })
       return console.log('error on updating games_data document', e)
     }

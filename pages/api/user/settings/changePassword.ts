@@ -1,9 +1,9 @@
-import { ObjectId } from 'bson'
 import { NextApiRequest, NextApiResponse } from 'next'
 import clientPromise from '../../../../lib/functions/mongodb'
 import checkJWT from '../../../../lib/functions/checkJWT'
 import { hash, compare } from 'bcrypt'
 import authorize from '../../../../backend-middlewares/authorize'
+import GenerateError from '../../../../backend-middlewares/generateError'
 
 interface ExtendedNextApiRequest extends NextApiRequest {
   body: {
@@ -33,20 +33,25 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
     }
     //comparing password
     try {
-      const user = await db
-        .collection('users')
-        .findOne({ email: body.email })
+      const user = await db.collection('users').findOne({ email: body.email })
       if (!user) {
         res.status(404).send({ error: 'User not found' })
         throw new Error('User not found')
       }
       const isValid = await compare(body.oldPassword, user.password)
       if (!isValid) {
-        return res.status(200).send({ error: 'Please enter the corect password' })
+        return res
+          .status(200)
+          .send({ error: 'Please enter the corect password' })
       }
     } catch (e) {
+      await GenerateError({
+        error: 'error on comparing password on user/settings/changePassword',
+        status: 500,
+        e,
+      })
       console.log('error on comparing password', e)
-      throw new Error('Unexpected error')
+      return res.status(401).send({ error: 'Please enter the corect password' })
     }
 
     try {
@@ -59,7 +64,16 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
         )
       res.status(200).send({ error: null })
     } catch (e) {
-      console.log(e)
+      await GenerateError({
+        error:
+          'error on hashing password and updating user password on user/settings/changePassword',
+        status: 500,
+        e,
+      })
+      console.log(
+        'error on hashing password and updating user password on user/settings/changePassword',
+        e
+      )
       res.status(500).send({ error: 'Unexpected error' })
     }
   }

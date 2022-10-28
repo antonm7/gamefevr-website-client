@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import { NextApiRequest } from 'next'
+import GenerateError from '../../../../backend-middlewares/generateError'
 import clientPromise from '../../../../lib/functions/mongodb'
 
 type ExtendedRequest = NextApiRequest & {
@@ -25,7 +26,12 @@ export default async function handler(req: ExtendedRequest, res: Response) {
         res.status(200).send({ error: null, reviews: docs })
       }
     } catch (e) {
-      console.log('error on getReviews', e)
+      await GenerateError({
+        error: 'error on getting review on game/get/getReviews',
+        status: 500,
+        e,
+      })
+      console.log('error on getting review on game/get/getReviews', e)
       return res.status(500).send({ erro: 'Unexpected Error' })
     }
   }

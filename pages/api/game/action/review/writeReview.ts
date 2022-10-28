@@ -1,6 +1,7 @@
 import { ObjectId } from 'bson'
 import { NextApiRequest, NextApiResponse } from 'next'
 import authorize from '../../../../../backend-middlewares/authorize'
+import GenerateError from '../../../../../backend-middlewares/generateError'
 import games_data_document from '../../../../../lib/functions/create/games_data'
 import clientPromise from '../../../../../lib/functions/mongodb'
 import { Review_Type } from '../../../../../types/schema'
@@ -76,6 +77,12 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
           .findOne({ _id: new ObjectId(query.userId) })
         user_name = userName.username
       } catch (e) {
+        await GenerateError({
+          error:
+            'Error on checking if user commented on writeReview action api',
+          status: 500,
+          e,
+        })
         res.status(500).send({ error: 'Unexpected error' })
         return console.log('error on checkinf if user commenteds', e)
       }
@@ -95,6 +102,11 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
 
       savedReview = await db.collection('reviews').insertOne(review)
     } catch (e) {
+      await GenerateError({
+        error: 'Error saving the review on writeReview action api',
+        status: 500,
+        e,
+      })
       res.status(500).send({ error: 'Unexpected error' })
       return console.log('error saving the review', e)
     }
@@ -107,6 +119,11 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
           { $push: { reviews: savedReview?.insertedId } }
         )
     } catch (e) {
+      await GenerateError({
+        error: 'Error on updating user ranks field on writeReview action api',
+        status: 500,
+        e,
+      })
       res.status(500).send({ error: 'Unexpected error' })
       return console.log('error on updating user ranks field')
     }
@@ -119,17 +136,35 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
         }
       )
     } catch (e) {
+      await GenerateError({
+        error:
+          'error on updating games_data document on writeReview action api',
+        status: 500,
+        e,
+      })
       res.status(500).send({ error: 'Unexpected error' })
       return console.log('error on updating games_data document', e)
     }
-    //updating the rank 
+    //updating the rank
     try {
       await db
         .collection('ranks')
-        .updateOne({ gameId: query.gameId, userId: query.userId }, { $set: { rank: query.rank } })
+        .updateOne(
+          { gameId: query.gameId, userId: query.userId },
+          { $set: { rank: query.rank } }
+        )
     } catch (e) {
+      await GenerateError({
+        error:
+          'error on updating games_data document on writeReview action api',
+        status: 500,
+        e,
+      })
       res.status(500).send({ error: 'Unexpected error' })
-      return console.log('error updating the game review after posting the review', e)
+      return console.log(
+        'error updating the game review after posting the review',
+        e
+      )
     }
 
     try {
@@ -138,8 +173,13 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
         .findOne({ _id: savedReview?.insertedId })
       res.status(201).send({ error: null, review })
     } catch (e) {
+      await GenerateError({
+        error: 'error fetching new review on writeReview action api',
+        status: 500,
+        e,
+      })
       res.status(500).send({ error: 'Unexpected error' })
-      return console.log('error on updating games_data document', e)
+      return console.log('error fetching new review ', e)
     }
   }
 }
