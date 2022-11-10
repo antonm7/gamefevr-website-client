@@ -9,6 +9,8 @@ import SearchButton from '../../components/common/SearchButton'
 import SmallLoader from '../../components/common/SmallLoader'
 import Filters from '../../components/Filters'
 import { useStore } from '../../store'
+import generateErrorBackend from '../../backend-middlewares/generateErrorBackend'
+import LoadingError from '../../components/common/LoadingError'
 
 interface Props {
   games: ShortGame[]
@@ -17,12 +19,14 @@ interface Props {
 export default function Index({ games }: Props) {
   const [loading, setLoading] = useState<boolean>(false)
   const [localGames, setLocalGames] = useState<ShortGame[]>([])
+  const [error, setError] = useState<boolean>(false)
 
   const store = useStore((state) => state)
 
   const loadMore = async (): Promise<void> => {
     try {
       setLoading(true)
+      setError(false)
       const req = await axios.get('/api/explore/get/search')
       if (req.status !== 200) throw new Error()
       if (!req.data.results.length) throw new Error()
@@ -34,18 +38,22 @@ export default function Index({ games }: Props) {
   }
 
   useEffect(() => {
-    setLocalGames(games)
+    if (games.length === 0) {
+      setError(true)
+    } else {
+      setLocalGames(games)
+    }
   }, [games])
 
   return (
     <SearchLayout>
-      <div className="px-44 pb-10 py-10">
+      <div className="px-44 pb-10 py-10 we_found_padding">
         {store.isFilterOn ? <Filters /> : null}
 
-        <div id="explore_wrapper" className="flex h-auto">
+        <div id="we_found_title_wrapper" className="flex h-auto ">
           <p
             id="we_found_title"
-            className="explore_title we_found_padding font-bold text-white text-4xl lea"
+            className="explore_title font-bold text-white text-4xl"
           >
             Start Exploring Games New Games!
           </p>
@@ -54,18 +62,38 @@ export default function Index({ games }: Props) {
           Discover new games based on your recent changes or use some filters
           below
         </p>
-        <div id="games_wrapper" className="flex flex-wrap justify-center pt-12">
-          {localGames.map((game: ShortGame, index: number) => (
-            <SmallGameBox key={index} game={game} />
-          ))}
-        </div>
-        <div className="w-24 h-16 rounded-lg m-auto mt-8">
-          {loading ? (
-            <SmallLoader big={false} xCentered={true} />
-          ) : (
-            <SearchButton text="Load More" onClick={() => loadMore()} />
-          )}
-        </div>
+        {error ? (
+          <div className="pt-32">
+            <LoadingError
+              mainTitle={'Unexpected Error'}
+              description={'Oops...something went wrong'}
+              button={true}
+              onClick={() => loadMore()}
+            />
+          </div>
+        ) : loading ? (
+          <div>
+            <SmallLoader xCentered={true} big={true} />
+          </div>
+        ) : (
+          <div>
+            <div
+              id="games_wrapper"
+              className="flex flex-wrap justify-center pt-12"
+            >
+              {localGames.map((game: ShortGame, index: number) => (
+                <SmallGameBox key={index} game={game} />
+              ))}
+            </div>
+            <div className="w-24 h-16 rounded-lg m-auto mt-8">
+              {loading ? (
+                <SmallLoader big={false} xCentered={true} />
+              ) : (
+                <SearchButton text="Load More" onClick={() => loadMore()} />
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </SearchLayout>
   )
@@ -114,9 +142,8 @@ export async function getServerSideProps(context: any) {
     const generateArray = async (): Promise<ShortGame[]> => {
       const filters = genereateFilters()
       let result = []
-      //if no filters applied \
-      // then it needs to fetch random games by skipping a lot of pages
-
+      //if no filters applied
+      // then it needs to fetch random games by skipping a random number of pages
       if (filters === null) {
         try {
           const randomNumber = getRandomInt(10, 200)
@@ -126,7 +153,12 @@ export async function getServerSideProps(context: any) {
           const data = await request.data.results
           result = data
         } catch (e) {
-          console.log('e')
+          await generateErrorBackend({
+            error: 'Error disliking review on dislike review action api',
+            status: 500,
+            e,
+          })
+          console.log('error on fetching games on /pages/explore')
         }
       } else {
         const randomNumber = getRandomInt(2, 15)
@@ -137,7 +169,12 @@ export async function getServerSideProps(context: any) {
           const data = await request.data.results
           result = data
         } catch (e) {
-          console.log('e')
+          await generateErrorBackend({
+            error: 'Error disliking review on dislike review action api',
+            status: 500,
+            e,
+          })
+          console.log('error on fetching games on /pages/explore')
         }
       }
       return result
@@ -161,7 +198,6 @@ export async function getServerSideProps(context: any) {
           }
         }
         const first = await generator()
-
         return [...first]
       } catch (e) {
         return []

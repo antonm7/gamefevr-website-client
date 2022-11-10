@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { NextApiRequest, NextApiResponse } from 'next'
+import generateErrorBackend from '../../../../backend-middlewares/generateErrorBackend'
 import getRandomInt from '../../../../lib/functions/generateRandom'
 
 export default async function handler(
@@ -7,14 +8,23 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === 'GET') {
-    const request: any = await axios.get(
-      `https://api.rawg.io/api/games?key=39a2bd3750804b5a82669025ed9986a8&page=${getRandomInt(
-        10,
-        200
-      )}&page_size=25`
-    )
-
-    const games = request.data
-    return res.status(200).send(games)
+    try {
+      const request: any = await axios.get(
+        `https://api.rawg.io/api/games?key=39a2bd3750804b5a82669025ed9986a8&page=${getRandomInt(
+          10,
+          200
+        )}&page_size=25`
+      )
+      const games = request.data
+      return res.status(200).send(games)
+    } catch (e) {
+      console.log('error on api/explore/get/search')
+      await generateErrorBackend({
+        error: 'error on api/explore/get/search',
+        status: 500,
+        e,
+      })
+      res.status(500).send({ error: 'Unexpected Error' })
+    }
   }
 }
