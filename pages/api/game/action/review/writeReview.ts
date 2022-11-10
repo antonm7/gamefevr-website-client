@@ -102,16 +102,7 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
       }
 
       savedReview = await db.collection('reviews').insertOne(review)
-      const update_hype = await updateHype(
-        'writeReview',
-        new ObjectId(query.userId)
-      )
 
-      if (update_hype.ok) {
-        res.status(200).send({ error: null })
-      } else {
-        throw new Error('error updating hype')
-      }
     } catch (e) {
       await generateErrorBackend({
         error: 'Error saving the review on writeReview action api',
@@ -182,7 +173,16 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
       const review = await db
         .collection('reviews')
         .findOne({ _id: savedReview?.insertedId })
-      res.status(201).send({ error: null, review })
+      const update_hype = await updateHype(
+        'writeReview',
+        new ObjectId(query.userId)
+      )
+
+      if (update_hype.ok) {
+        res.status(201).send({ error: null, review })
+      } else {
+        throw new Error('error updating hype')
+      }
     } catch (e) {
       await generateErrorBackend({
         error: 'error fetching new review on writeReview action api',

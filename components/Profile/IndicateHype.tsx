@@ -8,7 +8,7 @@ interface Props {
 
 const IndicateHype = ({ hype }: Props) => {
   return (
-    <div className="flex items-center mx-4">
+    <div className="flex items-center mx-4" id="indicate-hype">
       <FontAwesomeIcon icon={faStar} className=" text-specialYellow h-4" />
       <p className="text-white text-xl pl-2">{hype}</p>
     </div>
