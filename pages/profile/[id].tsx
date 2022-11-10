@@ -7,10 +7,12 @@ import 'slick-carousel/slick/slick-theme.css'
 import CurrentProfile from '../../components/Profile/CurrentProfile'
 import VisitedProfile from '../../components/Profile/VisitedProfile'
 import { GetServerSidePropsContext } from 'next'
+import * as mongoDB from "mongodb";
 
 interface Props {
   reviews: Review_Type[]
   favorites: Favorite_Type[]
+  hype: string
   user: {
     username: string
     email: string
@@ -18,14 +20,14 @@ interface Props {
   visited: boolean
 }
 
-export default function Profile({ reviews, favorites, user, visited }: Props) {
+export default function Profile({ reviews, favorites, user, visited, hype }: Props) {
   if (visited) {
     return (
-      <VisitedProfile reviews={reviews} favorites={favorites} user={user} />
+      <VisitedProfile reviews={reviews} favorites={favorites} user={user} hype={hype} />
     )
   } else {
     return (
-      <CurrentProfile reviews={reviews} favorites={favorites} user={user} />
+      <CurrentProfile hype={hype} reviews={reviews} favorites={favorites} user={user} />
     )
   }
 }
@@ -43,15 +45,15 @@ export async function getServerSideProps(
   const session = await getSession(context)
 
   try {
-    let user, reviews, favorites
+    let user, reviews: any[], favorites: any[]
     const isVisited = context?.params?.id !== session?.user?.userId
     const client = await clientPromise
     const db = client.db('gameFevr')
 
     if (isVisited) {
-      user = await db
-        .collection('users')
-        .findOne({ _id: new ObjectId(context?.params?.id) })
+      const userCollection: mongoDB.Collection = db.collection('users')
+      user = await userCollection.findOne({ _id: new ObjectId(context?.params?.id) })
+
       reviews = await db
         .collection('reviews')
         .find({ userId: context?.params?.id })
@@ -73,6 +75,7 @@ export async function getServerSideProps(
         .find({ userId: session?.user?.userId })
         .toArray()
     }
+
     return {
       props: {
         user: isVisited
@@ -85,7 +88,8 @@ export async function getServerSideProps(
           },
         favorites: JSON.parse(JSON.stringify(favorites)),
         reviews: JSON.parse(JSON.stringify(reviews)),
-        visited: isVisited,
+        hype: JSON.stringify(user?.hype),
+        visited: isVisited
       },
     }
   } catch (e) {
