@@ -2,7 +2,7 @@ import { ObjectId } from 'bson'
 import { Request, Response } from 'express'
 import clientPromise from '../../../../lib/functions/mongodb'
 import sgMail from '@sendgrid/mail'
-import GenerateError from '../../../../backend-middlewares/generateError'
+import GenerateError from '../../../../backend-middlewares/generateErrorBackend'
 
 interface Body {
   email: string

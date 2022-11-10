@@ -5,7 +5,7 @@ interface Props {
   e: any
 }
 
-async function GenerateError({ error, status, e }: Props) {
+async function generateErrorBackend({ error, status, e }: Props) {
   const client = await clientPromise
   const db = client.db('gameFevr')
 
@@ -15,4 +15,4 @@ async function GenerateError({ error, status, e }: Props) {
   })
 }
 
-export default GenerateError
+export default generateErrorBackend

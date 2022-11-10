@@ -3,7 +3,7 @@ import games_data_document from '../../../../lib/functions/create/games_data'
 import clientPromise from '../../../../lib/functions/mongodb'
 import { NextApiRequest, NextApiResponse } from 'next'
 import authorize from '../../../../backend-middlewares/authorize'
-import GenerateError from '../../../../backend-middlewares/generateError'
+import GenerateError from '../../../../backend-middlewares/generateErrorBackend'
 
 type ExtendedRequest = NextApiRequest & {
   query: {

@@ -3,7 +3,7 @@ import clientPromise from '../../../../lib/functions/mongodb'
 import checkJWT from '../../../../lib/functions/checkJWT'
 import { hash, compare } from 'bcrypt'
 import authorize from '../../../../backend-middlewares/authorize'
-import GenerateError from '../../../../backend-middlewares/generateError'
+import GenerateError from '../../../../backend-middlewares/generateErrorBackend'
 
 interface ExtendedNextApiRequest extends NextApiRequest {
   body: {

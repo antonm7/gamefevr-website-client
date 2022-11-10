@@ -20,7 +20,8 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "pages/api/auth/[...nextauth].tsx"
+    "pages/api/auth/[...nextauth].tsx",
+    "backend-middlewares/generateErrorBackend"
   ],
   "exclude": ["node_modules"]
 }

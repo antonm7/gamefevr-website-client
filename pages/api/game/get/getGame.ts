@@ -1,6 +1,6 @@
 import { Response } from 'express'
 import { NextApiRequest } from 'next'
-import GenerateError from '../../../../backend-middlewares/generateError'
+import GenerateError from '../../../../backend-middlewares/generateErrorBackend'
 import clientPromise from '../../../../lib/functions/mongodb'
 import { DetailedGame } from '../../../../types'
 

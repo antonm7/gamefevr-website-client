@@ -4,7 +4,8 @@ import clientPromise from '../../../../../lib/functions/mongodb'
 import games_data_document from '../../../../../lib/functions/create/games_data'
 import { NextApiRequest, NextApiResponse } from 'next'
 import authorize from '../../../../../backend-middlewares/authorize'
-import GenerateError from '../../../../../backend-middlewares/generateError'
+import GenerateError from '../../../../../backend-middlewares/generateErrorBackend'
+import updateHype from '../../../../../lib/functions/updateHype'
 
 interface ExtendedNextApiRequest extends NextApiRequest {
   body: {
@@ -91,7 +92,23 @@ const handler = async (req: ExtendedNextApiRequest, res: NextApiResponse) => {
       res.status(500).send({ error: 'Unexpected error' })
       return console.log('error on updating games_data document', e)
     }
-    res.status(200).send({ error: null, favoriteId: savedFavorite.insertedId })
+    try {
+      const update_hype = await updateHype(
+        'addToFavorite',
+        new ObjectId(req.body.userId)
+      )
+
+      if (update_hype.ok) {
+        res
+          .status(200)
+          .send({ error: null, favoriteId: savedFavorite.insertedId })
+      } else {
+        throw new Error('error updating hype')
+      }
+    } catch (e) {
+      res.status(500).send({ error: 'Unexpected error' })
+      return console.log('error on rankGame', e)
+    }
   }
 }
 

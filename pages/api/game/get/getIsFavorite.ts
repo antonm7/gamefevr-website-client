@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import { NextApiRequest } from 'next'
 import authorize from '../../../../backend-middlewares/authorize'
-import GenerateError from '../../../../backend-middlewares/generateError'
+import GenerateError from '../../../../backend-middlewares/generateErrorBackend'
 import clientPromise from '../../../../lib/functions/mongodb'
 
 type ExtendedRequest = NextApiRequest & {

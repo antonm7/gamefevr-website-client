@@ -1,8 +1,9 @@
 import { ObjectId } from 'bson'
 import { NextApiRequest, NextApiResponse } from 'next'
 import authorize from '../../../../../backend-middlewares/authorize'
-import GenerateError from '../../../../../backend-middlewares/generateError'
+import generateErrorBackend from '../../../../../backend-middlewares/generateErrorBackend'
 import clientPromise from '../../../../../lib/functions/mongodb'
+import updateHype from '../../../../../lib/functions/updateHype'
 
 interface ExtendedNextApiRequest extends NextApiRequest {
   body: {
@@ -38,9 +39,19 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
           { _id: new ObjectId(query.reviewId) },
           { $push: { likes: query.userId } }
         )
-      res.status(200).send({ error: null })
+
+      const update_hype = await updateHype(
+        'likeReview',
+        new ObjectId(query.userId)
+      )
+
+      if (update_hype.ok) {
+        res.status(200).send({ error: null })
+      } else {
+        throw new Error('error updating hype')
+      }
     } catch (e) {
-      await GenerateError({
+      await generateErrorBackend({
         error: 'Error liking review on like review action api',
         status: 500,
         e,

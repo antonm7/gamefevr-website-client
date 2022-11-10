@@ -7,7 +7,7 @@ import 'slick-carousel/slick/slick-theme.css'
 import CurrentProfile from '../../components/Profile/CurrentProfile'
 import VisitedProfile from '../../components/Profile/VisitedProfile'
 import { GetServerSidePropsContext } from 'next'
-import * as mongoDB from "mongodb";
+import * as mongoDB from 'mongodb'
 
 interface Props {
   reviews: Review_Type[]
@@ -20,14 +20,30 @@ interface Props {
   visited: boolean
 }
 
-export default function Profile({ reviews, favorites, user, visited, hype }: Props) {
+export default function Profile({
+  reviews,
+  favorites,
+  user,
+  visited,
+  hype,
+}: Props) {
   if (visited) {
     return (
-      <VisitedProfile reviews={reviews} favorites={favorites} user={user} hype={hype} />
+      <VisitedProfile
+        reviews={reviews}
+        favorites={favorites}
+        user={user}
+        hype={hype}
+      />
     )
   } else {
     return (
-      <CurrentProfile hype={hype} reviews={reviews} favorites={favorites} user={user} />
+      <CurrentProfile
+        hype={hype}
+        reviews={reviews}
+        favorites={favorites}
+        user={user}
+      />
     )
   }
 }
@@ -52,7 +68,9 @@ export async function getServerSideProps(
 
     if (isVisited) {
       const userCollection: mongoDB.Collection = db.collection('users')
-      user = await userCollection.findOne({ _id: new ObjectId(context?.params?.id) })
+      user = await userCollection.findOne({
+        _id: new ObjectId(context?.params?.id),
+      })
 
       reviews = await db
         .collection('reviews')
@@ -80,16 +98,16 @@ export async function getServerSideProps(
       props: {
         user: isVisited
           ? {
-            username: user?.username,
-          }
+              username: user?.username,
+            }
           : {
-            username: user?.username,
-            email: user?.email,
-          },
+              username: user?.username,
+              email: user?.email,
+            },
         favorites: JSON.parse(JSON.stringify(favorites)),
         reviews: JSON.parse(JSON.stringify(reviews)),
-        hype: JSON.stringify(user?.hype),
-        visited: isVisited
+        hype: user?.hype,
+        visited: isVisited,
       },
     }
   } catch (e) {
