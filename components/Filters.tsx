@@ -3,12 +3,14 @@ import { ElementDescription } from '../types'
 import SelectBox from './common/SelectBox'
 import { Range } from 'rc-slider'
 import 'rc-slider/assets/index.css'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { useFiltersStore, useStore } from '../store'
 import YellowButton from './common/YellowButton'
 import { setCookie } from 'cookies-next'
+import Genres from './Filters/Genres'
+import Consoles from './Filters/Consoles'
 
 export default function Filters() {
   const [yearRange, changeYearRange] = useState<number[]>([1990, 2023])
@@ -16,6 +18,14 @@ export default function Filters() {
   const [selectedConsoles, changeSelectedConsoles] = useState<string[]>([])
   const store = useStore()
   const filtersStore = useFiltersStore()
+
+  const MemoizedGenres = useMemo(() => (
+    <Genres updateGenres={(id) => updateGenres(id)} selectedGenres={selectedGenres} />
+  ), [selectedGenres])
+
+  const MemoizedConsoles = useMemo(() => (
+    <Consoles updateConsoles={id => updateConsoles(id)} selectedConsoles={selectedConsoles} />
+  ), [selectedConsoles])
 
   const updateGenres = (index: string): void => {
     if (selectedGenres.includes(index)) {
@@ -27,7 +37,7 @@ export default function Filters() {
     }
   }
 
-  const updatedConsoles = (index: string): void => {
+  const updateConsoles = (index: string): void => {
     if (selectedConsoles.includes(index)) {
       //removes
       changeSelectedConsoles(selectedConsoles.filter((i) => i !== index))
@@ -85,18 +95,7 @@ export default function Filters() {
       <h1 className="text-3xl truncate font-semibold text-center">Genres</h1>
       <div className="px-6">
         <div className="bg-white p-4 w-5/6 mt-6 mx-auto rounded-md filters-column-shadow">
-          <div className="flex h-auto items-center justify-center flex-row flex-wrap">
-            {genres.map((genre: ElementDescription, index: number) => {
-              return (
-                <SelectBox
-                  isSelected={selectedGenres.includes(JSON.stringify(genre.id))}
-                  onClick={() => updateGenres(JSON.stringify(genre.id))}
-                  key={index}
-                  title={genre.name}
-                />
-              )
-            })}
-          </div>
+          {MemoizedGenres}
         </div>
       </div>
       <div className="flex flex-col items-center">
@@ -106,23 +105,7 @@ export default function Filters() {
               Consoles
             </h1>
             <div className="bg-white p-4 mt-6 mx-auto h-auto rounded-md filters-column-shadow">
-              <div className="flex h-auto items-center justify-center flex-row flex-wrap ">
-                {parentConsoles.map(
-                  (console: ElementDescription, index: number) => (
-                    <SelectBox
-                      isSelected={selectedConsoles.includes(
-                        JSON.stringify(console.id)
-                      )}
-                      coolBlue={true}
-                      onClick={() =>
-                        updatedConsoles(JSON.stringify(console.id))
-                      }
-                      key={JSON.stringify(index)}
-                      title={console.name}
-                    />
-                  )
-                )}
-              </div>
+              {MemoizedConsoles}
             </div>
           </div>
           <div id="filters_release_wrapper" className="w-2/4 ml-12 p-6">
