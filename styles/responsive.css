@@ -441,6 +441,12 @@
 }
 
 @media (max-width: 640px) {
+  #writeReview-button-helper {
+    width: 100%;
+  }
+  #writeReviewUi {
+    overflow: hidden;
+  }
   #login_onlyLogo {
     /* margin-left: -1rem !important; */
     overflow: hidden;
@@ -667,6 +673,7 @@
   }
   #write_review_footer {
     min-height: 10rem !important;
+    padding-top: 1rem;
   }
 
   #review_bottom_container {

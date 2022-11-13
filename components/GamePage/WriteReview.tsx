@@ -95,7 +95,7 @@ export default function WriteReview({
       id="write_review_container"
       className={`scrollbar ${
         visible ? 'fixed ' : 'hidden '
-      }px-7 py-6 rounded-xl w-3/5 z-30`}
+      }px-7 py-6 rounded-xl w-3/5 z-30  h-3/4`}
       style={{
         minHeight: '24rem',
         maxHeight: '80%',
@@ -187,7 +187,7 @@ export default function WriteReview({
         className="h-16 flex justify-between items-center"
         style={{ minHeight: '7rem' }}
       >
-        <ul className="list-disc list-inside h-full">
+        <ul id="writeReviewUi" className="list-disc list-inside h-full">
           <li
             className="text-white text-sm font-medium "
             style={{ color: '#9da8b6', opacity: rank ? 1 : 0.4 }}
@@ -201,7 +201,7 @@ export default function WriteReview({
             At least 60 charecters
           </li>
         </ul>
-        <div className="h-full flex items-end">
+        <div className="h-full flex items-end" id="writeReview-button-helper">
           <button
             disabled={!rank || text.length < 60 ? true : false}
             className="disabled:opacity-40 w-32 h-12 bg-specialYellow rounded-lg text-white text-lg font-normal"
