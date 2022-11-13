@@ -245,7 +245,7 @@ export default function CurrentProfile({
                 </div>
               ) : reviewsState.length === 1 && width < 1200 && width > 800 ? (
                 reviewsState.map((review: Review_Type, index: number) => (
-                  <div className="w-2/5">
+                  <div>
                     <Review
                       _id={review._id}
                       key={index}
@@ -386,7 +386,7 @@ export default function CurrentProfile({
                 </div>
               ) : favoritesState.length === 1 && width < 1200 && width > 800 ? (
                 favoritesState.map((review: Favorite_Type, index: number) => (
-                  <div className="w-2/5">
+                  <div>
                     <Favorite
                       _id={review._id}
                       key={index}

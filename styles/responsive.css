@@ -159,14 +159,17 @@
 
 @media (max-width: 1200px) {
   #favorite-component {
-    width: 80% !important;
+    width: 100% !important;
   }
+
   .signup-animation {
     height: 25rem !important;
   }
+
   #we_found_title {
     font-size: 1.6rem !important;
   }
+
   #game_description_row {
     flex-direction: column;
   }
@@ -208,7 +211,7 @@
   }
 
   #profile-review-component {
-    width: 80% !important;
+    width: 100% !important;
   }
 }
 
@@ -260,6 +263,7 @@
   .login-animation {
     height: 25rem !important;
   }
+
   #game_page_game_name {
     font-size: 3rem;
   }
@@ -366,6 +370,7 @@
     width: 100% !important;
     margin: 0 auto;
   }
+
   #game_page_screenshots_controller .slick-slider {
     margin-left: 2rem !important;
   }
@@ -404,6 +409,7 @@
   .register-title {
     padding-top: 1rem;
   }
+
   #favorite-component {
     width: 80% !important;
   }
@@ -662,13 +668,16 @@
   #write_review_footer {
     min-height: 10rem !important;
   }
+
   #review_bottom_container {
     flex-direction: column-reverse;
     align-items: flex-start;
   }
+
   #review_bottom_container_names {
     padding-top: 2rem;
   }
+
   #welcome_title {
     font-size: 1.7rem;
   }
