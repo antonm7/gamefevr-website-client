@@ -1,6 +1,7 @@
 import Lottie from 'react-lottie'
 import * as animationData from '../../public/animations/signup.json'
 import React from 'react'
+import useWindowSize from '../../lib/functions/hooks/useWindowSize'
 
 const SignupAnimation = React.memo(() => {
   const defaultOptions = {
@@ -14,10 +15,16 @@ const SignupAnimation = React.memo(() => {
       className: 'signup-animation',
     },
   }
+  const [width] = useWindowSize()
   return (
     <Lottie
       options={defaultOptions}
-      style={{ zIndex: 0, position: 'absolute', bottom: 0 }}
+      style={{
+        zIndex: 0,
+        position: width > 640 ? 'absolute' : 'relative',
+        height: width > 640 ? '100%' : '25rem',
+        bottom: 0,
+      }}
     ></Lottie>
   )
 })

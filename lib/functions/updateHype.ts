@@ -50,11 +50,13 @@ export default async function updateHype(
 
 async function UpdateScore(id: ObjectId, score: number): Promise<Response> {
   try {
+    console.log('trying')
     await db
       .collection('users')
       .updateOne({ _id: id }, { $inc: { hype: score } })
     return { ok: true }
   } catch (e) {
+    console.log('error on updateHype, updateScoreFunc', e)
     return { error: '' }
   }
 }

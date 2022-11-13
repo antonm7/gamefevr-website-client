@@ -1,3 +1,7 @@
+#menu-text {
+  display: none;
+  padding-right: 2rem;
+}
 @media (max-width: 1600px) {
   #game_box {
     flex: 1 0 31%;
@@ -15,11 +19,14 @@
     width: 100%;
     margin: 0;
   }
+  .login-animation {
+    height: 60rem !important;
+  }
 }
 
 @media (max-width: 1500px) {
   .signup-animation {
-    height: 75% !important;
+    height: 35rem !important;
     position: absolute !important;
     right: 0;
     top: 0 !important;
@@ -28,7 +35,7 @@
 
 @media (max-width: 1400px) {
   .login-animation {
-    height: 75% !important;
+    height: 42rem !important;
     position: absolute !important;
     right: 0;
     top: 0 !important;
@@ -66,7 +73,7 @@
     padding-top: 0;
     padding-left: 2rem;
     padding-right: 2rem;
-    padding-top: 0.2rem;
+    padding-top: 0.7rem;
   }
 
   #rating_label {
@@ -155,7 +162,7 @@
     width: 80% !important;
   }
   .signup-animation {
-    height: 50% !important;
+    height: 25rem !important;
   }
   #we_found_title {
     font-size: 1.6rem !important;
@@ -206,6 +213,9 @@
 }
 
 @media (max-width: 1024px) {
+  #rating_label {
+    display: none;
+  }
   #filters {
     width: 85%;
   }
@@ -235,13 +245,20 @@
   }
 
   .login-animation {
-    height: 50% !important;
+    height: 35rem !important;
+  }
+  #navbar-wrapper {
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
 }
 
 @media (max-width: 900px) {
   .signup-animation {
-    height: 40% !important;
+    height: 25rem !important;
+  }
+  .login-animation {
+    height: 25rem !important;
   }
   #game_page_game_name {
     font-size: 3rem;
@@ -290,7 +307,6 @@
   #span_line {
     padding-left: 1rem;
     padding-right: 1rem;
-    padding-top: 0.5rem;
   }
 
   #rating_label {
@@ -360,18 +376,29 @@
 }
 
 @media (max-width: 800px) {
+  #login-container {
+    position: absolute;
+    overflow: hidden !important;
+  }
+  #search-button-wrapper {
+    width: 90%;
+  }
+  #search-title {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
   .register-container {
     padding: 2rem;
   }
 
   .login-animation {
     top: -5rem !important;
-    height: 40% !important;
+    height: 25rem !important;
   }
 
   .signup-animation {
     top: -2rem;
-    height: 30% !important;
+    height: 15rem !important;
   }
 
   .register-title {
@@ -405,15 +432,62 @@
   #game_box {
     flex: 1 0 100%;
   }
-
-  #profile_page_welcome div {
-    padding-top: 1rem;
-  }
 }
 
 @media (max-width: 640px) {
+  #login_onlyLogo {
+    /* margin-left: -1rem !important; */
+    overflow: hidden;
+  }
+  #search-title {
+    padding-top: 6rem;
+  }
+  #signup-container {
+    position: absolute;
+  }
+
+  #signup-inputs-wrapper input,
+  button {
+    width: 100% !important;
+  }
+  .signup-animation {
+    position: relative;
+  }
+  #global_error {
+    border-radius: 1rem;
+    height: auto;
+    padding: 1rem;
+    left: 50%;
+    transform: translate(-50%);
+    padding-left: 1rem;
+    padding-right: 0;
+    width: 100%;
+    top: 2rem;
+  }
+  #global_error div {
+    overflow: initial;
+    max-width: 100%;
+    height: auto;
+    line-break: anywhere;
+    white-space: normal;
+  }
+  #error_icon {
+    display: none;
+  }
+  #menu-text {
+    display: block;
+  }
+  .navbar-links {
+    display: none !important;
+  }
+  #navbar {
+    justify-content: flex-start;
+  }
+  #navbar-logo {
+    margin-right: auto !important;
+  }
+
   #we_found_title {
-    /* font-size: 1.2rem !important; */
     padding-bottom: 1rem;
     line-height: 2rem;
     white-space: pre-wrap !important;
@@ -455,12 +529,13 @@
     padding-left: 0.5rem;
     padding-right: 0.5rem;
     font-size: 0.9rem;
+    padding-top: 0.7rem;
   }
 
   #span_line {
     padding-left: 2.5rem;
     padding-right: 2.5rem;
-    padding-top: 0.8rem;
+    padding-top: 1rem;
   }
 
   #rating_label {
@@ -493,13 +568,33 @@
   }
 
   #game_page_game_name {
-    font-size: 3.6rem;
+    font-size: 3.2rem;
+    padding-right: 5rem;
+    line-height: 4rem;
+  }
+  #search-title {
+    font-size: 3rem;
+    line-height: 3.5rem;
   }
 }
 
 @media (max-width: 500px) {
   #where_to_buy {
     flex-direction: column;
+  }
+
+  #profile_indicate_wrapper {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: flex-start !important;
+  }
+
+  #profile_indicate_wrapper h1 {
+    padding: 1rem 0;
+  }
+
+  #indicate-wrapper {
+    margin: 0 !important;
   }
 
   #game_page_screenshots_controller {
@@ -533,21 +628,37 @@
     padding: 4rem 1rem;
   }
 
-  #signup-container {
+  /* #signup-container {
     padding-top: 5rem;
-  }
+  } */
 
   #signup-title {
-    padding-top: 3rem;
+    padding-top: 1rem;
   }
 
   .signup-animation {
     top: -3rem !important;
-    height: 30% !important;
+    height: 20rem !important;
+  }
+
+  .login-animation {
+    top: -5rem !important;
+    height: 20rem !important;
   }
 }
 
 @media (max-width: 440px) {
+  #game_page_game_name {
+    font-size: 3.2rem;
+    padding-right: 2rem;
+    line-height: 4rem;
+  }
+  #login_onlyLogo {
+    margin-left: 0rem !important;
+  }
+  #global_error {
+    width: 80%;
+  }
   #write_review_footer {
     min-height: 10rem !important;
   }
@@ -577,17 +688,30 @@
     right: 20px !important;
   }
 
-  .login-animation {
-    height: 30% !important;
+  .signup-animation {
+    top: -1rem !important;
+    height: 15rem !important;
   }
+}
 
+@media (max-width: 350px) {
+  .login-animation {
+    top: -1rem !important;
+    height: 12rem !important;
+  }
+  .signup-animation {
+    top: -1rem !important;
+    height: 12rem !important;
+  }
   .styled-input {
     max-width: 100% !important;
     width: 100% !important;
   }
-
-  .signup-animation {
-    top: -1rem !important;
-    height: 20% !important;
-  }
 }
+
+/* @media (max-height: 700px) and (max-width: 700px) {
+  #search-title {
+    font-size: 3rem !important;
+    line-height: 3rem;
+  }
+} */

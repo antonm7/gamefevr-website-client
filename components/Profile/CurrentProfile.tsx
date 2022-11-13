@@ -140,7 +140,7 @@ export default function CurrentProfile({
           id="profile_page_welcome"
           className="flex justify-between items-center"
         >
-          <div className="flex items-center">
+          <div className="flex items-center" id="profile_indicate_wrapper">
             <h1 id="welcome_title" className="text-white font-bold text-4xl">
               Welcome {username}!
             </h1>

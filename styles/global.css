@@ -432,3 +432,7 @@ div {
   object-fit: cover;
   z-index: 0;
 }
+
+#search-title {
+  line-height: 5.8rem;
+}

@@ -17,6 +17,7 @@ interface Props {
 }
 
 export default function Index({ games }: Props) {
+  const [loadMoreLoading, setLoadMoreLoading] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(false)
   const [localGames, setLocalGames] = useState<ShortGame[]>([])
   const [error, setError] = useState<boolean>(false)
@@ -25,13 +26,13 @@ export default function Index({ games }: Props) {
 
   const loadMore = async (): Promise<void> => {
     try {
-      setLoading(true)
+      setLoadMoreLoading(true)
       setError(false)
       const req = await axios.get('/api/explore/get/search')
       if (req.status !== 200) throw new Error()
       if (!req.data.results.length) throw new Error()
       setLocalGames((arr) => [...arr, ...req.data.results])
-      setLoading(false)
+      setLoadMoreLoading(false)
     } catch (e) {
       console.log(e)
     }
@@ -87,6 +88,8 @@ export default function Index({ games }: Props) {
             </div>
             <div className="w-24 h-16 rounded-lg m-auto mt-8">
               {loading ? (
+                <SmallLoader big={false} xCentered={true} />
+              ) : loadMoreLoading ? (
                 <SmallLoader big={false} xCentered={true} />
               ) : (
                 <SearchButton text="Load More" onClick={() => loadMore()} />

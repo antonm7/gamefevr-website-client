@@ -10,13 +10,15 @@ export default function Error({ visibility, text }: Props) {
   return (
     <div
       id="global_error"
-      className={`${visibility ? 'global_animation_enabled' : 'global_animation_disabled'
-        } fixed flex z-50 w-96 h-20 pl-4 rounded-lg rounded-r-none`}
+      className={`${
+        visibility ? 'global_animation_enabled' : 'global_animation_disabled'
+      } fixed flex z-50 w-96 h-20 pl-4 rounded-lg rounded-r-none`}
       style={{ backgroundColor: '#faeeeb' }}
     >
       <div className="flex w-full items-center">
         <div className="flex items-center nowrap whitespace-nowrap w-full">
           <div
+            id="error_icon"
             className="rounded-full flex items-center justify-center mr-4 nowrap whitespace-nowrap"
             style={{
               height: '2.2rem',

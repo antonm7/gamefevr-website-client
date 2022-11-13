@@ -8,11 +8,13 @@ import useWindowSize from '../lib/functions/hooks/useWindowSize'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars } from '@fortawesome/free-solid-svg-icons'
 import { signOut } from 'next-auth/react'
+import { useStore } from '../store'
 
 export default function Navbar() {
   const router = useRouter()
   const session = useSession()
   const [auth, setAuth] = useState<boolean>(false)
+  const changeMenuVisibility = useStore((store) => store.changeMenuVisibility)
   const [width] = useWindowSize()
 
   useEffect(() => {
@@ -38,7 +40,7 @@ export default function Navbar() {
             >
               <p
                 style={{ lineHeight: '2.75rem' }}
-                className="text-white font-regular text-sm text-center cursor-pointer"
+                className="text-white font-regular text-xs text-center cursor-pointer"
               >
                 Logout
               </p>
@@ -58,7 +60,7 @@ export default function Navbar() {
               >
                 <p
                   style={{ lineHeight: '2.75rem' }}
-                  className="text-white font-regular text-sm text-center cursor-pointer"
+                  className="text-white font-regular text-xs text-center cursor-pointer"
                 >
                   Profile
                 </p>
@@ -80,7 +82,7 @@ export default function Navbar() {
             >
               <p
                 style={{ lineHeight: '2.75rem' }}
-                className="text-white font-regular text-sm text-center cursor-pointer"
+                className="text-white font-regular text-xs text-center cursor-pointer"
               >
                 Register
               </p>
@@ -92,53 +94,75 @@ export default function Navbar() {
   }
 
   if (router.route === '/') {
-    return (
-      <div className="absolute h-20 w-full z-30 px-20">
-        <div
-          className="h-full w-full flex justify-between pt-4 px-20 items-center"
-          id="navbar"
-        >
-          <div style={{ marginTop: 7 }}>
-            <Image
-              src={'/images/Logo.svg'}
-              height={32}
-              width={130}
-              alt="Logo"
+    if (width > 640) {
+      return (
+        <div id="navbar-wrapper" className="absolute h-20 w-full z-30 px-20">
+          <div
+            className="h-full w-full flex justify-between pt-4 px-20 items-center"
+            id="navbar"
+          >
+            <div style={{ marginTop: 7 }}>
+              <Image
+                src={'/images/Logo.svg'}
+                height={32}
+                width={130}
+                alt="Logo"
+              />
+            </div>
+            <div className="flex pt-0">
+              <Link href="/">
+                <p
+                  className={`text-white font-semibold cursor-pointer text-sm ${
+                    router.pathname === '/' ? 'active-link ' : ''
+                  }`}
+                >
+                  Home
+                </p>
+              </Link>
+              <Link href="/explore">
+                <p
+                  className={`text-white mx-8 font-semibold cursor-pointer text-sm ${
+                    router.pathname === '/explore' ? 'active-link ' : ''
+                  }`}
+                >
+                  Explore
+                </p>
+              </Link>
+              <Link href="/">
+                <p
+                  className={`text-white font-semibold cursor-pointer text-sm ${
+                    router.pathname === '/reviews' ? 'active-link ' : ''
+                  }`}
+                >
+                  Reviews
+                </p>
+              </Link>
+            </div>
+            <DynamicSession />
+          </div>
+        </div>
+      )
+    } else {
+      return (
+        <div className="absolute  w-full pt-4 px-8" style={{ zIndex: '50' }}>
+          <div className="flex items-center justify-between">
+            <div style={{ marginTop: 7 }}>
+              <Image
+                src={'/images/Logo.svg'}
+                height={32}
+                width={130}
+                alt="Logo"
+              />
+            </div>
+            <FontAwesomeIcon
+              onClick={() => changeMenuVisibility(true)}
+              icon={faBars}
+              className="h-5 text-white cursor-pointer "
             />
           </div>
-          <div className="flex pt-0">
-            <Link href="/">
-              <p
-                className={`text-white font-semibold cursor-pointer text-sm ${
-                  router.pathname === '/' ? 'active-link ' : ''
-                }`}
-              >
-                Home
-              </p>
-            </Link>
-            <Link href="/explore">
-              <p
-                className={`text-white mx-8 font-semibold cursor-pointer text-sm ${
-                  router.pathname === '/explore' ? 'active-link ' : ''
-                }`}
-              >
-                Explore
-              </p>
-            </Link>
-            <Link href="/">
-              <p
-                className={`text-white font-semibold cursor-pointer text-sm ${
-                  router.pathname === '/reviews' ? 'active-link ' : ''
-                }`}
-              >
-                Reviews
-              </p>
-            </Link>
-          </div>
-          <DynamicSession />
         </div>
-      </div>
-    )
+      )
+    }
   } else {
     return (
       <div
@@ -257,6 +281,7 @@ export default function Navbar() {
                 />
               </div>
               <FontAwesomeIcon
+                onClick={() => changeMenuVisibility(true)}
                 icon={faBars}
                 className="h-5 text-white cursor-pointer"
               />

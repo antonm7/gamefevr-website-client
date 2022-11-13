@@ -60,16 +60,16 @@ const Signup: NextPage = () => {
   }
 
   return (
-    <main className="flex h-screen bg-white">
+    <main className="flex h-auto bg-white">
       <div
         id="signup-container"
         style={{ zIndex: 2 }}
-        className="px-32 pt-16 register-container "
+        className="px-32 pt-16 register-container  overflow-hidden"
       >
         {width >= 800 ? (
           <Image src={'/images/dLogo.svg'} height={32} width={130} alt="Logo" />
         ) : (
-          <div className="relative overflow-hidden">
+          <div className="relative overflow-hidden" id="login_onlyLogo">
             <OnlyLogo size={width >= 500 ? 'xl' : width >= 360 ? 'lg' : 'sm'} />
           </div>
         )}
@@ -84,7 +84,7 @@ const Signup: NextPage = () => {
           <br />
           Please create your account
         </p>
-        <div className="pt-9 w-80 styled-input">
+        <div className="pt-9 w-80 styled-input" id="signup-inputs-wrapper">
           <StyledInput
             title="Username"
             placeholder="Enter your username"
@@ -108,7 +108,7 @@ const Signup: NextPage = () => {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          <div className="pt-12">
+          <div className="pt-12" id="signup-inputs-wrapper">
             {loading ? (
               <SmallLoader xCentered={true} />
             ) : (

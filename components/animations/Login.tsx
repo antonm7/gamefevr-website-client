@@ -1,5 +1,6 @@
 import React from 'react'
 import Lottie from 'react-lottie'
+import useWindowSize from '../../lib/functions/hooks/useWindowSize'
 import * as animationData from '../../public/animations/login.json'
 
 const LoginAnimation = React.memo(() => {
@@ -14,10 +15,15 @@ const LoginAnimation = React.memo(() => {
       className: 'login-animation',
     },
   }
+  const [width] = useWindowSize()
   return (
     <Lottie
       options={defaultOptions}
-      style={{ zIndex: 0, position: 'absolute', bottom: 0 }}
+      style={{
+        zIndex: 0,
+        position: width > 800 ? 'absolute' : 'relative',
+        height: width > 800 ? '100%' : '25rem',
+      }}
     ></Lottie>
   )
 })

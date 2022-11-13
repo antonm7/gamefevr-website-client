@@ -27,7 +27,6 @@ export default function GlobalError({ isVisible, propsType }: Props) {
           setVisibility(false)
           changeGlobalErrorVisibility(false)
         }, 1900)
-
       }
     } else {
       setVisibility(false)
@@ -40,7 +39,8 @@ export default function GlobalError({ isVisible, propsType }: Props) {
 
   if (type === 'request') return <Request visibility={visibility} text={text} />
 
-  if (type === 'success') return <Sucssess visibility={visibility} text={text} />
+  if (type === 'success')
+    return <Sucssess visibility={visibility} text={text} />
 
   return null
 }

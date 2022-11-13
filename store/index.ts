@@ -3,6 +3,7 @@ import { ShortGame } from '../types'
 
 interface State {
   isFilterOn: boolean
+  menuVisibility: boolean
   games: ShortGame[]
   page: number
   gameName: string
@@ -12,12 +13,14 @@ interface State {
   addPage: () => void
   clearPage: () => void
   changeFilterVisibility: (isFilterOn: boolean) => void
+  changeMenuVisibility: (menuVisibility: boolean) => void
   changeGameName: (gameName: any) => void
   setCount: (count: number) => void
 }
 
 export const useStore = create<State>((set) => ({
   isFilterOn: <boolean>false,
+  menuVisibility: <boolean>false,
   games: <ShortGame[]>[],
   page: <number>1,
   gameName: <string>'',
@@ -34,6 +37,8 @@ export const useStore = create<State>((set) => ({
   clearPage: () => set(() => ({ page: 1 })),
   changeFilterVisibility: (value: boolean) =>
     set(() => ({ isFilterOn: value })),
+  changeMenuVisibility: (value: boolean) =>
+    set(() => ({ menuVisibility: value })),
   changeGameName: (value: string) => set(() => ({ gameName: value })),
   setCount: (value: number) => set(() => ({ count: value })),
 }))

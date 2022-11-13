@@ -1,4 +1,3 @@
-import type { AppProps } from 'next/app'
 import 'tailwindcss/tailwind.css'
 import '../styles/global.css'
 import '../styles/responsive.css'
@@ -15,6 +14,7 @@ import {
   useStore,
 } from '../store'
 import GlobalError from '../components/common/GlobalError/Index'
+import Menu from '../components/Menu'
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: any) {
   const changeGameName = useStore((state) => state.changeGameName)
@@ -22,6 +22,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: any) {
   const setIsAnimating = useProgressStore((state) => state.setIsAnimating)
   const isAnimating = useProgressStore((state) => state.isAnimating)
   const isVisible = useGlobalError((state) => state.isVisible)
+  const menuVisibility = useStore((state) => state.menuVisibility)
   const type = useGlobalError((state) => state.type)
   const router: any = useRouter()
 
@@ -104,6 +105,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: any) {
       <GlobalError propsType={type} isVisible={globalErrorVisibility} />
       <Progress isAnimating={isAnimating} />
       <SessionProvider session={session}>
+        {menuVisibility ? <Menu /> : null}
         <div className="bg-main-blue">
           <Component {...pageProps} />
         </div>

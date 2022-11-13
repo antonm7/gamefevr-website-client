@@ -48,11 +48,15 @@ const Login: NextPage = () => {
 
   return (
     <main className="flex h-screen bg-white">
-      <div style={{ zIndex: 2 }} className="px-32 pt-16 register-container">
+      <div
+        id="login-container"
+        style={{ zIndex: 2 }}
+        className="px-32 pt-16 register-container"
+      >
         {width >= 800 ? (
           <Image src={'/images/dLogo.svg'} height={32} width={130} alt="Logo" />
         ) : (
-          <div className="relative overflow-hidden">
+          <div className="relative overflow-hidden" id="login_onlyLogo">
             <OnlyLogo size={width >= 500 ? 'xl' : width >= 360 ? 'lg' : 'sm'} />
           </div>
         )}

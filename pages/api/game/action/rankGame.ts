@@ -49,16 +49,6 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
         value: req.body.value,
       }
       savedRank = await db.collection('ranks').insertOne(rank)
-      const update_hype = await updateHype(
-        'dislikeReview',
-        new ObjectId(req.body.userId)
-      )
-
-      if (update_hype.ok) {
-        res.status(200).send({ error: null })
-      } else {
-        throw new Error('error updating hype')
-      }
     } catch (e) {
       await generateErrorBackend({
         error: 'error saving the rank on rankGame action api',
@@ -125,18 +115,18 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
     }
     try {
       const update_hype = await updateHype(
-        'rankGame',
+        'dislikeReview',
         new ObjectId(req.body.userId)
       )
 
       if (update_hype.ok) {
-        res.status(201).send({ error: null })
+        res.status(200).send({ error: null })
       } else {
         throw new Error('error updating hype')
       }
     } catch (e) {
       res.status(500).send({ error: 'Unexpected error' })
-      return console.log('error on rankGame', e)
+      console.log('error on rankGame', e)
     }
   }
 }
