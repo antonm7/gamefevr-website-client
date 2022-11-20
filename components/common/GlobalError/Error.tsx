@@ -1,5 +1,6 @@
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useEffect } from 'react'
 import TimerBar from '../TimerBar'
 
 interface Props {
@@ -7,12 +8,18 @@ interface Props {
   text: string
 }
 export default function Error({ visibility, text }: Props) {
+
+  useEffect(() => {
+    console.log('dsajdklsajdlksa', visibility)
+  }, [visibility])
+
+  if (!visibility) return null
+
   return (
     <div
       id="global_error"
-      className={`${
-        visibility ? 'global_animation_enabled' : 'global_animation_disabled'
-      } fixed flex z-50 w-96 h-20 pl-4 rounded-lg rounded-r-none`}
+      className={`${visibility ? 'global_animation_enabled' : 'global_animation_disabled'
+        } fixed flex z-50 w-96 h-20 pl-4 rounded-lg rounded-r-none`}
       style={{ backgroundColor: '#faeeeb' }}
     >
       <div className="flex w-full items-center">

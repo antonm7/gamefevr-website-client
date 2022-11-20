@@ -7,12 +7,14 @@ interface Props {
   text: string
 }
 export default function Warning({ visibility, text }: Props) {
+
+  if (!visibility) return null
+
   return (
     <div
       id="global_error"
-      className={`${
-        visibility ? 'global_animation_enabled' : 'global_animation_disabled'
-      } fixed flex z-50 w-96 h-20 pl-4 rounded-lg rounded-r-none`}
+      className={`${visibility ? 'global_animation_enabled' : 'global_animation_disabled'
+        } fixed flex z-50 w-96 h-20 pl-4 rounded-lg rounded-r-none`}
       style={{ backgroundColor: '#fdf8eb' }}
     >
       <div className="flex w-full items-center">

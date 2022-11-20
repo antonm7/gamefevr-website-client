@@ -11,7 +11,7 @@ interface Props {
 }
 
 export default function GlobalError({ isVisible, propsType }: Props) {
-  const [visibility, setVisibility] = useState(isVisible)
+  const [visibility, setVisibility] = useState(false)
   const [type, setType] = useState(propsType)
   const changeGlobalErrorVisibility = useGlobalError(
     (store) => store.setIsVisible
@@ -19,6 +19,7 @@ export default function GlobalError({ isVisible, propsType }: Props) {
   const text = useGlobalError((store) => store.text)
 
   useEffect(() => {
+    console.log(isVisible, 'changed,')
     if (isVisible) {
       setType(propsType)
       setVisibility(true)
@@ -30,6 +31,7 @@ export default function GlobalError({ isVisible, propsType }: Props) {
       }
     } else {
       setVisibility(false)
+      changeGlobalErrorVisibility(false)
     }
   }, [isVisible])
 

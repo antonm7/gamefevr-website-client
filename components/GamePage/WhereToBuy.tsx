@@ -26,7 +26,7 @@ const WhereToBuy: React.FC<Props> = ({ stores }) => {
         <div onClick={() => navigate(store.store.domain)} key={store.id}>
           <h2
             id="game_page_detail"
-            className="text-white underline font-normal text-1xl opacity-70 pt-2 mr-3 cursor-pointer whitespace-nowrap"
+            className="text-white underline font-normal text-1xl opacity-70 pt-2 mr-3 cursor-pointer whitespace-nowrap inline-block"
           >
             {store.store.name}
           </h2>

@@ -8,6 +8,8 @@ interface Props {
 }
 
 export default function Sucssess({ visibility, text }: Props) {
+    if (!visibility) return null
+
     return (
         <div
             id="global_error"

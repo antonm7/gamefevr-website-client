@@ -88,7 +88,7 @@ export default function AddFavorite({ gameId }: Props) {
     return (
       <div
         onClick={() => navigateAuth()}
-        className="flex items-center justify-center w-40 h-10  mt-6 rounded-md cursor-pointer opacity-70 hover:opacity-100"
+        className="flex items-center justify-center w-40 h-10  mt-2 rounded-md cursor-pointer opacity-70 hover:opacity-100"
         style={{ backgroundColor: '#0c284a' }}
       >
         <FontAwesomeIcon icon={regular} className="h-4 text-white pr-2" />

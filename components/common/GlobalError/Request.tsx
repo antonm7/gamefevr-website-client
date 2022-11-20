@@ -22,12 +22,13 @@ export default function Request({ visibility, text }: Props) {
     state.setAnswer('no')
   }
 
+  if (!visibility) return null
+
   return (
     <div
       id="global_error"
-      className={`${
-        visibility ? 'global_animation_enabled' : 'global_animation_disabled'
-      } fixed flex z-50 h-20 pl-4 rounded-lg rounded-r-none`}
+      className={`${visibility ? 'global_animation_enabled' : 'global_animation_disabled'
+        } fixed flex z-50 h-20 pl-4 rounded-lg rounded-r-none`}
       style={{ backgroundColor: '#e7eefa', width: '26rem' }}
     >
       <div className="flex w-full items-center">

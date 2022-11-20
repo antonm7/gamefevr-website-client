@@ -147,6 +147,7 @@ export default function CurrentProfile({
             <IndicateHype hype={hype} />
           </div>
           <div
+            id="account_settings_wrapper_titles"
             className="flex items-center"
             onClick={() => changeVisibleSettings(true)}
           >
@@ -166,20 +167,18 @@ export default function CurrentProfile({
         <div className="pt-24">
           <h1 className="text-white font-bold text-3xl">Your Reviews</h1>
           <div
-            className={`mt-12 ${
-              reviewsState.length === 2 && width > 1200
-                ? 'w-[60rem]'
-                : reviewsState.length === 3 && width > 1650
+            className={`mt-12 ${reviewsState.length === 2 && width > 1200
+              ? 'w-[60rem]'
+              : reviewsState.length === 3 && width > 1650
                 ? 'w-[65%]'
                 : 'w-full'
-            }`}
+              }`}
           >
             {reviewsState.length > 0 ? (
               reviewsState.length === 2 && width >= 800 ? (
                 <div
-                  className={`flex  flex-nowrap ${
-                    width < 1650 ? 'justify-between' : 'justify-between'
-                  }`}
+                  className={`flex  flex-nowrap ${width < 1650 ? 'justify-between' : 'justify-between'
+                    }`}
                 >
                   {reviewsState.map((review: Review_Type, index: number) =>
                     width < 1200 ? (
@@ -221,9 +220,8 @@ export default function CurrentProfile({
                 </div>
               ) : reviewsState.length <= 3 && width > 1700 ? (
                 <div
-                  className={`flex flex-nowrap ${
-                    width < 1700 ? 'justify-start' : 'justify-between'
-                  }`}
+                  className={`flex flex-nowrap ${width < 1700 ? 'justify-start' : 'justify-between'
+                    }`}
                 >
                   {reviewsState.map((review: Review_Type, index: number) => (
                     <Review
@@ -314,26 +312,24 @@ export default function CurrentProfile({
         <div className="pt-14">
           <h1 className="text-white font-bold text-3xl">Favorite Games</h1>
           <div
-            className={`mt-12 ${
-              width < 760
-                ? ''
-                : favoritesState.length === 2 && width >= 1200
+            className={`mt-12 ${width < 760
+              ? ''
+              : favoritesState.length === 2 && width >= 1200
                 ? 'w-[44rem]'
                 : favoritesState.length === 3 && width >= 1650
-                ? 'w-[83%]'
-                : favoritesState.length === 2 && width <= 1200
-                ? 'w-[44rem]'
-                : favoritesState.length === 3 && width <= 1200
-                ? 'w-full'
-                : 'w-full'
-            }`}
+                  ? 'w-[83%]'
+                  : favoritesState.length === 2 && width <= 1200
+                    ? 'w-[44rem]'
+                    : favoritesState.length === 3 && width <= 1200
+                      ? 'w-full'
+                      : 'w-full'
+              }`}
           >
             {favoritesState.length > 0 ? (
               favoritesState.length === 2 && width > 760 ? (
                 <div
-                  className={`flex flex-nowrap ${
-                    width < 1650 ? 'justify-between' : 'justify-between'
-                  }`}
+                  className={`flex flex-nowrap ${width < 1650 ? 'justify-between' : 'justify-between'
+                    }`}
                 >
                   {favoritesState.map((review: Favorite_Type, index: number) =>
                     width < 1200 ? (
@@ -365,9 +361,8 @@ export default function CurrentProfile({
                 </div>
               ) : favoritesState.length <= 4 && width > 1650 ? (
                 <div
-                  className={`flex flex-nowrap ${
-                    width < 1650 ? 'justify-start' : 'justify-between'
-                  }`}
+                  className={`flex flex-nowrap ${width < 1650 ? 'justify-start' : 'justify-between'
+                    }`}
                 >
                   {favoritesState.map(
                     (review: Favorite_Type, index: number) => (

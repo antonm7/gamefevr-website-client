@@ -12,6 +12,8 @@ import axios from 'axios'
 import { ObjectId } from 'bson'
 import { useSession } from 'next-auth/react'
 import { useEffect, useMemo, useState } from 'react'
+import useWindowSize from '../../lib/functions/hooks/useWindowSize'
+import slicedParagrap from '../../lib/functions/slicedParagraph'
 import { useGlobalError } from '../../store'
 import { Review_Type } from '../../types/schema'
 
@@ -40,6 +42,8 @@ export default function Review({
   const globalErrorState = useGlobalError((state) => state)
 
   const state = useGlobalError((state) => state)
+
+  const [width] = useWindowSize()
 
   useEffect(() => {
     if (session.status === 'authenticated') {
@@ -273,7 +277,7 @@ export default function Review({
         className="flex flex-grow  items-center justify-between mt-20 "
       >
         <div id="review_bottom_container_names">
-          <p className="text-cool-blue font-semibold">{user_name}</p>
+          <p className="text-cool-blue font-semibold">{slicedParagrap(user_name, width < 560 ? 12 : 36, 12)}</p>
           <p className="text-white opacity-50">19 Aug, 2022</p>
         </div>
         {JSON.stringify(userId) ===

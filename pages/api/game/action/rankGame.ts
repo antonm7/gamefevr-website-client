@@ -120,7 +120,7 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
       )
 
       if (update_hype.ok) {
-        res.status(200).send({ error: null })
+        res.status(201).send({ error: null })
       } else {
         throw new Error('error updating hype')
       }

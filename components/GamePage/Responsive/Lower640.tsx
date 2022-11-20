@@ -53,7 +53,7 @@ export default function Lower640({ game, changeIsUserRated, reviews }: Props) {
           )}
         </div>
         <div className="pt-4 ">
-          <div className="flex flex-row flex-no-wrap">
+          <div className="flex flex-row flex-wrap">
             <h2
               id="game_page_detail"
               className="text-white font-normal text-1xl opacity-70"
@@ -65,7 +65,7 @@ export default function Lower640({ game, changeIsUserRated, reviews }: Props) {
                 <h2
                   key={index}
                   id="game_page_detail"
-                  className="pl-1 text-white font-semibold text-1xl"
+                  className="pl-1 text-white font-semibold text-1xl whitespace-nowrap"
                 >
                   {publisher.name}
                   {index !== game.publishers.length - 1 ? ',' : ''}

@@ -1,0 +1,4 @@
+todos:
+
+    -Error alert on small screens doesnt get closed.
+    -

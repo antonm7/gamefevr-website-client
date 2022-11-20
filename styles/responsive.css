@@ -2,6 +2,7 @@
   display: none;
   padding-right: 2rem;
 }
+
 @media (max-width: 1600px) {
   #game_box {
     flex: 1 0 31%;
@@ -19,6 +20,7 @@
     width: 100%;
     margin: 0;
   }
+
   .login-animation {
     height: 60rem !important;
   }
@@ -219,9 +221,16 @@
   #rating_label {
     display: none;
   }
+
   #filters {
     width: 85%;
   }
+
+  #profile_page_welcome {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
 
   #small_search_input_wrapper {
     width: 100%;
@@ -250,6 +259,7 @@
   .login-animation {
     height: 35rem !important;
   }
+
   #navbar-wrapper {
     padding-left: 1rem;
     padding-right: 1rem;
@@ -260,6 +270,7 @@
   .signup-animation {
     height: 25rem !important;
   }
+
   .login-animation {
     height: 25rem !important;
   }
@@ -381,17 +392,30 @@
 }
 
 @media (max-width: 800px) {
+  #profile_indicate_wrapper {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: flex-start !important;
+  }
+
+  #indicate-wrapper {
+    margin: 0 !important;
+  }
+
   #login-container {
     position: absolute;
     overflow: hidden !important;
   }
+
   #search-button-wrapper {
     width: 90%;
   }
+
   #search-title {
     padding-left: 2rem;
     padding-right: 2rem;
   }
+
   .register-container {
     padding: 2rem;
   }
@@ -420,9 +444,14 @@
 }
 
 @media (max-width: 700px) {
+
   #we_found_title_wrapper {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  #account_settings_wrapper_titles {
+    margin-top: 1rem;
   }
 
   #we_found_title {
@@ -430,10 +459,6 @@
     padding-bottom: 1rem;
   }
 
-  #profile_page_welcome {
-    flex-direction: column;
-    align-items: flex-start;
-  }
 
   #game_box {
     flex: 1 0 100%;
@@ -444,16 +469,20 @@
   #writeReview-button-helper {
     width: 100%;
   }
+
   #writeReviewUi {
     overflow: hidden;
   }
+
   #login_onlyLogo {
     /* margin-left: -1rem !important; */
     overflow: hidden;
   }
+
   #search-title {
     padding-top: 6rem;
   }
+
   #signup-container {
     position: absolute;
   }
@@ -462,9 +491,11 @@
   button {
     width: 100% !important;
   }
+
   .signup-animation {
     position: relative;
   }
+
   #global_error {
     border-radius: 1rem;
     height: auto;
@@ -476,6 +507,7 @@
     width: 100%;
     top: 2rem;
   }
+
   #global_error div {
     overflow: initial;
     max-width: 100%;
@@ -483,18 +515,23 @@
     line-break: anywhere;
     white-space: normal;
   }
+
   #error_icon {
     display: none;
   }
+
   #menu-text {
     display: block;
   }
+
   .navbar-links {
     display: none !important;
   }
+
   #navbar {
     justify-content: flex-start;
   }
+
   #navbar-logo {
     margin-right: auto !important;
   }
@@ -550,6 +587,8 @@
     padding-top: 1rem;
   }
 
+
+
   #rating_label {
     display: flex;
     overflow: hidden;
@@ -584,6 +623,7 @@
     padding-right: 5rem;
     line-height: 4rem;
   }
+
   #search-title {
     font-size: 3rem;
     line-height: 3.5rem;
@@ -593,16 +633,6 @@
 @media (max-width: 500px) {
   #where_to_buy {
     flex-direction: column;
-  }
-
-  #profile_indicate_wrapper {
-    display: flex;
-    flex-direction: column-reverse;
-    align-items: flex-start !important;
-  }
-
-  #profile_indicate_wrapper h1 {
-    padding: 1rem 0;
   }
 
   #indicate-wrapper {
@@ -665,12 +695,15 @@
     padding-right: 2rem;
     line-height: 4rem;
   }
+
   #login_onlyLogo {
     margin-left: 0rem !important;
   }
+
   #global_error {
     width: 80%;
   }
+
   #write_review_footer {
     min-height: 10rem !important;
     padding-top: 1rem;
@@ -715,10 +748,12 @@
     top: -1rem !important;
     height: 12rem !important;
   }
+
   .signup-animation {
     top: -1rem !important;
     height: 12rem !important;
   }
+
   .styled-input {
     max-width: 100% !important;
     width: 100% !important;
