@@ -11,6 +11,7 @@ import YellowButton from './common/YellowButton'
 import { setCookie } from 'cookies-next'
 import Genres from './Filters/Genres'
 import Consoles from './Filters/Consoles'
+import useWindowSize from '../lib/functions/hooks/useWindowSize'
 
 export default function Filters() {
   const [yearRange, changeYearRange] = useState<number[]>([1990, 2023])
@@ -81,6 +82,8 @@ export default function Filters() {
     changeSelectedConsoles(filtersStore.consoles)
   }, [])
 
+  const [width] = useWindowSize()
+
   return (
     <div
       id="filters"
@@ -94,20 +97,28 @@ export default function Filters() {
       />
       <h1 className="text-3xl truncate font-semibold text-center">Genres</h1>
       <div className="px-6">
-        <div className="bg-white p-4 w-5/6 mt-6 mx-auto rounded-md filters-column-shadow">
+        <div className="bg-white p-4 w-5/6 mt-6 mx-auto rounded-md filters-column-shadow column-filters-wrapper">
           {MemoizedGenres}
         </div>
       </div>
+      {width > 1600 ? null : <div id="filters_consoles_wrapper" className="py-6 w-2/4 px-6">
+        <h1 className="text-3xl truncate font-semibold text-center">
+          Consoles
+        </h1>
+        <div className="bg-white p-4 w-5/6 mt-6 mx-auto rounded-md filters-column-shadow column-filters-wrapper">
+          {MemoizedConsoles}
+        </div>
+      </div>}
       <div className="flex flex-col items-center">
         <div id="filters_lower_line" className="flex justify-between w-5/6">
-          <div id="filters_consoles_wrapper" className="py-6 w-2/4 px-6">
+          {width <= 1600 ? null : <div id="filters_consoles_wrapper" className="py-6 w-2/4 px-6">
             <h1 className="text-3xl truncate font-semibold text-center">
               Consoles
             </h1>
-            <div className="bg-white p-4 mt-6 mx-auto h-auto rounded-md filters-column-shadow">
+            <div className="bg-white p-4 w-5/6 mt-6 mx-auto rounded-md filters-column-shadow column-filters-wrapper">
               {MemoizedConsoles}
             </div>
-          </div>
+          </div>}
           <div id="filters_release_wrapper" className="w-2/4 ml-12 p-6">
             <h1 className="text-3xl truncate font-semibold text-center ">
               Release Date

@@ -106,6 +106,7 @@ export default function Bigger640({ game, changeIsUserRated, reviews }: Props) {
         {game.trailers?.results[0]?.data?.max ? (
           <div className="video-container rounded-xl overflow-hidden">
             <video
+              id="game_video"
               autoPlay
               muted
               loop

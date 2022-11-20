@@ -466,6 +466,18 @@
 }
 
 @media (max-width: 640px) {
+  video {
+    width: 100% !important;
+  }
+
+  .column-filters-wrapper {
+    width: 100%;
+  }
+
+  .filters-category-flex div {
+    background-color: red !important;
+  }
+
   #writeReview-button-helper {
     width: 100%;
   }
