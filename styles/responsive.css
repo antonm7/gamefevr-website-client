@@ -474,8 +474,9 @@
     width: 100%;
   }
 
-  .filters-category-flex div {
-    background-color: red !important;
+  #selectBox {
+    margin-left: 0;
+    margin-right: 0;
   }
 
   #writeReview-button-helper {

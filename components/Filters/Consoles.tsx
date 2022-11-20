@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import useWindowSize from "../../lib/functions/hooks/useWindowSize"
-import { genres, parentConsoles } from "../../lib/staticData"
+import { parentConsoles } from "../../lib/staticData"
 import { ElementDescription } from "../../types"
 import SelectBox from "../common/SelectBox"
 
