@@ -8,6 +8,8 @@
   box-sizing: border-box !important;
 }
 
+body {}
+
 h1,
 p,
 h2,
@@ -332,56 +334,46 @@ div {
 }
 
 #android {
-  filter: invert(7%) sepia(26%) saturate(1359%) hue-rotate(177deg)
-    brightness(70%) contrast(96%);
+  filter: invert(7%) sepia(26%) saturate(1359%) hue-rotate(177deg) brightness(70%) contrast(96%);
 }
 
 #windows {
-  filter: invert(7%) sepia(26%) saturate(1359%) hue-rotate(177deg)
-    brightness(70%) contrast(96%);
+  filter: invert(7%) sepia(26%) saturate(1359%) hue-rotate(177deg) brightness(70%) contrast(96%);
 }
 
 #mac {
-  filter: invert(7%) sepia(26%) saturate(1359%) hue-rotate(177deg)
-    brightness(70%) contrast(96%);
+  filter: invert(7%) sepia(26%) saturate(1359%) hue-rotate(177deg) brightness(70%) contrast(96%);
 }
 
 #linux {
-  filter: invert(7%) sepia(26%) saturate(1359%) hue-rotate(177deg)
-    brightness(70%) contrast(96%);
+  filter: invert(7%) sepia(26%) saturate(1359%) hue-rotate(177deg) brightness(70%) contrast(96%);
 }
 
 #playstation {
-  filter: invert(7%) sepia(26%) saturate(1359%) hue-rotate(177deg)
-    brightness(70%) contrast(96%);
+  filter: invert(7%) sepia(26%) saturate(1359%) hue-rotate(177deg) brightness(70%) contrast(96%);
 }
 
 #xbox {
-  filter: invert(7%) sepia(26%) saturate(1359%) hue-rotate(177deg)
-    brightness(70%) contrast(96%);
+  filter: invert(7%) sepia(26%) saturate(1359%) hue-rotate(177deg) brightness(70%) contrast(96%);
 }
 
 #nintendo,
 #atari {
-  filter: invert(7%) sepia(26%) saturate(1359%) hue-rotate(177deg)
-    brightness(70%) contrast(96%);
+  filter: invert(7%) sepia(26%) saturate(1359%) hue-rotate(177deg) brightness(70%) contrast(96%);
 }
 
 #amiga {
-  filter: invert(7%) sepia(26%) saturate(1359%) hue-rotate(177deg)
-    brightness(70%) contrast(96%);
+  filter: invert(7%) sepia(26%) saturate(1359%) hue-rotate(177deg) brightness(70%) contrast(96%);
 }
 
 #sega {
-  filter: invert(7%) sepia(26%) saturate(1359%) hue-rotate(177deg)
-    brightness(70%) contrast(96%);
+  filter: invert(7%) sepia(26%) saturate(1359%) hue-rotate(177deg) brightness(70%) contrast(96%);
 }
 
 #3do,
 #neo,
 #web {
-  filter: invert(7%) sepia(26%) saturate(1359%) hue-rotate(177deg)
-    brightness(91%) contrast(96%);
+  filter: invert(7%) sepia(26%) saturate(1359%) hue-rotate(177deg) brightness(91%) contrast(96%);
 }
 
 #filters-bg {

@@ -106,7 +106,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: any) {
       <Progress isAnimating={isAnimating} />
       <SessionProvider session={session}>
         {menuVisibility ? <Menu /> : null}
-        <div className="bg-main-blue">
+        <div className="bg-main-blue h-screen">
           <Component {...pageProps} />
         </div>
       </SessionProvider>

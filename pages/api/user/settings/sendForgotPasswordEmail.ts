@@ -58,7 +58,6 @@ export default async function handler(req: Request, res: Response) {
               },
             }
             const send = await sgMail.send(msg)
-            console.log('seded', send)
           } catch (e: any) {
             console.log('error sending email', e.response.body)
           }

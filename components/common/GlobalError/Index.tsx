@@ -19,7 +19,6 @@ export default function GlobalError({ isVisible, propsType }: Props) {
   const text = useGlobalError((store) => store.text)
 
   useEffect(() => {
-    console.log(isVisible, 'changed,')
     if (isVisible) {
       setType(propsType)
       setVisibility(true)

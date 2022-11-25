@@ -84,7 +84,6 @@ export default function Index(props: Props) {
     if (props.games.length === 0 && !props.error) return
     else {
       if (props.error) {
-        console.log(props.error)
         setLoadingError(true)
         return
       }
@@ -150,9 +149,8 @@ export default function Index(props: Props) {
                   We found {store.count.toLocaleString()} games for you
                 </p>
                 <div
-                  className={`we_found_padding px-44 pb-10 text-white ${
-                    router.query.sort ? 'underline' : ''
-                  }`}
+                  className={`we_found_padding px-44 pb-10 text-white ${router.query.sort ? 'underline' : ''
+                    }`}
                 >
                   <span className="opacity-60">Sort by:</span>{' '}
                   <span

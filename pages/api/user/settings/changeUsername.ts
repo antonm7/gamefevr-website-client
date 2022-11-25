@@ -54,7 +54,6 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
       await db
         .collection('users')
         .updateOne({ email: body.email }, { $set: { username: body.username } })
-      console.log(body)
       res.status(200).send({ error: null })
     } catch (e) {
       await GenerateError({

@@ -73,7 +73,6 @@ async function handler(req: Request, res: Response) {
             templateId: 'd-d1b6d37ebdb445358fef35980ded4f6f',
           }
           const send = await sgMail.send(msg)
-          console.log('seded', send)
         } catch (e: any) {
           console.log('error sending email', e.response.body)
         }

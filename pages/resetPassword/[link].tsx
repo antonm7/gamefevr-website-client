@@ -22,7 +22,6 @@ const resetPassword: NextPage = () => {
     if (completed) return
     try {
       const passw = /^[A-Za-z]\w{7,16}$/
-      console.log(password)
       if (!password.match(passw)) return setError('Please enter valid password')
 
       if (password !== newPassword)

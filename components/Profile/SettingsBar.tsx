@@ -64,10 +64,6 @@ export default function SettingsBar({ user, isOpened, close, onUsernameChange }:
 
     }
     try {
-      //user tries to change email
-      if (email !== user.email) {
-        console.log('email changed')
-      }
       //user tries to change username
       if (username !== user.username) {
         const req = await axios.post('/api/user/settings/changeUsername', {
