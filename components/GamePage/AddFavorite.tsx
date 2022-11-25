@@ -101,7 +101,7 @@ export default function AddFavorite({ gameId }: Props) {
         onMouseEnter={() => setMouseOver(true)}
         onMouseLeave={() => setMouseOver(false)}
         onClick={() => navigateAuth()}
-        className="flex items-center justify-center w-40 h-10  mt-6 rounded-md cursor-pointer opacity-70 hover:opacity-100"
+        className="flex items-center justify-center w-40 h-10  mt-2 rounded-md cursor-pointer opacity-70 hover:opacity-100"
         style={{ backgroundColor: mouseOver ? 'rgb(239 68 68)' : '#50c878' }}
       >
         <FontAwesomeIcon

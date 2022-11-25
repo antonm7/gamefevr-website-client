@@ -70,7 +70,6 @@ export default function Review({
 
   const deleteReviewMethod = async () => {
     try {
-      state.closeRequest()
       const deleteReviewRequest = await axios.post(
         '/api/game/cancel/review/deleteReview',
         {
@@ -93,6 +92,7 @@ export default function Review({
       if (cancelRankRequest.status !== 200) {
         throw new Error(deleteReviewRequest.data.error)
       }
+      state.closeRequest()
       deleteReviewProps(_id)
     } catch (e) {
       globalErrorState.setType('error')

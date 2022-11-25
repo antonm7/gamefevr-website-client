@@ -38,7 +38,7 @@ export default function Index(props: Props) {
   const router = useRouter()
   const store = useStore()
 
-  const loadGames = async (cur: number) => {
+  const loadMoreGames = async (cur: number) => {
     if (loadingError) {
       setLoadingError(false)
     }
@@ -68,35 +68,42 @@ export default function Index(props: Props) {
     }
   }
 
-  useEffect(() => {
+  const initialLoading = async () => {
     setLoadMoreLoading(false)
     setLoadingError(false)
     setShowLoadMoreButton(true)
+
     if (props.error) {
       setLoadingError(true)
       return
     }
-    if (store.games.length === 0 && props.games.length === 0) {
+
+    if (!store.games.length && !props.games.length) {
       setLoadMoreLoading(true)
-      loadGames(1)
+      loadMoreGames(1)
       return
     }
-    if (props.games.length === 0 && !props.error) return
-    else {
-      if (props.error) {
-        setLoadingError(true)
-        return
-      }
-      if (props.games.length === 0) {
-        setNoResults(true)
-        return
-      }
-      //making sure there is no dublicate games on initial search
-      store.clearGames()
-      store.addPage()
-      store.addGames(props.games)
-      store.setCount(props.count)
+
+    if (!props.games.length && !props.error) return
+
+    if (props.error) {
+      setLoadingError(true)
+      return
     }
+
+    if (!props.games.length) {
+      setNoResults(true)
+      return
+    }
+
+    store.clearGames()
+    store.addPage()
+    store.addGames(props.games)
+    store.setCount(props.count)
+  }
+
+  useEffect(() => {
+    initialLoading()
   }, [props.games, props.error])
 
   const sort = () => {
@@ -125,7 +132,7 @@ export default function Index(props: Props) {
               mainTitle={'Unexpected Error'}
               description={'Oops...something went wrong'}
               button={true}
-              onClick={() => loadGames(1)}
+              onClick={() => loadMoreGames(1)}
             />
           </div>
         ) : noResults ? (
@@ -178,7 +185,7 @@ export default function Index(props: Props) {
                   ) : showLoadMoreButton ? (
                     <SearchButton
                       text="Load More"
-                      onClick={() => loadGames(store.page)}
+                      onClick={() => loadMoreGames(store.page)}
                     />
                   ) : null}
                 </div>

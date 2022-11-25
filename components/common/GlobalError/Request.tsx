@@ -4,7 +4,9 @@ import {
   faXmark,
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useState } from 'react'
 import { useGlobalError } from '../../../store'
+import Spinner from '../Spinner'
 
 interface Props {
   visibility: boolean
@@ -13,8 +15,11 @@ interface Props {
 
 export default function Request({ visibility, text }: Props) {
   const state = useGlobalError((state) => state)
+  const [loader, setLoader] = useState<boolean>(false)
+
 
   const onYes = () => {
+    setLoader(true)
     state.setAnswer('yes')
   }
 
@@ -70,7 +75,7 @@ export default function Request({ visibility, text }: Props) {
             style={{ backgroundColor: '#50dc6b' }}
             className="bg-green-500 w-16 h-8 rounded-lg flex items-center justify-center cursor-pointer"
           >
-            <FontAwesomeIcon className="text-white h-5" icon={faCheck} />
+            {loader ? <Spinner /> : <FontAwesomeIcon className="text-white h-5" icon={faCheck} />}
           </div>
           <div
             onClick={() => onNo()}

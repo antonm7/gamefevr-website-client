@@ -41,13 +41,13 @@ export default function Reviews({
   const deleteReviewMethod = async (): Promise<void> => {
     if (deleteReview) {
       try {
-        state.closeRequest()
         const req = await axios.post('/api/game/cancel/review/deleteReview', {
           userId: userId,
           gameId: gameId,
           reviewId: _id,
         })
         if (req.status === 200) {
+          state.closeRequest()
           deleteReview(_id)
         }
       } catch (e) {
