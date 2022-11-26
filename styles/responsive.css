@@ -700,6 +700,10 @@
 }
 
 @media (max-width: 440px) {
+  #selectBox {
+    height: 3rem;
+  }
+
   #game_page_game_name {
     font-size: 3.2rem;
     padding-right: 2rem;

@@ -429,3 +429,9 @@ div {
 #search-title {
   line-height: 5.8rem;
 }
+
+.show-text {
+  color: #444444;
+  font-size: 1rem;
+  font-weight: 500;
+}

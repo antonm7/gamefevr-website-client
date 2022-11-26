@@ -28,14 +28,11 @@ const ShowMore = ({ selectedGenres, updateGenres, changeVisibility }: ShowMorePr
                     )
                 })
                 }
-                <button onClick={changeVisibility}>Show Less</button>
+                <button onClick={changeVisibility} className="show-text">Show Less</button>
             </div>
         </div>
     )
 }
-
-
-
 
 export default function Genres({ selectedGenres, updateGenres }: Props) {
     const [width] = useWindowSize()
@@ -77,7 +74,7 @@ export default function Genres({ selectedGenres, updateGenres }: Props) {
                             />
                         )
                     })}
-                    <button onClick={() => setShowMore(true)}>Show More</button>
+                    <button onClick={() => setShowMore(true)} className="show-text">Show More</button>
                 </div>
             )
         } else {

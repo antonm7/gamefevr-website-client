@@ -24,11 +24,12 @@ const ShowMore = ({ selectedConsoles, updateConsoles, changeVisibility }: ShowMo
                             onClick={() => updateConsoles(JSON.stringify(genre.id))}
                             key={index}
                             title={genre.name}
+                            coolBlue={true}
                         />
                     )
                 })
                 }
-                <button onClick={changeVisibility}>Show Less</button>
+                <button onClick={changeVisibility} className="show-text">Show Less</button>
             </div>
         </div>
     )
@@ -54,6 +55,7 @@ export default function Consoles({ selectedConsoles, updateConsoles }: Props) {
                             onClick={() => updateConsoles(JSON.stringify(genre.id))}
                             key={index}
                             title={genre.name}
+                            coolBlue={true}
                         />
                     )
                 })}
@@ -71,10 +73,11 @@ export default function Consoles({ selectedConsoles, updateConsoles }: Props) {
                                 onClick={() => updateConsoles(JSON.stringify(genre.id))}
                                 key={index}
                                 title={genre.name}
+                                coolBlue={true}
                             />
                         )
                     })}
-                    <button onClick={() => setShowMore(true)}>Show More</button>
+                    <button onClick={() => setShowMore(true)} className="show-text">Show More</button>
                 </div>
             )
         } else {
