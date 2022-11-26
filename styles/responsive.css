@@ -160,10 +160,6 @@
 }
 
 @media (max-width: 1200px) {
-  #favorite-component {
-    width: 100% !important;
-  }
-
   .signup-animation {
     height: 25rem !important;
   }
@@ -213,7 +209,7 @@
   }
 
   #profile-review-component {
-    width: 100% !important;
+    width: 80% !important;
   }
 }
 

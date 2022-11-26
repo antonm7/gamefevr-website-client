@@ -147,15 +147,7 @@ export default function Reviews({
             lineBreak: 'anywhere',
           }}
         >
-          {width > 1200
-            ? slicedParagrap(text, 190, 190)
-            : width < 360
-              ? slicedParagrap(text, 40, 40)
-              : width < 600
-                ? slicedParagrap(text, 100, 100)
-                : width < 900
-                  ? slicedParagrap(text, 260, 260)
-                  : slicedParagrap(text, 450, 450)}
+          {width > 800 ? slicedParagrap(text, 150, 150) : slicedParagrap(text, 350, 350)}
         </p>
         <p className="text-base text-white opacity-60 whitespace-nowrap">
           Sep 12,2022
