@@ -43,6 +43,7 @@ export default function SmallSearchInput() {
       router.push({
         pathname: '/search',
         query: {
+          search: store.gameName,
           genres: filtersStore.genres,
           consoles: filtersStore.consoles,
           yearRange:

@@ -23,7 +23,7 @@ const GameCover: React.FC<Props> = ({ game }) => {
         />
       ) : null}
       <Link href={`/game/${game.id}`}>
-        <h1 className="font-medium text-md text-white whitespace-nowrap pl-4 py-3">
+        <h1 className="font-medium text-md text-white whitespace-normal pl-4 py-3 text-left">
           {game.name}
         </h1>
       </Link>

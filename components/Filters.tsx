@@ -156,7 +156,7 @@ export default function Filters() {
                   },
                   { backgroundColor: 'white', borderColor: '#dd5054' },
                 ]}
-                style={{ width: '83%' }}
+                style={{ width: '83%', paddingTop: '1rem', marginTop: '-1rem', height: '2rem' }}
                 min={1990}
                 max={2023}
                 value={yearRange}

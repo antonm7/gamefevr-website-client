@@ -96,8 +96,7 @@ export default function WriteReview({
       className={`scrollbar ${visible ? 'fixed ' : 'hidden '
         }px-7 py-6 rounded-xl w-3/5 z-30  h-3/4`}
       style={{
-        minHeight: '24rem',
-        maxHeight: '80%',
+        height: '30rem',
         backgroundColor: 'rgba(21,21,21)',
       }}
     >

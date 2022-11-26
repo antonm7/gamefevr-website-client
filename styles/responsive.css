@@ -392,6 +392,10 @@
 }
 
 @media (max-width: 800px) {
+  #welcome_title {
+    padding: 1rem 0;
+  }
+
   #profile_indicate_wrapper {
     display: flex;
     flex-direction: column-reverse;
@@ -448,10 +452,6 @@
   #we_found_title_wrapper {
     align-items: flex-start;
     flex-direction: column;
-  }
-
-  #account_settings_wrapper_titles {
-    margin-top: 1rem;
   }
 
   #we_found_title {
@@ -637,6 +637,10 @@
   #search-title {
     font-size: 3rem;
     line-height: 4rem;
+  }
+
+  #filters_lower_line {
+    width: 100%;
   }
 }
 
