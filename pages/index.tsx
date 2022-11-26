@@ -2,10 +2,12 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import Car from '../components/animations/Car'
+import ResponsiveAnimations from '../components/animations/ResponsiveAnimations'
 import SearchButton from '../components/common/SearchButton'
 import SearchInput from '../components/common/SearchInput'
 import Filters from '../components/Filters'
 import Navbar from '../components/Navbar'
+import useWindowSize from '../lib/functions/hooks/useWindowSize'
 import { useFiltersStore, useStore } from '../store'
 
 const Home: NextPage = () => {
@@ -23,7 +25,7 @@ const Home: NextPage = () => {
           consoles: filtersStore.consoles,
           yearRange:
             filtersStore.yearRange[0] === 1990 &&
-            filtersStore.yearRange[1] === 2023
+              filtersStore.yearRange[1] === 2023
               ? []
               : filtersStore.yearRange,
         },
@@ -36,7 +38,7 @@ const Home: NextPage = () => {
           consoles: filtersStore.consoles,
           yearRange:
             filtersStore.yearRange[0] === 1990 &&
-            filtersStore.yearRange[1] === 2023
+              filtersStore.yearRange[1] === 2023
               ? []
               : filtersStore.yearRange,
         },
@@ -44,6 +46,9 @@ const Home: NextPage = () => {
     }
     store.changeGameName('')
   }
+
+  const [width] = useWindowSize()
+
 
   return (
     <div>
@@ -65,7 +70,7 @@ const Home: NextPage = () => {
                 Search The Best
                 <br /> <span className="text-cool-blue">Game For You</span>
               </h1>
-              <div className="flex flex-col items-center">
+              <div className="flex flex-col items-center justify-between">
                 <div
                   id="search-button-wrapper"
                   className="flex pt-8 justify-center"
@@ -76,8 +81,9 @@ const Home: NextPage = () => {
                   </div>
                 </div>
               </div>
+              {width > 640 ? null : <ResponsiveAnimations />}
             </div>
-            <Car />
+            {width > 640 ? <Car /> : null}
           </div>
         </main>
       </div>

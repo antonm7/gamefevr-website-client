@@ -488,7 +488,6 @@
   }
 
   #login_onlyLogo {
-    /* margin-left: -1rem !important; */
     overflow: hidden;
   }
 
@@ -600,8 +599,6 @@
     padding-top: 1rem;
   }
 
-
-
   #rating_label {
     display: flex;
     overflow: hidden;
@@ -639,7 +636,7 @@
 
   #search-title {
     font-size: 3rem;
-    line-height: 3.5rem;
+    line-height: 4rem;
   }
 }
 

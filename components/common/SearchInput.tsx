@@ -40,7 +40,7 @@ export default function SearchInput() {
 
   return (
     <div>
-      <div className="flex items-center relative ">
+      <div className="flex items-center relative overflow-hidden">
         <div className="absolute h-full w-1 rounded-tl-xl rounded-bl-xl bg-specialYellow"></div>
         <FontAwesomeIcon
           onClick={() => store.changeFilterVisibility(true)}
