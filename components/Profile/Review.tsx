@@ -85,10 +85,9 @@ export default function Reviews({
           <Link href={`/game/${gameId}`}>
             <h1 className="font-semibold text-lg cursor-pointer text-white whitespace-nowrap hover:text-gray-300 px-6 py-3">
               {width > 1200
-                ? slicedParagrap(game_name, 22, 22)
-                : width < 600
-                  ? slicedParagrap(game_name, 22, 22)
-                  : game_name}
+                ? slicedParagrap(game_name, 22, 22) :
+                width <= 800 ? game_name
+                  : slicedParagrap(game_name, 22, 22)}
             </h1>
           </Link>
         </div>
@@ -125,10 +124,9 @@ export default function Reviews({
           <Link href={`/game/${gameId}`}>
             <h1 className="font-semibold text-lg cursor-pointer text-white whitespace-nowrap hover:text-gray-300 px-6 py-3">
               {width > 1200
-                ? slicedParagrap(game_name, 22, 22)
-                : width < 600
-                  ? slicedParagrap(game_name, 22, 22)
-                  : game_name}
+                ? slicedParagrap(game_name, 22, 22) :
+                width <= 800 ? game_name
+                  : slicedParagrap(game_name, 22, 22)}
             </h1>
           </Link>
           <FontAwesomeIcon

@@ -4,7 +4,7 @@ import {
   faXmark,
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useGlobalError } from '../../../store'
 import Spinner from '../Spinner'
 
@@ -26,6 +26,10 @@ export default function Request({ visibility, text }: Props) {
   const onNo = () => {
     state.setAnswer('no')
   }
+
+  useEffect(() => {
+    setLoader(false)
+  }, [visibility])
 
   if (!visibility) return null
 

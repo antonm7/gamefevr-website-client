@@ -88,7 +88,7 @@ export default function CurrentProfile({
         },
       },
       {
-        breakpoint: 640,
+        breakpoint: 800,
         settings: {
           slidesToShow: 1,
         },
@@ -182,7 +182,7 @@ export default function CurrentProfile({
                 >
                   {reviewsState.map((review: Review_Type, index: number) =>
                     width < 1200 ? (
-                      <div className="w-2/4">
+                      <div className="w-[23rem]">
                         <Review
                           _id={review._id}
                           key={index}
@@ -314,26 +314,26 @@ export default function CurrentProfile({
           <div
             className={`mt-12 ${width < 760
               ? ''
-              : favoritesState.length === 2 && width >= 1200
+              : favoritesState.length === 2 && width > 1200
                 ? 'w-[44rem]'
-                : favoritesState.length === 3 && width >= 1650
+                : favoritesState.length === 3 && width > 1650
                   ? 'w-[83%]'
                   : favoritesState.length === 2 && width <= 1200
-                    ? 'w-[44rem]'
+                    ? 'w-full'
                     : favoritesState.length === 3 && width <= 1200
-                      ? 'w-full'
+                      ? 'w-[44rem]'
                       : 'w-full'
               }`}
           >
             {favoritesState.length > 0 ? (
-              favoritesState.length === 2 && width > 760 ? (
+              favoritesState.length === 2 && width > 700 ? (
                 <div
                   className={`flex flex-nowrap ${width < 1650 ? 'justify-between' : 'justify-between'
                     }`}
                 >
                   {favoritesState.map((review: Favorite_Type, index: number) =>
                     width < 1200 ? (
-                      <div className="w-2/4">
+                      <div className="w-[22rem]">
                         <Favorite
                           _id={review._id}
                           key={index}

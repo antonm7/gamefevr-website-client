@@ -46,7 +46,7 @@ export default function Visited({ reviews, favorites, user, hype }: Props) {
         },
       },
       {
-        breakpoint: 640,
+        breakpoint: 800,
         settings: {
           slidesToShow: 1,
         },
@@ -118,8 +118,9 @@ export default function Visited({ reviews, favorites, user, hype }: Props) {
                 >
                   {reviewsState.map((review: Review_Type, index: number) =>
                     width < 1200 ? (
-                      <div className="w-2/4">
+                      <div className="w-[23rem]">
                         <Review
+                          visited={true}
                           _id={review._id}
                           key={index}
                           userId={review.userId}
@@ -136,6 +137,7 @@ export default function Visited({ reviews, favorites, user, hype }: Props) {
                       </div>
                     ) : (
                       <Review
+                        visited={true}
                         _id={review._id}
                         key={index}
                         userId={review.userId}
@@ -159,6 +161,7 @@ export default function Visited({ reviews, favorites, user, hype }: Props) {
                 >
                   {reviewsState.map((review: Review_Type, index: number) => (
                     <Review
+                      visited={true}
                       _id={review._id}
                       key={index}
                       userId={review.userId}
@@ -178,6 +181,7 @@ export default function Visited({ reviews, favorites, user, hype }: Props) {
                 reviewsState.map((review: Review_Type, index: number) => (
                   <div >
                     <Review
+                      visited={true}
                       _id={review._id}
                       key={index}
                       userId={review.userId}
@@ -197,6 +201,7 @@ export default function Visited({ reviews, favorites, user, hype }: Props) {
                 <Slider {...reviewSettings} ref={reviewsRef}>
                   {reviewsState.map((review: Review_Type, index: number) => (
                     <Review
+                      visited={true}
                       _id={review._id}
                       key={index}
                       userId={review.userId}
@@ -216,6 +221,7 @@ export default function Visited({ reviews, favorites, user, hype }: Props) {
                 <Slider {...reviewSettings} ref={reviewsRef}>
                   {reviewsState.map((review: Review_Type, index: number) => (
                     <Review
+                      visited={true}
                       _id={review._id}
                       key={index}
                       userId={review.userId}
@@ -244,27 +250,28 @@ export default function Visited({ reviews, favorites, user, hype }: Props) {
           <div
             className={`mt-12 ${width < 760
               ? ''
-              : favoritesState.length === 2 && width >= 1200
+              : favoritesState.length === 2 && width > 1200
                 ? 'w-[44rem]'
-                : favoritesState.length === 3 && width >= 1650
+                : favoritesState.length === 3 && width > 1650
                   ? 'w-[83%]'
                   : favoritesState.length === 2 && width <= 1200
-                    ? 'w-[44rem]'
+                    ? 'w-full '
                     : favoritesState.length === 3 && width <= 1200
                       ? 'w-[44rem]'
                       : 'w-full'
               }`}
           >
             {favoritesState.length > 0 ? (
-              favoritesState.length === 2 ? (
+              favoritesState.length === 2 && width > 700 ? (
                 <div
                   className={`flex flex-nowrap ${width < 1650 ? 'justify-between' : 'justify-between'
                     }`}
                 >
                   {favoritesState.map((review: Favorite_Type, index: number) =>
                     width < 1200 ? (
-                      <div className="w-2/4">
+                      <div className="w-[22rem]">
                         <Favorite
+                          visited={true}
                           _id={review._id}
                           key={index}
                           userId={review.userId}
@@ -276,6 +283,7 @@ export default function Visited({ reviews, favorites, user, hype }: Props) {
                       </div>
                     ) : (
                       <Favorite
+                        visited={true}
                         _id={review._id}
                         key={index}
                         userId={review.userId}
@@ -295,6 +303,7 @@ export default function Visited({ reviews, favorites, user, hype }: Props) {
                   {favoritesState.map(
                     (review: Favorite_Type, index: number) => (
                       <Favorite
+                        visited={true}
                         _id={review._id}
                         key={index}
                         userId={review.userId}
@@ -324,6 +333,7 @@ export default function Visited({ reviews, favorites, user, hype }: Props) {
                 favoritesState.map((review: Favorite_Type, index: number) => (
                   <div className="w-full">
                     <Favorite
+                      visited={true}
                       _id={review._id}
                       key={index}
                       userId={review.userId}
@@ -339,6 +349,7 @@ export default function Visited({ reviews, favorites, user, hype }: Props) {
                   {favoritesState.map(
                     (review: Favorite_Type, index: number) => (
                       <Favorite
+                        visited={true}
                         _id={review._id}
                         key={index}
                         userId={review.userId}
