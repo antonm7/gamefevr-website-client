@@ -27,7 +27,7 @@ export default function Navbar() {
 
   const DynamicSession = () => {
     if (auth) {
-      if (router.pathname === '/profile/[id]' && router.query.id == session.data?.user.userId) {
+      if (router.pathname === '§profile/[id]' && router.query.id == session.data?.user.userId) {
         return (
           <div
             style={{ width: 130, cursor: 'pointer' }}
@@ -96,7 +96,7 @@ export default function Navbar() {
   if (router.route === '/') {
     if (width > 640) {
       return (
-        <div id="navbar-wrapper" className="absolute h-20 w-full z-30 px-20">
+        <div id="navbar-wrapper" className="overflow-hidden relative h-20 w-full z-30 px-20">
           <div
             className="h-full w-full flex justify-between pt-4 px-20 items-center"
             id="navbar"
@@ -141,7 +141,7 @@ export default function Navbar() {
       )
     } else {
       return (
-        <div className="absolute  w-full pt-4 px-8" style={{ zIndex: '50' }}>
+        <div className="relative overflow-hidden w-full pt-4 px-8" style={{ zIndex: '50' }}>
           <div className="flex items-center justify-between">
             <div style={{ marginTop: 7 }}>
               <Image

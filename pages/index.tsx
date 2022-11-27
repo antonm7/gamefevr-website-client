@@ -58,14 +58,14 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="flex flex-col">
-        <main id="home" className="h-screen w-screen flex relative">
+        <main id="home" className="h-screen w-screen flex flex-col relative">
           {store.isFilterOn ? <Filters /> : null}
           <Navbar />
           <div className="w-full flex flex-col" style={{ minHeight: '5rem' }}>
             <div className="z-10 bg-transparent h-full">
               <h1
                 id="search-title"
-                className="text-white font-black text-7xl overflow-hidden	pt-40 text-center "
+                className="text-white font-black text-7xl overflow-hidden	pt-20 text-center "
               >
                 Search The Best
                 <br /> <span className="text-cool-blue">Game For You</span>
