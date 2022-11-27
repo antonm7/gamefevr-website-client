@@ -28,6 +28,7 @@ export default function SettingsInput({
           borderColor: 'rgba(255,255,255,0.2)',
           borderWidth: 0.5,
         }}
+        disabled={type === 'email' ? true : false}
         type={type}
         onChange={onChange}
       />
