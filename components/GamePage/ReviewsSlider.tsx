@@ -1,6 +1,6 @@
 import Slider from 'react-slick'
-import 'slick-carousel/slick/slick.css'
-import 'slick-carousel/slick/slick-theme.css'
+// import 'slick-carousel/slick/slick.css'
+// import 'slick-carousel/slick/slick-theme.css'
 import Review from './Review'
 import { Review_Type } from '../../types/schema'
 import { ObjectId } from 'bson'
@@ -19,28 +19,23 @@ export default function ReviewsSlider({
   deleteReview,
   isUserCommented,
 }: Props) {
-  const [reviewsState, setReviewsState] = useState<Review_Type[]>([])
-
-  useEffect(() => {
-    setReviewsState(reviews)
-  }, [reviews])
 
   const settings = {
     infinite: false,
     slidesToScroll: 1,
-    slidesToShow: reviewsState.length
-      ? reviewsState.length >= 3
+    slidesToShow: reviews.length
+      ? reviews.length >= 3
         ? 3
-        : reviewsState.length
+        : reviews.length
       : 3,
     responsive: [
       {
         breakpoint: 1600,
         settings: {
-          slidesToShow: reviewsState.length
-            ? reviewsState.length >= 2
+          slidesToShow: reviews.length
+            ? reviews.length >= 2
               ? 2
-              : reviewsState.length
+              : reviews.length
             : 2,
         },
       },
@@ -53,17 +48,16 @@ export default function ReviewsSlider({
     ],
   }
 
-  if (!reviewsState.length) return null
+  if (!reviews.length) return null
   return (
     <Slider
       {...settings}
-      className={`${
-        isAnimated
-          ? `${isUserCommented ? 'px-44' : ''} reviews_animation_enable`
-          : 'reviews_animation_disable'
-      }`}
+      className={`${isAnimated
+        ? `${isUserCommented ? 'px-44' : ''} reviews_animation_enable`
+        : 'reviews_animation_disable'
+        }`}
     >
-      {reviewsState.map((review: Review_Type, index: number) => (
+      {reviews.map((review: Review_Type, index: number) => (
         <Review
           key={index}
           _id={review._id}

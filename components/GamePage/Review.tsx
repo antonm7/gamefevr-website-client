@@ -248,8 +248,8 @@ export default function Review({
       id="review"
       className="scrollbar px-7 py-4 rounded-xl relative mx-2"
       style={{
-        width: '32rem',
-        minWidth: '32rem',
+        width: '30rem',
+        minWidth: '30rem',
         height: '30rem',
         minHeight: '30rem',
         backgroundColor: 'rgba(21,21,21,0.6)',

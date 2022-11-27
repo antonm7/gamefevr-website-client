@@ -59,10 +59,6 @@ export default function Index({ games }: Props) {
             Start Exploring Games New Games!
           </p>
         </div>
-        <p className="pt-4 text-white opacity-60 text-sm font-semibold">
-          Discover new games based on your recent changes or use some filters
-          below
-        </p>
         {error ? (
           <div className="pt-32">
             <LoadingError

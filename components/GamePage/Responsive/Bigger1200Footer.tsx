@@ -9,7 +9,6 @@ import Screenshots from '../Screenshots'
 import Image from 'next/image'
 import { ObjectId } from 'bson'
 import { useSession } from 'next-auth/react'
-import { useMemo } from 'react'
 
 interface Props {
   screenshots: Short_Screenshot[]

@@ -641,6 +641,11 @@
 }
 
 @media (max-width: 500px) {
+  #platforms_row {
+    flex-wrap: wrap;
+    width: 70% !important;
+  }
+
   #where_to_buy {
     flex-direction: column;
   }
