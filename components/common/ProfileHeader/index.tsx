@@ -19,7 +19,7 @@ export default function ProfileHeader({ visited, username, hype, changeVisibleSe
         >
             <div className="flex items-center" id="profile_indicate_wrapper">
                 <h1 id="welcome_title" className="text-white font-bold whitespace-pre-wrap text-4xl">
-                    Welcome {visited ? 'to' : null} {username}!
+                    {visited ? `Welcome to ${username}` : `Welcome ${username}`}
                 </h1>
                 {visited ? <div className="flex">
                     <IndicateHype hype={hype} />
