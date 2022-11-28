@@ -56,6 +56,7 @@ export type full_user = {
   visited_games: ObjectId[]
   visited_explore: number[]
   hype: number
+  hyped_users: ObjectId[]
 }
 
 export type Client_User = {

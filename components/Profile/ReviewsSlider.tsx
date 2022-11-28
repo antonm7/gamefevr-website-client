@@ -43,7 +43,7 @@ export default function ReviewsSlider({ deleteReview, reviews, visited }: Props)
 
     return (
         <div className="pt-24">
-            <h1 className="text-white font-bold text-3xl">Your Reviews</h1>
+            <h1 className="text-white font-bold text-3xl">{visited ? 'Reviews' : 'Your Reviews'}</h1>
             <div
                 className={`mt-12 ${reviews.length === 2 && width > 1200
                     ? 'w-[60rem]'
@@ -189,7 +189,7 @@ export default function ReviewsSlider({ deleteReview, reviews, visited }: Props)
                     )
                 ) : (
                     <div className="text-md text-white font-semibold opacity-30">
-                        You don't have favorite games yet!
+                        {visited ? 'No reviews' : `You don't have any reviews yet!`}
                     </div>
                 )}
             </div>

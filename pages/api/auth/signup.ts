@@ -62,6 +62,7 @@ async function handler(req: Request, res: Response) {
         visited_platforms: [],
         forgot_password_link: '',
         hype: 0.0,
+        hyped_users: []
       })
       if (process.env.SENDGRID_API_KEY) {
         sgMail.setApiKey(process.env.SENDGRID_API_KEY)

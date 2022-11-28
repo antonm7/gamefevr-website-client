@@ -27,7 +27,7 @@ export default function Navbar() {
 
   const DynamicSession = () => {
     if (auth) {
-      if (router.pathname === '§profile/[id]' && router.query.id == session.data?.user.userId) {
+      if (router.pathname === '/profile/[id]' && JSON.stringify(router.query.id) == JSON.stringify(session.data?.user.userId)) {
         return (
           <div
             style={{ width: 130, cursor: 'pointer' }}

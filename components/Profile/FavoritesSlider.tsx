@@ -42,7 +42,7 @@ export default function FavoritesSlider({ favorites, deleteFavorite, visited }: 
     }
     return (
         <div className="pt-14">
-            <h1 className="text-white font-bold text-3xl">Favorite Games</h1>
+            <h1 className="text-white font-bold text-3xl">{visited ? 'Favorite Games' : 'Your Favorite Games'}</h1>
             <div
                 className={`mt-12 ${width < 760
                     ? ''
@@ -167,7 +167,7 @@ export default function FavoritesSlider({ favorites, deleteFavorite, visited }: 
                     )
                 ) : (
                     <div className="text-md text-white font-semibold opacity-30">
-                        You don't have favorite games yet!
+                        {visited ? 'No favorite games' : `You don't have any favorite games!`}
                     </div>
                 )}
             </div>

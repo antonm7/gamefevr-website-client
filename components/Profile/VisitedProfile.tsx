@@ -6,6 +6,8 @@ import SearchLayout from '../layout/SearchLayout'
 import IndicateHype from './IndicateHype'
 import ReviewsSlider from './ReviewsSlider'
 import FavoritesSlider from './FavoritesSlider'
+import HypeUser from '../common/HypeUser'
+import ProfileHeader from '../common/ProfileHeader'
 
 interface Props {
   reviews: Review_Type[]
@@ -38,15 +40,9 @@ export default function Visited({ reviews, favorites, user, hype }: Props) {
     <SearchLayout>
       <main className="px-44 py-10" id="profile_page">
         {store.isFilterOn ? <Filters /> : null}
-        <div id="profile_page_welcome" className="flex items-center">
-          <h1 id="welcome_title" className="text-white font-bold text-4xl">
-            Welcome to {userState.username} profile!
-          </h1>
-          <IndicateHype hype={hype} />
-        </div>
+        <ProfileHeader visited={true} username={userState.username} hype={hype} changeVisibleSettings={() => null} />
         <ReviewsSlider visited={true} reviews={reviewsState} deleteReview={() => null} />
         <FavoritesSlider visited={true} favorites={favoritesState} deleteFavorite={() => null} />
-
       </main>
     </SearchLayout>
   )

@@ -10,6 +10,7 @@ import SettingsBar from './SettingsBar'
 import IndicateHype from './IndicateHype'
 import ReviewsSlider from './ReviewsSlider'
 import FavoritesSlider from './FavoritesSlider'
+import ProfileHeader from '../common/ProfileHeader'
 
 interface Props {
   reviews: Review_Type[]
@@ -81,34 +82,7 @@ export default function CurrentProfile({
           isOpened={isOpened}
           close={() => changeVisibleSettings(false)}
         />
-        <div
-          id="profile_page_welcome"
-          className="flex justify-between items-center"
-        >
-          <div className="flex items-center" id="profile_indicate_wrapper">
-            <h1 id="welcome_title" className="text-white font-bold text-4xl">
-              Welcome {username}!
-            </h1>
-            <IndicateHype hype={hype} />
-          </div>
-          <div
-            id="account_settings_wrapper_titles"
-            className="flex items-center"
-            onClick={() => changeVisibleSettings(true)}
-          >
-            <FontAwesomeIcon
-              icon={faGear}
-              className="h-4 pr-2 cursor-pointer"
-              style={{ color: '#616e7e' }}
-            />
-            <p
-              className="text-large font-semibold cursor-pointer"
-              style={{ color: '#616e7e' }}
-            >
-              Account Settings
-            </p>
-          </div>
-        </div>
+        <ProfileHeader visited={false} username={username} hype={hype} changeVisibleSettings={val => changeVisibleSettings(val)} />
         <ReviewsSlider visited={false} reviews={reviewsState} deleteReview={(id) => deleteReview(id)} />
         <FavoritesSlider visited={false} favorites={favoritesState} deleteFavorite={(id) => deleteFavorite(id)} />
       </main>

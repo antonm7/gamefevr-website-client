@@ -218,6 +218,12 @@
     display: none;
   }
 
+  #indicate-wrapper {
+    /* margin-left: 0 !important;
+    margin-top: 1rem;
+    margin-bottom: 1re, ; */
+  }
+
   #filters {
     width: 85%;
   }
@@ -399,7 +405,7 @@
   }
 
   #indicate-wrapper {
-    margin: 0 !important;
+    margin-left: 0 !important;
   }
 
   #login-container {
@@ -738,6 +744,7 @@
   }
 
   #welcome_title {
+    word-break: break-all;
     font-size: 1.7rem;
   }
 
