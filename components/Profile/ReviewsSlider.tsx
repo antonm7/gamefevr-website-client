@@ -56,13 +56,13 @@ export default function ReviewsSlider({ deleteReview, reviews, visited }: Props)
                             className={`flex  flex-nowrap ${width < 1650 ? 'justify-between' : 'justify-between'
                                 }`}
                         >
-                            {reviews.map((review: Review_Type, index: number) =>
+                            {reviews.map((review: Review_Type) =>
                                 width < 1200 ? (
                                     <div className="w-[30rem]">
                                         <Review
                                             visited={visited}
                                             _id={review._id}
-                                            key={index}
+                                            key={JSON.stringify(review._id)}
                                             userId={review.userId}
                                             created_at={review.created_at}
                                             gameId={review.gameId}
@@ -80,7 +80,7 @@ export default function ReviewsSlider({ deleteReview, reviews, visited }: Props)
                                     <Review
                                         visited={visited}
                                         _id={review._id}
-                                        key={index}
+                                        key={JSON.stringify(review._id)}
                                         userId={review.userId}
                                         created_at={review.created_at}
                                         gameId={review.gameId}
@@ -101,11 +101,11 @@ export default function ReviewsSlider({ deleteReview, reviews, visited }: Props)
                             className={`flex flex-nowrap ${width < 1700 ? 'justify-start' : 'justify-between'
                                 }`}
                         >
-                            {reviews.map((review: Review_Type, index: number) => (
+                            {reviews.map((review: Review_Type) => (
                                 <Review
                                     visited={visited}
                                     _id={review._id}
-                                    key={index}
+                                    key={JSON.stringify(review._id)}
                                     userId={review.userId}
                                     created_at={review.created_at}
                                     gameId={review.gameId}
@@ -121,12 +121,12 @@ export default function ReviewsSlider({ deleteReview, reviews, visited }: Props)
                             ))}
                         </div>
                     ) : reviews.length === 1 && width < 1200 && width > 800 ? (
-                        reviews.map((review: Review_Type, index: number) => (
+                        reviews.map((review: Review_Type) => (
                             <div>
                                 <Review
                                     visited={visited}
                                     _id={review._id}
-                                    key={index}
+                                    key={JSON.stringify(review._id)}
                                     userId={review.userId}
                                     created_at={review.created_at}
                                     gameId={review.gameId}
@@ -143,11 +143,11 @@ export default function ReviewsSlider({ deleteReview, reviews, visited }: Props)
                         ))
                     ) : width < 800 ? (
                         <Slider {...reviewSettings} ref={reviewsRef}>
-                            {reviews.map((review: Review_Type, index: number) => (
+                            {reviews.map((review: Review_Type) => (
                                 <Review
                                     visited={visited}
                                     _id={review._id}
-                                    key={index}
+                                    key={JSON.stringify(review._id)}
                                     userId={review.userId}
                                     created_at={review.created_at}
                                     gameId={review.gameId}
@@ -164,12 +164,12 @@ export default function ReviewsSlider({ deleteReview, reviews, visited }: Props)
                         </Slider>
                     ) : (
                         <Slider {...reviewSettings} ref={reviewsRef}>
-                            {reviews.map((review: Review_Type, index: number) => (
+                            {reviews.map((review: Review_Type) => (
                                 <div style={{ width: '32rem !important' }}>
                                     <Review
                                         visited={visited}
                                         _id={review._id}
-                                        key={index}
+                                        key={JSON.stringify(review._id)}
                                         userId={review.userId}
                                         created_at={review.created_at}
                                         gameId={review.gameId}

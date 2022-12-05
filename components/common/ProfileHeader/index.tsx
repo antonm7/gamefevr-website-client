@@ -8,7 +8,6 @@ type Props = {
     username: string
     hype: string
     changeVisibleSettings: (value: boolean) => void
-
 }
 
 export default function ProfileHeader({ visited, username, hype, changeVisibleSettings }: Props) {
@@ -21,7 +20,7 @@ export default function ProfileHeader({ visited, username, hype, changeVisibleSe
                 <h1 id="welcome_title" className="text-white font-bold whitespace-pre-wrap text-4xl">
                     {visited ? `Welcome to ${username}` : `Welcome ${username}`}
                 </h1>
-                {visited ? <div className="flex">
+                {visited ? <div className="flex items-center">
                     <IndicateHype hype={hype} />
                     <HypeUser />
                 </div> : <IndicateHype hype={hype} />}

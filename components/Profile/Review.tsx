@@ -27,7 +27,6 @@ export default function Reviews({
 }: Props) {
   const [width] = useWindowSize()
   const state = useGlobalError((state) => state)
-
   //creating the alert
   const deleteReview_STATE = (): void => {
     if (!_id) return
