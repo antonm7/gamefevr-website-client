@@ -11,6 +11,7 @@ type Props = {
 }
 
 export default function ProfileHeader({ visited, username, hype, changeVisibleSettings }: Props) {
+    console.log(visited)
     return (
         <div
             id="profile_page_welcome"

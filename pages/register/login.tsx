@@ -47,7 +47,7 @@ const Login: NextPage = () => {
   }
 
   return (
-    <main className="flex h-screen bg-white">
+    <main className="flex h-full bg-white">
       <div
         id="login-container"
         style={{ zIndex: 2 }}
