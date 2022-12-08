@@ -37,16 +37,16 @@ const Signup: NextPage = () => {
         if (data.error) {
           setError(data.error)
         } else {
-          const data = await signIn('credentials', {
+          const signInData: any = await signIn('credentials', {
             redirect: false,
             email,
             password,
           })
-          if (data?.status !== 200) {
+          if (signInData?.status !== 200) {
             throw new Error()
           } else {
-            if (data?.error) {
-              return setError(data.error.slice(6, 50))
+            if (signInData?.error) {
+              return setError(signInData.error.slice(6, 50))
             } else {
               router.push('/')
             }
@@ -64,7 +64,7 @@ const Signup: NextPage = () => {
       <div
         id="signup-container"
         style={{ zIndex: 2 }}
-        className="px-32 pt-16 register-container  overflow-hidden"
+        className="px-32 pt-16 register-container pb-12 overflow-hidden"
       >
         {width >= 800 ? (
           <Image src={'/images/dLogo.svg'} height={32} width={130} alt="Logo" />

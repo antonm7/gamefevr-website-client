@@ -51,7 +51,7 @@ const Login: NextPage = () => {
       <div
         id="login-container"
         style={{ zIndex: 2 }}
-        className="px-32 pt-16 register-container"
+        className="px-32 pb-12 pt-16 register-container"
       >
         {width >= 800 ? (
           <Image src={'/images/dLogo.svg'} height={32} width={130} alt="Logo" />
