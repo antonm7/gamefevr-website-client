@@ -316,11 +316,6 @@
     height: 7rem;
   }
 
-  #rate_game_title {
-    font-size: 0.72rem;
-    line-height: 1rem;
-  }
-
   #span_line {
     padding-left: 1rem;
     padding-right: 1rem;
@@ -589,8 +584,8 @@
   }
 
   #rate_game_title {
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
     font-size: 0.9rem;
     padding-top: 0.7rem;
   }

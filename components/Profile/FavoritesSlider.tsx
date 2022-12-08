@@ -151,6 +151,7 @@ export default function FavoritesSlider({ favorites, deleteFavorite, visited }: 
                             {favorites.map(
                                 (review: Favorite_Type, index: number) => (
                                     <Favorite
+
                                         visited={visited}
                                         _id={review._id}
                                         key={index}

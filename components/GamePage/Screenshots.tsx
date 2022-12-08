@@ -24,12 +24,12 @@ export default function Screenshots({ isAnimated, images, setRef }: Props) {
   return (
     <Slider
       ref={setRef}
+      arrows={false}
       {...settings}
-      className={`ml-32 ${
-        isAnimated
+      className={`ml-32 ${isAnimated
           ? 'screenshots_animation_enabled'
           : 'screenshots_animation_disabled'
-      }`}
+        }`}
     >
       {images.map((s: Short_Screenshot, index: number) => (
         <div className="screenshot" key={index}>

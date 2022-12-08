@@ -1,3 +1,5 @@
+import { faArrowUp } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import axios from "axios"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
@@ -36,9 +38,10 @@ export default function HypeUser() {
 
     return (
         <div className={`pl-4 cursor-pointer`}>
-            <div className="w-14 h-12 flex flex-col justify-center items-center rounded-full border-specialYellow mr-4" style={{ borderWidth: 2 }}>
-                <p className='text-specialYellow font-semibold'>Hype</p>
+            <div className="h-12 flex flex-col justify-center items-center  mr-4">
+                <FontAwesomeIcon icon={faArrowUp} className="font-semibold text-specialYellow" />
+                <p className='text-specialYellow font-medium select-none'>hype</p>
             </div>
-        </div>
+        </div >
     )
 }

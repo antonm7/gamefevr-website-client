@@ -42,7 +42,7 @@ export default function ReviewsSlider({ deleteReview, reviews, visited }: Props)
     }
 
     return (
-        <div className="pt-24">
+        <div className="pt-16">
             <h1 className="text-white font-bold text-3xl">{visited ? 'Reviews' : 'Your Reviews'}</h1>
             <div
                 className={`mt-12 ${reviews.length === 2 && width > 1200
@@ -142,7 +142,7 @@ export default function ReviewsSlider({ deleteReview, reviews, visited }: Props)
                             </div>
                         ))
                     ) : width < 800 ? (
-                        <Slider {...reviewSettings} ref={reviewsRef}>
+                        <Slider  {...reviewSettings} ref={reviewsRef}>
                             {reviews.map((review: Review_Type) => (
                                 <Review
                                     visited={visited}

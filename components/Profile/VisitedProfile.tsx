@@ -3,10 +3,8 @@ import { useStore } from '../../store'
 import { Review_Type, Favorite_Type } from '../../types/schema'
 import Filters from '../Filters'
 import SearchLayout from '../layout/SearchLayout'
-import IndicateHype from './IndicateHype'
 import ReviewsSlider from './ReviewsSlider'
 import FavoritesSlider from './FavoritesSlider'
-import HypeUser from '../common/HypeUser'
 import ProfileHeader from '../common/ProfileHeader'
 
 interface Props {

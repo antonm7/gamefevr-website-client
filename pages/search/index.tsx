@@ -124,7 +124,7 @@ export default function Index(props: Props) {
 
   return (
     <SearchLayout>
-      <div>
+      <>
         {store.isFilterOn ? <Filters /> : null}
         {loadingError ? (
           <div className="pt-32">
@@ -156,7 +156,7 @@ export default function Index(props: Props) {
                   We found {store.count.toLocaleString()} games for you
                 </p>
                 <div
-                  className={`we_found_padding px-44 pb-10 text-white ${router.query.sort ? 'underline' : ''
+                  className={`we_found_padding h-full px-44 pb-10 text-white ${router.query.sort ? 'underline' : ''
                     }`}
                 >
                   <span className="opacity-60">Sort by:</span>{' '}
@@ -195,7 +195,7 @@ export default function Index(props: Props) {
             ) : null}
           </div>
         )}
-      </div>
+      </>
     </SearchLayout>
   )
 }

@@ -23,6 +23,8 @@ export default function ReviewsSlider({
   const settings = {
     infinite: false,
     slidesToScroll: 1,
+    arrows: false,
+    accessibility: false,
     slidesToShow: reviews.length
       ? reviews.length >= 3
         ? 3
@@ -52,6 +54,7 @@ export default function ReviewsSlider({
   return (
     <Slider
       {...settings}
+      arrows={false}
       className={`${isAnimated
         ? `${isUserCommented ? 'px-44' : ''} reviews_animation_enable`
         : 'reviews_animation_disable'
