@@ -60,7 +60,7 @@ const Signup: NextPage = () => {
   }
 
   return (
-    <main className="flex h-auto bg-white">
+    <main className="flex h-full bg-white">
       <div
         id="signup-container"
         style={{ zIndex: 2 }}
