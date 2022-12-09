@@ -25,6 +25,11 @@ export default function Navbar() {
     }
   }, [session.status])
 
+  const signOutMethod = (): void => {
+    router.push('/')
+    signOut()
+  }
+
   const DynamicSession = () => {
     if (auth) {
       if (router.pathname === '/profile/[id]' && JSON.stringify(router.query.id) == JSON.stringify(session.data?.user.userId)) {
@@ -34,7 +39,7 @@ export default function Navbar() {
             className="hover:bg-[#38b6cc] rounded-lg"
           >
             <div
-              onClick={() => signOut()}
+              onClick={() => signOutMethod()}
               style={{ borderWidth: 0.5, borderColor: '#38b6cc' }}
               className="cursor-pointer rounded-lg w-full h-11 overflow-hidden"
             >
