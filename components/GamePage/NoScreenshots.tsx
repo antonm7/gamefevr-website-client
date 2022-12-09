@@ -21,24 +21,23 @@ export default function NoScreenShots({
   return (
     <div
       id="game_page_screenshots_controller"
-      className="relative overflow-hidden"
+      className="relative overflow-hidden bg-main-blue"
       style={{
         height:
           !reviewsAnimation && !reviews.length
             ? '150px'
             : reviewsAnimation && !reviews.length
-            ? '150px'
-            : '700px',
+              ? '150px'
+              : '700px',
       }}
     >
       {reviews.length ? (
         <div className="h-full flex items-center overflow-hidden">
           <div
-            className={`px-20 ${
-              !reviewsAnimation
+            className={`px-20 ${!reviewsAnimation
                 ? 'write_review_animation_enabled'
                 : 'write_review_animation_disabled'
-            }`}
+              }`}
           >
             <FontAwesomeIcon
               icon={faPlus}
@@ -56,11 +55,10 @@ export default function NoScreenShots({
       ) : (
         <div className="h-ful  flex justify-center overflow-hidden">
           <div
-            className={`px-20 ${
-              !reviewsAnimation
+            className={`px-20 ${!reviewsAnimation
                 ? 'write_review_animation_enabled'
                 : 'write_review_animation_disabled'
-            }`}
+              }`}
           >
             <FontAwesomeIcon
               icon={faPlus}

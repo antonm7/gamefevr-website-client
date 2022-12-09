@@ -1,3 +1,4 @@
+import axios from 'axios'
 import { Response } from 'express'
 import { NextApiRequest } from 'next'
 import GenerateError from '../../../../backend-middlewares/generateErrorBackend'
@@ -15,25 +16,25 @@ async function handler(req: ExtendedRequest, res: Response) {
   if (req.method === 'GET') {
     const query = req.query
     try {
-      const getData = await fetch(
+      const getData = await axios.get(
         `https://api.rawg.io/api/games/${query.gameId}?key=39a2bd3750804b5a82669025ed9986a8`
       )
-      const getScreenshots = await fetch(
+      const getScreenshots = await axios.get(
         `https://api.rawg.io/api/games/${query.gameId}/screenshots?key=39a2bd3750804b5a82669025ed9986a8`
       )
 
-      const getTrailers = await fetch(
+      const getTrailers = await axios.get(
         `https://api.rawg.io/api/games/${query.gameId}/movies?key=39a2bd3750804b5a82669025ed9986a8`
       )
 
-      const getSeries = await fetch(
+      const getSeries = await axios.get(
         `https://api.rawg.io/api/games/${query.gameId}/game-series?key=39a2bd3750804b5a82669025ed9986a8`
       )
 
-      const gameData = await getData.json()
-      const screenshots = await getScreenshots.json()
-      const trailers = await getTrailers.json()
-      const same_series = await getSeries.json()
+      const gameData = getData.data
+      const screenshots = getScreenshots.data
+      const trailers = getTrailers.data
+      const same_series = getSeries.data
 
       const finalData: DetailedGame = {
         id: gameData.id,

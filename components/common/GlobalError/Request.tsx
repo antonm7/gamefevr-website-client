@@ -37,7 +37,7 @@ export default function Request({ visibility, text }: Props) {
     <div
       id="global_error"
       className={`${visibility ? 'global_animation_enabled' : 'global_animation_disabled'
-        } fixed flex z-50 h-20 pl-4 rounded-lg rounded-r-none`}
+        } fixed flex z-50 h-20 pl-4 rounded-lg rounded-r-none request_global_error`}
       style={{ backgroundColor: '#e7eefa', width: '26rem' }}
     >
       <div className="flex w-full items-center">
@@ -73,7 +73,7 @@ export default function Request({ visibility, text }: Props) {
             {text ? text : null}
           </p>
         </div>
-        <div className="flex mr-4">
+        <div className="flex mr-4" id="global_error_buttons_wrapper" >
           <div
             onClick={() => onYes()}
             style={{ backgroundColor: '#50dc6b' }}

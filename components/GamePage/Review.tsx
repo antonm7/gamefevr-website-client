@@ -11,6 +11,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import axios from 'axios'
 import { ObjectId } from 'bson'
 import { useSession } from 'next-auth/react'
+import Link from 'next/link'
 import { useEffect, useMemo, useState } from 'react'
 import useWindowSize from '../../lib/functions/hooks/useWindowSize'
 import slicedParagrap from '../../lib/functions/slicedParagraph'
@@ -277,7 +278,11 @@ export default function Review({
         className="flex flex-grow  items-center justify-between mt-20 "
       >
         <div id="review_bottom_container_names">
-          <p className="text-cool-blue font-semibold">{slicedParagrap(user_name, width < 560 ? 12 : 36, 12)}</p>
+          <Link href={`/profile/${userId}`} >
+            <p className="text-cool-blue font-semibold cursor-pointer">
+              {slicedParagrap(user_name, width < 560 ? 12 : 36, 12)}
+            </p>
+          </Link>
           <p className="text-white opacity-50">19 Aug, 2022</p>
         </div>
         {JSON.stringify(userId) ===

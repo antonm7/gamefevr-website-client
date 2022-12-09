@@ -65,11 +65,10 @@ export default function FavoritesSlider({ favorites, deleteFavorite, visited }: 
                         >
                             {favorites.map((review: Favorite_Type, index: number) =>
                                 width < 1200 ? (
-                                    <div className="w-[22rem]">
+                                    <div className="w-[22rem]" key={JSON.stringify(review._id)}>
                                         <Favorite
                                             visited={visited}
                                             _id={review._id}
-                                            key={index}
                                             userId={review.userId}
                                             created_at={review.created_at}
                                             gameId={review.gameId}
@@ -82,7 +81,7 @@ export default function FavoritesSlider({ favorites, deleteFavorite, visited }: 
                                     <Favorite
                                         visited={visited}
                                         _id={review._id}
-                                        key={index}
+                                        key={JSON.stringify(review._id)}
                                         userId={review.userId}
                                         created_at={review.created_at}
                                         gameId={review.gameId}
@@ -99,11 +98,11 @@ export default function FavoritesSlider({ favorites, deleteFavorite, visited }: 
                                 }`}
                         >
                             {favorites.map(
-                                (review: Favorite_Type, index: number) => (
+                                (review: Favorite_Type) => (
                                     <Favorite
                                         visited={visited}
                                         _id={review._id}
-                                        key={index}
+                                        key={JSON.stringify(review._id)}
                                         userId={review.userId}
                                         created_at={review.created_at}
                                         gameId={review.gameId}
@@ -115,12 +114,11 @@ export default function FavoritesSlider({ favorites, deleteFavorite, visited }: 
                             )}
                         </div>
                     ) : favorites.length === 1 && width < 1200 && width > 800 ? (
-                        favorites.map((review: Favorite_Type, index: number) => (
-                            <div>
+                        favorites.map((review: Favorite_Type) => (
+                            <div key={JSON.stringify(review._id)}>
                                 <Favorite
                                     visited={visited}
                                     _id={review._id}
-                                    key={index}
                                     userId={review.userId}
                                     created_at={review.created_at}
                                     gameId={review.gameId}
@@ -131,12 +129,11 @@ export default function FavoritesSlider({ favorites, deleteFavorite, visited }: 
                             </div>
                         ))
                     ) : favorites.length === 1 && width < 800 ? (
-                        favorites.map((review: Favorite_Type, index: number) => (
-                            <div className="w-full">
+                        favorites.map((review: Favorite_Type) => (
+                            <div className="w-full" key={JSON.stringify(review._id)}>
                                 <Favorite
                                     visited={visited}
                                     _id={review._id}
-                                    key={index}
                                     userId={review.userId}
                                     created_at={review.created_at}
                                     gameId={review.gameId}
@@ -149,12 +146,11 @@ export default function FavoritesSlider({ favorites, deleteFavorite, visited }: 
                     ) : (
                         <Slider {...favoritesSettings} ref={favoriteRef}>
                             {favorites.map(
-                                (review: Favorite_Type, index: number) => (
+                                (review: Favorite_Type) => (
                                     <Favorite
-
                                         visited={visited}
                                         _id={review._id}
-                                        key={index}
+                                        key={JSON.stringify(review._id)}
                                         userId={review.userId}
                                         created_at={review.created_at}
                                         gameId={review.gameId}

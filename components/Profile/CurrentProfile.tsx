@@ -1,5 +1,3 @@
-import { faGear } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { ObjectId } from 'bson'
 import { useEffect, useState } from 'react'
 import { useStore } from '../../store'
@@ -7,7 +5,6 @@ import { Review_Type, Favorite_Type } from '../../types/schema'
 import Filters from '../Filters'
 import SearchLayout from '../layout/SearchLayout'
 import SettingsBar from './SettingsBar'
-import IndicateHype from './IndicateHype'
 import ReviewsSlider from './ReviewsSlider'
 import FavoritesSlider from './FavoritesSlider'
 import ProfileHeader from '../common/ProfileHeader'
@@ -68,7 +65,6 @@ export default function CurrentProfile({
       setFavoritesState(newFavorites)
     }
   }
-
 
   if (!userState) return null
 

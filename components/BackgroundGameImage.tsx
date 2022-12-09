@@ -34,7 +34,7 @@ export default function BackgroundGameImage({ bg, movieUrl }: Props) {
       onMouseLeave={() => setMovieVisibility(false)}
     >
       {movieVisibility ? (
-        <div className="video-container rounded-xl overflow-hidden">
+        <div className="video-container overflow-hidden rounded-xl">
           <video autoPlay muted loop style={{ width: '100%', height: '14rem' }}>
             <source src={movieUrl} />
           </video>

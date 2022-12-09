@@ -5,9 +5,10 @@ import TimerBar from "../TimerBar"
 interface Props {
     visibility: boolean
     text: string
+    close: () => void
 }
 
-export default function Sucssess({ visibility, text }: Props) {
+export default function Sucssess({ visibility, text, close }: Props) {
     if (!visibility) return null
 
     return (
@@ -55,6 +56,7 @@ export default function Sucssess({ visibility, text }: Props) {
                     </div>
                 </div>
                 <FontAwesomeIcon
+                    onClick={() => close()}
                     style={{ color: 'gray' }}
                     className="h-5 mr-4 opacity-60 cursor-pointer hover:opacity-90"
                     icon={faXmark}

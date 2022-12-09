@@ -1,17 +1,13 @@
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useEffect } from 'react'
 import TimerBar from '../TimerBar'
 
 interface Props {
   visibility: boolean
   text: string
+  close: () => void
 }
-export default function Error({ visibility, text }: Props) {
-
-  useEffect(() => {
-    console.log('dsajdklsajdlksa', visibility)
-  }, [visibility])
+export default function Error({ visibility, text, close }: Props) {
 
   if (!visibility) return null
 
@@ -64,6 +60,7 @@ export default function Error({ visibility, text }: Props) {
           style={{ color: 'gray' }}
           className="h-5 mr-4 opacity-60 cursor-pointer hover:opacity-90"
           icon={faXmark}
+          onClick={() => close}
         />
       </div>
       <TimerBar start={visibility} color="#fc5758" />

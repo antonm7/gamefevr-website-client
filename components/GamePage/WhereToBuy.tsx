@@ -1,4 +1,5 @@
 import { memo } from 'react'
+import useWindowSize from '../../lib/functions/hooks/useWindowSize'
 
 interface Props {
   stores: {
@@ -18,13 +19,16 @@ interface Props {
 const WhereToBuy: React.FC<Props> = ({ stores }) => {
   const navigate = (url: string) => (document.location.href = `https://${url}`)
 
+  const [width] = useWindowSize()
+
   if (!stores.length) return null
 
   return (
     <div id="where_to_buy" className="flex flex-wrap mr-4">
       {stores.map((store) => (
-        <div onClick={() => navigate(store.store.domain)} key={store.id}>
+        <div key={store.id}>
           <h2
+            onClick={() => navigate(store.store.domain)}
             id="game_page_detail"
             className="text-white underline font-normal text-1xl opacity-70 pt-2 mr-3 cursor-pointer whitespace-nowrap inline-block"
           >

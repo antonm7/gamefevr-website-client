@@ -91,10 +91,6 @@ const resetPassword: NextPage = () => {
 }
 
 export async function getServerSideProps(context: any) {
-  const getData = await fetch(
-    `https://api.rawg.io/api/games/${context.params.id}?key=39a2bd3750804b5a82669025ed9986a8`
-  )
-
   let db = null
   try {
     const client = await clientPromise

@@ -58,11 +58,10 @@ export default function ReviewsSlider({ deleteReview, reviews, visited }: Props)
                         >
                             {reviews.map((review: Review_Type) =>
                                 width < 1200 ? (
-                                    <div className="w-[30rem]">
+                                    <div className="w-[30rem]" key={JSON.stringify(review._id)}>
                                         <Review
                                             visited={visited}
                                             _id={review._id}
-                                            key={JSON.stringify(review._id)}
                                             userId={review.userId}
                                             created_at={review.created_at}
                                             gameId={review.gameId}
@@ -122,11 +121,10 @@ export default function ReviewsSlider({ deleteReview, reviews, visited }: Props)
                         </div>
                     ) : reviews.length === 1 && width < 1200 && width > 800 ? (
                         reviews.map((review: Review_Type) => (
-                            <div>
+                            <div key={JSON.stringify(review._id)}>
                                 <Review
                                     visited={visited}
                                     _id={review._id}
-                                    key={JSON.stringify(review._id)}
                                     userId={review.userId}
                                     created_at={review.created_at}
                                     gameId={review.gameId}
@@ -165,11 +163,11 @@ export default function ReviewsSlider({ deleteReview, reviews, visited }: Props)
                     ) : (
                         <Slider {...reviewSettings} ref={reviewsRef}>
                             {reviews.map((review: Review_Type) => (
-                                <div style={{ width: '32rem !important' }}>
+                                <div key={JSON.stringify(review._id)}
+                                    style={{ width: '32rem !important' }}>
                                     <Review
                                         visited={visited}
                                         _id={review._id}
-                                        key={JSON.stringify(review._id)}
                                         userId={review.userId}
                                         created_at={review.created_at}
                                         gameId={review.gameId}

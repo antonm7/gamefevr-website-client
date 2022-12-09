@@ -36,7 +36,7 @@ export default function Lower640({ game, changeIsUserRated, reviews }: Props) {
                 autoPlay
                 muted
                 loop
-                style={{ width: '24rem', height: '19rem', marginTop: '0rem' }}
+                style={{ width: '24rem', height: '19rem', marginTop: '0rem', borderRadius: '0.75rem' }}
               >
                 <source src={game.trailers.results[0].data.max} />
               </video>

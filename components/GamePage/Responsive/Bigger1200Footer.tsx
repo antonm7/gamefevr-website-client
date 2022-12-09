@@ -68,7 +68,7 @@ export default function Bigger1200Footer({
       {screenshots.length >= 3 ? (
         <div
           id="game_page_screenshots_controller"
-          className="relative overflow-hidden"
+          className="relative overflow-hidden bg-main-blue"
           style={{
             height:
               width > 1400

@@ -5,8 +5,9 @@ import TimerBar from '../TimerBar'
 interface Props {
   visibility: boolean
   text: string
+  close: () => void
 }
-export default function Warning({ visibility, text }: Props) {
+export default function Warning({ visibility, text, close }: Props) {
 
   if (!visibility) return null
 
@@ -58,6 +59,7 @@ export default function Warning({ visibility, text }: Props) {
           style={{ color: 'gray' }}
           className="h-5 mr-4 opacity-60 cursor-pointer hover:opacity-90"
           icon={faXmark}
+          onClick={() => close()}
         />
       </div>
       <TimerBar start={visibility} color="#febf1f" />

@@ -210,11 +210,11 @@ export async function getStaticPaths() {
   const ids: number[] = []
 
   for (let i = 1; i < 5; i++) {
-    const getData = await fetch(
+    const getData = await axios.get(
       `https://api.rawg.io/api/games?key=39a2bd3750804b5a82669025ed9986a8&dates=1990-01-01,2023-12-31&page=${i}&page_size=${100}`
     )
     ids.push(
-      ...(await getData.json()).results.map((game: ShortGame) => game.id)
+      ...(getData.data).results.map((game: ShortGame) => game.id)
     )
   }
 
@@ -229,40 +229,40 @@ export async function getStaticProps(context: Context) {
   let gameData, screenshots, trailers, same_series
 
   try {
-    const getData = await fetch(
+    const getData = await axios.get(
       `https://api.rawg.io/api/games/${context.params.id}?key=39a2bd3750804b5a82669025ed9986a8`
     )
-    gameData = await getData.json()
+    gameData = getData.data
   } catch (e) {
     console.log('error on getting gameData', e)
     gameData = null
   }
 
   try {
-    const getScreenshots = await fetch(
+    const getScreenshots = await axios.get(
       `https://api.rawg.io/api/games/${context.params.id}/screenshots?key=39a2bd3750804b5a82669025ed9986a8`
     )
-    screenshots = await getScreenshots.json()
+    screenshots = getScreenshots.data
   } catch (e) {
     console.log('error on getting screenshots', e)
     screenshots = null
   }
 
   try {
-    const getTrailers = await fetch(
+    const getTrailers = await axios.get(
       `https://api.rawg.io/api/games/${context.params.id}/movies?key=39a2bd3750804b5a82669025ed9986a8`
     )
-    trailers = await getTrailers.json()
+    trailers = getTrailers.data
   } catch (e) {
     console.log('error on getting treilers', e)
     trailers = null
   }
 
   try {
-    const getSeries = await fetch(
+    const getSeries = await axios.get(
       `https://api.rawg.io/api/games/${context.params.id}/game-series?key=39a2bd3750804b5a82669025ed9986a8`
     )
-    same_series = await getSeries.json()
+    same_series = getSeries.data
   } catch (e) {
     console.log('error on getting same_series', e)
     same_series = null

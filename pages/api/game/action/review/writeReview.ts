@@ -1,3 +1,4 @@
+import axios from 'axios'
 import { ObjectId } from 'bson'
 import { NextApiRequest, NextApiResponse } from 'next'
 import authorize from '../../../../../backend-middlewares/authorize'
@@ -51,10 +52,10 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
     }
     //saves the reviews inside own ranks collection
     try {
-      const getData = await fetch(
+      const getData = await axios.get(
         `https://api.rawg.io/api/games/${query.gameId}?key=39a2bd3750804b5a82669025ed9986a8`
       )
-      const gameData = await getData.json()
+      const gameData = getData.data
 
       const generateRank = (rank: string) => {
         switch (rank) {

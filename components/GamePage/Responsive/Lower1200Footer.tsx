@@ -30,7 +30,7 @@ export default function Lower1200Footer({
     <div>
       <div
         id="game_page_screenshots_controller"
-        className="relative overflow-hidden"
+        className="relative overflow-hidden bg-main-blue"
         style={{ height: '400px' }}
       >
         <div id="controller">

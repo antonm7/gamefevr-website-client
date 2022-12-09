@@ -1,3 +1,4 @@
+import axios from 'axios'
 import { Request, Response } from 'express'
 
 interface BodyReq {
@@ -90,16 +91,16 @@ export default async function handler(req: Request, res: Response) {
         if (sort === 'year') {
           filteredString = filteredString.concat('&ordering=-released')
         }
-        const getData = await fetch(
+        const getData = await axios.get(
           `https://api.rawg.io/api/games?key=39a2bd3750804b5a82669025ed9986a8&dates=1990-01-01,2023-12-31&page=${body.page}&page_size=30${filteredString}`
         )
-        games = await getData.json()
+        games = getData.data
         count = games.count
       } else {
-        const getData = await fetch(
+        const getData = await axios.get(
           `https://api.rawg.io/api/games?key=39a2bd3750804b5a82669025ed9986a8&dates=1990-01-01,2023-12-31&page=${body.page}&page_size=30`
         )
-        games = await getData.json()
+        games = getData.data
         count = games.count
       }
       const isNextPage = (page: number) => {
