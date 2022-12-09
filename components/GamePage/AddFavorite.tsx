@@ -15,7 +15,7 @@ interface Props {
 export default function AddFavorite({ gameId }: Props) {
   const session = useSession()
   const router = useRouter()
-  const globalErrorState = useGlobalError((state) => state)
+  const globalErrorState = useGlobalError(state => state)
   const [isFavorite, setIsFavorite] = useState<boolean>(false)
   const [mouseOver, setMouseOver] = useState<boolean>(false)
 
@@ -48,6 +48,9 @@ export default function AddFavorite({ gameId }: Props) {
         })
         if (response.status === 200) {
           setIsFavorite(response.data.favoriteId)
+          globalErrorState.setType('success')
+          globalErrorState.setText(`Added game to favorites`)
+          globalErrorState.setIsVisible(true)
         } else {
           throw new Error('Unexpected error')
         }
