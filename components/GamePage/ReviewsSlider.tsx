@@ -20,24 +20,30 @@ export default function ReviewsSlider({
   isUserCommented,
 }: Props) {
 
+  const [reviewsState, setReviewsState] = useState<Review_Type[]>([])
+
+  useEffect(() => {
+    setReviewsState(reviews)
+  }, [reviews])
+
   const settings = {
     infinite: false,
     slidesToScroll: 1,
     arrows: false,
     accessibility: false,
-    slidesToShow: reviews.length
-      ? reviews.length >= 3
+    slidesToShow: reviewsState.length
+      ? reviewsState.length >= 3
         ? 3
-        : reviews.length
+        : reviewsState.length
       : 3,
     responsive: [
       {
         breakpoint: 1600,
         settings: {
-          slidesToShow: reviews.length
-            ? reviews.length >= 2
+          slidesToShow: reviewsState.length
+            ? reviewsState.length >= 2
               ? 2
-              : reviews.length
+              : reviewsState.length
             : 2,
         },
       },
@@ -50,7 +56,7 @@ export default function ReviewsSlider({
     ],
   }
 
-  if (!reviews.length) return null
+  if (!reviewsState.length) return null
   return (
     <Slider
       {...settings}
@@ -60,7 +66,7 @@ export default function ReviewsSlider({
         : 'reviews_animation_disable'
         }`}
     >
-      {reviews.map((review: Review_Type, index: number) => (
+      {reviewsState.map((review: Review_Type, index: number) => (
         <Review
           key={index}
           _id={review._id}
