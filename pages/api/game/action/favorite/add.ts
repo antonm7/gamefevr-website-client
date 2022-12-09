@@ -6,6 +6,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import authorize from '../../../../../backend-middlewares/authorize'
 import GenerateError from '../../../../../backend-middlewares/generateErrorBackend'
 import updateHype from '../../../../../lib/functions/updateHype'
+import axios from 'axios'
 
 interface ExtendedNextApiRequest extends NextApiRequest {
   body: {
@@ -40,10 +41,11 @@ const handler = async (req: ExtendedNextApiRequest, res: NextApiResponse) => {
     }
     //saves the favorite inside own favorites collection
     try {
-      const getData = await fetch(
+      const getData = await axios.get(
         `https://api.rawg.io/api/games/${req.body.gameId}?key=39a2bd3750804b5a82669025ed9986a8`
       )
-      const gameData = await getData.json()
+      const gameData = getData.data
+
       const favorite: Favorite_Type = {
         userId: req.body.userId,
         gameId: req.body.gameId,
@@ -51,6 +53,7 @@ const handler = async (req: ExtendedNextApiRequest, res: NextApiResponse) => {
         game_name: gameData.name,
         game_image: gameData.background_image,
       }
+
       savedFavorite = await db.collection('favorites').insertOne(favorite)
     } catch (e) {
       await GenerateError({
