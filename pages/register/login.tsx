@@ -37,7 +37,11 @@ const Login: NextPage = () => {
         if (data.error) {
           setError(data.error.slice(6, 50))
         } else {
-          router.push('/')
+          if (router.query.back) {
+            router.push(`${router.query.back}`)
+          } else {
+            router.push('/')
+          }
         }
       }
     } catch (e) {
@@ -98,7 +102,7 @@ const Login: NextPage = () => {
               </div>
               <div className="text-darkIndigo font-semibold text-base pt-4 flex items-center">
                 Don't have an account?
-                <Link href={'/register/signup'}>
+                <Link href={`/register/signup?back=${router.query.back}`}>
                   <p
                     style={{ color: '#38b6cc' }}
                     className="cursor-pointer pl-1 font-semibold text-base"

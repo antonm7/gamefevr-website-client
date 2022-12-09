@@ -64,7 +64,6 @@ export default function WriteReview({
       onClose()
       insertNewReview(writeReviewRequest.data.review)
     } catch (e) {
-      console.log(e)
       globalErrorState.setType('error')
       globalErrorState.setText('error posting the review, try again')
       globalErrorState.setIsVisible(true)

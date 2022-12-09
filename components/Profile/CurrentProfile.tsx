@@ -42,10 +42,12 @@ export default function CurrentProfile({
   }
 
   useEffect(() => {
-    setUsername(user.username)
-    setUserState(user)
-    setReviewsState(reviews)
-    setFavoritesState(favorites)
+    if (user) {
+      setUsername(user.username)
+      setUserState(user)
+      setReviewsState(reviews)
+      setFavoritesState(favorites)
+    }
   }, [user])
 
   const deleteReview = (id: ObjectId | undefined): void => {
@@ -78,7 +80,7 @@ export default function CurrentProfile({
           isOpened={isOpened}
           close={() => changeVisibleSettings(false)}
         />
-        <ProfileHeader visited={false} username={username} hype={hype} changeVisibleSettings={val => changeVisibleSettings(val)} />
+        <ProfileHeader isHyped={true} visited={false} username={username} hype={hype} changeVisibleSettings={val => changeVisibleSettings(val)} />
         <ReviewsSlider visited={false} reviews={reviewsState} deleteReview={(id) => deleteReview(id)} />
         <FavoritesSlider visited={false} favorites={favoritesState} deleteFavorite={(id) => deleteFavorite(id)} />
       </main>

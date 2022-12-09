@@ -73,7 +73,7 @@ export default function GamePage(props: Props) {
 
   const navigateAuth = () => {
     if (session.status !== 'authenticated') {
-      return router.push('/register/login')
+      return router.push(`/register/login?back=${router.asPath}`)
     }
     const isAlreadyCommented = reviews.filter(
       (r) =>
@@ -83,7 +83,6 @@ export default function GamePage(props: Props) {
       changeText('You already commented this game')
       changeGlobalErrorVisibility(true)
       changeGlobalErrorType('warning')
-      return
     }
     setWriteReviewVisibility(true)
   }
