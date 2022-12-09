@@ -14,13 +14,14 @@ interface Props {
   user: {
     username: string
   }
+  isHyped: boolean
 }
 
 interface User {
   username: string
 }
 
-export default function Visited({ reviews, favorites, user, hype }: Props) {
+export default function Visited({ isHyped, reviews, favorites, user, hype }: Props) {
   const [userState, setUserState] = useState<User>()
   const [reviewsState, setReviewsState] = useState<Review_Type[]>([])
   const [favoritesState, setFavoritesState] = useState<Favorite_Type[]>([])
@@ -38,7 +39,7 @@ export default function Visited({ reviews, favorites, user, hype }: Props) {
     <SearchLayout>
       <main className="px-44 py-10" id="profile_page">
         {store.isFilterOn ? <Filters /> : null}
-        <ProfileHeader visited={true} username={userState.username} hype={hype} changeVisibleSettings={() => null} />
+        <ProfileHeader isHyped={isHyped} visited={true} username={userState.username} hype={hype} changeVisibleSettings={() => null} />
         <ReviewsSlider visited={true} reviews={reviewsState} deleteReview={() => null} />
         <FavoritesSlider visited={true} favorites={favoritesState} deleteFavorite={() => null} />
       </main>
