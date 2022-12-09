@@ -13,6 +13,7 @@ interface Props {
   reviews: Review_Type[]
   favorites: Favorite_Type[]
   hype: string
+  isHyped: boolean
   user: {
     username: string
     email: string
@@ -25,11 +26,13 @@ export default function Profile({
   favorites,
   user,
   visited,
+  isHyped,
   hype,
 }: Props) {
   if (visited) {
     return (
       <VisitedProfile
+        isHyped={isHyped}
         reviews={reviews}
         favorites={favorites}
         user={user}
@@ -65,12 +68,19 @@ export async function getServerSideProps(
     const isVisited = context?.params?.id !== session?.user?.userId
     const client = await clientPromise
     const db = client.db('gameFevr')
+    let isHyped = false
+
 
     if (isVisited) {
       const userCollection: mongoDB.Collection = db.collection('users')
       user = await userCollection.findOne({
         _id: new ObjectId(context?.params?.id),
       })
+
+      const currentUser: any = await userCollection.findOne({ _id: new ObjectId(session?.user.userId) })
+      if (currentUser.hyped_users.includes(context?.params?.id)) {
+        isHyped = true
+      }
 
       reviews = await db
         .collection('reviews')
@@ -98,16 +108,17 @@ export async function getServerSideProps(
       props: {
         user: isVisited
           ? {
-              username: user?.username,
-            }
+            username: user?.username,
+          }
           : {
-              username: user?.username,
-              email: user?.email,
-            },
+            username: user?.username,
+            email: user?.email,
+          },
         favorites: JSON.parse(JSON.stringify(favorites)),
         reviews: JSON.parse(JSON.stringify(reviews)),
         hype: user?.hype,
         visited: isVisited,
+        isHyped: JSON.parse(JSON.stringify(isHyped))
       },
     }
   } catch (e) {
