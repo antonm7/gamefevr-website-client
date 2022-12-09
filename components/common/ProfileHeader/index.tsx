@@ -8,44 +8,43 @@ type Props = {
     username: string
     hype: string
     changeVisibleSettings: (value: boolean) => void
+    isHyped: boolean
 }
 
-export default function ProfileHeader({ visited, username, hype, changeVisibleSettings }: Props) {
-    console.log(visited)
+export default function ProfileHeader({ isHyped, visited, username, hype, changeVisibleSettings }: Props) {
     return (
         <div
-            id="profile_page_welcome"
+            id="profile_header"
             className="flex justify-between items-center"
         >
-            <div className="flex items-center" id="profile_indicate_wrapper">
-                <h1 id="welcome_title" className="text-white font-bold whitespace-pre-wrap text-4xl">
+            <div id="profile_header_container" className="flex flex-wrap-reverse">
+                {!isHyped && visited ? <HypeUser /> : null}
+                <h1 id="profile_header_name" className="flex text-white font-bold whitespace-pre-wrap text-4xl">
                     {visited ? `Welcome to ${username}` : `Welcome ${username}`}
                 </h1>
                 {visited ? <div className="flex items-center">
                     <IndicateHype hype={hype} />
-                    <HypeUser />
                 </div> : <IndicateHype hype={hype} />}
-
-
             </div>
-            {visited ? null : <div
-                id="account_settings_wrapper_titles"
-                className="flex items-center"
-                onClick={() => changeVisibleSettings(true)}
-            >
-                <FontAwesomeIcon
-                    icon={faGear}
-                    className="h-4 pr-2 cursor-pointer"
-                    style={{ color: '#616e7e' }}
-                />
-                <p
-                    className="text-large font-semibold cursor-pointer"
-                    style={{ color: '#616e7e' }}
+            <div>
+                {visited ? null : <div
+                    id="account_settings"
+                    className="flex items-center"
+                    onClick={() => changeVisibleSettings(true)}
                 >
-                    Account Settings
-                </p>
-            </div>}
-
+                    <FontAwesomeIcon
+                        icon={faGear}
+                        className="h-4 pr-2 cursor-pointer"
+                        style={{ color: '#616e7e' }}
+                    />
+                    <p
+                        className="text-large font-semibold cursor-pointer"
+                        style={{ color: '#616e7e' }}
+                    >
+                        Account Settings
+                    </p>
+                </div>}
+            </div>
         </div>
     )
 }
