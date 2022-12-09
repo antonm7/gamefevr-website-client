@@ -25,7 +25,7 @@ export default function Menu() {
 
   const DynamicSession = () => {
     if (auth) {
-      if (router.pathname === '/profile/[id]') {
+      if (router.pathname === '/profile/[id]' && JSON.stringify(router.query.id) == JSON.stringify(session.data?.user.userId)) {
         return (
           <div
             style={{ width: 130, cursor: 'pointer' }}
@@ -108,9 +108,8 @@ export default function Menu() {
           <Link href="/">
             <p
               id={styles.link}
-              className={`text-white font-semibold cursor-pointer text-lg ${
-                router.pathname === '/' ? 'active-link ' : ''
-              }`}
+              className={`text-white font-semibold cursor-pointer text-lg ${router.pathname === '/' ? 'active-link ' : ''
+                }`}
               onClick={() => changeMenuVisibility(false)}
             >
               Home
@@ -119,9 +118,8 @@ export default function Menu() {
           <Link href="/explore">
             <p
               id={styles.link}
-              className={`text-white my-4 font-semibold cursor-pointer text-lg ${
-                router.pathname === '/explore' ? 'active-link ' : ''
-              }`}
+              className={`text-white my-4 font-semibold cursor-pointer text-lg ${router.pathname === '/explore' ? 'active-link ' : ''
+                }`}
               onClick={() => changeMenuVisibility(false)}
             >
               Explore
@@ -130,9 +128,8 @@ export default function Menu() {
           <Link href="/">
             <p
               id={styles.link}
-              className={`text-white font-semibold cursor-pointer text-lg ${
-                router.pathname === '/reviews' ? 'active-link ' : ''
-              }`}
+              className={`text-white font-semibold cursor-pointer text-lg ${router.pathname === '/reviews' ? 'active-link ' : ''
+                }`}
             >
               Reviews
             </p>
