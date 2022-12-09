@@ -26,7 +26,7 @@ export default function GlobalError({ isVisible, propsType }: Props) {
         setTimeout(() => {
           setVisibility(false)
           changeGlobalErrorVisibility(false)
-        }, 1900)
+        }, 1350)
       }
     } else {
       setVisibility(false)
@@ -34,14 +34,14 @@ export default function GlobalError({ isVisible, propsType }: Props) {
     }
   }, [isVisible])
 
-  if (type === 'error') return <Error visibility={visibility} text={text} />
+  if (type === 'error') return <Error close={() => setVisibility(false)} visibility={visibility} text={text} />
 
-  if (type === 'warning') return <Warning visibility={visibility} text={text} />
+  if (type === 'warning') return <Warning close={() => setVisibility(false)} visibility={visibility} text={text} />
 
   if (type === 'request') return <Request visibility={visibility} text={text} />
 
   if (type === 'success')
-    return <Sucssess visibility={visibility} text={text} />
+    return <Sucssess close={() => setVisibility(false)} visibility={visibility} text={text} />
 
   return null
 }
