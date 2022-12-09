@@ -14,6 +14,8 @@ const score = {
   c: 1.5,
   d: 2,
   e: 2.5,
+  user_gets_hype: 7
+
 }
 
 export default async function updateHype(
@@ -22,7 +24,9 @@ export default async function updateHype(
     | 'likeReview'
     | 'dislikeReview'
     | 'rankGame'
-    | 'addToFavorite',
+    | 'addToFavorite'
+    | 'userSendsHype'
+    | 'userGetsHype',
   userId: ObjectId
 ): Promise<Response> {
   try {
@@ -43,6 +47,10 @@ export default async function updateHype(
       return UpdateScore(userId, score.c)
     case 'addToFavorite':
       return UpdateScore(userId, score.b)
+    case 'userSendsHype':
+      return UpdateScore(userId, score.c)
+    case 'userGetsHype':
+      return UpdateScore(userId, score.user_gets_hype)
     default:
       return UpdateScore(userId, score.a)
   }
