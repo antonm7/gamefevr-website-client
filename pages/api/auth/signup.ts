@@ -64,6 +64,7 @@ async function handler(req: Request, res: Response) {
         hype: 0.0,
         hyped_users: []
       })
+      // TODO:manage here the sending emails process
       if (process.env.SENDGRID_API_KEY) {
         sgMail.setApiKey(process.env.SENDGRID_API_KEY)
         try {

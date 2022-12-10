@@ -9,7 +9,7 @@ export default async function handler(
 ) {
   if (req.method === 'GET') {
     try {
-      const request: any = await axios.get(
+      const request = await axios.get(
         `https://api.rawg.io/api/games?key=39a2bd3750804b5a82669025ed9986a8&page=${getRandomInt(
           10,
           200

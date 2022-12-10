@@ -101,7 +101,7 @@ export default function Index({ games }: Props) {
   )
 }
 
-export async function getServerSideProps(context: any) {
+export async function getServerSideProps() {
   try {
     const useOrNot = () => {
       const num = Math.round(Math.random())
@@ -149,7 +149,7 @@ export async function getServerSideProps(context: any) {
       if (filters === null) {
         try {
           const randomNumber = getRandomInt(10, 200)
-          const request: any = await axios.get(
+          const request = await axios.get(
             `https://api.rawg.io/api/games?key=39a2bd3750804b5a82669025ed9986a8&page=${randomNumber}&page_size=25`
           )
           const data = await request.data.results
@@ -165,7 +165,7 @@ export async function getServerSideProps(context: any) {
       } else {
         const randomNumber = getRandomInt(2, 15)
         try {
-          const request: any = await axios.get(
+          const request = await axios.get(
             `https://api.rawg.io/api/games?key=39a2bd3750804b5a82669025ed9986a8&page=${randomNumber}&page_size=25&${filters}`
           )
           const data = await request.data.results
@@ -192,7 +192,7 @@ export async function getServerSideProps(context: any) {
               200
             )}&page_size=4`
 
-            const request: any = await axios.get(x)
+            const request = await axios.get(x)
             const data = await request.data.results
             return data
           } else {

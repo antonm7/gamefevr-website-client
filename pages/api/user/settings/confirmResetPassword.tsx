@@ -1,7 +1,5 @@
-import { ObjectId } from 'bson'
 import { Request, Response } from 'express'
 import clientPromise from '../../../../lib/functions/mongodb'
-import sgMail from '@sendgrid/mail'
 import { hash } from 'bcrypt'
 import GenerateError from '../../../../backend-middlewares/generateErrorBackend'
 
