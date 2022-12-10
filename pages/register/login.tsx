@@ -1,5 +1,6 @@
 import { NextPage } from 'next'
-import { signIn } from 'next-auth/react'
+import { unstable_getServerSession } from 'next-auth'
+import { getSession, signIn, useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -104,7 +105,7 @@ const Login: NextPage = () => {
               </div>
               <div className="text-darkIndigo font-semibold text-base pt-4 flex items-center">
                 Don't have an account?
-                <Link href={`/register/signup?back=${router.query.back}`}>
+                <Link href={router.query.back ? `/register/signup?back=${router.query.back}` : '/register/signup'}>
                   <p
                     style={{ color: '#38b6cc' }}
                     className="cursor-pointer pl-1 font-semibold text-base"
@@ -123,4 +124,26 @@ const Login: NextPage = () => {
     </main>
   )
 }
+
+
+
+export async function getServerSideProps(context: any) {
+  const session = await getSession(context)
+
+  if (session) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/",
+      },
+      props: {},
+    };
+  } else {
+    return {
+      props: {
+      }
+    }
+  }
+}
+
 export default Login
