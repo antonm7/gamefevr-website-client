@@ -25,7 +25,11 @@ export default function WriteReview({
   const [rank, setRank] = useState<string | null>(null)
   const session = useSession()
   const router = useRouter()
-  const globalErrorState = useGlobalError((state) => state)
+  const changeGlobalErrorVisibility = useGlobalError(
+    (state) => state.setIsVisible
+  )
+  const changeGlobalErrorType = useGlobalError((state) => state.setType)
+  const changeText = useGlobalError((state) => state.setText)
 
   const writeReviewAction = async (): Promise<void> => {
     try {
@@ -34,7 +38,7 @@ export default function WriteReview({
       if (isUserRated && rank !== isUserRated) {
         await axios.post('/api/game/cancel/cancelRank', {
           userId: session.data?.user?.userId,
-          gameId: router.query.id,
+          gameId: router.query.id
         })
       }
       const writeReviewRequest = await axios.post(
@@ -43,29 +47,33 @@ export default function WriteReview({
           userId: session.data?.user?.userId,
           gameId: router.query.id,
           text,
-          rank,
+          rank
         }
       )
-      const rankGameRequest = await axios.post('/api/game/action/rankGame', {
+      await axios.post('/api/game/action/rankGame', {
         userId: session.data?.user?.userId,
         gameId: router.query.id,
-        value: rank,
+        value: rank
       })
       if (
         writeReviewRequest.status !== 201 &&
         writeReviewRequest.status !== 200
-      )
+      ) {
         throw new Error(writeReviewRequest.data.error)
-      if (rankGameRequest.status !== 200 && rankGameRequest.status !== 201)
-        throw new Error(rankGameRequest.data.error)
-      setText('')
-      setRank(null)
-      onClose()
-      insertNewReview(writeReviewRequest.data.review)
+      } else {
+        changeText('Successfully created your review!')
+        changeGlobalErrorType('success')
+        changeGlobalErrorVisibility(true)
+        setText('')
+        setRank(null)
+        onClose()
+        insertNewReview(writeReviewRequest.data.review)
+      }
+
     } catch (e) {
-      globalErrorState.setType('error')
-      globalErrorState.setText('error posting the review, try again')
-      globalErrorState.setIsVisible(true)
+      changeText('Error posting the review, try again')
+      changeGlobalErrorType('error')
+      changeGlobalErrorVisibility(true)
     }
   }
 
