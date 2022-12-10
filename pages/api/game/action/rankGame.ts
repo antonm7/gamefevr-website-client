@@ -3,6 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import authorize from '../../../../backend-middlewares/authorize'
 import generateErrorBackend from '../../../../backend-middlewares/generateErrorBackend'
 import games_data_document from '../../../../lib/functions/create/games_data'
+import generateTime from '../../../../lib/functions/generateTime'
 import clientPromise from '../../../../lib/functions/mongodb'
 import updateHype from '../../../../lib/functions/updateHype'
 import { Rank } from '../../../../types/schema'
@@ -45,7 +46,7 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
       const rank: Rank = {
         userId: req.body.userId,
         gameId: req.body.gameId,
-        created_at: 'time',
+        created_at: generateTime(new Date()),
         value: req.body.value,
       }
       savedRank = await db.collection('ranks').insertOne(rank)

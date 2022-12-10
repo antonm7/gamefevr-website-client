@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import clientPromise from '../../../lib/functions/mongodb'
 import { hash } from 'bcrypt'
 import sgMail from '@sendgrid/mail'
+import generateTime from '../../../lib/functions/generateTime'
 
 interface ReqBody {
   email: string
@@ -52,7 +53,7 @@ async function handler(req: Request, res: Response) {
         email,
         username,
         password: hashedPassword,
-        created_at: '',
+        created_at: generateTime(new Date()),
         favorite: [],
         reviews: [],
         ranks: [],

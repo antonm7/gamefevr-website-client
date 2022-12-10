@@ -7,6 +7,7 @@ import authorize from '../../../../../backend-middlewares/authorize'
 import GenerateError from '../../../../../backend-middlewares/generateErrorBackend'
 import updateHype from '../../../../../lib/functions/updateHype'
 import axios from 'axios'
+import generateTime from '../../../../../lib/functions/generateTime'
 
 interface ExtendedNextApiRequest extends NextApiRequest {
   body: {
@@ -49,7 +50,7 @@ const handler = async (req: ExtendedNextApiRequest, res: NextApiResponse) => {
       const favorite: Favorite_Type = {
         userId: req.body.userId,
         gameId: req.body.gameId,
-        created_at: 'time',
+        created_at: generateTime(new Date()),
         game_name: gameData.name,
         game_image: gameData.background_image,
       }
