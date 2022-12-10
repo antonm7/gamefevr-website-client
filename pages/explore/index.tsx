@@ -74,7 +74,6 @@ export default function Index({ games }: Props) {
         ) : (
           <div>
             <div
-              id="games_wrapper"
               className="flex flex-wrap justify-center pt-12"
             >
               {localGames.map((game: ShortGame, index: number) => (

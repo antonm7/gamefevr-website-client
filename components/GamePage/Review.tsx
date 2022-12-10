@@ -103,6 +103,7 @@ export default function Review({
   }
 
   useEffect(() => {
+    if (state.type === 'success') return
     if (
       state.type === 'request' &&
       state.answer === 'yes' &&

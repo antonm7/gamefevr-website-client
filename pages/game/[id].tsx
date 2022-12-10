@@ -82,8 +82,9 @@ export default function GamePage(props: Props) {
       changeText('You already commented this game')
       changeGlobalErrorVisibility(true)
       changeGlobalErrorType('warning')
+    } else {
+      setWriteReviewVisibility(true)
     }
-    setWriteReviewVisibility(true)
   }
 
   const toggleAnimation = () => {

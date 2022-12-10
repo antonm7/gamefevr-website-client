@@ -40,8 +40,7 @@ export default function GlobalError({ isVisible, propsType }: Props) {
 
   if (type === 'request') return <Request visibility={visibility} text={text} />
 
-  if (type === 'success')
-    return <Sucssess close={() => setVisibility(false)} visibility={visibility} text={text} />
+  if (type === 'success') return <Sucssess close={() => setVisibility(false)} visibility={visibility} text={text} />
 
   return null
 }
