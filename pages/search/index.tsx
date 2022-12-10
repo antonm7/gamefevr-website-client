@@ -108,7 +108,7 @@ export default function Index(props: Props) {
   }, [props.games, props.error])
 
   const sort = () => {
-    const { query }: any = router
+    const { query } = router
     if (router.query.sort) {
       router.query.sort = []
       router.push({
