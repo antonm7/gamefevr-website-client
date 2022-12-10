@@ -21,6 +21,8 @@ export default function ReviewsSlider({
   const [reviewsState, setReviewsState] = useState<Review_Type[]>([])
 
   useEffect(() => {
+    //Check if it fixed the weird animation bug
+    setReviewsState([])
     setReviewsState(reviews)
   }, [reviews])
 
@@ -54,8 +56,10 @@ export default function ReviewsSlider({
     ],
   }
 
+
   if (!reviewsState.length) return null
   return (
+
     <Slider
       {...settings}
       arrows={false}

@@ -77,7 +77,7 @@ export default function CurrentProfile({
 
   return (
     <SearchLayout>
-      <main className="px-44 py-10" id="profile_page">
+      <main className={`px-44 py-10 `} id="profile_page">
         {store.isFilterOn ? <Filters /> : null}
         <SettingsBar
           onUsernameChange={(name) => setUsername(name)}

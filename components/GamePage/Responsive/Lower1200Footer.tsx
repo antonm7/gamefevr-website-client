@@ -7,6 +7,7 @@ import { Review_Type } from '../../../types/schema'
 import SmallLoader from '../../common/SmallLoader'
 import Screenshots from '../Screenshots'
 import VerticalReviewsLoader from '../VerticalReviewsLoader'
+import { useSession } from 'next-auth/react'
 
 interface Props {
   screenshots: Short_Screenshot[]
@@ -25,6 +26,17 @@ export default function Lower1200Footer({
   reviewsLoading,
   sliderRef,
 }: Props) {
+  const session = useSession()
+
+  const isUserCommented = (): boolean => {
+    const filtered: Review_Type[] = reviews.filter(
+      (r) =>
+        JSON.stringify(r.userId) === JSON.stringify(session.data?.user.userId)
+    )
+    if (filtered.length) return true
+    return false
+  }
+
   return (
     <div>
       <div
@@ -73,7 +85,7 @@ export default function Lower1200Footer({
       >
         {reviewsLoading ? (
           <SmallLoader xCentered={true} />
-        ) : (
+        ) : isUserCommented() ? null : (
           <div
             className="w-72 p-4 flex items-center justify-center rounded-xl my-4  
             cursor-pointer opacity-80 hover:opacity-100"

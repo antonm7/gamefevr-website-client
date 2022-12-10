@@ -4,6 +4,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import authorize from '../../../../../backend-middlewares/authorize'
 import generateErrorBackend from '../../../../../backend-middlewares/generateErrorBackend'
 import games_data_document from '../../../../../lib/functions/create/games_data'
+import generateTime from '../../../../../lib/functions/generateTime'
 import clientPromise from '../../../../../lib/functions/mongodb'
 import updateHype from '../../../../../lib/functions/updateHype'
 import { Review_Type } from '../../../../../types/schema'
@@ -95,7 +96,7 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
         user_name,
         game_name: gameData.name,
         game_image: gameData.background_image,
-        created_at: 'time',
+        created_at: generateTime(new Date()),
         rank: generateRank(query.rank),
         text: query.text,
         likes: [],

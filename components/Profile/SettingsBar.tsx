@@ -16,8 +16,7 @@ interface Props {
   close: () => void
 }
 
-// TODO:ON small phones (safari), it gets opened from the middle of
-//the screen 
+
 export default function SettingsBar({ user, isOpened, close, onUsernameChange }: Props) {
   const [username, setUsername] = useState<string>('')
   const [email, setEmail] = useState<string>('')

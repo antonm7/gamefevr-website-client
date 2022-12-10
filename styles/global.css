@@ -277,9 +277,14 @@ div {
 #settings_bar {
   clip-path: inset(100% 0 0 0);
   transition: 0.4s all;
+  position: fixed;
+  bottom: 0 !important;
 }
 
+
 .opened {
+  position: fixed;
+  bottom: 0 !important;
   clip-path: inset(0% 0 0 0) !important;
 }
 

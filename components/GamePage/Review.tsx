@@ -31,6 +31,7 @@ export default function Review({
   text,
   user_name,
   deleteReviewProps,
+  created_at,
   rank,
 }: Props) {
   const session = useSession()
@@ -284,7 +285,7 @@ export default function Review({
               {slicedParagrap(user_name, width < 560 ? 12 : 36, 12)}
             </p>
           </Link>
-          <p className="text-white opacity-50">19 Aug, 2022</p>
+          <p className="text-white opacity-50">{created_at}</p>
         </div>
         {JSON.stringify(userId) ===
           JSON.stringify(session.data?.user.userId) ? (
