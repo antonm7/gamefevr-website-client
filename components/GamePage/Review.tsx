@@ -301,27 +301,46 @@ export default function Review({
             />
           </div>
         ) : (
-          <div className="flex items-center">
-            <FontAwesomeIcon
-              onClick={() => likeReview()}
-              onMouseEnter={() => setLike(true)}
-              onMouseLeave={() => setLike(false)}
-              icon={like || isUserLiked ? faThumbsUpSolid : faThumbsUpRegular}
-              className="h-8 text-green-400 cursor-pointer"
-            />
-            {CalculateCountMemoized}
-            <FontAwesomeIcon
-              onClick={() => dislikeReview()}
-              onMouseEnter={() => setDislike(true)}
-              onMouseLeave={() => setDislike(false)}
-              icon={
-                dislike || isUserDisliked
-                  ? faThumbsDownSolid
-                  : faThumbsDownRegular
-              }
-              className="h-8 text-red-400 cursor-pointer"
-            />
-          </div>
+          !session.data?.user.userId ? (
+            <div className="flex items-center">
+              <FontAwesomeIcon
+
+                icon={like || isUserLiked ? faThumbsUpSolid : faThumbsUpRegular}
+                className="h-8 text-green-400 cursor-pointer"
+              />
+              {CalculateCountMemoized}
+              <FontAwesomeIcon
+                icon={
+                  dislike || isUserDisliked
+                    ? faThumbsDownSolid
+                    : faThumbsDownRegular
+                }
+                className="h-8 text-red-400 cursor-pointer"
+              />
+            </div>
+          ) : (
+            <div className="flex items-center">
+              <FontAwesomeIcon
+                onClick={() => likeReview()}
+                onMouseEnter={() => setLike(true)}
+                onMouseLeave={() => setLike(false)}
+                icon={like || isUserLiked ? faThumbsUpSolid : faThumbsUpRegular}
+                className="h-8 text-green-400 cursor-pointer"
+              />
+              {CalculateCountMemoized}
+              <FontAwesomeIcon
+                onClick={() => dislikeReview()}
+                onMouseEnter={() => setDislike(true)}
+                onMouseLeave={() => setDislike(false)}
+                icon={
+                  dislike || isUserDisliked
+                    ? faThumbsDownSolid
+                    : faThumbsDownRegular
+                }
+                className="h-8 text-red-400 cursor-pointer"
+              />
+            </div>
+          )
         )}
       </div>
     </div>
