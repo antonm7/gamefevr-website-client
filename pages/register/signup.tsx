@@ -18,6 +18,9 @@ const Signup: NextPage = () => {
   const [username, setUsername] = useState<string>('')
   const [loading, setLoading] = useState<boolean>(false)
   const [error, setError] = useState<string>('')
+  const [succsess, setSuccsess] = useState<string>('')
+
+
   const router = useRouter()
 
   const [width] = useWindowSize()
@@ -48,6 +51,7 @@ const Signup: NextPage = () => {
             if (signInData?.error) {
               return setError(signInData.error.slice(6, 50))
             } else {
+              setSuccsess('Succesfully created account!')
               if (router.query.back) {
                 router.push(`${router.query.back}`)
               } else {
@@ -131,6 +135,7 @@ const Signup: NextPage = () => {
             </Link>
           </div>
           <p className="text-xl pt-2 font-semibold text-red-600">{error}</p>
+          <p className="text-xl pt-2 font-semibold text-green-600">{succsess}</p>
         </div>
       </div>
       <SignupAnimation />

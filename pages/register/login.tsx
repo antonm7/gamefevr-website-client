@@ -16,6 +16,7 @@ const Login: NextPage = () => {
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const [error, setError] = useState<string>('')
+  const [succsess, setSuccsess] = useState<string>('')
 
   const [loading, setLoading] = useState<boolean>(false)
   const [forgotPassword, setForgotPassword] = useState<boolean>(false)
@@ -37,6 +38,7 @@ const Login: NextPage = () => {
         if (data.error) {
           setError(data.error.slice(6, 50))
         } else {
+          setSuccsess('Succesfully logged in!')
           if (router.query.back) {
             router.push(`${router.query.back}`)
           } else {
@@ -112,6 +114,7 @@ const Login: NextPage = () => {
                 </Link>
               </div>
               <p className="text-xl pt-2 font-semibold text-red-600">{error}</p>
+              <p className="text-xl pt-2 font-semibold text-green-600">{succsess}</p>
             </>
           )}
         </div>
