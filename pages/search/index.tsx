@@ -72,6 +72,7 @@ export default function Index(props: Props) {
     setLoadMoreLoading(false)
     setLoadingError(false)
     setShowLoadMoreButton(true)
+    setNextPage(true)
 
     if (props.error) {
       setLoadingError(true)
@@ -361,6 +362,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
         return false
       }
     }
+
+    console.log(isNextPage(1))
 
     return {
       props: {
