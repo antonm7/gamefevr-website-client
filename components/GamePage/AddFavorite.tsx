@@ -21,7 +21,7 @@ export default function AddFavorite({ gameId }: Props) {
 
   const navigateAuth = (): void => {
     if (session.status !== 'authenticated') {
-      router.push('/register/login')
+      router.push(`/register/login?back=${router.asPath}`)
     } else {
       addFavorite()
     }

@@ -25,7 +25,7 @@ export default function RateGame({ updateIsUserRated, reviews }: Props) {
 
   const navigateAuth = (rank: string) => {
     if (session.status !== 'authenticated') {
-      return router.push('/register/login')
+      return router.push(`/register/login?back=${router.asPath}`)
     }
     rate(rank)
   }
