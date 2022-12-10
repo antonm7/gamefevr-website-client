@@ -11,7 +11,7 @@ interface BodyReq {
     sort: string | undefined
   }
 }
-//TODO:change for get method
+
 export default async function handler(req: Request, res: Response) {
   if (req.method === 'POST') {
     try {

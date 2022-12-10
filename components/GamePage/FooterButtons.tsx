@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-extra-semi */
 import useWindowSize from '../../lib/functions/hooks/useWindowSize'
 import { Short_Screenshot } from '../../types'
 import YellowButton from '../common/YellowButton'
@@ -23,11 +22,10 @@ export default function FooterButtons({
   if (screenshots.results.length >= 3) {
     return (
       <div
-        className={`w-full flex justify-center ${
-          reviewsAnimation
-            ? 'button_animation_enabled'
-            : 'button_animation_disabled'
-        }`}
+        className={`w-full flex justify-center ${reviewsAnimation
+          ? 'button_animation_enabled'
+          : 'button_animation_disabled'
+          }`}
       >
         <div className="w-52" id="show_comments_wrapper">
           <YellowButton
@@ -35,16 +33,16 @@ export default function FooterButtons({
               reviewsAnimation
                 ? 'Show Screenshots'
                 : reviewsLoading
-                ? 'Loading Reviews..'
-                : 'Show Reviews'
+                  ? 'Loading Reviews..'
+                  : 'Show Reviews'
             }
             active={reviewsAnimation ? true : reviewsLoading ? false : true}
             onClick={() =>
               reviewsAnimation
                 ? toggleAnimation()
                 : reviewsLoading
-                ? null
-                : toggleAnimation()
+                  ? null
+                  : toggleAnimation()
             }
           />
         </div>

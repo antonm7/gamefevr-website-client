@@ -1,5 +1,3 @@
-import { useEffect } from 'react'
-
 interface Props {
   type?: string
   title: string

@@ -5,12 +5,12 @@ import useWindowSize from "../../lib/functions/hooks/useWindowSize"
 import { Review_Type } from "../../types/schema"
 import Review from "./Review"
 
-
 interface Props {
     visited: boolean
     reviews: Review_Type[]
     deleteReview: (id: ObjectId | undefined) => void
 }
+
 export default function ReviewsSlider({ deleteReview, reviews, visited }: Props) {
     const [width] = useWindowSize()
     const reviewsRef = useRef(null)

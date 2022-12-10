@@ -19,11 +19,8 @@ const Signup: NextPage = () => {
   const [loading, setLoading] = useState<boolean>(false)
   const [error, setError] = useState<string>('')
   const [succsess, setSuccsess] = useState<string>('')
-
-
-  const router = useRouter()
-
   const [width] = useWindowSize()
+  const router = useRouter()
 
   const signup = async (): Promise<void> => {
     setError('')

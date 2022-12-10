@@ -1,5 +1,4 @@
 import { memo } from 'react'
-import useWindowSize from '../../lib/functions/hooks/useWindowSize'
 
 interface Props {
   stores: {
@@ -18,8 +17,6 @@ interface Props {
 
 const WhereToBuy: React.FC<Props> = ({ stores }) => {
   const navigate = (url: string) => (document.location.href = `https://${url}`)
-
-  const [width] = useWindowSize()
 
   if (!stores.length) return null
 

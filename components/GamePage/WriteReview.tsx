@@ -1,6 +1,5 @@
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { ok } from 'assert'
 import axios from 'axios'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'

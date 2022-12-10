@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import SearchLayout from '../../components/layout/SearchLayout'
-import { ElementDescription, ShortGame } from '../../types'
+import { ShortGame } from '../../types'
 import { genres, parentConsoles } from '../../lib/staticData'
 import getRandomInt from '../../lib/functions/generateRandom'
 import SmallGameBox from '../../components/SmallGameBox'
@@ -16,6 +16,9 @@ interface Props {
   games: ShortGame[]
 }
 
+
+// TODO://change the games component to a smallBoxGame
+// manage the loading state here too.
 export default function Index({ games }: Props) {
   const [loadMoreLoading, setLoadMoreLoading] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(false)

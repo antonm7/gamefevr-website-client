@@ -1,5 +1,4 @@
 import axios from "axios"
-import e from "express"
 import { useState } from "react"
 import SmallLoader from "../common/SmallLoader"
 import YellowButton from "../common/YellowButton"
@@ -44,13 +43,13 @@ export default function ForgotPassword({ goBack }: Props) {
                         setTimeout(() => { setStartSending(false) }, 1500)
                     }
                 }
-            } catch (e: any) {
+            } catch (e) {
                 console.log(e)
                 setLoading(false)
             }
         }
-
     }
+
     return (
         <>
             <StyledInput

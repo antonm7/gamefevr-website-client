@@ -24,7 +24,7 @@ export default function TimerBar({ start, color }: Props) {
 
   return (
     <div
-      className="h-1 absolute opacity-75 bg-red-200 w-24"
+      className={`absolute opacity-75 bg-red-200 w-24`}
       style={{ bottom: 0, left: 0, width: `${w}px`, backgroundColor: color }}
     >
       <div></div>

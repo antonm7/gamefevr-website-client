@@ -8,6 +8,7 @@ import SearchLayout from '../../components/layout/SearchLayout'
 import StyledInput from '../../components/Register/StyledInput'
 import clientPromise from '../../lib/functions/mongodb'
 
+// TODO:manage the loading state here
 const resetPassword: NextPage = () => {
   const [password, setPassword] = useState<string>('')
   const [newPassword, setNewPassword] = useState<string>('')

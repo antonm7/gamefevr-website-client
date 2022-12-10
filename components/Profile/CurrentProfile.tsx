@@ -8,6 +8,7 @@ import SettingsBar from './SettingsBar'
 import ReviewsSlider from './ReviewsSlider'
 import FavoritesSlider from './FavoritesSlider'
 import ProfileHeader from '../common/ProfileHeader'
+import { useRouter } from 'next/router'
 
 interface Props {
   reviews: Review_Type[]
@@ -35,6 +36,8 @@ export default function CurrentProfile({
   const [username, setUsername] = useState<string>('')
   const [reviewsState, setReviewsState] = useState<Review_Type[]>([])
   const [favoritesState, setFavoritesState] = useState<Favorite_Type[]>([])
+
+  const router = useRouter()
   const store = useStore()
 
   const changeVisibleSettings = (value: boolean): void => {
@@ -47,6 +50,8 @@ export default function CurrentProfile({
       setUserState(user)
       setReviewsState(reviews)
       setFavoritesState(favorites)
+    } else {
+      router.push('/')
     }
   }, [user])
 

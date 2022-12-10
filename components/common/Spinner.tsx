@@ -1,6 +1,7 @@
 import { SpinnerCircular } from "spinners-react";
+import { memo } from 'react'
 
-export default function Spinner() {
+const Spinner: React.FC = () => {
     return (
         <SpinnerCircular
             className="mx-auto"
@@ -11,3 +12,5 @@ export default function Spinner() {
         />
     )
 }
+
+export default memo(Spinner)

@@ -5,7 +5,6 @@ import useWindowSize from '../../lib/functions/hooks/useWindowSize'
 import { useSession } from 'next-auth/react'
 import WriteReview from '../../components/GamePage/WriteReview'
 import { Review_Type } from '../../types/schema'
-import clientPromise from '../../lib/functions/mongodb'
 import Bigger640 from '../../components/GamePage/Responsive/Bigger640'
 import Lower640 from '../../components/GamePage/Responsive/Lower640'
 import Filters from '../../components/Filters'
@@ -67,8 +66,8 @@ export default function GamePage(props: Props) {
     setReviewsAnimation(false)
     setScreenshotsAnimtion(false)
     setGame(props.game)
-    setLoading(false)
     loadReviews()
+    setLoading(false)
   }, [router.query.id, props.game])
 
   const navigateAuth = () => {
@@ -285,16 +284,6 @@ export async function getStaticProps(context: Context) {
     trailers,
     same_series,
   }
-
-  // const reviews = await db
-  //   .collection('reviews')
-  //   .find({ gameId: context.params.id })
-  //   .toArray()
-  // fetch(`/api/game/action/visited?gameId=${query.id}`, {
-  //     //             headers:{
-  //     //                 userId:session.data?.user?.userId
-  //     //             }
-  //     //         })
 
   return {
     props: {

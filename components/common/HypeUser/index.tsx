@@ -13,6 +13,13 @@ export default function HypeUser() {
     const [isHyped, setIsHyped] = useState<boolean>(false)
     const globalErrorState = useGlobalError(state => state)
 
+    const navigateAuth = () => {
+        if (session.status !== 'authenticated') {
+            return router.push(`/register/login?back=${router.asPath}`)
+        }
+        hypeUserMethod()
+    }
+
     const hypeUserMethod = async (): Promise<void> => {
         try {
             const req = await axios.post('/api/user/action/hype', {
@@ -37,7 +44,7 @@ export default function HypeUser() {
     if (isHyped) return null
 
     return (
-        <div onClick={() => hypeUserMethod()}>
+        <div onClick={() => navigateAuth()}>
             <div className="h-8 w-8 flex flex-col justify-center items-center overflow-hidden rounded-full" style={{ border: "1px solid #38b6cc" }}>
                 <FontAwesomeIcon icon={faArrowUp} className="font-semibold text-cool-blue cursor-pointer h-4" />
             </div>

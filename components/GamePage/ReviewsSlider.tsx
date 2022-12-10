@@ -1,6 +1,4 @@
 import Slider from 'react-slick'
-// import 'slick-carousel/slick/slick.css'
-// import 'slick-carousel/slick/slick-theme.css'
 import Review from './Review'
 import { Review_Type } from '../../types/schema'
 import { ObjectId } from 'bson'

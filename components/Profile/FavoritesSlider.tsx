@@ -63,7 +63,7 @@ export default function FavoritesSlider({ favorites, deleteFavorite, visited }: 
                             className={`flex flex-nowrap ${width < 1650 ? 'justify-between' : 'justify-between'
                                 }`}
                         >
-                            {favorites.map((review: Favorite_Type, index: number) =>
+                            {favorites.map((review: Favorite_Type) =>
                                 width < 1200 ? (
                                     <div className="w-[22rem]" key={JSON.stringify(review._id)}>
                                         <Favorite
