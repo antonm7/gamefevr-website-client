@@ -5,6 +5,7 @@ import { setCookie } from 'cookies-next'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import useWindowSize from '../../lib/functions/hooks/useWindowSize'
 import { useFiltersStore, useGlobalError, useStore } from '../../store'
 import { NamedGame } from '../../types'
 import FiltersAppliedCount from './FiltersAppliedCount'
@@ -89,18 +90,20 @@ export default function SmallSearchInput() {
     setGames([])
   }, [router])
 
+  const [width] = useWindowSize()
+
   return (
     <div>
       <div id="small_search_input" className="flex items-center relative">
         <FontAwesomeIcon
           onClick={() => store.changeFilterVisibility(true)}
           icon={faSliders}
-          className="absolute h-3 cursor-pointer right-10 text-gray-600"
+          className={`absolute ${width > 700 ? 'h-3 right-10' : 'h-5 right-14'} cursor-pointer  text-gray-600`}
         />
         <FontAwesomeIcon
           onClick={() => navigate()}
           icon={faMagnifyingGlass}
-          className="absolute h-3 cursor-pointer right-4 text-white"
+          className={`${width > 700 ? 'h-3 right-4' : 'h-4 right-5'} absolute  cursor-pointer  text-white`}
         />
         <FiltersAppliedCount />
         <input

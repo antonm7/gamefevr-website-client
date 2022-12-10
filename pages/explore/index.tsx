@@ -16,12 +16,8 @@ interface Props {
   games: ShortGame[]
 }
 
-
-// TODO://change the games component to a smallBoxGame
-// manage the loading state here too.
 export default function Index({ games }: Props) {
   const [loadMoreLoading, setLoadMoreLoading] = useState<boolean>(false)
-  const [loading, setLoading] = useState<boolean>(false)
   const [localGames, setLocalGames] = useState<ShortGame[]>([])
   const [error, setError] = useState<boolean>(false)
 
@@ -71,7 +67,7 @@ export default function Index({ games }: Props) {
               onClick={() => loadMore()}
             />
           </div>
-        ) : loading ? (
+        ) : loadMoreLoading ? (
           <div>
             <SmallLoader xCentered={true} big={true} />
           </div>
@@ -86,7 +82,7 @@ export default function Index({ games }: Props) {
               ))}
             </div>
             <div className="w-24 h-16 rounded-lg m-auto mt-8">
-              {loading ? (
+              {loadMoreLoading ? (
                 <SmallLoader big={false} xCentered={true} />
               ) : loadMoreLoading ? (
                 <SmallLoader big={false} xCentered={true} />
