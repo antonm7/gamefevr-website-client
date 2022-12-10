@@ -15,7 +15,7 @@ export default async function handler(req: Request, res: Response) {
     //initializing database
     try {
       const client = await clientPromise
-      db = client.db('gameFevr')
+      db = client.db()
     } catch (e) {
       console.log('error on initializing database', e)
       res.status(200).send({ error: 'Unexpected error,please try again' })

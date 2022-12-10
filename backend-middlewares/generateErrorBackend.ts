@@ -7,7 +7,7 @@ interface Props {
 
 async function generateErrorBackend({ error, status, e }: Props) {
   const client = await clientPromise
-  const db = client.db('gameFevr')
+  const db = client.db()
 
   await db.collection('errors').insertOne({
     error,

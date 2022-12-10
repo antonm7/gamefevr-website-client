@@ -95,7 +95,7 @@ export async function getServerSideProps(context: any) {
   let db = null
   try {
     const client = await clientPromise
-    db = client.db('gameFevr')
+    db = client.db()
   } catch (e) {
     console.log('error', e)
     return {

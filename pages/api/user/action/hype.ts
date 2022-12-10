@@ -16,7 +16,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
         try {
             const client = await clientPromise
-            db = client.db('gameFevr')
+            db = client.db()
         } catch (e) {
             res.status(500).send({ error: 'Unexpected error' })
             return console.log('error on initializing database', e)

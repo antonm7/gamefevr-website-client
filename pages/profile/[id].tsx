@@ -67,7 +67,7 @@ export async function getServerSideProps(
     let user, reviews: any[], favorites: any[]
     const isVisited = context?.params?.id !== session?.user?.userId
     const client = await clientPromise
-    const db = client.db('gameFevr')
+    const db = client.db()
     let isHyped = false
 
 

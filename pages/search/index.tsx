@@ -322,7 +322,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       if (session) {
         try {
           const client = await clientPromise
-          const db = client.db('gameFevr')
+          const db = client.db()
 
           if (usedYears) {
             db.collection('users').updateOne(

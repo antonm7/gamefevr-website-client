@@ -16,7 +16,7 @@ async function handler(req: ExtendedRequest, res: NextApiResponse) {
     try {
       const query = req.query
       const client = await clientPromise
-      const db = client.db('gameFevr')
+      const db = client.db()
 
       await games_data_document(query.gameId)
       await db

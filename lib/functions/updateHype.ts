@@ -31,7 +31,7 @@ export default async function updateHype(
 ): Promise<Response> {
   try {
     const client = await clientPromise
-    db = client.db('gameFevr')
+    db = client.db()
   } catch (e) {
     return { error: 'Unable to connect to database' }
   }

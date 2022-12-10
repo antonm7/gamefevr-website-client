@@ -56,7 +56,7 @@ async function handler(req: ExtendedRequest, res: Response) {
       }
 
       const client = await clientPromise
-      const db = client.db('gameFevr')
+      const db = client.db()
       const reviews = await db
         .collection('reviews')
         .find({ gameId: query.gameId })

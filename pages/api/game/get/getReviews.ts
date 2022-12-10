@@ -14,7 +14,7 @@ export default async function handler(req: ExtendedRequest, res: Response) {
     try {
       const query = req.query
       const client = await clientPromise
-      const db = client.db('gameFevr')
+      const db = client.db()
 
       const docs = await db
         .collection('reviews')
