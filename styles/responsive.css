@@ -218,12 +218,6 @@
     display: none;
   }
 
-  #indicate-wrapper {
-    /* margin-left: 0 !important;
-    margin-top: 1rem;
-    margin-bottom: 1re, ; */
-  }
-
   #filters {
     width: 85%;
   }
@@ -232,7 +226,6 @@
     flex-direction: column;
     align-items: flex-start;
   }
-
 
   #small_search_input_wrapper {
     width: 100%;
