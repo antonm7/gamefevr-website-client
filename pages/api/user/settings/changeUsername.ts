@@ -1,4 +1,3 @@
-import { ObjectId } from 'bson'
 import { NextApiRequest, NextApiResponse } from 'next'
 import clientPromise from '../../../../lib/functions/mongodb'
 import checkJWT from '../../../../lib/functions/checkJWT'
@@ -48,6 +47,24 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
       console.log('error on checking if username is already taken', e)
       res.status(200).send({ error: 'username is already taken' })
       return
+    }
+    //updating every reviews name username fields
+    try {
+      const userDocument = await db.collection('users').findOne({ email: body.email })
+      if (userDocument) {
+        await db.collection('reviews').updateMany({ user_name: body.username }, { user_name: body.username })
+      } else {
+        throw new Error('cant find user document')
+      }
+    } catch (e) {
+      await GenerateError({
+        error:
+          'error on changing username on user document on user/settings/changeUsername',
+        status: 500,
+        e,
+      })
+      console.log(e)
+      res.status(500).send({ error: 'Unexpected Error' })
     }
     //updating username
     try {
