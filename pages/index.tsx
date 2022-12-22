@@ -49,7 +49,6 @@ const Home: NextPage = () => {
 
   const [width] = useWindowSize()
 
-
   return (
     <div>
       <Head>

@@ -10,7 +10,7 @@ interface Props {
 
 export default function FiltersAppliedCount({ bigInput }: Props) {
   const [hover, setHover] = useState<boolean>(false)
-  const clearFilters = useFiltersStore((store) => store.clearFilters)
+  const clearFilters = useFiltersStore(store => store.clearFilters)
   const filtersCount = useFiltersCount()
 
   if (filtersCount > 0) {

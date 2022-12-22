@@ -11,7 +11,7 @@ export default function SearchInput() {
   const store = useStore()
   const [searchTerm, setSearchTerm] = useState<string>('')
   const [games, setGames] = useState<NamedGame[]>([])
-  const globalErrorState = useGlobalError((state) => state)
+  const globalErrorState = useGlobalError(state => state)
 
   const fetchData = async (name: string): Promise<void> => {
     try {

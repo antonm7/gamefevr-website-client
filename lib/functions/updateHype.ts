@@ -1,4 +1,7 @@
+import moment from 'moment'
 import { ObjectId } from 'mongodb'
+import { full_user } from '../../types/schema'
+import generateMinutes from './generateMinutes'
 import clientPromise from './mongodb'
 
 interface Response {
@@ -56,11 +59,39 @@ export default async function updateHype(
   }
 }
 
+async function checkTimeout(id: ObjectId): Promise<boolean> {
+  try {
+    const user: full_user = await db.collection('users').findOne({ _id: id })
+    if (!user) throw new Error('No user found')
+
+    const timeout = user.hyped_timeout
+    //means its a fresh user
+    if (timeout === null) return true
+
+    const now = moment()
+    //30 minuts has passed
+    if (now > timeout) {
+      console.log('reee')
+      return true
+    } else {
+      throw new Error('Still action in timeout')
+    }
+  } catch (e) {
+    console.log(e)
+    return false
+  }
+}
+
 async function UpdateScore(id: ObjectId, score: number): Promise<Response> {
   try {
-    await db
-      .collection('users')
-      .updateOne({ _id: id }, { $inc: { hype: score } })
+    const isOk = await checkTimeout(id)
+    console.log(isOk)
+
+    await db.collection('users')
+      .updateOne({ _id: id }, {
+        $inc: { hype: !isOk ? 0 : score },
+        $set: { hyped_timeout: generateMinutes() }
+      })
     return { ok: true }
   } catch (e) {
     console.log('error on updateHype, updateScoreFunc', e)

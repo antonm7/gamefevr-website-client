@@ -63,7 +63,8 @@ async function handler(req: Request, res: Response) {
         visited_platforms: [],
         forgot_password_link: '',
         hype: 0.0,
-        hyped_users: []
+        hyped_users: [],
+        hyped_timeout: null
       })
       // TODO:manage here the sending emails process
       if (process.env.SENDGRID_API_KEY) {

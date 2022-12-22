@@ -57,6 +57,8 @@ export type full_user = {
   visited_explore: number[]
   hype: number
   hyped_users: ObjectId[]
+  hype_time: string
+  hyped_timeout: moment.Moment
 }
 
 export type Client_User = {
