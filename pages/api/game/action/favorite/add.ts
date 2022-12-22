@@ -40,6 +40,16 @@ const handler = async (req: ExtendedNextApiRequest, res: NextApiResponse) => {
       res.status(500).send({ error: 'Unexpected error' })
       return console.log('error on games_data_document', e)
     }
+    //checking if user already added this game to favorites
+    try {
+      const is_already_favorite = await db.collection('favorites').findOne({ userId: req.body.userId, gameId: req.body.gameId })
+      if (is_already_favorite) {
+        throw new Error('You already saved this game')
+      }
+    } catch (e) {
+      res.status(500).send({ error: 'You already saved this game' })
+      return
+    }
     //saves the favorite inside own favorites collection
     try {
       const getData = await axios.get(
