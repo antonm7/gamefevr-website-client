@@ -64,7 +64,7 @@ export async function getServerSideProps(
   const session = await getSession(context)
 
   try {
-    let user, reviews: any[], favorites: any[]
+    let user, reviews, favorites
     const isVisited = context?.params?.id !== session?.user?.userId
     const client = await clientPromise
     const db = client.db()
@@ -77,9 +77,11 @@ export async function getServerSideProps(
         _id: new ObjectId(context?.params?.id),
       })
 
-      const currentUser: any = await userCollection.findOne({ _id: new ObjectId(session?.user.userId) })
-      if (currentUser.hyped_users.includes(context?.params?.id)) {
+      const currentUser = await userCollection.findOne({ _id: new ObjectId(session?.user.userId) })
+      if (currentUser?.hyped_users.includes(context?.params?.id)) {
         isHyped = true
+      } else {
+        isHyped = false
       }
 
       reviews = await db
