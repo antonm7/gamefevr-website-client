@@ -66,17 +66,14 @@ async function handler(req: Request, res: Response) {
         hyped_users: [],
         hyped_timeout: null
       })
-      // TODO:manage here the sending emails process
       if (process.env.SENDGRID_API_KEY) {
         sgMail.setApiKey(process.env.SENDGRID_API_KEY)
         try {
           const msg = {
-            to: 'migolkoanton@gmail.com', // Change to your recipient
-            from: 'gameFevrr@gmail.com           ', // Change to your verified sender
-            subject: 'Welcome To GameFevrr!',
+            to: email, // Change to your recipient
+            from: 'gameFevrr@gmail.com           ',
             templateId: 'd-d1b6d37ebdb445358fef35980ded4f6f',
           }
-          const send = await sgMail.send(msg)
         } catch (e: any) {
           console.log('error sending email', e.response.body)
         }
