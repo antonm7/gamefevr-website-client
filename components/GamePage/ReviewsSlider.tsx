@@ -21,8 +21,6 @@ export default function ReviewsSlider({
   const [reviewsState, setReviewsState] = useState<Review_Type[]>([])
 
   useEffect(() => {
-    //Check if it fixed the weird animation bug
-    setReviewsState([])
     setReviewsState(reviews)
   }, [reviews])
 
@@ -56,11 +54,18 @@ export default function ReviewsSlider({
     ],
   }
 
+  const clearState = () => {
+    if (reviews.length > reviewsState.length) {
+      setReviewsState([])
+    }
+  }
 
   if (!reviewsState.length) return null
+
   return (
 
     <Slider
+      onReInit={() => clearState()}
       {...settings}
       arrows={false}
       className={`${isAnimated
