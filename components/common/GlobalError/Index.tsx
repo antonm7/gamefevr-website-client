@@ -10,6 +10,7 @@ interface Props {
   propsType: 'error' | 'warning' | 'request' | 'success' | undefined
 }
 
+
 export default function GlobalError({ isVisible, propsType }: Props) {
   const [visibility, setVisibility] = useState(false)
   const [type, setType] = useState(propsType)
