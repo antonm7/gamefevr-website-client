@@ -62,7 +62,6 @@ export default function Sucssess({ visibility, text, close }: Props) {
                     icon={faXmark}
                 />
             </div>
-            <TimerBar start={visibility} color="#50c878" />
         </div>
     )
 }
