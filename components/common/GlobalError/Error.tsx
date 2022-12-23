@@ -63,7 +63,6 @@ export default function Error({ visibility, text, close }: Props) {
           onClick={() => close}
         />
       </div>
-      <TimerBar start={visibility} color="#fc5758" />
     </div>
   )
 }
