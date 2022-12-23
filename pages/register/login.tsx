@@ -1,6 +1,5 @@
 import { NextPage } from 'next'
-import { unstable_getServerSession } from 'next-auth'
-import { getSession, signIn, useSession } from 'next-auth/react'
+import { getSession, signIn } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -124,8 +123,6 @@ const Login: NextPage = () => {
     </main>
   )
 }
-
-
 
 export async function getServerSideProps(context: any) {
   const session = await getSession(context)
