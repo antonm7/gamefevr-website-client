@@ -63,6 +63,7 @@ export default function Review({
 
   const deleteReview_STATE = (): void => {
     if (!_id) return
+    if (state.isVisible) return
     state.setAnswer(undefined)
     state.setType('request')
     state.setText('Remove the review?')
