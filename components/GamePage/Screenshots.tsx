@@ -10,7 +10,6 @@ interface Props {
   images: Short_Screenshot[]
   setRef?: any
 }
-
 export default function Screenshots({ isAnimated, images, setRef }: Props) {
   const [width] = useWindowSize()
 
@@ -27,8 +26,8 @@ export default function Screenshots({ isAnimated, images, setRef }: Props) {
       arrows={false}
       {...settings}
       className={`ml-32 ${isAnimated
-          ? 'screenshots_animation_enabled'
-          : 'screenshots_animation_disabled'
+        ? 'screenshots_animation_enabled'
+        : 'screenshots_animation_disabled'
         }`}
     >
       {images.map((s: Short_Screenshot, index: number) => (
