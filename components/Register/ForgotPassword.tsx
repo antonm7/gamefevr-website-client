@@ -8,6 +8,13 @@ interface Props {
     goBack: () => void
 }
 
+const validateEmail = (email: string): boolean => {
+    const re =
+        // eslint-disable-next-line no-useless-escape
+        /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    return re.test(email)
+}
+
 export default function ForgotPassword({ goBack }: Props) {
     const [loading, setLoading] = useState<boolean>(false)
     const [emailForgot, setEmailForgot] = useState<string>('')
@@ -15,12 +22,6 @@ export default function ForgotPassword({ goBack }: Props) {
     const [startedSending, setStartSending] = useState<boolean>(false)
 
     const sendForgotPasswordEmail = async (): Promise<void> => {
-        const validateEmail = (email: string): boolean => {
-            const re =
-                // eslint-disable-next-line no-useless-escape
-                /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-            return re.test(email)
-        }
         if (!validateEmail(emailForgot)) {
             setForgotError('Please Enter A Valid Email')
         } else {
@@ -33,18 +34,17 @@ export default function ForgotPassword({ goBack }: Props) {
                 )
                 if (req.status === 404) {
                     setForgotError('No User Found With The Email')
-                    throw new Error('No User Found With The Email')
                 } else {
                     if (req.status !== 200) {
                         setForgotError('Unexpected Error, Try Again')
                         throw new Error('Unexpected Error, Try Again')
                     } else {
+                        setForgotError('')
                         setStartSending(true)
                         setTimeout(() => { setStartSending(false) }, 1500)
                     }
                 }
             } catch (e) {
-                console.log(e)
                 setLoading(false)
             }
         }
