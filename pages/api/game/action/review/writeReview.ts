@@ -54,7 +54,7 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
     //saves the reviews inside own ranks collection
     try {
       const getData = await axios.get(
-        `https://api.rawg.io/api/games/${query.gameId}?key=39a2bd3750804b5a82669025ed9986a8`
+        `https://api.rawg.io/api/games/${query.gameId}?key=0ffbdb925caf4b20987cd068aa43fd75`
       )
       const gameData = getData.data
 
