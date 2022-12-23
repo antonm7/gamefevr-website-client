@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import axios from 'axios'
@@ -6,8 +7,7 @@ import Link from 'next/link'
 import slicedParagrap from '../../lib/functions/slicedParagraph'
 import { Review_Type } from '../../types/schema'
 import useWindowSize from '../../lib/functions/hooks/useWindowSize'
-import { useGlobalError } from '../../store'
-import { useEffect } from 'react'
+import { OPEN_ALERT_TYPE } from '../../types'
 
 interface Props extends Review_Type {
   deleteReview?: (id: ObjectId | undefined) => void
@@ -26,48 +26,44 @@ export default function Reviews({
   game_image,
 }: Props) {
   const [width] = useWindowSize()
-  const state = useGlobalError((state) => state)
-  //creating the alert
+
+  const what_is_the_answer = (data: string, msg: 'no' | 'yes') => {
+    if (msg === 'yes') {
+      deleteReviewMethod()
+    }
+    PubSub.publish('CLOSE_ALERT')
+  }
+
   const deleteReview_STATE = (): void => {
-    if (!_id) return
-    state.setAnswer(undefined)
-    state.setType('request')
-    state.setText('Remove the review?')
-    state.setIsVisible(true)
-    state.setId(_id)
+    const data: OPEN_ALERT_TYPE = {
+      type: 'request',
+      msg: 'Remove the review?',
+      requestOwner: 'PROFILE_REVIEW_OWNER'
+    }
+    PubSub.subscribe('PROFILE_REVIEW_OWNER', what_is_the_answer)
+    PubSub.publish('OPEN_ALERT', data)
   }
 
   const deleteReviewMethod = async (): Promise<void> => {
-    if (deleteReview) {
-      try {
-        const req = await axios.post('/api/game/cancel/review/deleteReview', {
-          userId: userId,
-          gameId: gameId,
-          reviewId: _id,
-        })
-        if (req.status === 200) {
-          state.closeRequest()
-          deleteReview(_id)
-        }
-      } catch (e) {
-        state.setType('error')
-        state.setText('error removing the review, try again')
-        state.setIsVisible(true)
+    try {
+      const req = await axios.post('/api/game/cancel/review/deleteReview', {
+        userId: userId,
+        gameId: gameId,
+        reviewId: _id,
+      })
+      if (req.status !== 200) {
+        throw new Error('error')
       }
+      if (deleteReview) {
+        deleteReview(_id)
+      }
+    } catch (e) {
+      PubSub.publish('OPEN_ALERT', {
+        type: 'error',
+        msg: 'oops, error deleting review, try again'
+      })
     }
   }
-  //catches the globalRequest user answer after he presses.
-  useEffect(() => {
-    if (
-      state.type === 'request' &&
-      state.answer === 'yes' &&
-      state.id === _id
-    ) {
-      deleteReviewMethod()
-    } else {
-      state.closeRequest()
-    }
-  }, [state.answer])
 
   if (visited) {
     return (

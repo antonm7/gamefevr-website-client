@@ -4,12 +4,11 @@ import '../styles/responsive.css'
 import '../styles/animation.css'
 import { setCookie } from 'cookies-next'
 import { SessionProvider } from 'next-auth/react'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Progress from '../components/progress/Progress'
 import {
   useFiltersStore,
-  useGlobalError,
   useProgressStore,
   useStore,
 } from '../store'
@@ -21,13 +20,8 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: any) {
   const filtersStore = useFiltersStore((state) => state)
   const setIsAnimating = useProgressStore((state) => state.setIsAnimating)
   const isAnimating = useProgressStore((state) => state.isAnimating)
-  const isVisible = useGlobalError((state) => state.isVisible)
   const menuVisibility = useStore((state) => state.menuVisibility)
-  const type = useGlobalError((state) => state.type)
   const router: any = useRouter()
-
-  const [globalErrorVisibility, setGlobalErrorVisibilit] =
-    useState<boolean>(false)
 
   useEffect(() => {
     const handleStart = () => {
@@ -96,13 +90,9 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: any) {
     }
   }, [router.query])
 
-  useEffect(() => {
-    setGlobalErrorVisibilit(isVisible)
-  }, [isVisible])
-
   return (
     <>
-      <GlobalError propsType={type} isVisible={globalErrorVisibility} />
+      <GlobalError />
       <Progress isAnimating={isAnimating} />
       <SessionProvider session={session}>
         {menuVisibility ? <Menu /> : null}

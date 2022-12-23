@@ -3,7 +3,6 @@ import SettingsInput from './SettingsInput'
 import YellowButton from '../common/YellowButton'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
-import { useGlobalError } from '../../store'
 import axios from 'axios'
 
 interface Props {
@@ -22,24 +21,23 @@ export default function SettingsBar({ user, isOpened, close, onUsernameChange }:
   const [email, setEmail] = useState<string>('')
   const [oldPassword, setOldPassword] = useState<string>('')
   const [newPassword, setNewPassword] = useState<string>('')
-  const changeGlobalErrorVisibility = useGlobalError(
-    (state) => state.setIsVisible
-  )
-  const changeGlobalErrorType = useGlobalError((state) => state.setType)
-  const changeText = useGlobalError((state) => state.setText)
+
+
 
   const saveChanges = async (): Promise<void> => {
     //user tries to change password
     if (oldPassword !== '' || newPassword !== '') {
       if (oldPassword === '') {
-        changeText('Old password is required')
-        changeGlobalErrorVisibility(true)
-        changeGlobalErrorType('error')
+        PubSub.publish('OPEN_ALERT', {
+          type: 'error',
+          msg: 'Old password is required'
+        })
         return
       } else if (newPassword === '') {
-        changeGlobalErrorVisibility(true)
-        changeGlobalErrorType('error')
-        changeText('New password is required')
+        PubSub.publish('OPEN_ALERT', {
+          type: 'error',
+          msg: 'New password is required'
+        })
         return
       }
       try {
@@ -49,18 +47,21 @@ export default function SettingsBar({ user, isOpened, close, onUsernameChange }:
           newPassword
         })
         if (!req.data.error) {
-          changeText('Password has changed')
-          changeGlobalErrorType('success')
-          changeGlobalErrorVisibility(true)
+          PubSub.publish('OPEN_ALERT', {
+            type: 'success',
+            msg: 'Password has changed'
+          })
         } else {
-          changeText(req.data.error)
-          changeGlobalErrorType('error')
-          changeGlobalErrorVisibility(true)
+          PubSub.publish('OPEN_ALERT', {
+            type: 'error',
+            msg: req.data.error
+          })
         }
       } catch (e) {
-        changeText('Unexpected Error')
-        changeGlobalErrorType('error')
-        changeGlobalErrorVisibility(true)
+        PubSub.publish('OPEN_ALERT', {
+          type: 'error',
+          msg: 'Unexpected Error'
+        })
       }
 
     }
@@ -73,27 +74,33 @@ export default function SettingsBar({ user, isOpened, close, onUsernameChange }:
         })
         if (!req.data.error) {
           onUsernameChange(username)
-          changeText('Username has changed')
-          changeGlobalErrorType('success')
-          changeGlobalErrorVisibility(true)
+          PubSub.publish('OPEN_ALERT', {
+            type: 'success',
+            msg: 'Username has changed'
+          })
         } else {
-          changeText(req.data.error)
-          changeGlobalErrorType('error')
-          changeGlobalErrorVisibility(true)
+          PubSub.publish('OPEN_ALERT', {
+            type: 'error',
+            msg: req.data.error
+          })
         }
       }
       //user tries to change password
       if (oldPassword !== '' || newPassword !== '') {
         if (oldPassword === newPassword) {
-          changeGlobalErrorVisibility(true)
-          changeGlobalErrorType('error')
-          changeText('New password must be different from old password')
+          PubSub.publish('OPEN_ALERT', {
+            type: 'error',
+            msg: 'New password must be different from old password'
+          })
           return
         }
       }
     } catch (e) {
-      changeGlobalErrorType('error')
-      changeGlobalErrorVisibility(true)
+      PubSub.publish('OPEN_ALERT', {
+        type: 'error',
+        msg: ''
+      })
+
     }
   }
 

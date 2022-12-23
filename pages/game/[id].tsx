@@ -8,7 +8,7 @@ import { Review_Type } from '../../types/schema'
 import Bigger640 from '../../components/GamePage/Responsive/Bigger640'
 import Lower640 from '../../components/GamePage/Responsive/Lower640'
 import Filters from '../../components/Filters'
-import { useGlobalError, useStore } from '../../store'
+import { useStore } from '../../store'
 import { ObjectId } from 'bson'
 import { useRouter } from 'next/router'
 import ErrorComponent from '../../components/ErrorComponent'
@@ -30,12 +30,6 @@ export default function GamePage(props: Props) {
   const store = useStore()
   const router = useRouter()
   const session = useSession()
-  const changeGlobalErrorVisibility = useGlobalError(
-    (store) => store.setIsVisible
-  )
-  const changeGlobalErrorType = useGlobalError((store) => store.setType)
-  const changeText = useGlobalError((state) => state.setText)
-
   const [game, setGame] = useState<DetailedGame | null>(null)
   const [screenshotsAnimtion, setScreenshotsAnimtion] = useState<boolean>(false)
   const [reviewsAnimation, setReviewsAnimation] = useState<boolean>(false)
@@ -79,9 +73,10 @@ export default function GamePage(props: Props) {
         JSON.stringify(r.userId) === JSON.stringify(session.data.user.userId)
     )
     if (isAlreadyCommented.length > 0) {
-      changeText('You already commented this game')
-      changeGlobalErrorVisibility(true)
-      changeGlobalErrorType('warning')
+      PubSub.publish('OPEN_ALERT', {
+        type: 'warning',
+        msg: 'You already commented this game'
+      })
     } else {
       setWriteReviewVisibility(true)
     }

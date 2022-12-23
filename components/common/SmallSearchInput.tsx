@@ -6,14 +6,13 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import useWindowSize from '../../lib/functions/hooks/useWindowSize'
-import { useFiltersStore, useGlobalError, useStore } from '../../store'
+import { useFiltersStore, useStore } from '../../store'
 import { NamedGame } from '../../types'
 import FiltersAppliedCount from './FiltersAppliedCount'
 
 export default function SmallSearchInput() {
   const [search, setSearch] = useState<string>('')
   const [games, setGames] = useState<NamedGame[]>([])
-  const globalErrorState = useGlobalError((state) => state)
 
   const store = useStore()
   const router = useRouter()
@@ -66,9 +65,10 @@ export default function SmallSearchInput() {
       const games: NamedGame[] = getData.data.games
       setGames(games)
     } catch (e) {
-      globalErrorState.setType('error')
-      globalErrorState.setText('error getting games, try again')
-      globalErrorState.setIsVisible(true)
+      PubSub.publish('OPEN_ALERT', {
+        type: 'error',
+        msg: 'error getting games, try again'
+      })
     }
   }
 

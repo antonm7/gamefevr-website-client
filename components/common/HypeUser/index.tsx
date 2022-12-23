@@ -4,14 +4,12 @@ import axios from "axios"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/router"
 import { useState } from "react"
-import { useGlobalError } from "../../../store"
 
 export default function HypeUser() {
     const router = useRouter()
     const userId = router.query.id
     const session = useSession()
     const [isHyped, setIsHyped] = useState<boolean>(false)
-    const globalErrorState = useGlobalError(state => state)
 
     const navigateAuth = () => {
         if (session.status !== 'authenticated') {
@@ -30,14 +28,16 @@ export default function HypeUser() {
                 throw new Error()
             } else {
                 setIsHyped(true)
-                globalErrorState.setType('success')
-                globalErrorState.setText(`You hyped the user!`)
-                globalErrorState.setIsVisible(true)
+                PubSub.publish('OPEN_ALERT', {
+                    type: 'success',
+                    msg: `You hyped the user!`
+                })
             }
         } catch (e) {
-            globalErrorState.setType('error')
-            globalErrorState.setText(`oops, could'nt hype the user...`)
-            globalErrorState.setIsVisible(true)
+            PubSub.publish('OPEN_ALERT', {
+                type: 'error',
+                msg: `oops, could'nt hype the user...`
+            })
         }
     }
 

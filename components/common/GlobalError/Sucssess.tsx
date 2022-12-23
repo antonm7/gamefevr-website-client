@@ -1,6 +1,6 @@
 import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import TimerBar from "../TimerBar"
+import PubSub from 'pubsub-js'
 
 interface Props {
     visibility: boolean
@@ -9,6 +9,8 @@ interface Props {
 }
 
 export default function Sucssess({ visibility, text, close }: Props) {
+
+
     if (!visibility) return null
 
     return (

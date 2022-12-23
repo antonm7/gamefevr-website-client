@@ -4,10 +4,10 @@ import axios from 'axios'
 import { ObjectId } from 'bson'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import useWindowSize from '../../lib/functions/hooks/useWindowSize'
 import slicedParagrap from '../../lib/functions/slicedParagraph'
-import { useGlobalError } from '../../store'
+import { OPEN_ALERT_TYPE } from '../../types'
 import { Favorite_Type } from '../../types/schema'
 
 interface Props extends Favorite_Type {
@@ -24,19 +24,27 @@ export default function Favorite({
   visited,
   _id,
 }: Props) {
-  const state = useGlobalError((state) => state)
   const [width] = useWindowSize()
   const [mouseOver, setMouseOver] = useState<boolean>(false)
 
   //creating the alert
-  const deleteFavorite_STATE = () => {
-    if (!_id) return
-    state.setAnswer(undefined)
-    state.setType('request')
-    state.setText('Remove from favorite?')
-    state.setIsVisible(true)
-    state.setId(_id)
+  const what_is_the_answer = (data: string, msg: 'no' | 'yes') => {
+    if (msg === 'yes') {
+      deleteFavoriteMethod()
+    }
+    PubSub.publish('CLOSE_ALERT')
   }
+
+  const deleteFavorite_STATE = (): void => {
+    const data: OPEN_ALERT_TYPE = {
+      type: 'request',
+      msg: 'Remove from favorites?',
+      requestOwner: 'PROFILE_FAVORITE_OWNER'
+    }
+    PubSub.subscribe('PROFILE_FAVORITE_OWNER', what_is_the_answer)
+    PubSub.publish('OPEN_ALERT', data)
+  }
+
 
   const deleteFavoriteMethod = async (): Promise<void> => {
     if (deleteFavorite) {
@@ -51,29 +59,18 @@ export default function Favorite({
         )
         if (req.status === 200) {
           deleteFavorite(_id)
-          state.closeRequest()
         } else {
           throw new Error('Unexpected Error')
         }
       } catch (e) {
-        state.setType('error')
-        state.setText('error removing the favorite, try again')
-        state.setIsVisible(true)
+        PubSub.publish('OPEN_ALERT', {
+          type: 'error',
+          msg: 'error removing the favorite, try again'
+        })
       }
     }
   }
-  //catches the globalRequest user answer after he presses.
-  useEffect(() => {
-    if (
-      state.type === 'request' &&
-      state.answer === 'yes' &&
-      state.id === _id
-    ) {
-      deleteFavoriteMethod()
-    } else {
-      state.closeRequest()
-    }
-  }, [state.answer])
+
   if (visited) {
     return (
       <div

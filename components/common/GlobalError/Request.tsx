@@ -5,26 +5,24 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useEffect, useState } from 'react'
-import { useGlobalError } from '../../../store'
 import Spinner from '../Spinner'
 
 interface Props {
   visibility: boolean
   text: string
+  owner: string
 }
 
-export default function Request({ visibility, text }: Props) {
-  const state = useGlobalError((state) => state)
+export default function Request({ visibility, text, owner }: Props) {
   const [loader, setLoader] = useState<boolean>(false)
 
-
   const onYes = () => {
+    PubSub.publish(owner, 'yes')
     setLoader(true)
-    state.setAnswer('yes')
   }
 
   const onNo = () => {
-    state.setAnswer('no')
+    PubSub.publish(owner, 'no')
   }
 
   useEffect(() => {

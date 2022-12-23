@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
 import axios from 'axios'
 import { useRouter } from 'next/router'
-import { useGlobalError } from '../../store'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBookmark as regular } from '@fortawesome/free-regular-svg-icons'
 import { faBookmark as solid } from '@fortawesome/free-solid-svg-icons'
@@ -15,7 +14,6 @@ interface Props {
 export default function AddFavorite({ gameId }: Props) {
   const session = useSession()
   const router = useRouter()
-  const globalErrorState = useGlobalError(state => state)
   const [isFavorite, setIsFavorite] = useState<boolean>(false)
   const [mouseOver, setMouseOver] = useState<boolean>(false)
 
@@ -48,17 +46,20 @@ export default function AddFavorite({ gameId }: Props) {
         })
         if (response.status === 200) {
           setIsFavorite(response.data.favoriteId)
-          globalErrorState.setType('success')
-          globalErrorState.setText(`Added game to favorites`)
-          globalErrorState.setIsVisible(true)
+          PubSub.publish('OPEN_ALERT', {
+            type: 'success',
+            msg: 'Added game to favorites'
+          })
+
         } else {
           throw new Error('Unexpected error')
         }
       }
     } catch (e) {
-      globalErrorState.setType('error')
-      globalErrorState.setText(`oops, can't add game for favorites`)
-      globalErrorState.setIsVisible(true)
+      PubSub.publish('OPEN_ALERT', {
+        type: 'error',
+        msg: `oops, can't add game for favorites`
+      })
     }
   }
 

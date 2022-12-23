@@ -15,7 +15,6 @@ import Link from 'next/link'
 import { useEffect, useMemo, useState } from 'react'
 import useWindowSize from '../../lib/functions/hooks/useWindowSize'
 import slicedParagrap from '../../lib/functions/slicedParagraph'
-import { useGlobalError } from '../../store'
 import { Review_Type } from '../../types/schema'
 
 interface Props extends Review_Type {
@@ -41,9 +40,6 @@ export default function Review({
   const [isUserDisliked, setIsUserDisliked] = useState<boolean>(false)
   const [likesState, setLikesState] = useState<ObjectId[]>([])
   const [dislikesState, setDislikesState] = useState<ObjectId[]>([])
-  const globalErrorState = useGlobalError((state) => state)
-
-  const state = useGlobalError((state) => state)
 
   const [width] = useWindowSize()
 
@@ -61,14 +57,20 @@ export default function Review({
     return
   }, [session.status, likes, dislikes])
 
+  const what_is_the_answer = (data: string, msg: 'no' | 'yes') => {
+    if (msg === 'yes') {
+      deleteReviewMethod()
+    }
+    PubSub.publish('CLOSE_ALERT')
+  }
+
   const deleteReview_STATE = (): void => {
-    if (!_id) return
-    if (state.isVisible) return
-    state.setAnswer(undefined)
-    state.setType('request')
-    state.setText('Remove the review?')
-    state.setIsVisible(true)
-    state.setId(_id)
+    PubSub.subscribe('GAME_PAGE_REVIEW_OWNER', what_is_the_answer)
+    PubSub.publish('OPEN_ALERT', {
+      type: 'request',
+      msg: 'Remove the review?',
+      requestOwner: 'GAME_PAGE_REVIEW_OWNER'
+    })
   }
 
   const deleteReviewMethod = async () => {
@@ -95,27 +97,14 @@ export default function Review({
       if (cancelRankRequest.status !== 200) {
         throw new Error(deleteReviewRequest.data.error)
       }
-      state.closeRequest()
       deleteReviewProps(_id)
     } catch (e) {
-      globalErrorState.setType('error')
-      globalErrorState.setText('oops, error deleting review, try again')
-      globalErrorState.setIsVisible(true)
+      PubSub.publish('OPEN_ALERT', {
+        type: 'error',
+        msg: 'oops, error deleting review, try again'
+      })
     }
   }
-
-  useEffect(() => {
-    if (state.type === 'success') return
-    if (
-      state.type === 'request' &&
-      state.answer === 'yes' &&
-      state.id === _id
-    ) {
-      deleteReviewMethod()
-    } else {
-      state.closeRequest()
-    }
-  }, [state.answer])
 
   const likeReview = async () => {
     if (session.status !== 'authenticated') return
@@ -156,9 +145,10 @@ export default function Review({
         if (req.status !== 200) throw new Error(req.data.error)
       }
     } catch (e) {
-      globalErrorState.setType('error')
-      globalErrorState.setText('error liking the review, try again')
-      globalErrorState.setIsVisible(true)
+      PubSub.publish('OPEN_ALERT', {
+        type: 'error',
+        msg: 'error liking the review, try again'
+      })
     }
   }
 
@@ -205,9 +195,10 @@ export default function Review({
     } catch (e) {
       setDislikesState([...dislikesState])
       setIsUserDisliked(false)
-      globalErrorState.setType('error')
-      globalErrorState.setText('error disliking the review, try again')
-      globalErrorState.setIsVisible(true)
+      PubSub.publish('OPEN_ALERT', {
+        type: 'error',
+        msg: 'error liking the review, try again'
+      })
     }
   }
 

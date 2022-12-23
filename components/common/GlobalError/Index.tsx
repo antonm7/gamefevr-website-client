@@ -1,47 +1,48 @@
-import { useEffect, useState } from 'react'
-import { useGlobalError } from '../../../store'
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+import { useState } from 'react'
 import Error from './Error'
 import Request from './Request'
 import Sucssess from './Sucssess'
 import Warning from './Warning'
+import PubSub from 'pubsub-js'
+import { OPEN_ALERT_TYPE } from '../../../types'
 
-interface Props {
-  isVisible: boolean
-  propsType: 'error' | 'warning' | 'request' | 'success' | undefined
-}
-
-
-export default function GlobalError({ isVisible, propsType }: Props) {
+export default function GlobalError() {
   const [visibility, setVisibility] = useState(false)
-  const [type, setType] = useState(propsType)
-  const changeGlobalErrorVisibility = useGlobalError(
-    (store) => store.setIsVisible
-  )
-  const text = useGlobalError((store) => store.text)
+  const [type, setType] = useState<'error' | 'warning' | 'request' | 'success' | null>(null)
+  const [msg, setMsg] = useState<string>('')
+  const [requestOwner, setRequestOwner] = useState<string>('')
 
-  useEffect(() => {
-    if (isVisible) {
-      setType(propsType)
-      setVisibility(true)
-      if (propsType !== 'request') {
-        setTimeout(() => {
-          setVisibility(false)
-          changeGlobalErrorVisibility(false)
-        }, 1350)
-      }
-    } else {
-      setVisibility(false)
-      changeGlobalErrorVisibility(false)
+  const OPEN_ALERT_FUNCTION = (data: any, objectData: OPEN_ALERT_TYPE): void => {
+    if (objectData.type === 'request') {
+      setRequestOwner(objectData.requestOwner!)
     }
-  }, [isVisible])
+    setType(objectData.type)
+    setVisibility(true)
+    setMsg(objectData.msg)
+    if (type !== 'request') {
+      setTimeout(() => {
+        setVisibility(false)
+      }, 1350)
+    }
+    PubSub.unsubscribe(openToken)
+  }
 
-  if (type === 'error') return <Error close={() => setVisibility(false)} visibility={visibility} text={text} />
+  const CLOSE_ALERT_FUNCTION = (): void => {
+    setVisibility(false)
+    PubSub.unsubscribe(closeToken)
+  }
 
-  if (type === 'warning') return <Warning close={() => setVisibility(false)} visibility={visibility} text={text} />
+  const openToken = PubSub.subscribe('OPEN_ALERT', OPEN_ALERT_FUNCTION)
+  const closeToken = PubSub.subscribe('CLOSE_ALERT', CLOSE_ALERT_FUNCTION)
 
-  if (type === 'request') return <Request visibility={visibility} text={text} />
+  if (type === 'error') return <Error close={() => setVisibility(false)} visibility={visibility} text={msg} />
 
-  if (type === 'success') return <Sucssess close={() => setVisibility(false)} visibility={visibility} text={text} />
+  if (type === 'warning') return <Warning close={() => setVisibility(false)} visibility={visibility} text={msg} />
+
+  if (type === 'request') return <Request owner={requestOwner} visibility={visibility} text={msg} />
+
+  if (type === 'success') return <Sucssess close={() => setVisibility(false)} visibility={visibility} text={msg} />
 
   return null
 }

@@ -4,7 +4,7 @@ import SearchButton from '../../components/common/SearchButton'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import axios from 'axios'
-import { useGlobalError, useStore } from '../../store'
+import { useStore } from '../../store'
 import Filters from '../../components/Filters'
 import SmallLoader from '../../components/common/SmallLoader'
 import { ShortGame } from '../../types'
@@ -26,10 +26,6 @@ interface Props {
 export default function Index(props: Props) {
   const [loadMoreLoading, setLoadMoreLoading] = useState<boolean>(true)
   const [nextPage, setNextPage] = useState<boolean>(props.nextPage)
-  const changeGlobalErrorVisibility = useGlobalError(
-    (store) => store.setIsVisible
-  )
-  const changeGlobalErrorType = useGlobalError((store) => store.setType)
   //2 types of errors
   const [loadingError, setLoadingError] = useState<boolean>(false)
   const [noResults, setNoResults] = useState<boolean>(false)
@@ -62,9 +58,11 @@ export default function Index(props: Props) {
       }
       setLoadMoreLoading(false)
     } catch (e) {
+      PubSub.publish('OPEN_ALERT', {
+        type: 'error',
+        msg: ''
+      })
       setLoadMoreLoading(false)
-      changeGlobalErrorVisibility(true)
-      changeGlobalErrorType('error')
     }
   }
 

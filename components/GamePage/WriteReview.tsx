@@ -5,7 +5,6 @@ import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import TextareaAutosize from 'react-textarea-autosize'
-import { useGlobalError } from '../../store'
 import { Review_Type } from '../../types/schema'
 
 interface Props {
@@ -25,11 +24,6 @@ export default function WriteReview({
   const [rank, setRank] = useState<string | null>(null)
   const session = useSession()
   const router = useRouter()
-  const changeGlobalErrorVisibility = useGlobalError(
-    (state) => state.setIsVisible
-  )
-  const changeGlobalErrorType = useGlobalError((state) => state.setType)
-  const changeText = useGlobalError((state) => state.setText)
 
   const writeReviewAction = async (): Promise<void> => {
     try {
@@ -61,19 +55,20 @@ export default function WriteReview({
       ) {
         throw new Error(writeReviewRequest.data.error)
       } else {
-        changeText('Successfully created your review!')
-        changeGlobalErrorType('success')
-        changeGlobalErrorVisibility(true)
+        PubSub.publish('OPEN_ALERT', {
+          type: 'success',
+          msg: `Successfully created your review!`
+        })
         setText('')
         setRank(null)
         onClose()
         insertNewReview(writeReviewRequest.data.review)
       }
-
     } catch (e) {
-      changeText('Error posting the review, try again')
-      changeGlobalErrorType('error')
-      changeGlobalErrorVisibility(true)
+      PubSub.publish('OPEN_ALERT', {
+        type: 'error',
+        msg: `error posting the review, try again`
+      })
     }
   }
 
