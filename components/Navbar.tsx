@@ -29,7 +29,6 @@ export default function Navbar() {
     router.push('/')
     signOut()
   }
-
   const DynamicSession = () => {
     if (auth) {
       if (router.pathname === '/profile/[id]' && JSON.stringify(router.query.id) == JSON.stringify(session.data?.user.userId)) {
