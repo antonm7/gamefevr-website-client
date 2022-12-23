@@ -8,12 +8,11 @@ import SearchLayout from '../../components/layout/SearchLayout'
 import StyledInput from '../../components/Register/StyledInput'
 import clientPromise from '../../lib/functions/mongodb'
 
-// TODO:manage the loading state here
 const resetPassword: NextPage = () => {
   const [password, setPassword] = useState<string>('')
   const [newPassword, setNewPassword] = useState<string>('')
 
-  const [loading, setLoading] = useState<boolean>(false)
+  const [loading] = useState<boolean>(false)
   const [error, setError] = useState<string>('')
   const [completed, setCompleted] = useState<boolean>(false)
 
@@ -25,8 +24,7 @@ const resetPassword: NextPage = () => {
       const passw = /^[A-Za-z]\w{7,16}$/
       if (!password.match(passw)) return setError('Please enter valid password')
 
-      if (password !== newPassword)
-        return setError('Confirm password is not the same')
+      if (password !== newPassword) return setError('Confirm password is not the same')
 
       const req = await axios.post('/api/user/settings/confirmResetPassword', {
         newPassword,
@@ -41,6 +39,7 @@ const resetPassword: NextPage = () => {
           setTimeout(() => {
             router.push('/register/login')
           }, 1500)
+          setError('')
           setCompleted(true)
         }
       }
