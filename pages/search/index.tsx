@@ -1,4 +1,4 @@
-import SearchLayout from '../../components/layout/SearchLayout'
+import SearchLayout from '../../components/layout'
 import SmallGameBox from '../../components/SmallGameBox'
 import SearchButton from '../../components/common/SearchButton'
 import { useEffect, useState } from 'react'

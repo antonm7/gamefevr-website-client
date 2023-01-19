@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import SearchLayout from '../../components/layout/SearchLayout'
+import SearchLayout from '../../components/layout'
 import { ShortGame } from '../../types'
 import { genres, parentConsoles } from '../../lib/staticData'
 import getRandomInt from '../../lib/functions/generateRandom'

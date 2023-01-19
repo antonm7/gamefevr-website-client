@@ -4,7 +4,7 @@ import { NextPage } from 'next/types'
 import { useState } from 'react'
 import SmallLoader from '../../components/common/SmallLoader'
 import YellowButton from '../../components/common/YellowButton'
-import SearchLayout from '../../components/layout/SearchLayout'
+import SearchLayout from '../../components/layout'
 import StyledInput from '../../components/Register/StyledInput'
 import clientPromise from '../../lib/functions/mongodb'
 
