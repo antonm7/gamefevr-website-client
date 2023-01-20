@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { genres } from "../../lib/staticData";
 import SelectBox from "../common/SelectBox";
+import styles from './index.module.scss';
 
 type Props = {
     updateSelectedGenres: (value: string[]) => void
@@ -24,7 +25,7 @@ export default function Genres({ updateSelectedGenres }: Props) {
     }, [selectedGenres])
 
     return (
-        <div className='flex flex-wrap justify-center bg-white px-20 py-12 h-auto w-full max-w-full'>
+        <div className={`${styles.container_padding} filters-column-shadow rounded-md flex flex-wrap justify-center bg-white px-20 py-12 h-auto w-full max-w-full`}>
             {genres.map(e => <SelectBox isSelected={selectedGenres.includes(e.id)}
                 onClick={() => updateGenres(e.id)}
                 key={e.id}

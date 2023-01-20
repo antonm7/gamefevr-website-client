@@ -8,7 +8,7 @@ import { setCookie } from 'cookies-next'
 import RangeContainer from './RangeContainer'
 import Consoles from './Consoles'
 import Genres from './Genres'
-
+import styles from './index.module.scss'
 
 export default function Filters() {
   const [yearRange, changeYearRange] = useState<number[]>([1990, 2023])
@@ -67,20 +67,20 @@ export default function Filters() {
       <div id="filters-bg"></div>
       <FontAwesomeIcon
         icon={faXmark}
-        className="h-8 float-right cursor-pointer"
+        className="h-8 float-right cursor-pointer absolute right-8"
         onClick={() => store.changeFilterVisibility(false)}
       />
       <div>
-        <h1 className='text-black font-extrabold text-4xl text-center pb-9'>Genres</h1>
+        <h1 className='text-black font-bold text-4xl text-center pb-9'>Genres</h1>
         {MemoizedGenres}
       </div>
-      <div className='flex pt-20'>
-        <div className='w-2/4 mr-7'>
-          <h1 className='text-black font-extrabold text-4xl text-center pb-9'>Consoles</h1>
+      <div className='flex pt-20' id={styles.second_row_container}>
+        <div className={`${styles.white_box} w-2/4 mr-7`}>
+          <h1 className='text-black font-bold text-4xl text-center pb-9'>Consoles</h1>
           {MemoizedConsoles}
         </div>
-        <div className='w-2/4 ml-7'>
-          <h1 className="text-3xl font-semibold text-center pb-9">
+        <div className={`${styles.white_box} w-2/4 mr-7`} id={styles.release_box}>
+          <h1 className="text-4xl font-semibold text-center pb-9">
             Release Date
           </h1>
           {MemoizedRangeContainer}

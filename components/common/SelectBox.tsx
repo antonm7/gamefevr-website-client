@@ -24,7 +24,7 @@ export default function SelectBox({
     >
       <p
         className={`${isSelected ? 'text-white' : 'text-text-gray'
-          } text-base font-extralight`}
+          } text-base whitespace-nowrap font-extralight`}
       >
         {title}
       </p>

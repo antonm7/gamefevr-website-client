@@ -1,7 +1,9 @@
-import 'tailwindcss/tailwind.css'
-import '../styles/global.css'
+import '../styles/index.css'
+import '../styles/global.scss'
 import '../styles/responsive.scss'
-import '../styles/animation.css'
+import '../styles/animation.scss'
+import 'tailwindcss/tailwind.css'
+
 import { setCookie } from 'cookies-next'
 import { SessionProvider } from 'next-auth/react'
 import { useEffect } from 'react'

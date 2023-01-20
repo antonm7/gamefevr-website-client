@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useReducer, useRef, useState } from 'react'
 import SearchLayout from '../../components/layout'
 import { DetailedGame, ShortGame } from '../../types'
 import useWindowSize from '../../lib/functions/hooks/useWindowSize'
@@ -20,9 +20,76 @@ import axios from 'axios'
 import Lower1200Footer from '../../components/GamePage/Responsive/lower1200Footer'
 import Bigger1200Footer from '../../components/GamePage/Responsive/Bigger1200Footer'
 import SameSeries from '../../components/GamePage/SameSeries'
+import { faL } from '@fortawesome/free-solid-svg-icons'
 
 type Props = {
   game: DetailedGame
+}
+
+type Animation_State = {
+  screenshotsAnimation: boolean
+  reviewsAnimation: boolean
+}
+
+type Animation_Action = {
+  type: 'screenshots' | 'reviews' | 'none',
+  value: boolean
+}
+
+type Loaders_State = {
+  globalLoading: boolean
+  reviewsLoading: boolean
+}
+
+
+type Loaders_Action = {
+  type: 'global' | 'reviews' | 'none' | 'all',
+  value: boolean
+}
+
+
+
+const animationReducer = (state: Animation_State, action: Animation_Action) => {
+  switch (action.type) {
+    case 'screenshots': {
+      return { screenshotsAnimation: action.value, reviewsAnimation: state.reviewsAnimation }
+    }
+    case 'reviews': {
+      return { screenshotsAnimation: state.screenshotsAnimation, reviewsAnimation: action.value }
+    }
+    case 'none': {
+      return { ...state }
+    }
+  }
+}
+
+const loadersReducer = (state: Loaders_State, action: Loaders_Action) => {
+  switch (action.type) {
+    case 'global': {
+      return {
+        globalLoading: action.value,
+        reviewsLoading: state.reviewsLoading
+      }
+    }
+    case 'reviews': {
+      return {
+        globalLoading: state.globalLoading,
+        reviewsLoading: action.value
+      }
+    }
+    case 'none': {
+      return {
+        globalLoading: false,
+        reviewsLoading: false
+      }
+    }
+    case 'all': {
+      return {
+        globalLoading: true,
+        reviewsLoading: true
+      }
+    }
+  }
 }
 
 export default function GamePage(props: Props) {
@@ -31,14 +98,12 @@ export default function GamePage(props: Props) {
   const router = useRouter()
   const session = useSession()
   const [game, setGame] = useState<DetailedGame | null>(null)
-  const [screenshotsAnimtion, setScreenshotsAnimtion] = useState<boolean>(false)
-  const [reviewsAnimation, setReviewsAnimation] = useState<boolean>(false)
-  const [writeReviewVisibility, setWriteReviewVisibility] =
-    useState<boolean>(false)
+  const [writeReviewVisibility, setWriteReviewVisibility] = useState<boolean>(false)
   const [isUserRated, setIsUserRated] = useState<string | null>(null)
   const [reviews, setReviews] = useState<Review_Type[]>([])
-  const [loading, setLoading] = useState<boolean>(true)
-  const [reviewsLoading, setReviewsLoading] = useState<boolean>(true)
+  const [animations, setAnimations] = useReducer(animationReducer, { screenshotsAnimation: false, reviewsAnimation: false })
+  const [loaders, setLoaders] = useReducer(loadersReducer, { globalLoading: true, reviewsLoading: true })
+
   const sliderRef = useRef(null)
 
   const loadReviews = async () => {
@@ -53,15 +118,14 @@ export default function GamePage(props: Props) {
     } catch (e) {
       console.log('error loading game reviews', e)
     }
-    setReviewsLoading(false)
+    setLoaders({ type: 'reviews', value: false })
   }
 
   useEffect(() => {
-    setReviewsAnimation(false)
-    setScreenshotsAnimtion(false)
+    setAnimations({ type: 'none', value: false })
     setGame(props.game)
     loadReviews()
-    setLoading(false)
+    setLoaders({ type: 'none', value: false })
   }, [router.query.id, props.game])
 
   const navigateAuth = () => {
@@ -83,15 +147,15 @@ export default function GamePage(props: Props) {
   }
 
   const toggleAnimation = () => {
-    if (reviewsAnimation) {
-      setReviewsAnimation(false)
+    if (animations.reviewsAnimation) {
+      setAnimations({ type: 'reviews', value: false })
       setTimeout(() => {
-        setScreenshotsAnimtion(false)
+        setAnimations({ type: 'screenshots', value: false })
       }, 450)
     } else {
-      setScreenshotsAnimtion(true)
+      setAnimations({ type: 'screenshots', value: true })
       setTimeout(() => {
-        setReviewsAnimation(true)
+        setAnimations({ type: 'reviews', value: true })
       }, 450)
     }
   }
@@ -107,7 +171,7 @@ export default function GamePage(props: Props) {
 
   const loadAgain = async (): Promise<void> => {
     try {
-      setLoading(true)
+      setLoaders({ type: 'global', value: true })
       const req = await axios.get(
         `/api/game/get/getGame?gameId=${router.query.id}`
       )
@@ -120,12 +184,12 @@ export default function GamePage(props: Props) {
     } catch (e) {
       setGame(null)
     }
-    setLoading(false)
+    setLoaders({ type: 'global', value: false })
   }
 
   return (
     <SearchLayout>
-      {loading ? (
+      {loaders.globalLoading ? (
         <SmallLoader screenCentered={true} />
       ) : !game ? (
         <ErrorComponent onLoad={() => loadAgain()} />
@@ -165,15 +229,15 @@ export default function GamePage(props: Props) {
               <Bigger1200Footer
                 screenshots={game.screenshots.results}
                 reviews={reviews}
-                reviewsAnimation={reviewsAnimation}
-                screenshotsAnimation={screenshotsAnimtion}
+                reviewsAnimation={animations.reviewsAnimation}
+                screenshotsAnimation={animations.screenshotsAnimation}
                 sliderRef={sliderRef}
                 deleteReview={(id) => deleteReview(id)}
                 navigateAuth={() => navigateAuth()}
               />
             ) : (
               <Lower1200Footer
-                reviewsLoading={reviewsLoading}
+                reviewsLoading={loaders.reviewsLoading}
                 screenshots={game.screenshots.results}
                 navigateAuth={() => navigateAuth()}
                 deleteReview={(id) => deleteReview(id)}
@@ -182,9 +246,9 @@ export default function GamePage(props: Props) {
               />
             )}
             <FooterButtons
-              reviewsLoading={reviewsLoading}
+              reviewsLoading={loaders.reviewsLoading}
               screenshots={game.screenshots}
-              reviewsAnimation={reviewsAnimation}
+              reviewsAnimation={animations.reviewsAnimation}
               toggleAnimation={toggleAnimation}
             />
           </div>
