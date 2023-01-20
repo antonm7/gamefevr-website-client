@@ -1,4 +1,21 @@
-#menu-text {
+@import './global.scss';
+
+.responsive_wrapper {
+  padding-left: 11rem;
+  padding-right: 11rem;
+
+  @include for-size(mid-desktop) {
+    padding-left: 5rem;
+    padding-right: 5rem;
+  }
+
+  @include for-size(tablet-portrait) {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+/* #menu-text {
   display: none;
   padding-right: 2rem;
 }
@@ -528,14 +545,6 @@
     top: 2rem;
   }
 
-  /* #global_error div {
-    overflow: initial;
-    max-width: 100%;
-    height: auto;
-    line-break: anywhere;
-    white-space: normal;
-  } */
-
   #error_icon {
     display: none;
   }
@@ -809,12 +818,5 @@
   .styled-input {
     max-width: 100% !important;
     width: 100% !important;
-  }
-}
-
-/* @media (max-height: 700px) and (max-width: 700px) {
-  #search-title {
-    font-size: 3rem !important;
-    line-height: 3rem;
   }
 } */

@@ -1,6 +1,6 @@
 import 'tailwindcss/tailwind.css'
 import '../styles/global.css'
-import '../styles/responsive.css'
+import '../styles/responsive.scss'
 import '../styles/animation.css'
 import { setCookie } from 'cookies-next'
 import { SessionProvider } from 'next-auth/react'

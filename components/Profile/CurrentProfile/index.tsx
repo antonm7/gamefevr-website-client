@@ -77,7 +77,7 @@ export default function CurrentProfile({
 
     return (
         <SearchLayout>
-            <main className={`px-44 py-10 `} id="profile_page">
+            <main className='py-10 responsive_wrapper'>
                 {store.isFilterOn ? <Filters /> : null}
                 <SettingsBar
                     onUsernameChange={(name) => setUsername(name)}
@@ -89,6 +89,6 @@ export default function CurrentProfile({
                 <ReviewsSlider visited={false} reviews={reviewsState} deleteReview={(id) => deleteReview(id)} />
                 <FavoritesSlider visited={false} favorites={favoritesState} deleteFavorite={(id) => deleteFavorite(id)} />
             </main>
-        </SearchLayout>
+        </SearchLayout >
     )
 }
