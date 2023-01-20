@@ -10,7 +10,7 @@ import { useFiltersStore, useStore } from '../../store'
 import { NamedGame } from '../../types'
 import FiltersAppliedCount from './FiltersAppliedCount'
 
-export default function SmallSearchInput() {
+export default function SmallSearchInput({ full }: { full: boolean }) {
   const [search, setSearch] = useState<string>('')
   const [games, setGames] = useState<NamedGame[]>([])
 
@@ -111,7 +111,7 @@ export default function SmallSearchInput() {
           value={search}
           autoSave="true"
           placeholder="Search..."
-          className="w-500 text-white text-xs placeholder-slate-400 outline-0 p-4 h-10 bg-main-blue rounded-lg"
+          className={`${full ? 'w-full h-50' : 'w-500 h-10'} text-white text-xs placeholder-slate-400 outline-0 p-4 bg-main-blue rounded-lg`}
           onChange={(e) => changeGameName(e.target.value)}
         />
       </div>
