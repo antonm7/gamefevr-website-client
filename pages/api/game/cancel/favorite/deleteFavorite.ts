@@ -4,18 +4,19 @@ import authorize from '../../../../../backend-middlewares/authorize'
 import GenerateError from '../../../../../backend-middlewares/generateErrorBackend'
 import clientPromise from '../../../../../lib/functions/mongodb'
 
+type Body = {
+  userId: string
+  gameId: string
+  favoriteId: string
+}
 interface ExtendedNextApiRequest extends NextApiRequest {
-  body: {
-    userId: string
-    gameId: string
-    favoriteId: string
-  }
+  body: Body
 }
 
 async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
     let db = null
-    const query = req.body
+    const { body }: any = req.body
     //initializing database
     try {
       const client = await clientPromise
@@ -28,7 +29,7 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
     try {
       await db
         .collection('favorites')
-        .deleteOne({ _id: new ObjectId(query.favoriteId) })
+        .deleteOne({ _id: new ObjectId(body.favoriteId) })
     } catch (e) {
       await GenerateError({
         error:
@@ -44,8 +45,8 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
       await db
         .collection('users')
         .updateOne(
-          { _id: new ObjectId(query.userId) },
-          { $pull: { favorites: new ObjectId(query.favoriteId) } }
+          { _id: new ObjectId(body.userId) },
+          { $pull: { favorites: new ObjectId(body.favoriteId) } }
         )
     } catch (e) {
       await GenerateError({
@@ -60,7 +61,7 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
     //updates game data document
     try {
       await db.collection('games_data').updateOne(
-        { gameId: query.gameId },
+        { gameId: body.gameId },
         {
           $inc: { favorites: -1 },
         }

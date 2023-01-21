@@ -2,7 +2,7 @@ import useWindowSize from '../../../lib/functions/hooks/useWindowSize'
 import { Short_Screenshot } from '../../../types'
 import YellowButton from '../../common/YellowButton'
 
-interface Props {
+type Props = {
   screenshots: { results: Short_Screenshot[] }
   reviewsAnimation: boolean
   reviewsLoading: boolean

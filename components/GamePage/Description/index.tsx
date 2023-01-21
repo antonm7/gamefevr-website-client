@@ -1,5 +1,6 @@
 import { memo } from 'react'
-interface Props {
+
+type Props = {
   desc: string
 }
 

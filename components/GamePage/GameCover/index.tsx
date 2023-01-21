@@ -3,7 +3,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { memo } from 'react'
 
-interface Props {
+type Props = {
   game: ShortGame
 }
 

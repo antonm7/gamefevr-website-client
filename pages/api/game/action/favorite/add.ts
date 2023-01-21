@@ -20,6 +20,7 @@ const handler = async (req: ExtendedNextApiRequest, res: NextApiResponse) => {
   if (req.method === 'POST') {
     let db = null
     let savedFavorite
+    const { body }: any = req.body
     //initializing database
     try {
       const client = await clientPromise
@@ -30,7 +31,7 @@ const handler = async (req: ExtendedNextApiRequest, res: NextApiResponse) => {
     }
     //checks if game document exists
     try {
-      await games_data_document(req.body.gameId)
+      await games_data_document(body.gameId)
     } catch (e) {
       await GenerateError({
         error: 'error on games_data_document on add/action favorite api',
@@ -42,7 +43,7 @@ const handler = async (req: ExtendedNextApiRequest, res: NextApiResponse) => {
     }
     //checking if user already added this game to favorites
     try {
-      const is_already_favorite = await db.collection('favorites').findOne({ userId: req.body.userId, gameId: req.body.gameId })
+      const is_already_favorite = await db.collection('favorites').findOne({ userId: body.userId, gameId: body.gameId })
       if (is_already_favorite) {
         throw new Error('You already saved this game')
       }
@@ -53,13 +54,13 @@ const handler = async (req: ExtendedNextApiRequest, res: NextApiResponse) => {
     //saves the favorite inside own favorites collection
     try {
       const getData = await axios.get(
-        `https://api.rawg.io/api/games/${req.body.gameId}?key=39a2bd3750804b5a82669025ed9986a8`
+        `https://api.rawg.io/api/games/${body.gameId}?key=39a2bd3750804b5a82669025ed9986a8`
       )
       const gameData = getData.data
 
       const favorite: Favorite_Type = {
-        userId: req.body.userId,
-        gameId: req.body.gameId,
+        userId: body.userId,
+        gameId: body.gameId,
         created_at: generateTime(new Date()),
         game_name: gameData.name,
         game_image: gameData.background_image,
@@ -80,7 +81,7 @@ const handler = async (req: ExtendedNextApiRequest, res: NextApiResponse) => {
       await db
         .collection('users')
         .updateOne(
-          { _id: new ObjectId(req.body.userId) },
+          { _id: new ObjectId(body.userId) },
           { $push: { favorites: savedFavorite?.insertedId } }
         )
     } catch (e) {
@@ -96,7 +97,7 @@ const handler = async (req: ExtendedNextApiRequest, res: NextApiResponse) => {
     try {
       await db
         .collection('games_data')
-        .updateOne({ gameId: req.body.gameId }, { $inc: { favorites: 1 } })
+        .updateOne({ gameId: body.gameId }, { $inc: { favorites: 1 } })
     } catch (e) {
       await GenerateError({
         error: 'error on updating user ranks field on add/action favorite api',
@@ -109,7 +110,7 @@ const handler = async (req: ExtendedNextApiRequest, res: NextApiResponse) => {
     try {
       const update_hype = await updateHype(
         'addToFavorite',
-        new ObjectId(req.body.userId)
+        new ObjectId(body.userId)
       )
 
       if (update_hype.ok) {

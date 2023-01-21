@@ -3,7 +3,6 @@ import '../styles/global.scss'
 import '../styles/responsive.scss'
 import '../styles/animation.scss'
 import 'tailwindcss/tailwind.css'
-
 import { setCookie } from 'cookies-next'
 import { SessionProvider } from 'next-auth/react'
 import { useEffect } from 'react'

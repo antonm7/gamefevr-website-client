@@ -1,8 +1,8 @@
 import { faSliders } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import axios from 'axios'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
+import { wretchWrapper } from '../../lib/functions/fetchLogic'
 import { useStore } from '../../store'
 import { NamedGame } from '../../types'
 import FiltersAppliedCount from './FiltersAppliedCount'
@@ -14,8 +14,8 @@ export default function SearchInput() {
 
   const fetchData = async (name: string): Promise<void> => {
     try {
-      const getData = await axios.get(`/api/query/name?search=${name}`)
-      const games: NamedGame[] = getData.data.games
+      const fetchNameData: any = await wretchWrapper(`/api/query/name?search=${name}`, 'fetchNameData')
+      const games: NamedGame[] = fetchNameData.games
       setGames(games)
     } catch (e) {
       PubSub.publish('OPEN_ALERT', {
@@ -39,7 +39,7 @@ export default function SearchInput() {
   }, [searchTerm])
 
   return (
-    <div>
+    <>
       <div className="flex items-center relative overflow-hidden">
         <div className="absolute h-full w-1 rounded-tl-xl rounded-bl-xl bg-specialYellow"></div>
         <FontAwesomeIcon
@@ -79,6 +79,6 @@ export default function SearchInput() {
           ))}
         </div>
       ) : null}
-    </div>
+    </>
   )
 }

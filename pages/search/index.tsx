@@ -3,7 +3,6 @@ import SmallGameBox from '../../components/SmallGameBox'
 import SearchButton from '../../components/common/SearchButton'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import axios from 'axios'
 import { useStore } from '../../store'
 import Filters from '../../components/Filters'
 import SmallLoader from '../../components/common/SmallLoader'
@@ -17,7 +16,7 @@ import clientPromise from '../../lib/functions/mongodb'
 import { ObjectId } from 'bson'
 import { wretchWrapper } from '../../lib/functions/fetchLogic'
 
-interface Props {
+type Props = {
   games: ShortGame[]
   count: number
   error: string | null
@@ -31,31 +30,27 @@ export default function Index(props: Props) {
   const [loadingError, setLoadingError] = useState<boolean>(false)
   const [noResults, setNoResults] = useState<boolean>(false)
   const [showLoadMoreButton, setShowLoadMoreButton] = useState<boolean>(true)
-
   const router = useRouter()
   const store = useStore()
 
-  const loadMoreGames = async (cur: number) => {
+  const loadMoreGames = async () => {
     if (loadingError) {
       setLoadingError(false)
     }
     try {
       setNoResults(false)
       setLoadMoreLoading(true)
-      const getData = await axios.post('/api/query/search', {
-        page: cur,
-        query: router.query,
-      })
-      if (getData.data.games.length === 0) {
+      const fetchMoreGames: any = await wretchWrapper('/api/query/search', 'fetchMoreGames')
+      if (fetchMoreGames.length === 0) {
         //if there no games from server, dont update the games state
         //and remove the loadMore button
         setShowLoadMoreButton(false)
       } else {
         setShowLoadMoreButton(true)
         store.addPage()
-        store.addGames(getData.data.games)
-        setNextPage(getData.data.nextPage)
-        store.setCount(getData.data.count)
+        store.addGames(fetchMoreGames.games)
+        setNextPage(fetchMoreGames.nextPage)
+        store.setCount(fetchMoreGames.count)
       }
       setLoadMoreLoading(false)
     } catch (e) {
@@ -73,33 +68,26 @@ export default function Index(props: Props) {
     setShowLoadMoreButton(true)
     setNextPage(true)
 
-    if (props.error) {
-      setLoadingError(true)
-      return
-    }
+    if (props.error) return setLoadingError(true)
 
     if (!store.games.length && !props.games.length) {
       setLoadMoreLoading(true)
-      loadMoreGames(1)
+      loadMoreGames()
       return
     }
 
     if (!props.games.length && !props.error) return
 
-    if (props.error) {
-      setLoadingError(true)
-      return
-    }
+    if (props.error) return setLoadingError(true)
 
     if (!props.games.length) {
       setNoResults(true)
-      return
+    } else {
+      store.clearGames()
+      store.addPage()
+      store.addGames(props.games)
+      store.setCount(props.count)
     }
-
-    store.clearGames()
-    store.addPage()
-    store.addGames(props.games)
-    store.setCount(props.count)
   }
 
   useEffect(() => {
@@ -132,7 +120,7 @@ export default function Index(props: Props) {
               mainTitle={'Unexpected Error'}
               description={'Oops...something went wrong'}
               button={true}
-              onClick={() => loadMoreGames(1)}
+              onClick={() => loadMoreGames()}
             />
           </div>
         ) : noResults ? (
@@ -146,17 +134,15 @@ export default function Index(props: Props) {
           <div className="py-10">
             {!loadMoreLoading ? (
               <div
-                id="we_found_title_wrapper"
                 className="flex justify-between items-center"
               >
                 <p
-                  id="we_found_title"
-                  className="we_found_padding font-bold text-white text-4xl px-44 pb-10"
+                  className="font-bold text-white text-4xl px-44 pb-10"
                 >
                   We found {store.count.toLocaleString()} games for you
                 </p>
                 <div
-                  className={`we_found_padding h-full px-44 pb-10 text-white ${router.query.sort ? 'underline' : ''
+                  className={`h-full px-44 pb-10 text-white ${router.query.sort ? 'underline' : ''
                     }`}
                 >
                   <span className="opacity-60">Sort by:</span>{' '}
@@ -170,7 +156,6 @@ export default function Index(props: Props) {
               </div>
             ) : null}
             <div
-              id="games_wrapper"
               className="flex flex-wrap justify-center px-40 "
             >
               {store.games.map((game: ShortGame, index: number) => (
@@ -185,7 +170,7 @@ export default function Index(props: Props) {
                   ) : showLoadMoreButton ? (
                     <SearchButton
                       text="Load More"
-                      onClick={() => loadMoreGames(store.page)}
+                      onClick={() => loadMoreGames()}
                     />
                   ) : null}
                 </div>
@@ -200,11 +185,11 @@ export default function Index(props: Props) {
   )
 }
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
-  function parseCookies(req: any) {
-    return cookie.parse(req ? req.headers.cookie || '' : document.cookie)
-  }
+function parseCookies(req: any) {
+  return cookie.parse(req ? req.headers.cookie || '' : document.cookie)
+}
 
+export async function getServerSideProps(context: GetServerSidePropsContext) {
   const cookies = parseCookies(context.req)
   if (cookies.prevRoute === '/game/[id]') {
     return {
@@ -230,7 +215,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     }
   }
 
-  console.log('started')
   if (yearRange || genres || consoles || search || sort) {
     if (search) {
       filteredString += `&search=${search}&`
@@ -350,7 +334,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       }
 
       try {
-        const fetchGamesWithFilters = await wretchWrapper(`https://api.rawg.io/api/games?key=39a2bd3750804b5a82669025ed9986a8&dates=1990-01-01,2023-12-31&page=1&page_size=28${filteredString}`, 'fetchGamesWithFilters')
+        const fetchGamesWithFilters: any = await wretchWrapper(`https://api.rawg.io/api/games?key=39a2bd3750804b5a82669025ed9986a8&dates=1990-01-01,2023-12-31&page=1&page_size=28${filteredString}`, 'fetchGamesWithFilters')
 
         return {
           props: {
@@ -373,7 +357,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     // No filters applied path
     try {
 
-      const fetchGamesWithoutFilters = await wretchWrapper(`https://api.rawg.io/api/games?key=39a2bd3750804b5a82669025ed9986a8&dates=1990-01-01,2023-12-31&page=1&page_size=28`, 'fetchGamesWithoutFilters')
+      const fetchGamesWithoutFilters: any = await wretchWrapper(`https://api.rawg.io/api/games?key=39a2bd3750804b5a82669025ed9986a8&dates=1990-01-01,2023-12-31&page=1&page_size=28`, 'fetchGamesWithoutFilters')
       return {
         props: {
           games: fetchGamesWithoutFilters.results,

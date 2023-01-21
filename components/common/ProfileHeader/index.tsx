@@ -13,13 +13,10 @@ type Props = {
 
 export default function ProfileHeader({ isHyped, visited, username, hype, changeVisibleSettings }: Props) {
     return (
-        <div
-            id="profile_header"
-            className="flex justify-between items-center"
-        >
-            <div id="profile_header_container" className="flex flex-wrap-reverse">
+        <div className="flex justify-between items-center">
+            <div className="flex flex-wrap-reverse">
                 {!isHyped && visited ? <HypeUser /> : null}
-                <h1 id="profile_header_name" className="flex text-white font-bold whitespace-pre-wrap text-4xl">
+                <h1 className="flex text-white font-bold whitespace-pre-wrap text-4xl">
                     {visited ? `Welcome to ${username}` : `Welcome ${username}`}
                 </h1>
                 {visited ? <div className="flex items-center">
@@ -28,7 +25,6 @@ export default function ProfileHeader({ isHyped, visited, username, hype, change
             </div>
             <div>
                 {visited ? null : <div
-                    id="account_settings"
                     className="flex items-center"
                     onClick={() => changeVisibleSettings(true)}
                 >

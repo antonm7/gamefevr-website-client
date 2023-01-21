@@ -4,7 +4,7 @@ import { useState } from 'react'
 import useFiltersCount from '../../lib/functions/hooks/useFiltersCount'
 import { useFiltersStore } from '../../store'
 
-interface Props {
+type Props = {
   bigInput?: boolean
 }
 
@@ -19,11 +19,11 @@ export default function FiltersAppliedCount({ bigInput }: Props) {
         onMouseEnter={() => setHover(true)}
         onMouseLeave={() => setHover(false)}
         className={`
-                cursor-pointer flex 
-                justify-center items-center ${bigInput ? 'right-12' : 'right-16'
+            cursor-pointer flex 
+            justify-center items-center ${bigInput ? 'right-12' : 'right-16'
           }
-                absolute bg-cool-blue w-5 h-5 rounded-full 
-                overflow-hidden `}
+            absolute bg-cool-blue w-5 h-5 rounded-full 
+            overflow-hidden `}
       >
         {hover ? (
           <FontAwesomeIcon

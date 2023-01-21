@@ -13,7 +13,6 @@ export default function SelectBox({
 }: Props) {
   return (
     <button
-      id="selectBox"
       onClick={onClick}
       className={`h-10 m-2 overflow-hidden border border-lighterBg px-6 flex flex-row items-center justify-center rounded-xl ${isSelected && !coolBlue
         ? 'bg-main-blue'

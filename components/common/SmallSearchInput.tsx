@@ -1,10 +1,10 @@
 import { faMagnifyingGlass, faSliders } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import axios from 'axios'
 import { setCookie } from 'cookies-next'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import { wretchWrapper } from '../../lib/functions/fetchLogic'
 import useWindowSize from '../../lib/functions/hooks/useWindowSize'
 import { useFiltersStore, useStore } from '../../store'
 import { NamedGame } from '../../types'
@@ -13,6 +13,7 @@ import FiltersAppliedCount from './FiltersAppliedCount'
 export default function SmallSearchInput({ full }: { full: boolean }) {
   const [search, setSearch] = useState<string>('')
   const [games, setGames] = useState<NamedGame[]>([])
+  const [width] = useWindowSize()
 
   const store = useStore()
   const router = useRouter()
@@ -25,7 +26,6 @@ export default function SmallSearchInput({ full }: { full: boolean }) {
 
   const navigate = (): void => {
     setCookie('prevRoute', '/')
-    console.log(filtersStore)
     if (store.gameName.length > 0) {
       router.push({
         pathname: '/search',
@@ -62,8 +62,8 @@ export default function SmallSearchInput({ full }: { full: boolean }) {
 
   const fetchData = async (name: string): Promise<void> => {
     try {
-      const getData = await axios.get(`/api/query/name?search=${name}`)
-      const games: NamedGame[] = getData.data.games
+      const getGameNameData: any = wretchWrapper(`/api/query/name?search=${name}`, 'getGameNameData')
+      const games: NamedGame[] = getGameNameData.games
       setGames(games)
     } catch (e) {
       PubSub.publish('OPEN_ALERT', {
@@ -91,11 +91,9 @@ export default function SmallSearchInput({ full }: { full: boolean }) {
     setGames([])
   }, [router])
 
-  const [width] = useWindowSize()
-
   return (
-    <div>
-      <div id="small_search_input" className="flex items-center relative">
+    <>
+      <div className="flex items-center relative">
         <FontAwesomeIcon
           onClick={() => store.changeFilterVisibility(true)}
           icon={faSliders}
@@ -108,7 +106,6 @@ export default function SmallSearchInput({ full }: { full: boolean }) {
         />
         <FiltersAppliedCount />
         <input
-          id="small_search_input_input"
           value={search}
           autoSave="true"
           placeholder="Search..."
@@ -118,7 +115,6 @@ export default function SmallSearchInput({ full }: { full: boolean }) {
       </div>
       {games.length > 0 ? (
         <div
-          id="small_search_input_game_box"
           style={{ minHeight: '7rem' }}
           className="absolute w-500 text-white placeholder-slate-400 outline-0 px-4 py-2 h-auto bg-inputBg rounded-lg mt-2 z-50"
         >
@@ -134,6 +130,6 @@ export default function SmallSearchInput({ full }: { full: boolean }) {
           ))}
         </div>
       ) : null}
-    </div>
+    </>
   )
 }

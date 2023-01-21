@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
-import axios from 'axios'
 import { useRouter } from 'next/router'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBookmark as regular } from '@fortawesome/free-regular-svg-icons'
 import { faBookmark as solid } from '@fortawesome/free-solid-svg-icons'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
+import { wretchAction, wretchWrapper } from '../../../lib/functions/fetchLogic'
 
 interface Props {
   gameId: number
@@ -30,27 +30,23 @@ export default function AddFavorite({ gameId }: Props) {
       //cancel favorite game
       if (isFavorite) {
         setIsFavorite(false)
-        const req = await axios.post(
-          '/api/game/cancel/favorite/deleteFavorite',
-          {
-            userId: session.data?.user?.userId,
-            gameId: gameId,
-            favoriteId: isFavorite,
-          }
-        )
-        if (req.status !== 200) throw new Error(req.data.error)
+        await wretchAction('/api/game/cancel/favorite/deleteFavorite', {
+          userId: session.data?.user?.userId,
+          gameId: gameId,
+          favoriteId: isFavorite,
+        })
       } else {
-        const response = await axios.post(`/api/game/action/favorite/add`, {
+        const addToFavoriteAction: any = await wretchAction(`/api/game/action/favorite/add`, {
           userId: session.data?.user?.userId,
           gameId: gameId,
         })
-        if (response.status === 200) {
-          setIsFavorite(response.data.favoriteId)
+
+        if (addToFavoriteAction) {
+          setIsFavorite(addToFavoriteAction.favoriteId)
           PubSub.publish('OPEN_ALERT', {
             type: 'success',
             msg: 'Added game to favorites'
           })
-
         } else {
           throw new Error('Unexpected error')
         }
@@ -67,17 +63,11 @@ export default function AddFavorite({ gameId }: Props) {
     if (session.status === 'authenticated') {
       const checkIsFavorite = async (): Promise<void> => {
         try {
-          const req = await axios.get(
-            `/api/game/get/getIsFavorite?userId=${session.data?.user?.userId}&gameId=${gameId}`
-          )
-          if (req.status === 200) {
-            if (!req.data.isFavorite) return setIsFavorite(false)
-            setIsFavorite(req.data.isFavorite)
-          } else {
-            throw new Error(req.data.error)
-          }
+          const fetchIsFavorite: any = await wretchWrapper(`/api/game/get/getIsFavorite?userId=${session.data?.user?.userId}&gameId=${gameId}`, 'fetchIsFavorite')
+          if (fetchIsFavorite.isFavorite) return setIsFavorite(false)
+          throw new Error('Unexpected Error')
         } catch (e) {
-          return
+          throw new Error('Unexpected Error')
         }
       }
       checkIsFavorite()
