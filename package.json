@@ -45,6 +45,7 @@
     "scss": "^0.2.4",
     "slick-carousel": "^1.8.1",
     "spinners-react": "^1.0.7",
+    "wretch": "^2.4.1",
     "zustand": "^3.7.1"
   },
   "devDependencies": {
