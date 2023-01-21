@@ -15,7 +15,7 @@ import { getSession } from 'next-auth/react'
 import { visited_years } from '../../types/schema'
 import clientPromise from '../../lib/functions/mongodb'
 import { ObjectId } from 'bson'
-import { promiseHandler, wretchWrapper } from '../../lib/functions/fetchLogic'
+import { wretchWrapper } from '../../lib/functions/fetchLogic'
 
 interface Props {
   games: ShortGame[]
