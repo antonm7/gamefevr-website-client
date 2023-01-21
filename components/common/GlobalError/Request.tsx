@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useEffect, useState } from 'react'
 import Spinner from '../Spinner'
 
-interface Props {
+type Props = {
   visibility: boolean
   text: string
   owner: string

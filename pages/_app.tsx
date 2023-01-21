@@ -18,11 +18,11 @@ import GlobalError from '../components/common/GlobalError/Index'
 import Menu from '../components/Menu'
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: any) {
-  const changeGameName = useStore((state) => state.changeGameName)
-  const filtersStore = useFiltersStore((state) => state)
-  const setIsAnimating = useProgressStore((state) => state.setIsAnimating)
-  const isAnimating = useProgressStore((state) => state.isAnimating)
-  const menuVisibility = useStore((state) => state.menuVisibility)
+  const changeGameName = useStore(state => state.changeGameName)
+  const filtersStore = useFiltersStore(state => state)
+  const setIsAnimating = useProgressStore(state => state.setIsAnimating)
+  const isAnimating = useProgressStore(state => state.isAnimating)
+  const menuVisibility = useStore(state => state.menuVisibility)
   const router: any = useRouter()
 
   useEffect(() => {
@@ -39,9 +39,6 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: any) {
     router.events.on('routeChangeError', handleStop)
 
     setCookie('prevRoute', router.pathname)
-
-    //follow any changes to the query, and update the store
-    //because the filters component takes data from the store and not the query
     return () => {
       router.events.off('routeChangeStart', handleStart)
       router.events.off('routeChangeComplete', handleStop)
@@ -87,8 +84,8 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: any) {
           return router.query.yearRange
         }
       }
-      filtersStore.setYearRange(updatedYears())
 
+      filtersStore.setYearRange(updatedYears())
       changeGameName(router.query.search ? router.query.search : '')
     }
   }, [router.query])

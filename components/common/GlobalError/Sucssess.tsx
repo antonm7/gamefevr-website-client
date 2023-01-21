@@ -1,8 +1,7 @@
 import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import PubSub from 'pubsub-js'
 
-interface Props {
+type Props = {
     visibility: boolean
     text: string
     close: () => void
@@ -10,12 +9,10 @@ interface Props {
 
 export default function Sucssess({ visibility, text, close }: Props) {
 
-
     if (!visibility) return null
 
     return (
         <div
-            id="global_error"
             className={`${visibility ? 'global_animation_enabled' : 'global_animation_disabled'
                 } fixed flex z-50 w-96 h-20 pl-4 rounded-lg rounded-r-none`}
             style={{ backgroundColor: '#faeeeb' }}

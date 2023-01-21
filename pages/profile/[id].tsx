@@ -70,7 +70,6 @@ export async function getServerSideProps(
     const db = client.db()
     let isHyped = false
 
-
     if (isVisited) {
       const userCollection: mongoDB.Collection = db.collection('users')
       user = await userCollection.findOne({
@@ -105,6 +104,8 @@ export async function getServerSideProps(
         .find({ userId: session?.user?.userId })
         .toArray()
     }
+
+    console.log(isHyped)
 
     return {
       props: {

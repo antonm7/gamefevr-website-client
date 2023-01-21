@@ -1,9 +1,9 @@
 import { faArrowUp } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import axios from "axios"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/router"
 import { useState } from "react"
+import { wretchAction } from "../../../lib/functions/fetchLogic"
 
 export default function HypeUser() {
     const router = useRouter()
@@ -20,19 +20,15 @@ export default function HypeUser() {
 
     const hypeUserMethod = async (): Promise<void> => {
         try {
-            const req = await axios.post('/api/user/action/hype', {
+            await wretchAction('/api/user/action/hsype', {
                 gets_hype: userId,
                 sends_hype: session.data?.user.userId
             })
-            if (req.status !== 201 && req.status !== 200) {
-                throw new Error()
-            } else {
-                setIsHyped(true)
-                PubSub.publish('OPEN_ALERT', {
-                    type: 'success',
-                    msg: `You hyped the user!`
-                })
-            }
+            setIsHyped(true)
+            PubSub.publish('OPEN_ALERT', {
+                type: 'success',
+                msg: `You hyped the user!`
+            })
         } catch (e) {
             PubSub.publish('OPEN_ALERT', {
                 type: 'error',

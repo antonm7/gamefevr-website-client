@@ -1,7 +1,6 @@
-import wretch, { WretchResponseChain } from 'wretch'
-import { DetailedGame } from '../../types'
+import wretch from 'wretch'
 
-export function wretchWrapper(url: string, request_name: string): any {
+export function wretchWrapper(url: string, request_name: string): Promise<unknown> {
     return wretch(url)
         .get()
         .badRequest(e => console.log('error on', request_name, e))
@@ -18,5 +17,15 @@ export function promiseHandler(results: any[]): any {
         const reason: string[] = errors.map((e) => e.reason)
         throw new AggregateError(reason)
     }
-    return results.map((result: PromiseFulfilledResult<any>) => result.value)
+    return results.map((result: PromiseFulfilledResult<unknown>) => result.value)
+}
+
+export function wretchAction(url: string, body: unknown): Promise<unknown> {
+    return wretch(url)
+        .post({ body })
+        .badRequest(e => { throw new Error() })
+        .notFound(e => { throw new Error() })
+        .unauthorized(e => { throw new Error() })
+        .internalError(e => { throw new Error() })
+        .res(response => response)
 }
