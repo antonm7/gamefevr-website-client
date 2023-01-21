@@ -51,10 +51,11 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: any) {
 
   useEffect(() => {
     if (router.pathname === '/search') {
-      //updateing consoles
-      const updatedConsoles = (): string[] => {
+      const updatedConsoles = (): number[] => {
         if (!router.query.consoles) {
           return []
+          // if the typeof is a string means there is only one console,
+          // because if it is several consoles then I need to push it differently to the store.
         } else if (typeof router.query.consoles === 'string') {
           return [router.query.consoles]
         } else {
@@ -64,7 +65,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: any) {
       filtersStore.setConsoles(updatedConsoles())
 
       //updating genres
-      const updatedGenres = (): string[] => {
+      const updatedGenres = (): number[] => {
         if (!router.query.genres) {
           return []
         } else if (typeof router.query.genres === 'string') {

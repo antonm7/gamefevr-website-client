@@ -12,8 +12,8 @@ import styles from './index.module.scss'
 
 export default function Filters() {
   const [yearRange, changeYearRange] = useState<number[]>([1990, 2023])
-  const [selectedGenres, changeSelectedGenres] = useState<string[]>([])
-  const [selectedConsoles, changeSelectedConsoles] = useState<string[]>([])
+  const [selectedGenres, changeSelectedGenres] = useState<number[]>([])
+  const [selectedConsoles, changeSelectedConsoles] = useState<number[]>([])
   const store = useStore()
   const filtersStore = useFiltersStore()
 
@@ -55,11 +55,11 @@ export default function Filters() {
   }, [])
 
   const MemoizedConsoles = useMemo(() => {
-    return <Consoles updateSelectedConsoles={(value: string[]) => changeSelectedConsoles(value)} />
+    return <Consoles updateSelectedConsoles={(value: number[]) => changeSelectedConsoles(value)} />
   }, [])
 
   const MemoizedGenres = useMemo(() => {
-    return <Genres updateSelectedGenres={(value: string[]) => changeSelectedGenres(value)} />
+    return <Genres updateSelectedGenres={(value: number[]) => changeSelectedGenres(value)} />
   }, [])
 
   return (

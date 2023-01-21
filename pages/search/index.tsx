@@ -15,6 +15,7 @@ import { getSession } from 'next-auth/react'
 import { visited_years } from '../../types/schema'
 import clientPromise from '../../lib/functions/mongodb'
 import { ObjectId } from 'bson'
+import { promiseHandler, wretchWrapper } from '../../lib/functions/fetchLogic'
 
 interface Props {
   games: ShortGame[]
@@ -205,7 +206,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   }
 
   const cookies = parseCookies(context.req)
-
   if (cookies.prevRoute === '/game/[id]') {
     return {
       props: {
@@ -213,171 +213,184 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       },
     }
   }
+
   const { yearRange, genres, consoles, search, sort } = context.query
 
   let filteredString = ''
-  let games = []
-  let count = 0
-
   const usedYears: visited_years[] = []
   const usedGenres = []
   const usedPlatforms = []
-
   const session = await getSession(context)
 
-  try {
-    if (yearRange || genres || consoles || search || sort) {
-      if (search) {
-        filteredString += `&search=${search}&`
-      }
-      if (yearRange) {
-        if (!Array.isArray(yearRange)) {
-          filteredString = filteredString.concat(
-            '',
-            `&dates=1990-01-01,2023-12-31`
-          )
-        } else {
-          filteredString = filteredString.concat(
-            '',
-            `&dates=${yearRange[0]}-01-01,${yearRange[1]}-12-31`
-          )
-          if (session) {
-            usedYears.push({ range_1: yearRange[0], range_2: yearRange[1] })
-          }
-        }
-      }
-      //simetimes from the client i get consoles as string, but i need an array
-      //thats why i am checkinf the type of the consoles
-      if (consoles) {
-        if (typeof consoles === 'string') {
-          filteredString = filteredString.concat(
-            `&parent_platforms=${parseInt(JSON.parse(consoles))}`
-          )
-          if (session) {
-            usedPlatforms.push(JSON.parse(consoles))
-          }
-        } else {
-          let consolesString = ''
-          for (const key in consoles) {
-            if (session) {
-              usedPlatforms.push(consoles[key])
-            }
-            if (parseInt(key) !== consoles.length - 1) {
-              consolesString = consolesString.concat(
-                `${parseInt(JSON.parse(consoles[key]))}`,
-                ','
-              )
-            } else {
-              consolesString = consolesString.concat(
-                `${parseInt(JSON.parse(consoles[key]))}`,
-                ''
-              )
-            }
-          }
-          filteredString = filteredString.concat(`&platforms=${consolesString}`)
-        }
-      }
-      if (genres) {
-        if (typeof genres === 'string') {
-          filteredString = filteredString.concat(
-            `&genres=${parseInt(JSON.parse(genres))}`
-          )
-          if (session) {
-            usedGenres.push(JSON.parse(genres))
-          }
-        } else {
-          let genresString = ''
-          for (const key in genres) {
-            if (session) {
-              usedGenres.push(genres[key])
-            }
-            if (parseInt(key) !== genres.length - 1) {
-              genresString = genresString.concat(
-                `${parseInt(JSON.parse(genres[key]))}`,
-                ','
-              )
-            } else {
-              genresString = genresString.concat(
-                `${parseInt(JSON.parse(genres[key]))}`,
-                ''
-              )
-            }
-          }
-          filteredString = filteredString.concat(`&genres=${genresString}`)
-        }
-      }
-
-      if (sort === 'year') {
-        filteredString = filteredString.concat('&ordering=-released')
-      }
-      //if some filters is applies
-      const getData = await axios(
-        `https://api.rawg.io/api/games?key=39a2bd3750804b5a82669025ed9986a8&dates=1990-01-01,2023-12-31&page=1&page_size=28${filteredString}`
-      )
-      games = getData.data.results
-      count = getData.data.count
-
-      if (session) {
-        try {
-          const client = await clientPromise
-          const db = client.db()
-
-          if (usedYears) {
-            db.collection('users').updateOne(
-              { _id: new ObjectId(session.user.userId) },
-              { $push: { visited_years: { $each: usedYears } } }
-            )
-          }
-          if (usedPlatforms) {
-            db.collection('users').updateOne(
-              { _id: new ObjectId(session.user.userId) },
-              { $push: { visited_platforms: { $each: usedPlatforms } } }
-            )
-          }
-          if (usedGenres) {
-            db.collection('users').updateOne(
-              { _id: new ObjectId(session.user.userId) },
-              { $push: { visited_genres: { $each: usedGenres } } }
-            )
-          }
-        } catch (e) {
-          console.log('error on updating user fields for used_filters')
-        }
-      }
+  const isNextPage = (page: number, count: number) => {
+    if (page * 28 < count) {
+      return true
     } else {
-      //empty filters search
-      const getData = await axios(
-        `https://api.rawg.io/api/games?key=39a2bd3750804b5a82669025ed9986a8&dates=1990-01-01,2023-12-31&page=1&page_size=28`
-      )
-      games = getData.data.results
-      count = getData.data.count
+      return false
     }
-    //calculate function to check if there is next page
-    const isNextPage = (page: number) => {
-      if (page * 28 < count) {
-        return true
+  }
+
+  console.log('started')
+  if (yearRange || genres || consoles || search || sort) {
+    if (search) {
+      filteredString += `&search=${search}&`
+    }
+
+    if (yearRange) {
+      if (!Array.isArray(yearRange)) {
+        filteredString = filteredString.concat(
+          '',
+          `&dates=1990-01-01,2023-12-31`
+        )
       } else {
-        return false
+        filteredString = filteredString.concat(
+          '',
+          `&dates=${yearRange[0]}-01-01,${yearRange[1]}-12-31`
+        )
+        if (session) {
+          usedYears.push({ range_1: yearRange[0], range_2: yearRange[1] })
+        }
       }
     }
 
-    console.log(isNextPage(1))
+    if (consoles) {
+      //if there is only one filtered console then I will get a string from
+      // the query
+      if (typeof consoles === 'string') {
+        filteredString = filteredString.concat(
+          `&parent_platforms=${consoles}}`
+        )
+        if (session) {
+          usedPlatforms.push(consoles)
+        }
+        // if its not a string then the type is an array
+        // and it means we got several consoles to filter from
+      } else {
+        let consolesString = ''
+        for (const key in consoles) {
+          if (session) {
+            usedPlatforms.push(consoles[key])
+          }
+          if (parseInt(key) !== consoles.length - 1) {
+            consolesString = consolesString.concat(
+              `${parseInt(consoles[key])}`,
+              ','
+            )
+          } else {
+            consolesString = consolesString.concat(
+              `${parseInt(consoles[key])}`,
+              ''
+            )
+          }
+        }
+        filteredString = filteredString.concat(`&platforms=${consolesString}`)
+      }
+    }
 
-    return {
-      props: {
-        games,
-        count,
-        nextPage: isNextPage(1),
-        error: null,
-      },
+    if (genres) {
+      if (typeof genres === 'string') {
+        filteredString = filteredString.concat(
+          `&genres=${parseInt(JSON.parse(genres))}`
+        )
+        if (session) {
+          usedGenres.push(JSON.parse(genres))
+        }
+      } else {
+        //filtering logic forseveral genres
+        let genresString = ''
+        for (const key in genres) {
+          if (session) {
+            usedGenres.push(genres[key])
+          }
+          if (parseInt(key) !== genres.length - 1) {
+            genresString = genresString.concat(
+              `${parseInt(genres[key])}`,
+              ','
+            )
+          } else {
+            genresString = genresString.concat(
+              `${parseInt(genres[key])}`,
+              ''
+            )
+          }
+        }
+        filteredString = filteredString.concat(`&genres=${genresString}`)
+      }
     }
-  } catch (e) {
-    console.log(e)
-    return {
-      props: {
-        games: [],
-        error: 'Error Loading Games',
-      },
+
+    if (sort === 'year') {
+      filteredString = filteredString.concat('&ordering=-released')
     }
+
+    if (session) {
+      try {
+        const client = await clientPromise
+        const db = client.db()
+
+        if (usedYears) {
+          db.collection('users').updateOne(
+            { _id: new ObjectId(session.user.userId) },
+            { $push: { visited_years: { $each: usedYears } } }
+          )
+        }
+        if (usedPlatforms) {
+          db.collection('users').updateOne(
+            { _id: new ObjectId(session.user.userId) },
+            { $push: { visited_platforms: { $each: usedPlatforms } } }
+          )
+        }
+        if (usedGenres) {
+          db.collection('users').updateOne(
+            { _id: new ObjectId(session.user.userId) },
+            { $push: { visited_genres: { $each: usedGenres } } }
+          )
+        }
+      } catch (e) {
+        console.log('error on updating user fields for used_filters')
+      }
+
+      try {
+        const fetchGamesWithFilters = await wretchWrapper(`https://api.rawg.io/api/games?key=39a2bd3750804b5a82669025ed9986a8&dates=1990-01-01,2023-12-31&page=1&page_size=28${filteredString}`, 'fetchGamesWithFilters')
+
+        return {
+          props: {
+            games: fetchGamesWithFilters.results,
+            count: fetchGamesWithFilters.count,
+            nextPage: isNextPage(1, fetchGamesWithFilters.count),
+            error: null,
+          },
+        }
+      } catch (e) {
+        return {
+          props: {
+            games: [],
+            error: 'Error Loading Games',
+          },
+        }
+      }
+    }
+  } else {
+    // No filters applied path
+    try {
+
+      const fetchGamesWithoutFilters = await wretchWrapper(`https://api.rawg.io/api/games?key=39a2bd3750804b5a82669025ed9986a8&dates=1990-01-01,2023-12-31&page=1&page_size=28`, 'fetchGamesWithoutFilters')
+      return {
+        props: {
+          games: fetchGamesWithoutFilters.results,
+          count: fetchGamesWithoutFilters.count,
+          nextPage: isNextPage(1, fetchGamesWithoutFilters.count),
+          error: null,
+        },
+      }
+    } catch (e) {
+      console.log(e)
+      return {
+        props: {
+          games: [],
+          error: 'Error Loading Games',
+        },
+      }
+    }
+
   }
 }

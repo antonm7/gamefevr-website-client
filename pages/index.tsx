@@ -16,6 +16,7 @@ const Home: NextPage = () => {
   const filtersStore = useFiltersStore()
 
   const navigate = () => {
+    console.log(filtersStore)
     if (store.gameName.length > 0) {
       router.push({
         pathname: '/search',

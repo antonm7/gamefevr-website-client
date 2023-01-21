@@ -25,6 +25,7 @@ export default function SmallSearchInput({ full }: { full: boolean }) {
 
   const navigate = (): void => {
     setCookie('prevRoute', '/')
+    console.log(filtersStore)
     if (store.gameName.length > 0) {
       router.push({
         pathname: '/search',
