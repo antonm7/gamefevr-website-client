@@ -11,9 +11,9 @@ interface Body {
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method === 'POST') {
-        const body: Body = req.body
+        const { body }: { body: Body } = req.body
         let db = null
-
+        console.log(body)
         try {
             const client = await clientPromise
             db = client.db()

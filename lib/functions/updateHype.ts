@@ -18,7 +18,6 @@ const score = {
   d: 2,
   e: 2.5,
   user_gets_hype: 7
-
 }
 
 export default async function updateHype(
@@ -62,6 +61,7 @@ export default async function updateHype(
 async function checkTimeout(id: ObjectId): Promise<boolean> {
   try {
     const user: full_user = await db.collection('users').findOne({ _id: id })
+    console.log(id)
     if (!user) throw new Error('No user found')
 
     const timeout = user.hyped_timeout

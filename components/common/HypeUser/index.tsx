@@ -20,7 +20,7 @@ export default function HypeUser() {
 
     const hypeUserMethod = async (): Promise<void> => {
         try {
-            await wretchAction('/api/user/action/hsype', {
+            await wretchAction('/api/user/action/hype', {
                 gets_hype: userId,
                 sends_hype: session.data?.user.userId
             })

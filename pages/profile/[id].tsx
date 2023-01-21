@@ -77,6 +77,7 @@ export async function getServerSideProps(
       })
 
       const currentUser = await userCollection.findOne({ _id: new ObjectId(session?.user.userId) })
+
       if (currentUser?.hyped_users.includes(context?.params?.id)) {
         isHyped = true
       } else {
@@ -105,8 +106,6 @@ export async function getServerSideProps(
         .toArray()
     }
 
-    console.log(isHyped)
-
     return {
       props: {
         user: isVisited
@@ -121,15 +120,14 @@ export async function getServerSideProps(
         reviews: JSON.parse(JSON.stringify(reviews)),
         hype: user?.hype,
         visited: isVisited,
-        isHyped: JSON.parse(JSON.stringify(isHyped))
-      },
+        isHyped: isHyped
+      }
     }
   } catch (e) {
-    console.log(e)
     return {
       props: {
         user: null,
-      },
+      }
     }
   }
 }
