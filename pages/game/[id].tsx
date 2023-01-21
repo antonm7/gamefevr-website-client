@@ -1,6 +1,6 @@
 import { useEffect, useReducer, useRef, useState } from 'react'
 import SearchLayout from '../../components/layout'
-import { DetailedGame, ShortGame } from '../../types'
+import { DetailedGame, ElementDescription, same_series_type, Screenshot, ShortGame } from '../../types'
 import useWindowSize from '../../lib/functions/hooks/useWindowSize'
 import { useSession } from 'next-auth/react'
 import WriteReview from '../../components/GamePage/WriteReview'
@@ -20,7 +20,9 @@ import axios from 'axios'
 import Lower1200Footer from '../../components/GamePage/Responsive/lower1200Footer'
 import Bigger1200Footer from '../../components/GamePage/Responsive/Bigger1200Footer'
 import SameSeries from '../../components/GamePage/SameSeries'
-import { faL } from '@fortawesome/free-solid-svg-icons'
+
+import { wretchWrapper, promiseHandler } from '../../lib/functions/fetchLogic'
+import { WretchResponseChain } from 'wretch/types'
 
 type Props = {
   game: DetailedGame
@@ -284,47 +286,20 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(context: Context) {
-  let gameData, screenshots, trailers, same_series
+  const fetchGameData = (): WretchResponseChain<DetailedGame> => wretchWrapper(`https://api.rawg.io/api/games/${context.params.id}?key=39a2bd3750804b5a82669025ed9986a8`, 'gameData')
+  const fetchScreenshots = (): WretchResponseChain<Screenshot[]> => wretchWrapper(`https://api.rawg.io/api/games/${context.params.id}/screenshots?key=39a2bd3750804b5a82669025ed9986a8`, 'screenshotsData')
+  const fetchTreilers = (): WretchResponseChain<any> => wretchWrapper(`https://api.rawg.io/api/games/${context.params.id}/movies?key=39a2bd3750804b5a82669025ed9986a8`, 'treilersData')
+  const fetchSameSeries = (): WretchResponseChain<same_series_type> => wretchWrapper(`https://api.rawg.io/api/games/${context.params.id}/game-series?key=39a2bd3750804b5a82669025ed9986a8`, 'sameSeriesData')
 
-  try {
-    const getData = await axios.get(
-      `https://api.rawg.io/api/games/${context.params.id}?key=39a2bd3750804b5a82669025ed9986a8`
-    )
-    gameData = getData.data
-  } catch (e) {
-    console.log('error on getting gameData', e)
-    gameData = null
-  }
+  const result = await Promise.allSettled([
+    fetchGameData(),
+    fetchScreenshots(),
+    fetchTreilers(),
+    fetchSameSeries()
+  ])
 
-  try {
-    const getScreenshots = await axios.get(
-      `https://api.rawg.io/api/games/${context.params.id}/screenshots?key=39a2bd3750804b5a82669025ed9986a8`
-    )
-    screenshots = getScreenshots.data
-  } catch (e) {
-    console.log('error on getting screenshots', e)
-    screenshots = null
-  }
-
-  try {
-    const getTrailers = await axios.get(
-      `https://api.rawg.io/api/games/${context.params.id}/movies?key=39a2bd3750804b5a82669025ed9986a8`
-    )
-    trailers = getTrailers.data
-  } catch (e) {
-    console.log('error on getting treilers', e)
-    trailers = null
-  }
-
-  try {
-    const getSeries = await axios.get(
-      `https://api.rawg.io/api/games/${context.params.id}/game-series?key=39a2bd3750804b5a82669025ed9986a8`
-    )
-    same_series = getSeries.data
-  } catch (e) {
-    console.log('error on getting same_series', e)
-    same_series = null
-  }
+  const [gameData, screenshots, trailers, same_series]:
+    [DetailedGame, Screenshot, any, same_series_type] = promiseHandler(result)
 
   const finalData: DetailedGame = {
     id: gameData.id,
