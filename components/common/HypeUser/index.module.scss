@@ -1,0 +1,7 @@
+@import '../../../styles/global.scss';
+
+@include for-size(phone-only) {
+    #hype_user_wrapper {
+        margin-top: 1rem;
+    }
+}

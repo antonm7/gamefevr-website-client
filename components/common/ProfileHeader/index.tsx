@@ -21,9 +21,9 @@ export default function ProfileHeader({
 }: Props) {
     return (
         <div className="flex justify-between items-center" id={styles.profile_header_wrapper}>
-            <div className="flex flex-wrap-reverse" id={styles.profile_header_name_line}>
-                {!isHyped && visited ? <HypeUser /> : null}
-                <h1 className="flex text-white font-bold whitespace-pre-wrap text-4xl">
+            <div className="flex flex-wrap-reverse items-center" id={styles.profile_header_name_line}>
+                <h1 className="flex items-center text-white overflow-hidden font-bold whitespace-pre-wrap text-4xl" id={styles.profile_header_title}>
+                    {!isHyped && visited ? <HypeUser /> : null}
                     {visited ? `Welcome to ${username}` : `Welcome ${username}`}
                 </h1>
                 {visited ? <div className="flex items-center">

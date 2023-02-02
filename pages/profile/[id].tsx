@@ -5,7 +5,7 @@ import { Favorite_Type, Review_Type } from '../../types/schema'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 import CurrentProfile from '../../components/Profile/CurrentProfile/index'
-import VisitedProfile from '../../components/Profile/index/index'
+import VisitedProfile from '../../components/Profile/VisitedProfile/index'
 import { GetServerSidePropsContext } from 'next'
 import * as mongoDB from 'mongodb'
 

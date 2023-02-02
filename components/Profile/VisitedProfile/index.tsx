@@ -37,9 +37,11 @@ export default function Visited({ isHyped, reviews, favorites, user, hype }: Pro
 
   return (
     <SearchLayout>
-      <main className="px-44 py-10">
+      <main className="py-10 responsive_wrapper">
         {store.isFilterOn ? <Filters /> : null}
-        <ProfileHeader isHyped={isHyped} visited={true} username={userState.username} hype={hype} changeVisibleSettings={() => null} />
+        <ProfileHeader isHyped={isHyped}
+          visited={true} username={userState.username}
+          hype={hype} changeVisibleSettings={() => null} />
         <ReviewsSlider visited={true} reviews={reviewsState} deleteReview={() => null} />
         <FavoritesSlider visited={true} favorites={favoritesState} deleteFavorite={() => null} />
       </main>

@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react"
 import { useRouter } from "next/router"
 import { useState } from "react"
 import { wretchAction } from "../../../lib/functions/fetchLogic"
+import styles from './index.module.scss'
 
 export default function HypeUser() {
     const router = useRouter()
@@ -40,8 +41,8 @@ export default function HypeUser() {
     if (isHyped) return null
 
     return (
-        <div onClick={() => navigateAuth()}>
-            <div className="h-8 w-8 flex flex-col justify-center items-center overflow-hidden rounded-full" style={{ border: "1px solid #38b6cc" }}>
+        <div onClick={() => navigateAuth()} id={styles.hype_user_wrapper}>
+            <div className="h-8 w-8 flex flex-col justify-center items-center overflow-hidden rounded-full mr-4" style={{ border: "1px solid #38b6cc" }}>
                 <FontAwesomeIcon icon={faArrowUp} className="font-semibold text-cool-blue cursor-pointer h-4" />
             </div>
         </div >
