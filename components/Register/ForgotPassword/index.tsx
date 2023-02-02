@@ -1,8 +1,8 @@
 import axios from "axios"
 import { useState } from "react"
-import SmallLoader from "../common/SmallLoader"
-import YellowButton from "../common/YellowButton"
-import StyledInput from "./StyledInput"
+import SmallLoader from "../../common/SmallLoader"
+import YellowButton from "../../common/YellowButton"
+import StyledInput from "../StyledInput"
 
 interface Props {
     goBack: () => void

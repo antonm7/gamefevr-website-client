@@ -1,3 +1,5 @@
+import styles from './index.module.scss'
+
 interface Props {
   type?: string
   title: string
@@ -13,15 +15,14 @@ export default function StyledInput(props: Props) {
   if (props.type === 'password') {
     if (props.forgot) {
       return (
-        <div className="w-80 styled-input">
+        <div className="w-80" id={styles.input_wrapper}>
           <div className="flex w-full justify-between">
             <p
               className="opacity-90 font-semibold text-sm pb-4"
               style={{
                 color: props.titleColor ? props.titleColor : 'rgb(12 40 74)',
               }}
-            >
-              {props.title}
+            >{props.title}
             </p>
             <p
               style={{ color: '#38b6cc' }}
@@ -43,7 +44,7 @@ export default function StyledInput(props: Props) {
       )
     } else {
       return (
-        <div className="w-80 styled-input">
+        <div className="w-80" id={styles.input_wrapper}>
           <p
             className="opacity-90 font-semibold text-sm pb-4"
             style={{
@@ -70,6 +71,7 @@ export default function StyledInput(props: Props) {
           {props.title}
         </p>
         <input
+          id={styles.input_wrapper}
           autoComplete="off"
           onChange={props.onChange}
           type={props.type}

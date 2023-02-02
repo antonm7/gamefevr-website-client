@@ -5,12 +5,12 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
-import SignupAnimation from '../../components/animations/Signup'
-import OnlyLogo from '../../components/common/OnlyLogo'
-import SmallLoader from '../../components/common/SmallLoader'
-import YellowButton from '../../components/common/YellowButton'
-import StyledInput from '../../components/Register/StyledInput'
-import useWindowSize from '../../lib/functions/hooks/useWindowSize'
+import SignupAnimation from '../../../components/animations/Signup'
+import OnlyLogo from '../../../components/common/OnlyLogo'
+import SmallLoader from '../../../components/common/SmallLoader'
+import YellowButton from '../../../components/common/YellowButton'
+import StyledInput from '../../../components/Register/StyledInput'
+import useWindowSize from '../../../lib/functions/hooks/useWindowSize'
 
 const Signup: NextPage = () => {
   const [email, setEmail] = useState<string>('')

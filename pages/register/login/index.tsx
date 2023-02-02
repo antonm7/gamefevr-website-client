@@ -1,16 +1,15 @@
 import { NextPage } from 'next'
 import { getSession, signIn } from 'next-auth/react'
-import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
-import LoginAnimation from '../../components/animations/Login'
-import OnlyLogo from '../../components/common/OnlyLogo'
-import SmallLoader from '../../components/common/SmallLoader'
-import YellowButton from '../../components/common/YellowButton'
-import ForgotPassword from '../../components/Register/ForgotPassword'
-import StyledInput from '../../components/Register/StyledInput'
-import useWindowSize from '../../lib/functions/hooks/useWindowSize'
+import LoginAnimation from '../../../components/animations/Login'
+import OnlyLogo from '../../../components/common/OnlyLogo'
+import SmallLoader from '../../../components/common/SmallLoader'
+import YellowButton from '../../../components/common/YellowButton'
+import ForgotPassword from '../../../components/Register/ForgotPassword'
+import StyledInput from '../../../components/Register/StyledInput'
+import styles from './index.module.scss'
 
 const Login: NextPage = () => {
   const [email, setEmail] = useState<string>('')
@@ -20,7 +19,6 @@ const Login: NextPage = () => {
 
   const [loading, setLoading] = useState<boolean>(false)
   const [forgotPassword, setForgotPassword] = useState<boolean>(false)
-  const [width] = useWindowSize()
   const router = useRouter()
 
   const signin = async (): Promise<void> => {
@@ -53,32 +51,22 @@ const Login: NextPage = () => {
   }
 
   return (
-    <main className="flex h-full bg-white">
-      <div
-        id="login-container"
-        style={{ zIndex: 2 }}
-        className="px-32 pb-12 pt-16 register-container"
-      >
-        {width >= 800 ? (
-          <Image src={'/images/dLogo.svg'} height={32} width={130} alt="Logo" />
-        ) : (
-          <div className="relative overflow-hidden" id="login_onlyLogo">
-            <OnlyLogo size={width >= 500 ? 'xl' : width >= 360 ? 'lg' : 'sm'} />
-          </div>
-        )}
-        <p className="register-title text-darkIndigo font-black text-5xl overflow-hidden pt-32 pb-4">
+    <main className="y-10 flex h-full bg-white responsive_wrapper">
+      <div style={{ zIndex: 2 }} className="pb-12 pt-16" id={styles.login_container}>
+        <OnlyLogo />
+        <p className="text-darkIndigo font-black text-5xl overflow-hidden pt-32 pb-4" id={styles.login_title}>
           Log In
         </p>
-        <p className="register-welcome text-darkIndigo opacity-60 font-normal text-base">
+        <p className=" text-darkIndigo opacity-60 font-normal text-base">
           Welcome Back!
           <br />
           Please login to your account
         </p>
-        <div className="pt-9 w-80 styled-input">
+        <div className="pt-9 w-80" id={styles.login_inputs_container}>
           {forgotPassword ? (
             <ForgotPassword goBack={() => setForgotPassword(false)} />
           ) : (
-            <>
+            <div >
               <StyledInput
                 title="Email"
                 placeholder="Enter your email"
@@ -95,7 +83,7 @@ const Login: NextPage = () => {
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
-              <div className="pt-12">
+              <div className="pt-12 ">
                 {loading ? (
                   <SmallLoader xCentered={true} />
                 ) : (
@@ -115,7 +103,7 @@ const Login: NextPage = () => {
               </div>
               <p className="text-xl pt-2 font-semibold text-red-600">{error}</p>
               <p className="text-xl pt-2 font-semibold text-green-600">{succsess}</p>
-            </>
+            </div>
           )}
         </div>
       </div>
