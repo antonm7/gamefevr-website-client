@@ -1,7 +1,6 @@
 import axios from 'axios'
 import { NextPage } from 'next'
 import { getSession, signIn } from 'next-auth/react'
-import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
@@ -10,7 +9,7 @@ import OnlyLogo from '../../../components/common/OnlyLogo'
 import SmallLoader from '../../../components/common/SmallLoader'
 import YellowButton from '../../../components/common/YellowButton'
 import StyledInput from '../../../components/Register/StyledInput'
-import useWindowSize from '../../../lib/functions/hooks/useWindowSize'
+import styles from './index.module.scss'
 
 const Signup: NextPage = () => {
   const [email, setEmail] = useState<string>('')
@@ -19,7 +18,6 @@ const Signup: NextPage = () => {
   const [loading, setLoading] = useState<boolean>(false)
   const [error, setError] = useState<string>('')
   const [succsess, setSuccsess] = useState<string>('')
-  const [width] = useWindowSize()
   const router = useRouter()
 
   const signup = async (): Promise<void> => {
@@ -66,31 +64,22 @@ const Signup: NextPage = () => {
   }
 
   return (
-    <main className="flex h-full bg-white">
+    <main className="y-10 flex h-full bg-white responsive_wrapper">
       <div
-        id="signup-container"
         style={{ zIndex: 2 }}
-        className="px-32 pt-16 register-container pb-12 overflow-hidden"
+        className="pt-16 pb-12 overflow-hidden"
+        id={styles.login_container}
       >
-        {width >= 800 ? (
-          <Image src={'/images/dLogo.svg'} height={32} width={130} alt="Logo" />
-        ) : (
-          <div className="relative overflow-hidden" id="login_onlyLogo">
-            <OnlyLogo size={width >= 500 ? 'xl' : width >= 360 ? 'lg' : 'sm'} />
-          </div>
-        )}
-        <p
-          id="signup-title"
-          className="register-title text-darkIndigo font-black text-5xl overflow-hidden pt-12 pb-4"
-        >
+        <OnlyLogo />
+        <p className="text-darkIndigo font-black text-5xl overflow-hidden pt-32 pb-4" id={styles.login_title}>
           Sign Up
         </p>
-        <p className="register-welcome text-darkIndigo opacity-60 font-normal text-base">
+        <p className=" text-darkIndigo opacity-60 font-normal text-base">
           Welcome!
           <br />
           Please create your account
         </p>
-        <div className="pt-9 w-80 styled-input" id="signup-inputs-wrapper">
+        <div className="pt-9 w-80" id={styles.login_inputs_container}>
           <StyledInput
             title="Username"
             placeholder="Enter your username"

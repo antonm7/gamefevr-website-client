@@ -12,7 +12,7 @@ const SignupAnimation = React.memo(() => {
       preserveAspectRatio: 'xMaxYMax meet', // Supports the same options as the svg element's preserveAspectRatio property
       clearCanvas: false,
       hideOnTransparent: true, //Boolean, only svg renderer, hides elements when opacity reaches 0 (defaults to true)
-      className: 'signup-animation',
+      className: 'login-animation',
     },
   }
   const [width] = useWindowSize()
@@ -21,9 +21,9 @@ const SignupAnimation = React.memo(() => {
       options={defaultOptions}
       style={{
         zIndex: 0,
-        position: width > 640 ? 'absolute' : 'relative',
-        height: width > 640 ? '100%' : '25rem',
-        bottom: 0,
+        position: 'absolute',
+        height: width > 1300 ? '100%' : width > 900 ? '60%' : '35%',
+        top: width < 400 ? '-5rem' : ''
       }}
     ></Lottie>
   )
