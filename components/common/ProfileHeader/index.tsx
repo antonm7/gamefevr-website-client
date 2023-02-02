@@ -2,6 +2,7 @@ import { faGear } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import IndicateHype from "../../Profile/IndicateHype"
 import HypeUser from "../HypeUser"
+import styles from './index.module.scss'
 
 type Props = {
     visited: boolean,
@@ -11,10 +12,16 @@ type Props = {
     isHyped: boolean
 }
 
-export default function ProfileHeader({ isHyped, visited, username, hype, changeVisibleSettings }: Props) {
+export default function ProfileHeader({
+    isHyped,
+    visited,
+    username,
+    hype,
+    changeVisibleSettings
+}: Props) {
     return (
-        <div className="flex justify-between items-center">
-            <div className="flex flex-wrap-reverse">
+        <div className="flex justify-between items-center" id={styles.profile_header_wrapper}>
+            <div className="flex flex-wrap-reverse" id={styles.profile_header_name_line}>
                 {!isHyped && visited ? <HypeUser /> : null}
                 <h1 className="flex text-white font-bold whitespace-pre-wrap text-4xl">
                     {visited ? `Welcome to ${username}` : `Welcome ${username}`}
@@ -23,7 +30,7 @@ export default function ProfileHeader({ isHyped, visited, username, hype, change
                     <IndicateHype hype={hype} />
                 </div> : <IndicateHype hype={hype} />}
             </div>
-            <div>
+            <div id={styles.account_settings_div_wrapper}>
                 {visited ? null : <div
                     className="flex items-center"
                     onClick={() => changeVisibleSettings(true)}

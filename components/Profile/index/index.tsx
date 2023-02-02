@@ -37,7 +37,7 @@ export default function Visited({ isHyped, reviews, favorites, user, hype }: Pro
 
   return (
     <SearchLayout>
-      <main className="px-44 py-10" id="profile_page">
+      <main className="px-44 py-10">
         {store.isFilterOn ? <Filters /> : null}
         <ProfileHeader isHyped={isHyped} visited={true} username={userState.username} hype={hype} changeVisibleSettings={() => null} />
         <ReviewsSlider visited={true} reviews={reviewsState} deleteReview={() => null} />

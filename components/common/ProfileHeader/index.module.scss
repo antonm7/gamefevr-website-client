@@ -1,0 +1,17 @@
+@import '../../../styles/responsive.scss';
+
+@include for-size(tablet-portrait) {
+    #profile_header_name_line {
+        display: flex;
+        flex-direction: column-reverse;
+    }
+
+    #account_settings_div_wrapper {
+        padding-top: 1rem;
+    }
+
+    #profile_header_wrapper {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
