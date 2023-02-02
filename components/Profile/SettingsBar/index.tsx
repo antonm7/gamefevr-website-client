@@ -128,12 +128,6 @@ export default function SettingsBar({ user, isOpened, close, onUsernameChange }:
       className={`
       absolute bottom-0 z-10 bg-darkIndigo 
       right-0 rounded-2xl p-16 ${isOpened ? styles.opened : ''}`}
-      style={{
-        width: '28rem',
-        height: '87vh',
-        borderBottomLeftRadius: 0,
-        borderBottomRightRadius: 0,
-      }}
     >
       <FontAwesomeIcon
         onClick={() => close()}
@@ -142,7 +136,7 @@ export default function SettingsBar({ user, isOpened, close, onUsernameChange }:
         style={{ height: 22, color: '#c7c7c7', right: 35, top: 42 }}
       />
       <h1 className="text-white font-semibold text-2xl">Account Settings</h1>
-      <div id="settings_bar_inner_container" className="pt-4 pb-12">
+      <div className="pt-4 pb-12">
         <SettingsInput
           value={username}
           label="Username"
@@ -180,13 +174,11 @@ export default function SettingsBar({ user, isOpened, close, onUsernameChange }:
           type="password"
         />
       </div>
-      <div id="settings_bar_bottom">
-        <YellowButton
-          active={checkActive()}
-          title="Save Changes"
-          onClick={() => saveChanges()}
-        />
-      </div>
+      <YellowButton
+        active={checkActive()}
+        title="Save Changes"
+        onClick={() => saveChanges()}
+      />
     </div>
   )
 }

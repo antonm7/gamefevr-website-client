@@ -5,11 +5,22 @@
     transition: 0.4s all;
     position: fixed;
     bottom: 0 !important;
+    width: 28rem;
+    height: 87vh;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
 }
-
 
 .opened {
     position: fixed;
     bottom: 0 !important;
     clip-path: inset(0% 0 0 0) !important;
+}
+
+@include for-size(tablet-portrait) {
+    #settings_bar_wrapper {
+        width: 100%;
+        height: 85vh;
+        padding: 3rem 2rem;
+    }
 }
