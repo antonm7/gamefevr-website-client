@@ -273,20 +273,6 @@ div {
     font-weight: 300;
 }
 
-#settings_bar {
-    clip-path: inset(100% 0 0 0);
-    transition: 0.4s all;
-    position: fixed;
-    bottom: 0 !important;
-}
-
-
-.opened {
-    position: fixed;
-    bottom: 0 !important;
-    clip-path: inset(0% 0 0 0) !important;
-}
-
 .active-link {
     color: #38b6cc;
     border-bottom: 2px solid #38b6cc !important;

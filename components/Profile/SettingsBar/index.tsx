@@ -3,7 +3,8 @@ import SettingsInput from '../SettingsInput'
 import YellowButton from '../../common/YellowButton'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
-import axios from 'axios'
+import styles from './index.module.scss'
+import { wretchAction } from '../../../lib/functions/fetchLogic'
 
 interface Props {
   user: {
@@ -15,18 +16,16 @@ interface Props {
   close: () => void
 }
 
-
 export default function SettingsBar({ user, isOpened, close, onUsernameChange }: Props) {
   const [username, setUsername] = useState<string>('')
   const [email, setEmail] = useState<string>('')
   const [oldPassword, setOldPassword] = useState<string>('')
   const [newPassword, setNewPassword] = useState<string>('')
 
-
-
   const saveChanges = async (): Promise<void> => {
     //user tries to change password
     if (oldPassword !== '' || newPassword !== '') {
+
       if (oldPassword === '') {
         PubSub.publish('OPEN_ALERT', {
           type: 'error',
@@ -40,13 +39,15 @@ export default function SettingsBar({ user, isOpened, close, onUsernameChange }:
         })
         return
       }
+
       try {
-        const req = await axios.post('/api/user/settings/changePassword', {
+        const changePasswordAction: any = await wretchAction('/api/user/settings/changePassword', {
           email,
           oldPassword,
           newPassword
         })
-        if (!req.data.error) {
+        const resError: { error: string | boolean } = changePasswordAction.error
+        if (!resError) {
           PubSub.publish('OPEN_ALERT', {
             type: 'success',
             msg: 'Password has changed'
@@ -54,7 +55,7 @@ export default function SettingsBar({ user, isOpened, close, onUsernameChange }:
         } else {
           PubSub.publish('OPEN_ALERT', {
             type: 'error',
-            msg: req.data.error
+            msg: resError
           })
         }
       } catch (e) {
@@ -63,16 +64,17 @@ export default function SettingsBar({ user, isOpened, close, onUsernameChange }:
           msg: 'Unexpected Error'
         })
       }
-
     }
+
+    //user tries to change username
     try {
-      //user tries to change username
       if (username !== user.username) {
-        const req = await axios.post('/api/user/settings/changeUsername', {
+        const changeUsernameAction: any = await wretchAction('/api/user/settings/changeUsername', {
           email: user.email,
           username
         })
-        if (!req.data.error) {
+        const resError: { error: string | boolean } = changeUsernameAction.error
+        if (!resError) {
           onUsernameChange(username)
           PubSub.publish('OPEN_ALERT', {
             type: 'success',
@@ -81,7 +83,7 @@ export default function SettingsBar({ user, isOpened, close, onUsernameChange }:
         } else {
           PubSub.publish('OPEN_ALERT', {
             type: 'error',
-            msg: req.data.error
+            msg: resError
           })
         }
       }
@@ -100,7 +102,6 @@ export default function SettingsBar({ user, isOpened, close, onUsernameChange }:
         type: 'error',
         msg: ''
       })
-
     }
   }
 
@@ -123,9 +124,10 @@ export default function SettingsBar({ user, isOpened, close, onUsernameChange }:
 
   return (
     <div
-      id="settings_bar"
-      className={`absolute bottom-0 z-10 bg-darkIndigo right-0 rounded-2xl p-16 ${isOpened ? 'opened' : ''
-        }`}
+      id={styles.settings_bar_wrapper}
+      className={`
+      absolute bottom-0 z-10 bg-darkIndigo 
+      right-0 rounded-2xl p-16 ${isOpened ? styles.opened : ''}`}
       style={{
         width: '28rem',
         height: '87vh',
