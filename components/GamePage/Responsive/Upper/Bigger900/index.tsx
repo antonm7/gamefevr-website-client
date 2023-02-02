@@ -8,52 +8,25 @@ import { Review_Type } from '../../../../../types/schema'
 interface Props {
   game: DetailedGame
   reviews: Review_Type[]
-  changeIsUserRated: (isUserRated: string) => void
+  changeIsUserRated: (value: string) => void
 }
 
-export default function Lower640({ game, changeIsUserRated, reviews }: Props) {
+export default function Bigger900({ game, changeIsUserRated, reviews }: Props) {
   return (
     <div id="game_page_header" className="flex flex-row justify-between">
-      <div>
+      <div className="pr-16">
         <h3 className="text-white font-normal text-1xl opacity-40">
           {' '}
           {game?.released?.slice(0, 4)}
         </h3>
         <h1
           id="game_page_game_name"
-          className="text-white text-8xl font-bold overflow-hidden h-auto pb-4"
+          className="text-white text-8xl font-bold overflow-hidden h-auto pb-6"
         >
           {game.name}
         </h1>
-        <div
-          id="game_page_background_image_wrapper"
-          className="flex flex-col items-center"
-          style={{ minWidth: '24rem' }}
-        >
-          {game.trailers?.results[0]?.data?.max ? (
-            <div className="video-container rounded-xl overflow-hidden">
-              <video
-                autoPlay
-                muted
-                loop
-                style={{ width: '24rem', height: '19rem', marginTop: '0rem', borderRadius: '0.75rem' }}
-              >
-                <source src={game.trailers.results[0].data.max} />
-              </video>
-            </div>
-          ) : (
-            <div
-              id="game_page_background_image"
-              className="h-60 w-96 bg-cover rounded-xl bg-center bg-no-repeat"
-              style={{
-                height: '19rem',
-                backgroundImage: `url(${game.background_image})`,
-              }}
-            />
-          )}
-        </div>
         <div className="pt-4 ">
-          <div className="flex flex-row flex-wrap">
+          <div className="flex flex-row flex-no-wrap">
             <h2
               id="game_page_detail"
               className="text-white font-normal text-1xl opacity-70"
@@ -65,7 +38,7 @@ export default function Lower640({ game, changeIsUserRated, reviews }: Props) {
                 <h2
                   key={index}
                   id="game_page_detail"
-                  className="pl-1 text-white font-semibold text-1xl whitespace-nowrap"
+                  className="pl-1 text-white font-semibold text-1xl"
                 >
                   {publisher.name}
                   {index !== game.publishers.length - 1 ? ',' : ''}
@@ -124,12 +97,37 @@ export default function Lower640({ game, changeIsUserRated, reviews }: Props) {
           <WhereToBuy stores={game.stores} />
         </div>
         <AddFavorite gameId={game.id} />
-        <div className="relative h-48 pt-5 overflow-hidden">
-          <RateGame
-            reviews={reviews}
-            updateIsUserRated={(value: string) => changeIsUserRated(value)}
-          />{' '}
-        </div>
+      </div>
+      <div
+        className="flex flex-col items-center"
+        style={{ minWidth: '24rem' }}
+      >
+        {game.trailers?.results[0]?.data?.max ? (
+          <div className="video-container rounded-xl overflow-hidden">
+            <video
+              id="game_video"
+              autoPlay
+              muted
+              loop
+              style={{ width: '24rem', height: '19rem', marginTop: '0rem', borderRadius: '0.75rem' }}
+            >
+              <source src={game.trailers.results[0]?.data.max} />
+            </video>
+          </div>
+        ) : (
+          <div
+            id="game_page_background_image"
+            className="h-60 w-96 bg-cover rounded-xl bg-center bg-no-repeat"
+            style={{
+              height: '19rem',
+              backgroundImage: `url(${game.background_image})`,
+            }}
+          />
+        )}
+        <RateGame
+          reviews={reviews}
+          updateIsUserRated={(value: string) => changeIsUserRated(value)}
+        />{' '}
       </div>
     </div>
   )

@@ -1,0 +1,11 @@
+@import '../../../styles/global.scss';
+
+@include for-size(phone-only) {
+    #inner_container {
+        max-width: 100%;
+    }
+
+    #icons_container {
+        padding: 0.5rem 2rem;
+    }
+}

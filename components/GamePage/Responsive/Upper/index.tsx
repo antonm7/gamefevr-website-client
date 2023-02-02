@@ -4,8 +4,9 @@ import { Review_Type } from "../../../../types/schema"
 import Description from "../../Description"
 import SameSeries from "../../SameSeries"
 import Tags from "../../Tags"
-import Bigger640 from "../Upper/Bigger640"
-import Lower640 from "../Upper/lower640"
+import Bigger900 from "./Bigger900"
+import Lower900 from "./Lower900"
+import styles from './index.module.scss'
 
 type Props = {
     reviews: Review_Type[],
@@ -17,20 +18,20 @@ export default function Upper({ reviews, game, setIsUserRated }: Props) {
     const [width] = useWindowSize()
     return (
         <>
-            {width > 640 ? (
-                <Bigger640
+            {width >= 900 ? (
+                <Bigger900
                     reviews={reviews}
                     game={game}
                     changeIsUserRated={(value) => setIsUserRated(value)}
                 />
             ) : (
-                <Lower640
+                <Lower900
                     reviews={reviews}
                     game={game}
                     changeIsUserRated={(value) => setIsUserRated(value)}
                 />
             )}
-            <div className="flex justify-between" id="game_description_row">
+            <div className="flex justify-between" id={styles.footer_container}>
                 <Description desc={game.description} />
                 <SameSeries games={game.same_series} />
             </div>

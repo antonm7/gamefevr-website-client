@@ -13,7 +13,7 @@ const SignupAnimation = React.memo(() => {
       clearCanvas: false,
       hideOnTransparent: true, //Boolean, only svg renderer, hides elements when opacity reaches 0 (defaults to true)
       className: 'login-animation',
-    },
+    }
   }
   const [width] = useWindowSize()
   return (

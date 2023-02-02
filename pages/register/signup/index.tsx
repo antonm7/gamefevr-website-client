@@ -9,6 +9,7 @@ import OnlyLogo from '../../../components/common/OnlyLogo'
 import SmallLoader from '../../../components/common/SmallLoader'
 import YellowButton from '../../../components/common/YellowButton'
 import StyledInput from '../../../components/Register/StyledInput'
+import { wretchAction } from '../../../lib/functions/fetchLogic'
 import styles from './index.module.scss'
 
 const Signup: NextPage = () => {
@@ -24,35 +25,31 @@ const Signup: NextPage = () => {
     setError('')
     setLoading(true)
     try {
-      const { data, status } = await axios.post('/api/auth/signup', {
+      const signUpAction: any = await wretchAction('/api/auth/signup', {
         email,
         password,
         username,
       })
-      if (status !== 201 && status !== 200) {
-        throw new Error()
+      if (signUpAction.error) {
+        setError(signUpAction.error)
       } else {
-        if (data.error) {
-          setError(data.error)
+        const signInData: any = await signIn('credentials', {
+          redirect: false,
+          email,
+          password,
+        })
+        if (signInData?.status !== 200) {
+          throw new Error()
         } else {
-          const signInData: any = await signIn('credentials', {
-            redirect: false,
-            email,
-            password,
-          })
-          if (signInData?.status !== 200) {
-            throw new Error()
+          if (signInData?.error) {
+            return setError(signInData.error.slice(6, 50))
           } else {
-            if (signInData?.error) {
-              return setError(signInData.error.slice(6, 50))
+            setSuccsess('Succesfully created account!')
+            if (router.query.back) {
+              router.push(`${router.query.back}`)
             } else {
-              setSuccsess('Succesfully created account!')
-              if (router.query.back) {
-                router.push(`${router.query.back}`)
-              } else {
-                console.log('ree')
-                router.push('/')
-              }
+              console.log('ree')
+              router.push('/')
             }
           }
         }

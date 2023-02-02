@@ -1,0 +1,7 @@
+@import '../../../../styles/global.scss';
+
+@include for-size(tablet-landscape) {
+    #footer_container {
+        flex-direction: column;
+    }
+}

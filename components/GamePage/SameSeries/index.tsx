@@ -1,7 +1,7 @@
 import React, { ReactElement, useEffect, useState, useMemo } from 'react'
 import { same_series_type, ShortGame } from '../../../types'
 import GameCover from '../GameCover'
-
+import styles from './index.module.scss'
 interface Props {
   games: same_series_type
 }
@@ -35,12 +35,12 @@ export default function SameSeries({ games }: Props) {
 
   return (
     <div
-      id="same_series"
+      id={styles.global_wrapper}
       className="text-center pt-12"
       style={{ width: '24%' }}
     >
       <RenderedTitle />
-      <div id="same_series_inner">
+      <div id={styles.inner_games_container}>
         {memoizedGamesCount.map((game) => (
           <GameCover game={game} key={game.id} />
         ))}

@@ -1,8 +1,9 @@
-import axios from 'axios'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import { wretchAction, wretchWrapper } from '../../../lib/functions/fetchLogic'
 import { Review_Type } from '../../../types/schema'
+import styles from './index.module.scss'
 
 interface Props {
   reviews: Review_Type[]
@@ -30,16 +31,10 @@ export default function RateGame({ updateIsUserRated, reviews }: Props) {
   useEffect(() => {
     const isUserRated = async () => {
       try {
-        const req = await axios.get(
-          `/api/game/get/getRank?userId=${session.data?.user?.userId}&gameId=${router.query.id}`
-        )
-        if (req.status === 200) {
-          if (!req.data.isUserRated) return
-          setIsUserRated(req.data.isUserRated)
-          updateIsUserRated(req.data.isUserRated)
-        } else {
-          throw new Error(req.data.error)
-        }
+        const getUserRankFetch: any = await wretchWrapper(`/api/game/get/getRank?userId=${session.data?.user?.userId}&gameId=${router.query.id}`, 'getUserRankFetch')
+        if (!getUserRankFetch.isUserRated) return
+        setIsUserRated(getUserRankFetch.isUserRated)
+        updateIsUserRated(getUserRankFetch.isUserRated)
       } catch (e) {
         return
       }
@@ -53,29 +48,26 @@ export default function RateGame({ updateIsUserRated, reviews }: Props) {
       //cancel rank
       if (rank === isUserRated) {
         setIsUserRated(null)
-        const req = await axios.post('/api/game/cancel/cancelRank', {
+        await wretchAction('/api/game/cancel/cancelRank', {
           userId: session.data?.user?.userId,
           gameId: router.query.id,
-          value: rank,
+          value: rank
         })
-        if (req.status !== 200) throw new Error(req.data.error)
       } else {
         setIsUserRated(rank)
         //for not getting several ranking on the same game
         if (isUserRated) {
-          const req = await axios.post('/api/game/cancel/cancelRank', {
+          await wretchAction('/api/game/cancel/cancelRank', {
             userId: session.data?.user?.userId,
             gameId: router.query.id,
-            value: rank,
+            value: rank
           })
-          if (req.status !== 200) throw new Error(req.data.error)
         }
-        const req = await axios.post('/api/game/action/rankGame', {
+        await wretchAction('/api/game/action/rankGame', {
           userId: session.data?.user?.userId,
           gameId: router.query.id,
-          value: rank,
+          value: rank
         })
-        if (req.status !== 201) throw new Error(req.data.error)
       }
     } catch (e) {
       setIsUserRated(null)
@@ -135,18 +127,13 @@ export default function RateGame({ updateIsUserRated, reviews }: Props) {
   }, [session.status, reviews])
 
   return (
-    <div id="rate_game" className="h-32 overflow-hidden">
+    <div className="h-32 overflow-hidden">
       <div
-        id="rate_game"
-        className="bg-white w-72 h-24 rounded-lg text-center py-4 "
-      >
-        <h1
-          id="rate_game_title"
-          className="text-sm font-semibold text-darkIndigo"
-        >
+        className="bg-white w-72 h-24 rounded-lg text-center py-4" id={styles.inner_container}>
+        <h1 className="text-sm font-semibold text-darkIndigo">
           How Would You Rate This Game?
         </h1>
-        <div id="span_line" className="flex justify-between px-16 pt-3">
+        <div className="flex justify-between px-16 pt-3" id={styles.icons_container}>
           <span
             className={`text-xl cursor-pointer opacity-40 ${wasteOfTime || isUserRated === 'waste_of_time'
               ? 'opacity-100'
@@ -187,12 +174,11 @@ export default function RateGame({ updateIsUserRated, reviews }: Props) {
           </span>
         </div>
       </div>
-      <div id="rating_label" className="w-72">
+      <div className="w-72">
         {wasteOfTime ? (
           <div
             className="bg-white w-22 p-2 pt-1 rating-text text-center"
             style={{ marginLeft: '26px' }}
-            id="waste_of_time"
           >
             <p className="text-sm font-semibold text-darkIndigo rating_label_text">
               waste of time
@@ -203,7 +189,7 @@ export default function RateGame({ updateIsUserRated, reviews }: Props) {
           <div
             className="bg-white w-22 p-2 pt-1 rating-text text-center"
             style={{ marginLeft: '102px' }}
-            id="nuh"
+
           >
             <p className="text-sm font-semibold text-darkIndigo rating_label_text">
               nuh
@@ -214,7 +200,7 @@ export default function RateGame({ updateIsUserRated, reviews }: Props) {
           <div
             className="bg-white w-22 p-2 pt-1 rating-text text-center"
             style={{ marginLeft: '141px' }}
-            id="good"
+
           >
             <p className="text-sm font-semibold text-darkIndigo rating_label_text">
               good
@@ -224,9 +210,7 @@ export default function RateGame({ updateIsUserRated, reviews }: Props) {
         {must ? (
           <div
             className="bg-white w-22 p-2 pt-1 rating-text text-center"
-            style={{ marginLeft: '186px' }}
-            id="must"
-          >
+            style={{ marginLeft: '186px' }}>
             <p className="text-sm font-semibold text-darkIndigo rating_label_text">
               must
             </p>

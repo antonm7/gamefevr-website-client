@@ -10,7 +10,6 @@ import ErrorComponent from '../../components/ErrorComponent'
 import SmallLoader from '../../components/common/SmallLoader'
 import axios from 'axios'
 import { wretchWrapper, promiseHandler } from '../../lib/functions/fetchLogic'
-import { WretchResponseChain } from 'wretch/types'
 import Upper from '../../components/GamePage/Responsive/Upper'
 import Footer from '../../components/GamePage/Responsive/Footer'
 
@@ -67,7 +66,7 @@ export default function GamePage(props: Props) {
   const [loaders, setLoaders] = useReducer(loadersReducer, { globalLoading: true, reviewsLoading: true })
 
   const loadReviews = async () => {
-    const fetchReviews = await wretchWrapper(`/api/game/get/getReviews?gameId=${router.query.id}`, 'loadReviews')
+    const fetchReviews: any = await wretchWrapper(`/api/game/get/getReviews?gameId=${router.query.id}`, 'loadReviews')
     setReviews(fetchReviews.reviews)
     setLoaders({ type: 'reviews', value: false })
   }
@@ -80,7 +79,7 @@ export default function GamePage(props: Props) {
 
   const loadAgain = async (): Promise<void> => {
     setLoaders({ type: 'global', value: true })
-    const gameData = await wretchWrapper(`/api/game/get/getGame?gameId=${router.query.id}`, 'loadAgain')
+    const gameData: any = await wretchWrapper(`/api/game/get/getGame?gameId=${router.query.id}`, 'loadAgain')
     if (gameData.length) {
       setGame(gameData.game)
       setReviews(gameData.reviews)
@@ -97,7 +96,7 @@ export default function GamePage(props: Props) {
       ) : (
         <div>
           {store.isFilterOn ? <Filters /> : null}
-          <main className="px-44 py-10" id="game_page">
+          <main className="responsive_wrapper py-10" >
             <WriteReview
               isUserRated={isUserRated}
               onClose={() => setWriteReviewVisibility(false)}
@@ -148,10 +147,10 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(context: Context) {
-  const fetchGameData = (): WretchResponseChain<DetailedGame> => wretchWrapper(`https://api.rawg.io/api/games/${context.params.id}?key=39a2bd3750804b5a82669025ed9986a8`, 'gameData')
-  const fetchScreenshots = (): WretchResponseChain<Screenshot[]> => wretchWrapper(`https://api.rawg.io/api/games/${context.params.id}/screenshots?key=39a2bd3750804b5a82669025ed9986a8`, 'screenshotsData')
-  const fetchTreilers = (): WretchResponseChain<any> => wretchWrapper(`https://api.rawg.io/api/games/${context.params.id}/movies?key=39a2bd3750804b5a82669025ed9986a8`, 'treilersData')
-  const fetchSameSeries = (): WretchResponseChain<same_series_type> => wretchWrapper(`https://api.rawg.io/api/games/${context.params.id}/game-series?key=39a2bd3750804b5a82669025ed9986a8`, 'sameSeriesData')
+  const fetchGameData = (): any => wretchWrapper(`https://api.rawg.io/api/games/${context.params.id}?key=39a2bd3750804b5a82669025ed9986a8`, 'gameData')
+  const fetchScreenshots = (): any => wretchWrapper(`https://api.rawg.io/api/games/${context.params.id}/screenshots?key=39a2bd3750804b5a82669025ed9986a8`, 'screenshotsData')
+  const fetchTreilers = (): any => wretchWrapper(`https://api.rawg.io/api/games/${context.params.id}/movies?key=39a2bd3750804b5a82669025ed9986a8`, 'treilersData')
+  const fetchSameSeries = (): any => wretchWrapper(`https://api.rawg.io/api/games/${context.params.id}/game-series?key=39a2bd3750804b5a82669025ed9986a8`, 'sameSeriesData')
 
   const result = await Promise.allSettled([
     fetchGameData(),

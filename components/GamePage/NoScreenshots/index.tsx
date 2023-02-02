@@ -20,7 +20,6 @@ export default function NoScreenShots({
 }: Props) {
   return (
     <div
-      id="game_page_screenshots_controller"
       className="relative overflow-hidden bg-main-blue"
       style={{
         height:
