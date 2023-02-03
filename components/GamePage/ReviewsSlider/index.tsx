@@ -5,17 +5,17 @@ import { ObjectId } from 'bson'
 import { useEffect, useState } from 'react'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-
+import styles from './index.module.scss'
 interface Props {
   reviews: Review_Type[]
-  isAnimated: boolean
+  isVisible: boolean
   deleteReview: (reviewId: ObjectId | undefined) => void
   isUserCommented: boolean
 }
 
 export default function ReviewsSlider({
   reviews,
-  isAnimated,
+  isVisible,
   deleteReview,
   isUserCommented,
 }: Props) {
@@ -63,7 +63,7 @@ export default function ReviewsSlider({
   }
 
   if (!reviewsState.length) return (
-    <div className='flex items-center justify-center '>
+    <div className={`flex items-center justify-center absolute`}>
       <FontAwesomeIcon
         icon={faPlus}
         className="h-16 text-white cursor-pointer simple-transition opacity-40 hover:opacity-100"
@@ -74,29 +74,30 @@ export default function ReviewsSlider({
 
 
   return (
-
-    <Slider
-      onReInit={() => clearState()}
-      {...settings}
-      arrows={false}
-    >
-      {reviewsState.map((review: Review_Type, index: number) => (
-        <Review
-          key={index}
-          _id={review._id}
-          likes={review.likes}
-          dislikes={review.dislikes}
-          gameId={review.gameId}
-          userId={review.userId}
-          created_at={review.created_at}
-          text={review.text}
-          rank={review.rank}
-          game_name={''}
-          game_image={''}
-          deleteReviewProps={(id: ObjectId | undefined) => deleteReview(id)}
-          user_name={review.user_name}
-        />
-      ))}
-    </Slider>
+    <div >
+      <Slider
+        onReInit={() => clearState()}
+        {...settings}
+        arrows={false}
+      >
+        {reviewsState.map((review: Review_Type, index: number) => (
+          <Review
+            key={index}
+            _id={review._id}
+            likes={review.likes}
+            dislikes={review.dislikes}
+            gameId={review.gameId}
+            userId={review.userId}
+            created_at={review.created_at}
+            text={review.text}
+            rank={review.rank}
+            game_name={''}
+            game_image={''}
+            deleteReviewProps={(id: ObjectId | undefined) => deleteReview(id)}
+            user_name={review.user_name}
+          />
+        ))}
+      </Slider>
+    </div>
   )
 }

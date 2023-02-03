@@ -1,4 +1,7 @@
 .slider_container {
-    width: 100vw;
     position: absolute;
+    width: 100vw;
+    z-index: 50;
+    padding-top: 120px;
+    transition: all 0.4s linear;
 }

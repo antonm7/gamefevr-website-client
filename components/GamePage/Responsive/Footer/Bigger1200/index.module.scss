@@ -1,8 +1,14 @@
 #blue_box {
     border-bottom-right-radius: 140px;
+    transition: all 0.4s linear;
+    height: 780px;
 }
 
 #arrows_wrapper {
     padding-top: 525px;
     padding-left: 75px;
+}
+
+#wrapper {
+    transition: all 0.4s linear;
 }
