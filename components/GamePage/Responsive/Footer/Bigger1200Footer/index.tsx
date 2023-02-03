@@ -77,7 +77,7 @@ export default function Bigger1200Footer({
                   : '700px'
                 : reviewsAnimation && !reviews.length
                   ? '150px'
-                  : '410px',
+                  : '450px',
           }}
         >
           <div

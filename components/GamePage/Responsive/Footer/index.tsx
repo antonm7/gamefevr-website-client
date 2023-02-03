@@ -6,7 +6,9 @@ import useWindowSize from "../../../../lib/functions/hooks/useWindowSize"
 import { DetailedGame } from "../../../../types"
 import { Review_Type } from "../../../../types/schema"
 import FooterButtons from "../../FooterButtons"
+import Bigger1200 from "./Bigger1200"
 import Bigger1200Footer from "./Bigger1200Footer"
+import Lower1200 from "./Lower1200"
 import Lower1200Footer from "./lower1200Footer"
 
 type Animation_State = {
@@ -32,43 +34,24 @@ type Props = {
     loaders: Loaders_State
 }
 
-const animationReducer = (state: Animation_State, action: Animation_Action) => {
-    switch (action.type) {
-        case 'screenshots': {
-            return { screenshotsAnimation: action.value, reviewsAnimation: state.reviewsAnimation }
-        }
-        case 'reviews': {
-            return { screenshotsAnimation: state.screenshotsAnimation, reviewsAnimation: action.value }
-        }
-        case 'none': {
-            return { ...state }
-        }
-    }
-}
-
 export default function Footer({ game, reviews, updateReviewsVisibility, updateReviewsState, loaders }: Props) {
     const [width] = useWindowSize()
-    const [animations, setAnimations] = useReducer(animationReducer, { screenshotsAnimation: false, reviewsAnimation: false })
     const session = useSession()
     const sliderRef = useRef(null)
 
-    useEffect(() => {
-        setAnimations({ type: 'none', value: false })
-    }, [])
-
-    const toggleAnimation = () => {
-        if (animations.reviewsAnimation) {
-            setAnimations({ type: 'reviews', value: false })
-            setTimeout(() => {
-                setAnimations({ type: 'screenshots', value: false })
-            }, 450)
-        } else {
-            setAnimations({ type: 'screenshots', value: true })
-            setTimeout(() => {
-                setAnimations({ type: 'reviews', value: true })
-            }, 450)
-        }
-    }
+    // const toggleAnimation = () => {
+    //     if (animations.reviewsAnimation) {
+    //         setAnimations({ type: 'reviews', value: false })
+    //         setTimeout(() => {
+    //             setAnimations({ type: 'screenshots', value: false })
+    //         }, 450)
+    //     } else {
+    //         setAnimations({ type: 'screenshots', value: true })
+    //         setTimeout(() => {
+    //             setAnimations({ type: 'reviews', value: true })
+    //         }, 450)
+    //     }
+    // }
 
     const navigateAuth = () => {
         if (session.status !== 'authenticated') {
@@ -98,33 +81,38 @@ export default function Footer({ game, reviews, updateReviewsVisibility, updateR
     }
 
     return (
-        <>
+        <div className="pt-28">
             {width > 1200 ? (
-                <Bigger1200Footer
+                <Bigger1200
                     screenshots={game.screenshots.results}
                     reviews={reviews}
-                    reviewsAnimation={animations.reviewsAnimation}
-                    screenshotsAnimation={animations.screenshotsAnimation}
-                    sliderRef={sliderRef}
-                    deleteReview={(id) => deleteReview(id)}
-                    navigateAuth={() => navigateAuth()}
                 />
+                // <Bigger1200Footer
+                //     screenshots={game.screenshots.results}
+                //     reviews={reviews}
+                //     reviewsAnimation={animations.reviewsAnimation}
+                //     screenshotsAnimation={animations.screenshotsAnimation}
+                //     sliderRef={sliderRef}
+                //     deleteReview={(id) => deleteReview(id)}
+                //     navigateAuth={() => navigateAuth()}
+                // />
             ) : (
-                <Lower1200Footer
-                    reviewsLoading={loaders.reviewsLoading}
-                    screenshots={game.screenshots.results}
-                    navigateAuth={() => navigateAuth()}
-                    deleteReview={(id) => deleteReview(id)}
-                    sliderRef={sliderRef}
-                    reviews={reviews}
-                />
+                <Lower1200 />
+                // <Lower1200Footer
+                //     reviewsLoading={loaders.reviewsLoading}
+                //     screenshots={game.screenshots.results}
+                //     navigateAuth={() => navigateAuth()}
+                //     deleteReview={(id) => deleteReview(id)}
+                //     sliderRef={sliderRef}
+                //     reviews={reviews}
+                // />
             )}
-            <FooterButtons
+            {/* <FooterButtons
                 reviewsLoading={loaders.reviewsLoading}
                 screenshots={game.screenshots}
                 reviewsAnimation={animations.reviewsAnimation}
-                toggleAnimation={toggleAnimation}
-            />
-        </>
+                toggleAnimation={() => null}
+            /> */}
+        </div>
     )
 }

@@ -109,7 +109,8 @@ export default function GamePage(props: Props) {
               game={game}
               setIsUserRated={value => setIsUserRated(value)} />
           </main>
-          <Footer game={game}
+          <Footer
+            game={game}
             reviews={reviews}
             updateReviewsVisibility={(value) => setWriteReviewVisibility(value)}
             updateReviewsState={arr => setReviews(arr)}

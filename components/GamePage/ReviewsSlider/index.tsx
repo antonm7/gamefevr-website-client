@@ -3,6 +3,8 @@ import Review from '../Review'
 import { Review_Type } from '../../../types/schema'
 import { ObjectId } from 'bson'
 import { useEffect, useState } from 'react'
+import { faPlus } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 interface Props {
   reviews: Review_Type[]
@@ -60,7 +62,16 @@ export default function ReviewsSlider({
     }
   }
 
-  if (!reviewsState.length) return null
+  if (!reviewsState.length) return (
+    <div className='flex items-center justify-center '>
+      <FontAwesomeIcon
+        icon={faPlus}
+        className="h-16 text-white cursor-pointer simple-transition opacity-40 hover:opacity-100"
+        onClick={() => null}
+      />
+    </div>
+  )
+
 
   return (
 
@@ -68,10 +79,6 @@ export default function ReviewsSlider({
       onReInit={() => clearState()}
       {...settings}
       arrows={false}
-      className={`${isAnimated
-        ? `${isUserCommented ? 'px-44' : ''} reviews_animation_enable`
-        : 'reviews_animation_disable'
-        }`}
     >
       {reviewsState.map((review: Review_Type, index: number) => (
         <Review

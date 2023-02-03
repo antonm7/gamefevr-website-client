@@ -4,12 +4,13 @@ import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 import useWindowSize from '../../../lib/functions/hooks/useWindowSize'
 import { Short_Screenshot } from '../../../types'
-
+import styles from './index.module.scss'
 interface Props {
   isAnimated: boolean
   images: Short_Screenshot[]
   setRef?: any
 }
+
 export default function Screenshots({ isAnimated, images, setRef }: Props) {
   const [width] = useWindowSize()
 
@@ -22,16 +23,13 @@ export default function Screenshots({ isAnimated, images, setRef }: Props) {
 
   return (
     <Slider
+      className={styles.slider_container}
       ref={setRef}
       arrows={false}
       {...settings}
-      className={`ml-32 ${isAnimated
-        ? 'screenshots_animation_enabled'
-        : 'screenshots_animation_disabled'
-        }`}
     >
-      {images.map((s: Short_Screenshot, index: number) => (
-        <div className="screenshot" key={index}>
+      {images.map((s: Short_Screenshot) => (
+        <div key={s.id} className='relative h-[450px] w-[450px]'>
           <Image
             quality="1"
             loading="eager"
