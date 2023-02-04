@@ -36,7 +36,8 @@ export default function Bigger1200({ screenshots, reviews, navigateAuth }: Props
                 delay: 0.5
             })
             gsap.to(reviewsRef.current, {
-                top: reviews.length ? '8rem' : '4rem'
+                top: reviews.length ? '8rem' : '4rem',
+                delay: reviews.length ? 0 : 0.7
             })
         } else {
             gsap.to(blueBoxRef.current, {

@@ -12,18 +12,19 @@ interface Props {
   isUserCommented: boolean
   setRef?: any
   navigateAuth: () => void
+  lower1200?: boolean
 }
 
 export default function ReviewsSlider({
   reviews,
   deleteReview,
+  lower1200,
   isUserCommented,
   navigateAuth,
   setRef
 }: Props) {
 
   const [reviewsState, setReviewsState] = useState<Review_Type[]>([])
-
   useEffect(() => {
     setReviewsState(reviews)
   }, [reviews])
@@ -74,9 +75,8 @@ export default function ReviewsSlider({
     />
   )
 
-
   return (
-    <div className='w-full overflow-hidden responsive_wrapper absolute' ref={setRef}>
+    <div className={`w-full overflow-hidden responsive_wrapper absolute ${lower1200 ? 'relative' : 'absolute'}`} ref={setRef}>
       <Slider
         onReInit={() => clearState()}
         {...settings}

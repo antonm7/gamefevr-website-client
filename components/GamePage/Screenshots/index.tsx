@@ -6,13 +6,15 @@ import useWindowSize from '../../../lib/functions/hooks/useWindowSize'
 import { Short_Screenshot } from '../../../types'
 import styles from './index.module.scss'
 import { useState, useEffect } from 'react'
+
 interface Props {
   isVisible: boolean
   images: Short_Screenshot[]
+  lower1200?: boolean
   setRef?: any
 }
 
-export default function Screenshots({ isVisible, images, setRef }: Props) {
+export default function Screenshots({ isVisible, images, setRef, lower1200 }: Props) {
   const [width] = useWindowSize()
   const [pushedRight, setPushedRight] = useState(false)
   const settings = {
@@ -35,14 +37,13 @@ export default function Screenshots({ isVisible, images, setRef }: Props) {
   }, [isVisible])
 
   return (
-    // style={{ left: pushedRight ? '100%' : '130px' }}  
-    <div ref={setRef} className={styles.slider_container}     >
+    <div ref={setRef} className={`${styles.slider_container} ${lower1200 ? 'relative z-0' : 'absolute'}`}     >
       <Slider
         arrows={false}
         {...settings}
       >
         {images.map((s: Short_Screenshot) => (
-          <div key={s.id} className='relative h-[450px] w-[450px]'>
+          <div key={s.id} className={`relative ${lower1200 ? 'w-[250px] h-[250px]' : 'w-[450px] h-[450px]'}`}>
             <Image
               quality="1"
               loading="eager"
