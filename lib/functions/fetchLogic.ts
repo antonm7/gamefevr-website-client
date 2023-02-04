@@ -10,16 +10,6 @@ export function wretchWrapper(url: string, request_name: string): Promise<unknow
         .json(data => data)
 }
 
-export function promiseHandler(results: any[]): any {
-    const errors: { status: "rejected", reason: any }[]
-        = results.filter((result) => result.status === 'rejected')
-    if (errors.length) {
-        const reason: string[] = errors.map((e) => e.reason)
-        throw new AggregateError(reason)
-    }
-    return results.map((result: PromiseFulfilledResult<unknown>) => result.value)
-}
-
 export function wretchAction(url: string, body: unknown): Promise<unknown> {
     return wretch(url)
         .post({ body })
@@ -28,4 +18,14 @@ export function wretchAction(url: string, body: unknown): Promise<unknown> {
         .unauthorized(e => { throw new Error() })
         .internalError(e => { throw new Error() })
         .res(response => response)
+}
+
+export function promiseHandler(results: any[]): any {
+    const errors: { status: "rejected", reason: any }[]
+        = results.filter((result) => result.status === 'rejected')
+    if (errors.length) {
+        const reason: string[] = errors.map((e) => e.reason)
+        throw new AggregateError(reason)
+    }
+    return results.map((result: PromiseFulfilledResult<unknown>) => result.value)
 }

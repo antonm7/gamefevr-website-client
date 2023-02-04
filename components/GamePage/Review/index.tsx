@@ -8,11 +8,11 @@ import {
   faTrash,
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import axios from 'axios'
 import { ObjectId } from 'bson'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { useEffect, useMemo, useState } from 'react'
+import { promiseHandler, wretchAction } from '../../../lib/functions/fetchLogic'
 import useWindowSize from '../../../lib/functions/hooks/useWindowSize'
 import slicedParagrap from '../../../lib/functions/slicedParagraph'
 import { Review_Type } from '../../../types/schema'
@@ -75,28 +75,24 @@ export default function Review({
 
   const deleteReviewMethod = async () => {
     try {
-      const deleteReviewRequest = await axios.post(
-        '/api/game/cancel/review/deleteReview',
+      const deleteReviewAction = () => wretchAction('/api/game/cancel/review/deleteReview', {
+        userId,
+        gameId,
+        reviewId: _id
+      })
+      const cancelRankAction = () => wretchAction('/api/game/cancel/cancelRank',
         {
           userId,
           gameId,
-          reviewId: _id,
-        }
-      )
-      const cancelRankRequest = await axios.post(
-        '/api/game/cancel/cancelRank',
-        {
-          userId,
-          gameId,
-          rankId: _id,
-        }
-      )
-      if (deleteReviewRequest.status !== 200) {
-        throw new Error(deleteReviewRequest.data.error)
-      }
-      if (cancelRankRequest.status !== 200) {
-        throw new Error(deleteReviewRequest.data.error)
-      }
+          rankId: _id
+        })
+
+      const result = await Promise.allSettled([
+        deleteReviewAction(),
+        cancelRankAction()
+      ])
+
+      promiseHandler(result)
       deleteReviewProps(_id)
     } catch (e) {
       PubSub.publish('OPEN_ALERT', {
@@ -111,16 +107,13 @@ export default function Review({
     try {
       //if user already liked that means he want to cancel his like
       if (isUserLiked) {
-        setLikesState(
-          likes.filter((like) => like !== session.data?.user?.userId)
-        )
+        setLikesState(likes.filter((like) => like !== session.data?.user?.userId))
         setIsUserLiked(false)
         //sending request to cancel the like
-        const req = await axios.post('/api/game/cancel/review/like', {
+        await wretchAction('/api/game/cancel/review/like', {
           userId: session?.data?.user?.userId,
-          reviewId: _id,
+          reviewId: _id
         })
-        if (req.status !== 200) throw new Error(req.data.error)
       } else {
         //if user already disliked and now he want to like
         if (isUserDisliked) {
@@ -130,19 +123,17 @@ export default function Review({
             dislikesState.filter((id) => id !== session.data?.user?.userId)
           )
           //request to cancel the dislike
-          const req = await axios.post('/api/game/cancel/review/dislike', {
+          await wretchAction('/api/game/cancel/review/dislike', {
             userId: session?.data?.user?.userId,
-            reviewId: _id,
+            reviewId: _id
           })
-          if (req.status !== 200) throw new Error(req.data.error)
         }
         setIsUserLiked(true)
         setLikesState([...likesState, session?.data?.user?.userId])
-        const req = await axios.post('/api/game/action/review/like', {
+        await wretchAction('/api/game/action/review/like', {
           userId: session?.data?.user?.userId,
-          reviewId: _id,
+          reviewId: _id
         })
-        if (req.status !== 200) throw new Error(req.data.error)
       }
     } catch (e) {
       PubSub.publish('OPEN_ALERT', {
@@ -157,16 +148,13 @@ export default function Review({
       if (session.status !== 'authenticated') return
       //if user already disliked that means he want to cancel his dislike
       if (isUserDisliked) {
-        setDislikesState(
-          likes.filter((like) => like !== session.data?.user?.userId)
-        )
+        setDislikesState(likes.filter((like) => like !== session.data?.user?.userId))
         setIsUserDisliked(false)
         //sending request to cancel the dislike
-        const req = await axios.post('/api/game/cancel/review/dislike', {
+        await wretchAction('/api/game/cancel/review/dislike', {
           userId: session?.data?.user?.userId,
-          reviewId: _id,
+          reviewId: _id
         })
-        if (req.status !== 200) throw new Error(req.data.error)
       } else {
         //if user already liked and now he want to dislike
         if (isUserLiked) {
@@ -178,19 +166,17 @@ export default function Review({
             })
           )
           //request to cancel the dislike
-          const req = await axios.post('/api/game/cancel/review/like', {
+          await wretchAction('/api/game/cancel/review/like', {
             userId: session?.data?.user?.userId,
-            reviewId: _id,
+            reviewId: _id
           })
-          if (req.status !== 200) throw new Error(req.data.error)
         }
         setDislikesState([...dislikesState, session?.data?.user?.userId])
         setIsUserDisliked(true)
-        const req = await axios.post('/api/game/action/review/dislike', {
+        await wretchAction('/api/game/action/review/dislike', {
           userId: session?.data?.user?.userId,
-          reviewId: _id,
+          reviewId: _id
         })
-        if (req.status !== 200) throw new Error(req.data.error)
       }
     } catch (e) {
       setDislikesState([...dislikesState])
@@ -240,8 +226,7 @@ export default function Review({
 
   return (
     <div
-      id="review"
-      className="scrollbar px-7 py-4 rounded-xl relative mx-2"
+      className="px-7 py-4 rounded-xl relative mx-2"
       style={{
         width: '30rem',
         minWidth: '30rem',
@@ -268,10 +253,9 @@ export default function Review({
         {text}
       </p>
       <div
-        id="review_bottom_container"
         className="flex flex-grow  items-center justify-between mt-20 "
       >
-        <div id="review_bottom_container_names">
+        <div>
           <Link href={`/profile/${userId}`} >
             <p className="text-cool-blue font-semibold cursor-pointer">
               {slicedParagrap(user_name, width < 560 ? 12 : 36, 12)}

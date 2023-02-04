@@ -1,10 +1,10 @@
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import axios from 'axios'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import TextareaAutosize from 'react-textarea-autosize'
+import { promiseHandler, wretchAction } from '../../../lib/functions/fetchLogic'
 import { Review_Type } from '../../../types/schema'
 
 interface Props {
@@ -30,12 +30,13 @@ export default function WriteReview({
       //if user already rated the game, and if the raview
       // ranking is different then needs to cancel the ranking
       if (isUserRated && rank !== isUserRated) {
-        await axios.post('/api/game/cancel/cancelRank', {
+        await wretchAction('/api/game/cancel/cancelRank', {
           userId: session.data?.user?.userId,
           gameId: router.query.id
         })
       }
-      const writeReviewRequest = await axios.post(
+
+      const writeReviewRequest = await wretchAction(
         '/api/game/action/review/writeReview',
         {
           userId: session.data?.user?.userId,
@@ -44,26 +45,23 @@ export default function WriteReview({
           rank
         }
       )
-      await axios.post('/api/game/action/rankGame', {
+      const rankGameAction = () => wretchAction('/api/game/action/rankGame', {
         userId: session.data?.user?.userId,
         gameId: router.query.id,
         value: rank
       })
-      if (
-        writeReviewRequest.status !== 201 &&
-        writeReviewRequest.status !== 200
-      ) {
-        throw new Error(writeReviewRequest.data.error)
-      } else {
-        PubSub.publish('OPEN_ALERT', {
-          type: 'success',
-          msg: `Successfully created your review!`
-        })
-        setText('')
-        setRank(null)
-        onClose()
-        insertNewReview(writeReviewRequest.data.review)
-      }
+
+      const result = await Promise.allSettled([writeReviewRequest, rankGameAction])
+      const [writeReviewResponse]: any = promiseHandler(result)
+
+      PubSub.publish('OPEN_ALERT', {
+        type: 'success',
+        msg: `Successfully created your review!`
+      })
+      setText('')
+      setRank(null)
+      onClose()
+      insertNewReview(writeReviewResponse.review)
     } catch (e) {
       PubSub.publish('OPEN_ALERT', {
         type: 'error',

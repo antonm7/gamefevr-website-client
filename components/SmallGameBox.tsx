@@ -1,8 +1,8 @@
 import Link from 'next/link'
 import { ElementDescription, ParentPlatform, ShortGame } from '../types'
 import { useEffect, useState } from 'react'
-import axios from 'axios'
 import BackgroundGameImage from './BackgroundGameImage'
+import { wretchWrapper } from '../lib/functions/fetchLogic'
 
 type Props = {
   game: ShortGame
@@ -15,13 +15,9 @@ export default function SmallGameBox({ game }: Props) {
 
   const loadMovie = async (): Promise<void> => {
     try {
-      const req = await axios.get(
-        `https://api.rawg.io/api/games/${game.id}/movies?key=39a2bd3750804b5a82669025ed9986a8`
-      )
-      if (req.status !== 200) throw new Error()
-      if (req.data.count > 0) {
-        setMovieUrl(req.data.results[0].data.max)
-      }
+      const getMovies: any = await wretchWrapper(`https://api.rawg.io/api/games/${game.id}/movies?key=39a2bd3750804b5a82669025ed9986a8`
+        , 'getMoviews')
+      setMovieUrl(getMovies.results[0].data.max)
     } catch (e) {
       return
     }
@@ -34,7 +30,6 @@ export default function SmallGameBox({ game }: Props) {
   return (
     <Link href={`/game/${game.id}`} className="cursor-pointer">
       <div
-        id="game_box"
         className="h-72 rounded-lg mx-3 mb-10 overflow-hidden z-10 cursor-pointer "
         style={{ height: '1%', width: '26rem', maxWidth: '26rem', backgroundColor: '#0e3462   ' }
         }
