@@ -35,7 +35,8 @@ export default function Screenshots({ isVisible, images, setRef }: Props) {
   }, [isVisible])
 
   return (
-    <div className={styles.slider_container} style={{ left: pushedRight ? '100%' : '130px' }}      >
+    // style={{ left: pushedRight ? '100%' : '130px' }}  
+    <div ref={setRef} className={styles.slider_container}     >
       <Slider
         arrows={false}
         {...settings}

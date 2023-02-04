@@ -84,6 +84,7 @@ export default function Footer({ game, reviews, updateReviewsVisibility, updateR
         <div className="pt-28">
             {width > 1200 ? (
                 <Bigger1200
+                    navigateAuth={() => navigateAuth()}
                     screenshots={game.screenshots.results}
                     reviews={reviews}
                 />

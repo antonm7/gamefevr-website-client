@@ -8,16 +8,18 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import styles from './index.module.scss'
 interface Props {
   reviews: Review_Type[]
-  isVisible: boolean
   deleteReview: (reviewId: ObjectId | undefined) => void
   isUserCommented: boolean
+  setRef?: any
+  navigateAuth: () => void
 }
 
 export default function ReviewsSlider({
   reviews,
-  isVisible,
   deleteReview,
   isUserCommented,
+  navigateAuth,
+  setRef
 }: Props) {
 
   const [reviewsState, setReviewsState] = useState<Review_Type[]>([])
@@ -63,18 +65,18 @@ export default function ReviewsSlider({
   }
 
   if (!reviewsState.length) return (
-    <div className={`flex items-center justify-center absolute`}>
-      <FontAwesomeIcon
-        icon={faPlus}
-        className="h-16 text-white cursor-pointer simple-transition opacity-40 hover:opacity-100"
-        onClick={() => null}
-      />
-    </div>
+    <FontAwesomeIcon
+      ref={setRef}
+      icon={faPlus}
+      style={{ left: '50%', transform: 'translateX(-50%)' }}
+      className=" absolute h-16 text-white cursor-pointer opacity-40 hover:opacity-100"
+      onClick={navigateAuth}
+    />
   )
 
 
   return (
-    <div >
+    <div className='w-full overflow-hidden responsive_wrapper absolute' ref={setRef}>
       <Slider
         onReInit={() => clearState()}
         {...settings}
@@ -98,6 +100,13 @@ export default function ReviewsSlider({
           />
         ))}
       </Slider>
+      <div className='mt-24 flex justify-center'>
+        <FontAwesomeIcon
+          icon={faPlus}
+          className="h-16 text-white cursor-pointer opacity-40 hover:opacity-100"
+          onClick={navigateAuth}
+        />
+      </div>
     </div>
   )
 }
