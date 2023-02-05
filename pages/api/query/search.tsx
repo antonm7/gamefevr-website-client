@@ -1,22 +1,27 @@
 import axios from 'axios'
-import { Request, Response } from 'express'
+import { Response } from 'express'
+import { NextApiRequest } from 'next'
 
-interface BodyReq {
-  page: number
-  query: {
-    yearRange: string[] | string | undefined
-    genres: string[] | string | undefined
-    consoles: string[] | string | undefined
-    search: string | undefined
-    sort: string | undefined
+interface ExtendedNextApiRequest extends NextApiRequest {
+  body: {
+    body: {
+      page: number
+      query: {
+        yearRange: string[] | string | undefined
+        genres: string[] | string | undefined
+        consoles: string[] | string | undefined
+        search: string | undefined
+        sort: string | undefined
+      }
+    }
   }
 }
 
-export default async function handler(req: Request, res: Response) {
+export default async function handler(req: ExtendedNextApiRequest, res: Response) {
   if (req.method === 'POST') {
     try {
-      const body: BodyReq = req.body
-      const { yearRange, genres, consoles, search, sort } = body.query
+      const { page, query } = req.body.body
+      const { yearRange, genres, consoles, search, sort } = query
       let games = []
       let count = 0
       let filteredString = ''
@@ -92,13 +97,13 @@ export default async function handler(req: Request, res: Response) {
           filteredString = filteredString.concat('&ordering=-released')
         }
         const getData = await axios.get(
-          `https://api.rawg.io/api/games?key=39a2bd3750804b5a82669025ed9986a8&dates=1990-01-01,2023-12-31&page=${body.page}&page_size=30${filteredString}`
+          `https://api.rawg.io/api/games?key=39a2bd3750804b5a82669025ed9986a8&dates=1990-01-01,2023-12-31&page=${page}&page_size=30${filteredString}`
         )
         games = getData.data
         count = games.count
       } else {
         const getData = await axios.get(
-          `https://api.rawg.io/api/games?key=39a2bd3750804b5a82669025ed9986a8&dates=1990-01-01,2023-12-31&page=${body.page}&page_size=30`
+          `https://api.rawg.io/api/games?key=39a2bd3750804b5a82669025ed9986a8&dates=1990-01-01,2023-12-31&page=${page}&page_size=30`
         )
         games = getData.data
         count = games.count
@@ -112,7 +117,7 @@ export default async function handler(req: Request, res: Response) {
       }
       res
         .status(200)
-        .send({ games: games.results, nextPage: isNextPage(body.page), count })
+        .send({ games: games.results, nextPage: isNextPage(page), count })
     } catch (e) {
       console.log(e)
     }

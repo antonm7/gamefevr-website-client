@@ -17,7 +17,7 @@ export function wretchAction(url: string, body: unknown): Promise<unknown> {
         .notFound(e => { throw new Error() })
         .unauthorized(e => { throw new Error() })
         .internalError(e => { throw new Error() })
-        .res(response => response)
+        .res(response => response.json())
 }
 
 export function promiseHandler(results: any[]): any {
@@ -27,5 +27,6 @@ export function promiseHandler(results: any[]): any {
         const reason: string[] = errors.map((e) => e.reason)
         throw new AggregateError(reason)
     }
+    console.log(results)
     return results.map((result: PromiseFulfilledResult<unknown>) => result.value)
 }

@@ -11,17 +11,19 @@ import { Review_Type } from '../../../../../types/schema'
 
 interface ExtendedNextApiRequest extends NextApiRequest {
   body: {
-    userId: string
-    gameId: string
-    rank: string
-    text: string
+    body: {
+      userId: string
+      gameId: string
+      rank: string
+      text: string
+    }
   }
 }
 
 async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
     let db = null
-    const query = req.body
+    const { userId, gameId, rank, text } = req.body.body
     let savedReview
     //initializing database
     try {
@@ -33,7 +35,7 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
     }
     //checks if game document exists
     try {
-      await games_data_document(req.body.gameId)
+      await games_data_document(gameId)
     } catch (e) {
       res.status(500).send({ error: 'Unexpected error' })
       return console.log('error on games_data_document', e)
@@ -42,7 +44,7 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
     try {
       const isReviewd = await db
         .collection('reviews')
-        .findOne({ userId: query.userId, gameId: query.gameId })
+        .findOne({ userId: userId, gameId: gameId })
       if (isReviewd) {
         res.status(200).send({ error: 'You already reviewed this game' })
         return
@@ -54,7 +56,7 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
     //saves the reviews inside own ranks collection
     try {
       const getData = await axios.get(
-        `https://api.rawg.io/api/games/${query.gameId}?key=0ffbdb925caf4b20987cd068aa43fd75`
+        `https://api.rawg.io/api/games/${gameId}?key=0ffbdb925caf4b20987cd068aa43fd75`
       )
       const gameData = getData.data
 
@@ -77,7 +79,7 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
       try {
         const userName: any = await db
           .collection('users')
-          .findOne({ _id: new ObjectId(query.userId) })
+          .findOne({ _id: new ObjectId(userId) })
         user_name = userName.username
       } catch (e) {
         await generateErrorBackend({
@@ -91,14 +93,14 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
       }
 
       const review: Review_Type = {
-        userId: query.userId,
-        gameId: query.gameId,
+        userId: userId,
+        gameId: gameId,
         user_name,
         game_name: gameData.name,
         game_image: gameData.background_image,
         created_at: generateTime(new Date()),
-        rank: generateRank(query.rank),
-        text: query.text,
+        rank: generateRank(rank),
+        text: text,
         likes: [],
         dislikes: [],
       }
@@ -118,7 +120,7 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
       await db
         .collection('users')
         .updateOne(
-          { _id: new ObjectId(query.userId) },
+          { _id: new ObjectId(userId) },
           { $push: { reviews: savedReview?.insertedId } }
         )
     } catch (e) {
@@ -133,7 +135,7 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
     //updates game data document
     try {
       await db.collection('games_data').updateOne(
-        { gameId: query.gameId },
+        { gameId: gameId },
         {
           $inc: { reviews: 1 },
         }
@@ -153,8 +155,8 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
       await db
         .collection('ranks')
         .updateOne(
-          { gameId: query.gameId, userId: query.userId },
-          { $set: { rank: query.rank } }
+          { gameId: gameId, userId: userId },
+          { $set: { rank: rank } }
         )
     } catch (e) {
       await generateErrorBackend({
@@ -174,16 +176,13 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
       const review = await db
         .collection('reviews')
         .findOne({ _id: savedReview?.insertedId })
-      const update_hype = await updateHype(
+      await updateHype(
         'writeReview',
-        new ObjectId(query.userId)
+        new ObjectId(userId)
       )
 
-      if (update_hype.ok) {
-        res.status(201).send({ error: null, review })
-      } else {
-        throw new Error('error updating hype')
-      }
+      res.status(201).send({ error: null, review })
+
     } catch (e) {
       await generateErrorBackend({
         error: 'error fetching new review on writeReview action api',

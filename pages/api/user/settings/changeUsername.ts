@@ -6,8 +6,10 @@ import GenerateError from '../../../../backend-middlewares/generateErrorBackend'
 
 interface ExtendedNextApiRequest extends NextApiRequest {
   body: {
-    email: string
-    username: string
+    body: {
+      email: string
+      username: string
+    }
   }
 }
 
@@ -21,7 +23,7 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
       return res.status(401)
     }
     let db = null
-    const body = req.body
+    const { email, username } = req.body.body
     //initializing database
     try {
       const client = await clientPromise
@@ -35,7 +37,7 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
     try {
       const user = await db
         .collection('users')
-        .findOne({ username: body.username })
+        .findOne({ username: username })
       if (user) throw new Error('Username already taken')
     } catch (e) {
       await GenerateError({
@@ -50,9 +52,9 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
     }
     //updating every reviews name username fields
     try {
-      const userDocument = await db.collection('users').findOne({ email: body.email })
+      const userDocument = await db.collection('users').findOne({ email: email })
       if (userDocument) {
-        await db.collection('reviews').updateMany({ user_name: body.username }, { user_name: body.username })
+        await db.collection('reviews').updateMany({ user_name: username }, { user_name: username })
       } else {
         throw new Error('cant find user document')
       }
@@ -70,7 +72,7 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
     try {
       await db
         .collection('users')
-        .updateOne({ email: body.email }, { $set: { username: body.username } })
+        .updateOne({ email: email }, { $set: { username: username } })
       res.status(200).send({ error: null })
     } catch (e) {
       await GenerateError({

@@ -58,6 +58,7 @@ export default function Footer({ game, reviews, updateReviewsVisibility, updateR
                     navigateAuth={() => navigateAuth()}
                     screenshots={game.screenshots.results}
                     reviews={reviews}
+                    deleteReview={id => deleteReview(id)}
                 />
 
             ) : (

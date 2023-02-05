@@ -59,25 +59,18 @@ export default async function updateHype(
 }
 
 async function checkTimeout(id: ObjectId): Promise<boolean> {
-  try {
-    const user: full_user = await db.collection('users').findOne({ _id: id })
-    console.log(id)
-    if (!user) throw new Error('No user found')
+  const user: full_user = await db.collection('users').findOne({ _id: id })
+  if (!user) return false
 
-    const timeout = user.hyped_timeout
-    //means its a fresh user
-    if (timeout === null) return true
+  const timeout = user.hyped_timeout
+  //means its a fresh user
+  if (timeout === null) return true
 
-    const now = moment()
-    //30 minuts has passed
-    if (now > timeout) {
-      console.log('reee')
-      return true
-    } else {
-      throw new Error('Still action in timeout')
-    }
-  } catch (e) {
-    console.log(e)
+  const now = moment()
+  //30 minuts has passed
+  if (now > timeout) {
+    return true
+  } else {
     return false
   }
 }
@@ -85,7 +78,6 @@ async function checkTimeout(id: ObjectId): Promise<boolean> {
 async function UpdateScore(id: ObjectId, score: number): Promise<Response> {
   try {
     const isOk = await checkTimeout(id)
-    console.log(isOk)
 
     await db.collection('users')
       .updateOne({ _id: id }, {

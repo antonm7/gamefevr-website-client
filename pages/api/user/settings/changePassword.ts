@@ -7,9 +7,11 @@ import GenerateError from '../../../../backend-middlewares/generateErrorBackend'
 
 interface ExtendedNextApiRequest extends NextApiRequest {
   body: {
-    email: string
-    oldPassword: string
-    newPassword: string
+    body: {
+      email: string
+      oldPassword: string
+      newPassword: string
+    }
   }
 }
 
@@ -23,7 +25,7 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
       return res.status(401)
     }
     let db = null
-    const body = req.body
+    const { email, oldPassword, newPassword } = req.body.body
     //initializing database
     try {
       const client = await clientPromise
@@ -33,12 +35,12 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
     }
     //comparing password
     try {
-      const user = await db.collection('users').findOne({ email: body.email })
+      const user = await db.collection('users').findOne({ email: email })
       if (!user) {
         res.status(404).send({ error: 'User not found' })
         throw new Error('User not found')
       }
-      const isValid = await compare(body.oldPassword, user.password)
+      const isValid = await compare(oldPassword, user.password)
       if (!isValid) {
         return res
           .status(200)
@@ -55,11 +57,11 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
     }
 
     try {
-      const hashedPassword = await hash(body.newPassword, 8)
+      const hashedPassword = await hash(newPassword, 8)
       await db
         .collection('users')
         .updateOne(
-          { email: body.email },
+          { email: email },
           { $set: { password: hashedPassword } }
         )
       res.status(200).send({ error: null })

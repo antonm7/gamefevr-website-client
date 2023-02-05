@@ -10,9 +10,11 @@ import { Rank } from '../../../../types/schema'
 
 interface ExtendedNextApiRequest extends NextApiRequest {
   body: {
-    gameId: string
-    userId: string
-    value: string
+    body: {
+      gameId: string
+      userId: string
+      value: string
+    }
   }
 }
 
@@ -20,7 +22,7 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
     let db = null
     let savedRank
-    const body = req.body
+    const { gameId, userId, value } = req.body.body
     //initializing database
     try {
       const client = await clientPromise
@@ -31,7 +33,7 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
     }
     //checks if game document exists
     try {
-      await games_data_document(body.gameId)
+      await games_data_document(gameId)
     } catch (e) {
       await generateErrorBackend({
         error: 'error on games_data_document on rankGame action api',
@@ -44,10 +46,10 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
     //saves the rank inside own ranks collection
     try {
       const rank: Rank = {
-        userId: req.body.userId,
-        gameId: req.body.gameId,
+        userId: userId,
+        gameId: gameId,
         created_at: generateTime(new Date()),
-        value: req.body.value,
+        value: value,
       }
       savedRank = await db.collection('ranks').insertOne(rank)
     } catch (e) {
@@ -64,7 +66,7 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
       await db
         .collection('users')
         .updateOne(
-          { _id: new ObjectId(req.body.userId) },
+          { _id: new ObjectId(userId) },
           { $push: { ranks: savedRank?.insertedId } }
         )
     } catch (e) {
@@ -78,31 +80,31 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
     }
     //updates game data document
     try {
-      if (req.body.value === 'waste_of_time') {
+      if (value === 'waste_of_time') {
         await db
           .collection('games_data')
           .updateOne(
-            { gameId: req.body.gameId },
+            { gameId: gameId },
             { $inc: { waste_of_time: 1 } }
           )
       }
 
-      if (req.body.value === 'nuh') {
+      if (value === 'nuh') {
         await db
           .collection('games_data')
-          .updateOne({ gameId: req.body.gameId }, { $inc: { nuh: 1 } })
+          .updateOne({ gameId: gameId }, { $inc: { nuh: 1 } })
       }
 
-      if (req.body.value === 'good') {
+      if (value === 'good') {
         await db
           .collection('games_data')
-          .updateOne({ gameId: req.body.gameId }, { $inc: { good: 1 } })
+          .updateOne({ gameId: gameId }, { $inc: { good: 1 } })
       }
 
-      if (req.body.value === 'must') {
+      if (value === 'must') {
         await db
           .collection('games_data')
-          .updateOne({ gameId: req.body.gameId }, { $inc: { must: 1 } })
+          .updateOne({ gameId: gameId }, { $inc: { must: 1 } })
       }
     } catch (e) {
       await generateErrorBackend({
@@ -115,16 +117,11 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
       return console.log('error on updating games_data document', e)
     }
     try {
-      const update_hype = await updateHype(
+      await updateHype(
         'dislikeReview',
-        new ObjectId(req.body.userId)
+        new ObjectId(userId)
       )
-
-      if (update_hype.ok) {
-        res.status(201).send({ error: null })
-      } else {
-        throw new Error('error updating hype')
-      }
+      res.status(201).send({ error: null })
     } catch (e) {
       res.status(500).send({ error: 'Unexpected error' })
       console.log('error on rankGame', e)

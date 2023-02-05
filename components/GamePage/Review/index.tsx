@@ -87,12 +87,11 @@ export default function Review({
           rankId: _id
         })
 
-      const result = await Promise.allSettled([
+      await Promise.allSettled([
         deleteReviewAction(),
         cancelRankAction()
       ])
 
-      promiseHandler(result)
       deleteReviewProps(_id)
     } catch (e) {
       PubSub.publish('OPEN_ALERT', {

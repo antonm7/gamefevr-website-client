@@ -3,18 +3,20 @@ import { Review_Type } from "../../../../../types/schema"
 import Screenshots from "../../../Screenshots"
 import styles from './index.module.scss'
 import Image from "next/image"
-import { useEffect, useReducer, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import ReviewsSlider from "../../../ReviewsSlider"
 import YellowButton from "../../../../common/YellowButton"
 import gsap from 'gsap'
+import { ObjectId } from "bson"
 
 type Props = {
     screenshots: Short_Screenshot[]
     reviews: Review_Type[]
     navigateAuth: () => void
+    deleteReview: (id: ObjectId | undefined) => void
 }
 
-export default function Bigger1200({ screenshots, reviews, navigateAuth }: Props) {
+export default function Bigger1200({ screenshots, reviews, navigateAuth, deleteReview }: Props) {
     const [visible, setVisible] = useState<'screenshots' | 'reviews'>('screenshots')
     const screenshotsRef = useRef(null)
     const blueBoxRef = useRef(null)
@@ -84,7 +86,7 @@ export default function Bigger1200({ screenshots, reviews, navigateAuth }: Props
                         </div>
                     </div>
                 </div>
-                <ReviewsSlider navigateAuth={navigateAuth} setRef={reviewsRef} reviews={reviews} deleteReview={() => null} isUserCommented={false} />
+                <ReviewsSlider navigateAuth={navigateAuth} setRef={reviewsRef} reviews={reviews} deleteReview={id => deleteReview(id)} isUserCommented={false} />
             </div>
             <div className="w-56 m-auto mt-12">
                 <YellowButton title={visible === 'screenshots' ? 'Show Reviews' : 'Show Screenshots'} onClick={() => setVisible(visible === 'reviews' ? 'screenshots' : 'reviews')} />

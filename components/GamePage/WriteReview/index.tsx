@@ -36,7 +36,7 @@ export default function WriteReview({
         })
       }
 
-      const writeReviewRequest = await wretchAction(
+      const writeReviewRequest = async () => await wretchAction(
         '/api/game/action/review/writeReview',
         {
           userId: session.data?.user?.userId,
@@ -51,9 +51,8 @@ export default function WriteReview({
         value: rank
       })
 
-      const result = await Promise.allSettled([writeReviewRequest, rankGameAction])
+      const result = await Promise.allSettled([writeReviewRequest(), rankGameAction()])
       const [writeReviewResponse]: any = promiseHandler(result)
-
       PubSub.publish('OPEN_ALERT', {
         type: 'success',
         msg: `Successfully created your review!`

@@ -1,16 +1,21 @@
 import { ObjectId } from 'bson'
-import { Request, Response } from 'express'
+import { Response } from 'express'
 import clientPromise from '../../../../lib/functions/mongodb'
 import sgMail from '@sendgrid/mail'
 import GenerateError from '../../../../backend-middlewares/generateErrorBackend'
+import { NextApiRequest } from 'next'
 
-interface Body {
-  email: string
+interface ExtendedNextApiRequest extends NextApiRequest {
+  body: {
+    body: {
+      email: string
+    }
+  }
 }
 
-export default async function handler(req: Request, res: Response) {
+export default async function handler(req: ExtendedNextApiRequest, res: Response) {
   if (req.method === 'POST') {
-    const { email }: Body = req.body
+    const { email } = req.body.body
     let db = null
     //initializing database
     try {
