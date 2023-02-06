@@ -40,7 +40,7 @@ export default function Bigger1200({ screenshots, reviews, navigateAuth, deleteR
             })
             gsap.to(reviewsRef.current, {
                 top: reviews.length ? '5rem' : '50%',
-                duration: reviews.length ? 0.2 : 0.2,
+                duration: 0.4,
                 delay: reviews.length ? 0.4 : 1,
             })
         } else {
