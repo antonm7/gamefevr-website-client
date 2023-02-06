@@ -58,7 +58,6 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
       const getSpecificGameData: any = await wretchWrapper(
         `https://api.rawg.io/api/games/${gameId}?key=0ffbdb925caf4b20987cd068aa43fd75`
         , 'getSpecificGameData')
-      const gameData = getSpecificGameData.data
 
       const generateRank = (rank: string) => {
         switch (rank) {
@@ -96,8 +95,8 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
         userId: userId,
         gameId: gameId,
         user_name,
-        game_name: gameData.name,
-        game_image: gameData.background_image,
+        game_name: getSpecificGameData.name,
+        game_image: getSpecificGameData.background_image,
         created_at: generateTime(new Date()),
         rank: generateRank(rank),
         text: text,
