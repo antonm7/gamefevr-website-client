@@ -25,41 +25,45 @@ export default function Bigger1200({ screenshots, reviews, navigateAuth, deleteR
 
     useEffect(() => {
         if (visible === 'reviews') {
+            gsap.to(wrapperRef.current, {
+                height: reviews.length ? '780px' : '180px',
+                delay: 0.5,
+                duration: 0.4
+            })
             gsap.to(blueBoxRef.current, {
                 x: '-100%',
-                duration: 0.004
+                duration: 0.2
             })
             gsap.to(screenshotsRef.current, {
                 x: '100%',
-                duration: 0.004
-            })
-            gsap.to(wrapperRef.current, {
-                height: reviews.length ? '780px' : '150px',
-                delay: 0.5
+                duration: 0.2
             })
             gsap.to(reviewsRef.current, {
-                top: reviews.length ? '8rem' : '4rem',
-                delay: reviews.length ? 0 : 0.7
+                top: reviews.length ? '5rem' : '50%',
+                duration: reviews.length ? 0.4 : 0.2,
+                delay: reviews.length ? 0.2 : 1,
             })
         } else {
+            gsap.to(wrapperRef.current, {
+                height: '780px',
+                delay: reviews.length ? 0.5 : 0.2
+            })
             gsap.to(blueBoxRef.current, {
                 x: '0%',
-                duration: 0.004
+                duration: 0.2,
+                delay: reviews.length ? 0.4 : 0.2
             })
             gsap.to(screenshotsRef.current, {
                 x: '130px',
-                duration: 0.004
-            })
-            gsap.to(wrapperRef.current, {
-                height: '780px'
+                duration: 0.2,
+                delay: reviews.length ? 0.4 : 0.2,
             })
             gsap.to(reviewsRef.current, {
-                top: '-100%'
+                top: '-100%',
+                duration: reviews.length ? 0.4 : 0.2
             })
-
         }
-    }, [visible])
-
+    }, [visible, reviews])
 
     return (
         <>
@@ -86,7 +90,7 @@ export default function Bigger1200({ screenshots, reviews, navigateAuth, deleteR
                         </div>
                     </div>
                 </div>
-                <ReviewsSlider navigateAuth={navigateAuth} setRef={reviewsRef} reviews={reviews} deleteReview={id => deleteReview(id)} isUserCommented={false} />
+                <ReviewsSlider navigateAuth={navigateAuth} setRef={reviewsRef} reviews={reviews} deleteReview={id => deleteReview(id)} />
             </div>
             <div className="w-56 m-auto mt-12">
                 <YellowButton title={visible === 'screenshots' ? 'Show Reviews' : 'Show Screenshots'} onClick={() => setVisible(visible === 'reviews' ? 'screenshots' : 'reviews')} />

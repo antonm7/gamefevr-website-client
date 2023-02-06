@@ -90,11 +90,12 @@ export default function WriteReview({
 
   return (
     <div
-      id="write_review_container"
-      className={`scrollbar ${visible ? 'fixed ' : 'hidden '
-        }px-7 py-6 rounded-xl w-3/5 z-30  h-3/4`}
+      className={`scrollbar ${visible ? 'fixed ' : 'hidden'
+        } px-7 py-6 rounded-xl w-3/5 z-30 h-3/4`}
       style={{
         height: '30rem',
+        left: '50%',
+        transform: 'translateX(-50%)',
         backgroundColor: 'rgba(21,21,21)',
       }}
     >

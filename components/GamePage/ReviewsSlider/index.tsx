@@ -2,14 +2,13 @@ import Slider from 'react-slick'
 import Review from '../Review'
 import { Review_Type } from '../../../types/schema'
 import { ObjectId } from 'bson'
-import { useEffect, useState } from 'react'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import styles from './index.module.scss'
+import { useSession } from 'next-auth/react'
+
 interface Props {
   reviews: Review_Type[]
   deleteReview: (reviewId: ObjectId | undefined) => void
-  isUserCommented: boolean
   setRef?: any
   navigateAuth: () => void
   lower1200?: boolean
@@ -19,34 +18,28 @@ export default function ReviewsSlider({
   reviews,
   deleteReview,
   lower1200,
-  isUserCommented,
   navigateAuth,
   setRef
 }: Props) {
-
-  const [reviewsState, setReviewsState] = useState<Review_Type[]>([])
-  useEffect(() => {
-    setReviewsState(reviews)
-  }, [reviews])
 
   const settings = {
     infinite: false,
     slidesToScroll: 1,
     arrows: false,
     accessibility: false,
-    slidesToShow: reviewsState.length
-      ? reviewsState.length >= 3
+    slidesToShow: reviews.length
+      ? reviews.length >= 3
         ? 3
-        : reviewsState.length
+        : reviews.length
       : 3,
     responsive: [
       {
         breakpoint: 1600,
         settings: {
-          slidesToShow: reviewsState.length
-            ? reviewsState.length >= 2
+          slidesToShow: reviews.length
+            ? reviews.length >= 2
               ? 2
-              : reviewsState.length
+              : reviews.length
             : 2,
         },
       },
@@ -59,30 +52,32 @@ export default function ReviewsSlider({
     ],
   }
 
-  const clearState = () => {
-    if (reviews.length > reviewsState.length) {
-      setReviewsState([])
-    }
-  }
+  const session = useSession()
 
-  if (!reviewsState.length) return (
-    <FontAwesomeIcon
+
+  if (!reviews.length) return (
+
+    <div
       ref={setRef}
-      icon={faPlus}
-      style={{ left: '50%', transform: 'translateX(-50%)' }}
-      className=" absolute h-16 text-white cursor-pointer opacity-40 hover:opacity-100"
       onClick={navigateAuth}
-    />
+      style={{ left: '50%', transform: 'translateX(-50%)', bottom: '6.3rem' }}
+      className="rounded-md flex items-center px-12 bg-[rgba(21,21,21)] absolute w-max h-16 text-white cursor-pointer opacity-40 hover:opacity-100">
+      <FontAwesomeIcon
+        icon={faPlus}
+      />
+      <span className='pl-2 text-lg'>Write A Review</span>
+    </div>
   )
 
   return (
-    <div className={`w-full overflow-hidden responsive_wrapper absolute ${lower1200 ? 'relative' : 'absolute'}`} ref={setRef}>
+    <div
+      ref={setRef}
+      className={`h-full w-full overflow-hidden responsive_wrapper absolute top-0 ${lower1200 ? 'relative' : 'absolute'}`} >
       <Slider
-        onReInit={() => clearState()}
         {...settings}
         arrows={false}
       >
-        {reviewsState.map((review: Review_Type, index: number) => (
+        {reviews.map((review: Review_Type, index: number) => (
           <Review
             key={index}
             _id={review._id}
@@ -100,13 +95,17 @@ export default function ReviewsSlider({
           />
         ))}
       </Slider>
-      <div className='mt-24 flex justify-center'>
-        <FontAwesomeIcon
-          icon={faPlus}
-          className="h-16 text-white cursor-pointer opacity-40 hover:opacity-100"
+      {!reviews.filter(r => JSON.stringify(r.userId) === JSON.stringify(session.data?.user.userId)).length ?
+        <div
           onClick={navigateAuth}
-        />
-      </div>
+          style={{ left: '50%', transform: 'translateX(-50%)', bottom: '6.3rem' }}
+          className="rounded-md flex items-center px-12 bg-[rgba(21,21,21)] absolute w-max h-16 text-white cursor-pointer opacity-40 hover:opacity-100">
+          <FontAwesomeIcon
+            icon={faPlus}
+          />
+          <span className='pl-2 text-lg'>Write A Review</span>
+        </div> : null
+      }
     </div>
   )
 }
