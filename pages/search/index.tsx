@@ -15,6 +15,7 @@ import { visited_years } from '../../types/schema'
 import clientPromise from '../../lib/functions/mongodb'
 import { ObjectId } from 'bson'
 import { wretchAction, wretchWrapper } from '../../lib/functions/fetchLogic'
+import styles from './index.module.scss'
 
 type Props = {
   games: ShortGame[]
@@ -137,17 +138,16 @@ export default function Index(props: Props) {
           <div className="responsive_wrapper py-10">
             {!loadMoreLoading ? (
               <div
+                id={styles.header_titles}
                 className="flex justify-between items-center"
               >
                 <p
+                  id={styles.we_found_title}
                   className="font-bold text-white text-4xl pb-10"
                 >
                   We found {store.count.toLocaleString()} games for you
                 </p>
-                <div
-                  className={`h-full pb-10 text-white ${router.query.sort ? 'underline' : ''
-                    }`}
-                >
+                <div className={`h-full pb-10 text-white ${router.query.sort ? 'underline' : ''}`}>
                   <span className="opacity-60">Sort by:</span>{' '}
                   <span
                     className="font-semibold  cursor-pointer"
@@ -159,6 +159,7 @@ export default function Index(props: Props) {
               </div>
             ) : null}
             <div
+              id={styles.games_wrapper}
               className="flex flex-wrap justify-between">
               {store.games.map((game: ShortGame, index: number) => (
                 <SmallGameBox key={index} game={game} />

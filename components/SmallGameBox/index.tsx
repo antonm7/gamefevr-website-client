@@ -1,9 +1,9 @@
 import Link from 'next/link'
-import { ElementDescription, ParentPlatform, ShortGame } from '../types'
+import { ElementDescription, ParentPlatform, ShortGame } from '../../types'
 import { useEffect, useState } from 'react'
-import BackgroundGameImage from './BackgroundGameImage'
-import { wretchWrapper } from '../lib/functions/fetchLogic'
-
+import BackgroundGameImage from '../BackgroundGameImage'
+import { wretchWrapper } from '../../lib/functions/fetchLogic'
+import styles from './index.module.scss'
 type Props = {
   game: ShortGame
 }
@@ -30,10 +30,8 @@ export default function SmallGameBox({ game }: Props) {
   return (
     <Link href={`/game/${game.id}`} className="cursor-pointer">
       <div
-        className="h-72 rounded-lg mx-3 overflow-hidden mb-12 z-10 cursor-pointer "
-        style={{ height: '100%', width: '22rem', maxWidth: '22rem', backgroundColor: '#0e3462   ' }
-        }
-      >
+        id={styles.wrapper}
+        className="h-72 rounded-lg mx-3 overflow-hidden mb-12 z-10 cursor-pointer ">
         <BackgroundGameImage bg={game.background_image} movieUrl={movieUrl} />
         <div className="flex-grow p-4">
           <h1
