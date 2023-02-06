@@ -1,4 +1,3 @@
-import axios from 'axios'
 import { useRouter } from 'next/router'
 import { NextPage } from 'next/types'
 import { useState } from 'react'
@@ -6,6 +5,7 @@ import SmallLoader from '../../components/common/SmallLoader'
 import YellowButton from '../../components/common/YellowButton'
 import SearchLayout from '../../components/layout'
 import StyledInput from '../../components/Register/StyledInput'
+import { wretchAction, wretchWrapper } from '../../lib/functions/fetchLogic'
 import clientPromise from '../../lib/functions/mongodb'
 
 const resetPassword: NextPage = () => {
@@ -26,22 +26,19 @@ const resetPassword: NextPage = () => {
 
       if (password !== newPassword) return setError('Confirm password is not the same')
 
-      const req = await axios.post('/api/user/settings/confirmResetPassword', {
+      const req: any = await wretchAction('/api/user/settings/confirmResetPassword', {
         newPassword,
         link: router.query.link,
       })
-      if (req.status !== 200) {
-        throw new Error()
+
+      if (req.data.error) {
+        setError(req.data.error)
       } else {
-        if (req.data.error) {
-          setError(req.data.error)
-        } else {
-          setTimeout(() => {
-            router.push('/register/login')
-          }, 1500)
-          setError('')
-          setCompleted(true)
-        }
+        setTimeout(() => {
+          router.push('/register/login')
+        }, 1500)
+        setError('')
+        setCompleted(true)
       }
     } catch (e) {
       setError('Unexpected error, please try again')

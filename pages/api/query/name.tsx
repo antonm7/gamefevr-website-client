@@ -1,5 +1,5 @@
-import axios from "axios";
 import { Request, Response } from "express";
+import { wretchWrapper } from "../../../lib/functions/fetchLogic";
 import { NamedGame } from "../../../types";
 
 export default async function handler(req: Request, res: Response) {
@@ -7,12 +7,10 @@ export default async function handler(req: Request, res: Response) {
     try {
       const query = req.query;
       const games: NamedGame[] = [];
-      let data = [];
 
-      const getData = await axios.get(
+      const data: any = await wretchWrapper(
         `https://api.rawg.io/api/games?key=39a2bd3750804b5a82669025ed9986a8&page=1&page_size=5&search=${query.search}`
-      );
-      data = getData.data;
+        , 'getGamesData');
 
       for (const key in data.results) {
         games.push({

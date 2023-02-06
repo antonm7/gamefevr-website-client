@@ -1,10 +1,10 @@
 import { faBookmark, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import axios from 'axios'
 import { ObjectId } from 'bson'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
+import { wretchAction } from '../../../lib/functions/fetchLogic'
 import useWindowSize from '../../../lib/functions/hooks/useWindowSize'
 import slicedParagrap from '../../../lib/functions/slicedParagraph'
 import { OPEN_ALERT_TYPE } from '../../../types'
@@ -49,7 +49,7 @@ export default function Favorite({
   const deleteFavoriteMethod = async (): Promise<void> => {
     if (deleteFavorite) {
       try {
-        const req = await axios.post(
+        await wretchAction(
           '/api/game/cancel/favorite/deleteFavorite',
           {
             userId,
@@ -57,11 +57,7 @@ export default function Favorite({
             favoriteId: _id,
           }
         )
-        if (req.status === 200) {
-          deleteFavorite(_id)
-        } else {
-          throw new Error('Unexpected Error')
-        }
+        deleteFavorite(_id)
       } catch (e) {
         PubSub.publish('OPEN_ALERT', {
           type: 'error',

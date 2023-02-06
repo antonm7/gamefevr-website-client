@@ -1,9 +1,9 @@
-import axios from 'axios'
 import { ObjectId } from 'bson'
 import { NextApiRequest, NextApiResponse } from 'next'
 import authorize from '../../../../../backend-middlewares/authorize'
 import generateErrorBackend from '../../../../../backend-middlewares/generateErrorBackend'
 import games_data_document from '../../../../../lib/functions/create/games_data'
+import { wretchWrapper } from '../../../../../lib/functions/fetchLogic'
 import generateTime from '../../../../../lib/functions/generateTime'
 import clientPromise from '../../../../../lib/functions/mongodb'
 import updateHype from '../../../../../lib/functions/updateHype'
@@ -55,10 +55,10 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
     }
     //saves the reviews inside own ranks collection
     try {
-      const getData = await axios.get(
+      const getSpecificGameData: any = await wretchWrapper(
         `https://api.rawg.io/api/games/${gameId}?key=0ffbdb925caf4b20987cd068aa43fd75`
-      )
-      const gameData = getData.data
+        , 'getSpecificGameData')
+      const gameData = getSpecificGameData.data
 
       const generateRank = (rank: string) => {
         switch (rank) {

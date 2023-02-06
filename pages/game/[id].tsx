@@ -8,7 +8,6 @@ import { useStore } from '../../store'
 import { useRouter } from 'next/router'
 import ErrorComponent from '../../components/ErrorComponent'
 import SmallLoader from '../../components/common/SmallLoader'
-import axios from 'axios'
 import { wretchWrapper, promiseHandler } from '../../lib/functions/fetchLogic'
 import Upper from '../../components/GamePage/Responsive/Upper'
 import Footer from '../../components/GamePage/Responsive/Footer'
@@ -132,11 +131,11 @@ export async function getStaticPaths() {
   const ids: number[] = []
 
   for (let i = 1; i < 5; i++) {
-    const getData = await axios.get(
+    const getGamesData: any = await wretchWrapper(
       `https://api.rawg.io/api/games?key=39a2bd3750804b5a82669025ed9986a8&dates=1990-01-01,2023-12-31&page=${i}&page_size=${100}`
-    )
+      , 'getGamesData')
     ids.push(
-      ...(getData.data).results.map((game: ShortGame) => game.id)
+      ...(getGamesData.data).results.map((game: ShortGame) => game.id)
     )
   }
 

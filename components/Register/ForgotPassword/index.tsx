@@ -1,5 +1,5 @@
-import axios from "axios"
 import { useState } from "react"
+import { wretchAction } from "../../../lib/functions/fetchLogic"
 import SmallLoader from "../../common/SmallLoader"
 import YellowButton from "../../common/YellowButton"
 import StyledInput from "../StyledInput"
@@ -26,24 +26,15 @@ export default function ForgotPassword({ goBack }: Props) {
             setForgotError('Please Enter A Valid Email')
         } else {
             try {
-                const req = await axios.post(
+                await wretchAction(
                     '/api/user/settings/sendForgotPasswordEmail',
                     {
                         email: emailForgot
                     }
                 )
-                if (req.status === 404) {
-                    setForgotError('No User Found With The Email')
-                } else {
-                    if (req.status !== 200) {
-                        setForgotError('Unexpected Error, Try Again')
-                        throw new Error('Unexpected Error, Try Again')
-                    } else {
-                        setForgotError('')
-                        setStartSending(true)
-                        setTimeout(() => { setStartSending(false) }, 1500)
-                    }
-                }
+                setForgotError('')
+                setStartSending(true)
+                setTimeout(() => { setStartSending(false) }, 1500)
             } catch (e) {
                 setLoading(false)
             }

@@ -1,4 +1,3 @@
-import axios from 'axios'
 import { NextPage } from 'next'
 import { getSession, signIn } from 'next-auth/react'
 import Link from 'next/link'

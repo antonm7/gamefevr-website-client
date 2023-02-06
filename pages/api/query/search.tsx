@@ -1,6 +1,6 @@
-import axios from 'axios'
 import { Response } from 'express'
 import { NextApiRequest } from 'next'
+import { wretchWrapper } from '../../../lib/functions/fetchLogic'
 
 interface ExtendedNextApiRequest extends NextApiRequest {
   body: {
@@ -96,15 +96,15 @@ export default async function handler(req: ExtendedNextApiRequest, res: Response
         if (sort === 'year') {
           filteredString = filteredString.concat('&ordering=-released')
         }
-        const getData = await axios.get(
+        const getData: any = await wretchWrapper(
           `https://api.rawg.io/api/games?key=39a2bd3750804b5a82669025ed9986a8&dates=1990-01-01,2023-12-31&page=${page}&page_size=30${filteredString}`
-        )
+          , 'getGamesData')
         games = getData.data
         count = games.count
       } else {
-        const getData = await axios.get(
+        const getData: any = await wretchWrapper(
           `https://api.rawg.io/api/games?key=39a2bd3750804b5a82669025ed9986a8&dates=1990-01-01,2023-12-31&page=${page}&page_size=30`
-        )
+          , 'getGamesData')
         games = getData.data
         count = games.count
       }

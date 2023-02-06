@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import axios from 'axios'
 import { ObjectId } from 'bson'
 import Link from 'next/link'
 import slicedParagrap from '../../../lib/functions/slicedParagraph'
 import { Review_Type } from '../../../types/schema'
 import useWindowSize from '../../../lib/functions/hooks/useWindowSize'
 import { OPEN_ALERT_TYPE } from '../../../types'
+import { wretchAction } from '../../../lib/functions/fetchLogic'
 
 interface Props extends Review_Type {
   deleteReview?: (id: ObjectId | undefined) => void
@@ -46,17 +46,12 @@ export default function Reviews({
 
   const deleteReviewMethod = async (): Promise<void> => {
     try {
-      const req = await axios.post('/api/game/cancel/review/deleteReview', {
+      await wretchAction('/api/game/cancel/review/deleteReview', {
         userId: userId,
         gameId: gameId,
         reviewId: _id,
       })
-      if (req.status !== 200) {
-        throw new Error('error')
-      }
-      if (deleteReview) {
-        deleteReview(_id)
-      }
+      if (deleteReview) deleteReview(_id)
     } catch (e) {
       PubSub.publish('OPEN_ALERT', {
         type: 'error',

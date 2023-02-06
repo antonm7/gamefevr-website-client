@@ -6,8 +6,8 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import authorize from '../../../../../backend-middlewares/authorize'
 import GenerateError from '../../../../../backend-middlewares/generateErrorBackend'
 import updateHype from '../../../../../lib/functions/updateHype'
-import axios from 'axios'
 import generateTime from '../../../../../lib/functions/generateTime'
+import { wretchWrapper } from '../../../../../lib/functions/fetchLogic'
 
 interface ExtendedNextApiRequest extends NextApiRequest {
   body: {
@@ -55,10 +55,10 @@ const handler = async (req: ExtendedNextApiRequest, res: NextApiResponse) => {
     }
     //saves the favorite inside own favorites collection
     try {
-      const getData = await axios.get(
+      const fetchSpecificGame: any = await wretchWrapper(
         `https://api.rawg.io/api/games/${gameId}?key=39a2bd3750804b5a82669025ed9986a8`
-      )
-      const gameData = getData.data
+        , 'fetchSpecificGame')
+      const gameData = fetchSpecificGame.data
 
       const favorite: Favorite_Type = {
         userId: userId,
