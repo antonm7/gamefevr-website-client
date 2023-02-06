@@ -120,6 +120,7 @@ export default async function handler(req: ExtendedNextApiRequest, res: Response
         .send({ games: games.results, nextPage: isNextPage(page), count })
     } catch (e) {
       console.log(e)
+      res.status(500).send({ error: 'Unexpected Error' })
     }
   }
 }

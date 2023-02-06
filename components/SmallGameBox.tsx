@@ -30,8 +30,8 @@ export default function SmallGameBox({ game }: Props) {
   return (
     <Link href={`/game/${game.id}`} className="cursor-pointer">
       <div
-        className="h-72 rounded-lg mx-3 mb-10 overflow-hidden z-10 cursor-pointer "
-        style={{ height: '1%', width: '26rem', maxWidth: '26rem', backgroundColor: '#0e3462   ' }
+        className="h-72 rounded-lg mx-3 overflow-hidden mb-12 z-10 cursor-pointer "
+        style={{ height: '100%', width: '22rem', maxWidth: '22rem', backgroundColor: '#0e3462   ' }
         }
       >
         <BackgroundGameImage bg={game.background_image} movieUrl={movieUrl} />

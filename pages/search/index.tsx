@@ -14,7 +14,7 @@ import { getSession } from 'next-auth/react'
 import { visited_years } from '../../types/schema'
 import clientPromise from '../../lib/functions/mongodb'
 import { ObjectId } from 'bson'
-import { wretchWrapper } from '../../lib/functions/fetchLogic'
+import { wretchAction, wretchWrapper } from '../../lib/functions/fetchLogic'
 
 type Props = {
   games: ShortGame[]
@@ -37,10 +37,15 @@ export default function Index(props: Props) {
     if (loadingError) {
       setLoadingError(false)
     }
+
     try {
       setNoResults(false)
       setLoadMoreLoading(true)
-      const fetchMoreGames: any = await wretchWrapper('/api/query/search', 'fetchMoreGames')
+      const fetchMoreGames: any = await wretchAction('/api/query/search', {
+        page: store.page,
+        query: router.query
+      })
+      console.log(fetchMoreGames)
       if (fetchMoreGames.length === 0) {
         //if there no games from server, dont update the games state
         //and remove the loadMore button
@@ -60,6 +65,7 @@ export default function Index(props: Props) {
       })
       setLoadMoreLoading(false)
     }
+
   }
 
   const initialLoading = async () => {
@@ -75,11 +81,8 @@ export default function Index(props: Props) {
       loadMoreGames()
       return
     }
-
     if (!props.games.length && !props.error) return
-
     if (props.error) return setLoadingError(true)
-
     if (!props.games.length) {
       setNoResults(true)
     } else {
@@ -131,18 +134,18 @@ export default function Index(props: Props) {
             />
           </div>
         ) : (
-          <div className="py-10">
+          <div className="responsive_wrapper py-10">
             {!loadMoreLoading ? (
               <div
                 className="flex justify-between items-center"
               >
                 <p
-                  className="font-bold text-white text-4xl px-44 pb-10"
+                  className="font-bold text-white text-4xl pb-10"
                 >
                   We found {store.count.toLocaleString()} games for you
                 </p>
                 <div
-                  className={`h-full px-44 pb-10 text-white ${router.query.sort ? 'underline' : ''
+                  className={`h-full pb-10 text-white ${router.query.sort ? 'underline' : ''
                     }`}
                 >
                   <span className="opacity-60">Sort by:</span>{' '}
@@ -156,8 +159,7 @@ export default function Index(props: Props) {
               </div>
             ) : null}
             <div
-              className="flex flex-wrap justify-center px-40 "
-            >
+              className="flex flex-wrap justify-between">
               {store.games.map((game: ShortGame, index: number) => (
                 <SmallGameBox key={index} game={game} />
               ))}
