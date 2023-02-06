@@ -45,7 +45,6 @@ export default function Lower1200({ reviews, navigateAuth, deleteReview, screens
                     lower1200={true}
                     reviews={reviews}
                     deleteReview={(id) => deleteReview(id)}
-                    isUserCommented={false}
                     navigateAuth={navigateAuth} />
             </div>
         </div>

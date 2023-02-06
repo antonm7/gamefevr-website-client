@@ -1,19 +1,25 @@
-import { Request, Response } from 'express'
+import { Response } from 'express'
 import clientPromise from '../../../lib/functions/mongodb'
 import { hash } from 'bcrypt'
 import sgMail from '@sendgrid/mail'
 import generateTime from '../../../lib/functions/generateTime'
+import { NextApiRequest } from 'next'
 
-interface ReqBody {
-  email: string
-  password: string
-  username: string
+interface ExtendedApiRequest extends NextApiRequest {
+  body: {
+    body: {
+      email: string
+      password: string
+      username: string
+    }
+  }
 }
 
-async function handler(req: Request, res: Response) {
+
+async function handler(req: ExtendedApiRequest, res: Response) {
   if (req.method === 'POST') {
     try {
-      const { email, password, username }: ReqBody = req.body
+      const { email, password, username } = req.body.body
 
       const client = await clientPromise
       const db = client.db()
@@ -25,8 +31,9 @@ async function handler(req: Request, res: Response) {
         return re.test(email)
       }
 
-      if (!validateEmail(email))
+      if (!validateEmail(email)) {
         return res.status(200).send({ error: 'Please enter valid email' })
+      }
 
       const passw = /^[A-Za-z]\w{7,14}$/
       if (!password.match(passw))

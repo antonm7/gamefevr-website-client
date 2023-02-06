@@ -27,8 +27,8 @@ export default function Bigger1200({ screenshots, reviews, navigateAuth, deleteR
         if (visible === 'reviews') {
             gsap.to(wrapperRef.current, {
                 height: reviews.length ? '780px' : '180px',
-                delay: 0.5,
-                duration: 0.4
+                delay: 0.4,
+                duration: 0.2
             })
             gsap.to(blueBoxRef.current, {
                 x: '-100%',
@@ -40,27 +40,27 @@ export default function Bigger1200({ screenshots, reviews, navigateAuth, deleteR
             })
             gsap.to(reviewsRef.current, {
                 top: reviews.length ? '5rem' : '50%',
-                duration: reviews.length ? 0.4 : 0.2,
-                delay: reviews.length ? 0.2 : 1,
+                duration: reviews.length ? 0.2 : 0.2,
+                delay: reviews.length ? 0.4 : 1,
             })
         } else {
             gsap.to(wrapperRef.current, {
                 height: '780px',
-                delay: reviews.length ? 0.5 : 0.2
+                delay: reviews.length ? 0.4 : 0.2
             })
             gsap.to(blueBoxRef.current, {
                 x: '0%',
                 duration: 0.2,
-                delay: reviews.length ? 0.4 : 0.2
+                delay: 0.2
             })
             gsap.to(screenshotsRef.current, {
                 x: '130px',
                 duration: 0.2,
-                delay: reviews.length ? 0.4 : 0.2,
+                delay: 0.2,
             })
             gsap.to(reviewsRef.current, {
                 top: '-100%',
-                duration: reviews.length ? 0.4 : 0.2
+                duration: 0.4
             })
         }
     }, [visible, reviews])
