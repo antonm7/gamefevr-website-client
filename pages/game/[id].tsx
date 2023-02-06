@@ -135,7 +135,7 @@ export async function getStaticPaths() {
       `https://api.rawg.io/api/games?key=39a2bd3750804b5a82669025ed9986a8&dates=1990-01-01,2023-12-31&page=${i}&page_size=${100}`
       , 'getGamesData')
     ids.push(
-      ...(getGamesData.data).results.map((game: ShortGame) => game.id)
+      ...getGamesData.results.map((game: ShortGame) => game.id)
     )
   }
 
