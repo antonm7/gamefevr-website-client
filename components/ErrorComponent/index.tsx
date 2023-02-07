@@ -1,6 +1,6 @@
 import LoadingError from '../common/LoadingError'
 
-interface Props {
+type Props = {
   onLoad: () => void
 }
 

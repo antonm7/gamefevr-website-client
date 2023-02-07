@@ -1,4 +1,7 @@
+import moment from 'moment'
 import { ObjectId } from 'mongodb'
+import { full_user } from '../../types/schema'
+import generateMinutes from './generateMinutes'
 import clientPromise from './mongodb'
 
 interface Response {
@@ -15,7 +18,6 @@ const score = {
   d: 2,
   e: 2.5,
   user_gets_hype: 7
-
 }
 
 export default async function updateHype(
@@ -31,7 +33,7 @@ export default async function updateHype(
 ): Promise<Response> {
   try {
     const client = await clientPromise
-    db = client.db('gameFevr')
+    db = client.db()
   } catch (e) {
     return { error: 'Unable to connect to database' }
   }
@@ -56,11 +58,32 @@ export default async function updateHype(
   }
 }
 
+async function checkTimeout(id: ObjectId): Promise<boolean> {
+  const user: full_user = await db.collection('users').findOne({ _id: id })
+  if (!user) return false
+
+  const timeout = user.hyped_timeout
+  //means its a fresh user
+  if (timeout === null) return true
+
+  const now = moment()
+  //30 minuts has passed
+  if (now > timeout) {
+    return true
+  } else {
+    return false
+  }
+}
+
 async function UpdateScore(id: ObjectId, score: number): Promise<Response> {
   try {
-    await db
-      .collection('users')
-      .updateOne({ _id: id }, { $inc: { hype: score } })
+    const isOk = await checkTimeout(id)
+
+    await db.collection('users')
+      .updateOne({ _id: id }, {
+        $inc: { hype: !isOk ? 0 : score },
+        $set: { hyped_timeout: generateMinutes() }
+      })
     return { ok: true }
   } catch (e) {
     console.log('error on updateHype, updateScoreFunc', e)

@@ -1,0 +1,27 @@
+@import '../../styles/global.scss';
+
+#wrapper {
+    flex: 0 0 23%;
+    height: 100%;
+    min-width: 20rem;
+    background: #0e3462;
+}
+
+@include for-size(tablet-landscape) {
+    #wrapper {
+        flex: 0 0 45%;
+    }
+}
+
+@include for-size(tablet-portrait) {
+    #wrapper {
+        flex: 0 0 70%;
+    }
+}
+
+@include for-size(phone-only) {
+    #wrapper {
+        flex: 0 0 100%;
+        min-width: min-content !important;
+    }
+}

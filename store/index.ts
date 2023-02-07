@@ -44,5 +44,4 @@ export const useStore = create<State>((set) => ({
 }))
 
 export * from './useProgressStore'
-export * from './useGlobalError'
 export * from './useFiltersStore'

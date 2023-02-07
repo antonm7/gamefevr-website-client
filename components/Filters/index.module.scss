@@ -1,0 +1,23 @@
+@import '../../styles/global.scss';
+
+@include for-size(mid-desktop) {
+    .container_padding {
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+}
+
+@include for-size(tablet-landscape) {
+    #second_row_container {
+        flex-direction: column;
+
+        .white_box {
+            width: 100%;
+            margin: 0;
+        }
+
+        #release_box {
+            padding-top: 5rem;
+        }
+    }
+}

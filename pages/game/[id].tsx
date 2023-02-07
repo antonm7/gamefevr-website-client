@@ -1,143 +1,101 @@
-import { useEffect, useRef, useState } from 'react'
-import SearchLayout from '../../components/layout/SearchLayout'
-import { DetailedGame, ShortGame } from '../../types'
-import useWindowSize from '../../lib/functions/hooks/useWindowSize'
-import { useSession } from 'next-auth/react'
+import { useEffect, useReducer, useState } from 'react'
+import SearchLayout from '../../components/layout'
+import { DetailedGame, same_series_type, Screenshot, ShortGame } from '../../types'
 import WriteReview from '../../components/GamePage/WriteReview'
 import { Review_Type } from '../../types/schema'
-import Bigger640 from '../../components/GamePage/Responsive/Bigger640'
-import Lower640 from '../../components/GamePage/Responsive/Lower640'
 import Filters from '../../components/Filters'
-import { useGlobalError, useStore } from '../../store'
-import { ObjectId } from 'bson'
+import { useStore } from '../../store'
 import { useRouter } from 'next/router'
 import ErrorComponent from '../../components/ErrorComponent'
-import Tags from '../../components/GamePage/Tags'
-import Description from '../../components/GamePage/Description'
-import FooterButtons from '../../components/GamePage/FooterButtons'
 import SmallLoader from '../../components/common/SmallLoader'
-import axios from 'axios'
-import Lower1200Footer from '../../components/GamePage/Responsive/Lower1200Footer'
-import Bigger1200Footer from '../../components/GamePage/Responsive/Bigger1200Footer'
-import SameSeries from '../../components/GamePage/SameSeries'
+import { wretchWrapper, promiseHandler } from '../../lib/functions/fetchLogic'
+import Upper from '../../components/GamePage/Responsive/Upper'
+import Footer from '../../components/GamePage/Responsive/Footer'
 
 type Props = {
   game: DetailedGame
 }
 
+type Loaders_State = {
+  globalLoading: boolean
+  reviewsLoading: boolean
+}
+
+type Loaders_Action = {
+  type: 'global' | 'reviews' | 'none' | 'all',
+  value: boolean
+}
+
+const loadersReducer = (state: Loaders_State, action: Loaders_Action) => {
+  switch (action.type) {
+    case 'global': {
+      return {
+        globalLoading: action.value,
+        reviewsLoading: state.reviewsLoading
+      }
+    }
+    case 'reviews': {
+      return {
+        globalLoading: state.globalLoading,
+        reviewsLoading: action.value
+      }
+    }
+    case 'none': {
+      return {
+        globalLoading: false,
+        reviewsLoading: false
+      }
+    }
+    case 'all': {
+      return {
+        globalLoading: true,
+        reviewsLoading: true
+      }
+    }
+  }
+}
+
 export default function GamePage(props: Props) {
-  const [width] = useWindowSize()
   const store = useStore()
   const router = useRouter()
-  const session = useSession()
-  const changeGlobalErrorVisibility = useGlobalError(
-    (store) => store.setIsVisible
-  )
-  const changeGlobalErrorType = useGlobalError((store) => store.setType)
-  const changeText = useGlobalError((state) => state.setText)
-
   const [game, setGame] = useState<DetailedGame | null>(null)
-  const [screenshotsAnimtion, setScreenshotsAnimtion] = useState<boolean>(false)
-  const [reviewsAnimation, setReviewsAnimation] = useState<boolean>(false)
-  const [writeReviewVisibility, setWriteReviewVisibility] =
-    useState<boolean>(false)
+  const [writeReviewVisibility, setWriteReviewVisibility] = useState<boolean>(false)
   const [isUserRated, setIsUserRated] = useState<string | null>(null)
   const [reviews, setReviews] = useState<Review_Type[]>([])
-  const [loading, setLoading] = useState<boolean>(true)
-  const [reviewsLoading, setReviewsLoading] = useState<boolean>(true)
-  const sliderRef = useRef(null)
+  const [loaders, setLoaders] = useReducer(loadersReducer, { globalLoading: true, reviewsLoading: true })
 
   const loadReviews = async () => {
-    try {
-      const req = await axios.get(`/api/game/get/getReviews?gameId=${router.query.id}`)
-      if (req.status === 200) {
-        if (req.data.error) throw new Error(req.data.error)
-        setReviews(req.data.reviews)
-      } else {
-        throw new Error()
-      }
-    } catch (e) {
-      console.log('error loading game reviews', e)
-    }
-    setReviewsLoading(false)
+    const fetchReviews: any = await wretchWrapper(`/api/game/get/getReviews?gameId=${router.query.id}`, 'loadReviews')
+    setReviews(fetchReviews.reviews)
+    setLoaders({ type: 'reviews', value: false })
   }
 
   useEffect(() => {
-    setReviewsAnimation(false)
-    setScreenshotsAnimtion(false)
     setGame(props.game)
     loadReviews()
-    setLoading(false)
+    setLoaders({ type: 'none', value: false })
   }, [router.query.id, props.game])
 
-  const navigateAuth = () => {
-    if (session.status !== 'authenticated') {
-      return router.push(`/register/login?back=${router.asPath}`)
-    }
-    const isAlreadyCommented = reviews.filter(
-      (r) =>
-        JSON.stringify(r.userId) === JSON.stringify(session.data.user.userId)
-    )
-    if (isAlreadyCommented.length > 0) {
-      changeText('You already commented this game')
-      changeGlobalErrorVisibility(true)
-      changeGlobalErrorType('warning')
-    } else {
-      setWriteReviewVisibility(true)
-    }
-  }
-
-  const toggleAnimation = () => {
-    if (reviewsAnimation) {
-      setReviewsAnimation(false)
-      setTimeout(() => {
-        setScreenshotsAnimtion(false)
-      }, 450)
-    } else {
-      setScreenshotsAnimtion(true)
-      setTimeout(() => {
-        setReviewsAnimation(true)
-      }, 450)
-    }
-  }
-
-  const deleteReview = (id: ObjectId | undefined): void => {
-    if (id) {
-      const newReviews = reviews.filter(
-        (review: Review_Type) => review._id !== id
-      )
-      setReviews(newReviews)
-    }
-  }
-
   const loadAgain = async (): Promise<void> => {
-    try {
-      setLoading(true)
-      const req = await axios.get(
-        `/api/game/get/getGame?gameId=${router.query.id}`
-      )
-      if (req.status === 200) {
-        setGame(req.data.game)
-        setReviews(req.data.reviews)
-      } else {
-        throw new Error()
-      }
-    } catch (e) {
-      setGame(null)
+    setLoaders({ type: 'global', value: true })
+    const gameData: any = await wretchWrapper(`/api/game/get/getGame?gameId=${router.query.id}`, 'loadAgain')
+    if (gameData.length) {
+      setGame(gameData.game)
+      setReviews(gameData.reviews)
     }
-    setLoading(false)
+    setLoaders({ type: 'global', value: false })
   }
 
   return (
     <SearchLayout>
-      {loading ? (
+      {loaders.globalLoading ? (
         <SmallLoader screenCentered={true} />
       ) : !game ? (
         <ErrorComponent onLoad={() => loadAgain()} />
       ) : (
         <div>
           {store.isFilterOn ? <Filters /> : null}
-          <main className="px-44 py-10" id="game_page">
+          <main className="responsive_wrapper py-10" >
             <WriteReview
               isUserRated={isUserRated}
               onClose={() => setWriteReviewVisibility(false)}
@@ -146,53 +104,17 @@ export default function GamePage(props: Props) {
                 setReviews([...reviews, review])
               }
             />
-            {width > 640 ? (
-              <Bigger640
-                reviews={reviews}
-                game={game}
-                changeIsUserRated={(value) => setIsUserRated(value)}
-              />
-            ) : (
-              <Lower640
-                reviews={reviews}
-                game={game}
-                changeIsUserRated={(value) => setIsUserRated(value)}
-              />
-            )}
-            <div className="flex justify-between" id="game_description_row">
-              <Description desc={game.description} />
-              <SameSeries games={game.same_series} />
-            </div>
-            <Tags tags={game.tags} />
+            <Upper reviews={reviews}
+              game={game}
+              setIsUserRated={value => setIsUserRated(value)} />
           </main>
-          <div>
-            {width > 1200 ? (
-              <Bigger1200Footer
-                screenshots={game.screenshots.results}
-                reviews={reviews}
-                reviewsAnimation={reviewsAnimation}
-                screenshotsAnimation={screenshotsAnimtion}
-                sliderRef={sliderRef}
-                deleteReview={(id) => deleteReview(id)}
-                navigateAuth={() => navigateAuth()}
-              />
-            ) : (
-              <Lower1200Footer
-                reviewsLoading={reviewsLoading}
-                screenshots={game.screenshots.results}
-                navigateAuth={() => navigateAuth()}
-                deleteReview={(id) => deleteReview(id)}
-                sliderRef={sliderRef}
-                reviews={reviews}
-              />
-            )}
-            <FooterButtons
-              reviewsLoading={reviewsLoading}
-              screenshots={game.screenshots}
-              reviewsAnimation={reviewsAnimation}
-              toggleAnimation={toggleAnimation}
-            />
-          </div>
+          <Footer
+            game={game}
+            reviews={reviews}
+            updateReviewsVisibility={(value) => setWriteReviewVisibility(value)}
+            updateReviewsState={arr => setReviews(arr)}
+            loaders={loaders}
+          />
         </div>
       )}
     </SearchLayout>
@@ -209,11 +131,11 @@ export async function getStaticPaths() {
   const ids: number[] = []
 
   for (let i = 1; i < 5; i++) {
-    const getData = await axios.get(
+    const getGamesData: any = await wretchWrapper(
       `https://api.rawg.io/api/games?key=39a2bd3750804b5a82669025ed9986a8&dates=1990-01-01,2023-12-31&page=${i}&page_size=${100}`
-    )
+      , 'getGamesData')
     ids.push(
-      ...(getData.data).results.map((game: ShortGame) => game.id)
+      ...getGamesData.results.map((game: ShortGame) => game.id)
     )
   }
 
@@ -225,47 +147,20 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(context: Context) {
-  let gameData, screenshots, trailers, same_series
+  const fetchGameData = (): any => wretchWrapper(`https://api.rawg.io/api/games/${context.params.id}?key=39a2bd3750804b5a82669025ed9986a8`, 'gameData')
+  const fetchScreenshots = (): any => wretchWrapper(`https://api.rawg.io/api/games/${context.params.id}/screenshots?key=39a2bd3750804b5a82669025ed9986a8`, 'screenshotsData')
+  const fetchTreilers = (): any => wretchWrapper(`https://api.rawg.io/api/games/${context.params.id}/movies?key=39a2bd3750804b5a82669025ed9986a8`, 'treilersData')
+  const fetchSameSeries = (): any => wretchWrapper(`https://api.rawg.io/api/games/${context.params.id}/game-series?key=39a2bd3750804b5a82669025ed9986a8`, 'sameSeriesData')
 
-  try {
-    const getData = await axios.get(
-      `https://api.rawg.io/api/games/${context.params.id}?key=39a2bd3750804b5a82669025ed9986a8`
-    )
-    gameData = getData.data
-  } catch (e) {
-    console.log('error on getting gameData', e)
-    gameData = null
-  }
+  const result = await Promise.allSettled([
+    fetchGameData(),
+    fetchScreenshots(),
+    fetchTreilers(),
+    fetchSameSeries()
+  ])
 
-  try {
-    const getScreenshots = await axios.get(
-      `https://api.rawg.io/api/games/${context.params.id}/screenshots?key=39a2bd3750804b5a82669025ed9986a8`
-    )
-    screenshots = getScreenshots.data
-  } catch (e) {
-    console.log('error on getting screenshots', e)
-    screenshots = null
-  }
-
-  try {
-    const getTrailers = await axios.get(
-      `https://api.rawg.io/api/games/${context.params.id}/movies?key=39a2bd3750804b5a82669025ed9986a8`
-    )
-    trailers = getTrailers.data
-  } catch (e) {
-    console.log('error on getting treilers', e)
-    trailers = null
-  }
-
-  try {
-    const getSeries = await axios.get(
-      `https://api.rawg.io/api/games/${context.params.id}/game-series?key=39a2bd3750804b5a82669025ed9986a8`
-    )
-    same_series = getSeries.data
-  } catch (e) {
-    console.log('error on getting same_series', e)
-    same_series = null
-  }
+  const [gameData, screenshots, trailers, same_series]:
+    [DetailedGame, Screenshot, any, same_series_type] = promiseHandler(result)
 
   const finalData: DetailedGame = {
     id: gameData.id,

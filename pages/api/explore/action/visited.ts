@@ -14,7 +14,7 @@ export default async function handler(
 
     try {
       const client = await clientPromise
-      db = client.db('gameFevr')
+      db = client.db()
     } catch (e) {
       console.log('error', e)
       return res.status(500).send({ error: 'Unexpected Error' })

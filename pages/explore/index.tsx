@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react'
-import SearchLayout from '../../components/layout/SearchLayout'
+import SearchLayout from '../../components/layout'
 import { ShortGame } from '../../types'
 import { genres, parentConsoles } from '../../lib/staticData'
 import getRandomInt from '../../lib/functions/generateRandom'
 import SmallGameBox from '../../components/SmallGameBox'
-import axios from 'axios'
 import SearchButton from '../../components/common/SearchButton'
 import SmallLoader from '../../components/common/SmallLoader'
 import Filters from '../../components/Filters'
 import { useStore } from '../../store'
 import generateErrorBackend from '../../backend-middlewares/generateErrorBackend'
 import LoadingError from '../../components/common/LoadingError'
+import { wretchWrapper } from '../../lib/functions/fetchLogic'
 
 interface Props {
   games: ShortGame[]
@@ -27,10 +27,8 @@ export default function Index({ games }: Props) {
     try {
       setLoadMoreLoading(true)
       setError(false)
-      const req = await axios.get('/api/explore/get/search')
-      if (req.status !== 200) throw new Error()
-      if (!req.data.results.length) throw new Error()
-      setLocalGames((arr) => [...arr, ...req.data.results])
+      const exploreSearchRequest: any = await wretchWrapper('/api/explore/get/search', 'exploreSearchRequest')
+      setLocalGames((arr) => [...arr, ...exploreSearchRequest.data.results])
       setLoadMoreLoading(false)
     } catch (e) {
       console.log(e)
@@ -144,10 +142,10 @@ export async function getServerSideProps() {
       if (filters === null) {
         try {
           const randomNumber = getRandomInt(10, 200)
-          const request = await axios.get(
+          const getGamesRequest: any = await wretchWrapper(
             `https://api.rawg.io/api/games?key=39a2bd3750804b5a82669025ed9986a8&page=${randomNumber}&page_size=25`
-          )
-          const data = await request.data.results
+            , 'getGamesRequest')
+          const data = await getGamesRequest.data.results
           result = data
         } catch (e) {
           await generateErrorBackend({
@@ -160,10 +158,10 @@ export async function getServerSideProps() {
       } else {
         const randomNumber = getRandomInt(2, 15)
         try {
-          const request = await axios.get(
+          const getGamesRequest: any = await wretchWrapper(
             `https://api.rawg.io/api/games?key=39a2bd3750804b5a82669025ed9986a8&page=${randomNumber}&page_size=25&${filters}`
-          )
-          const data = await request.data.results
+            , 'getGamesRequest')
+          const data = await getGamesRequest.data.results
           result = data
         } catch (e) {
           await generateErrorBackend({
@@ -187,8 +185,8 @@ export async function getServerSideProps() {
               200
             )}&page_size=4`
 
-            const request = await axios.get(x)
-            const data = await request.data.results
+            const getGeneratedGames: any = await wretchWrapper(x, 'getGeneratedGames')
+            const data = await getGeneratedGames.data.results
             return data
           } else {
             return result

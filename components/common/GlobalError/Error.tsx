@@ -1,8 +1,7 @@
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import TimerBar from '../TimerBar'
 
-interface Props {
+type Props = {
   visibility: boolean
   text: string
   close: () => void
@@ -63,7 +62,6 @@ export default function Error({ visibility, text, close }: Props) {
           onClick={() => close}
         />
       </div>
-      <TimerBar start={visibility} color="#fc5758" />
     </div>
   )
 }

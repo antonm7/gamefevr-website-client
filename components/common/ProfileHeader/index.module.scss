@@ -1,0 +1,27 @@
+@import '../../../styles/responsive.scss';
+
+@include for-size(tablet-portrait) {
+    #profile_header_name_line {
+        display: flex;
+        flex-direction: column-reverse;
+        align-items: flex-end;
+    }
+
+    #account_settings_div_wrapper {
+        padding-top: 1rem;
+    }
+
+    #profile_header_wrapper {
+        justify-content: flex-start;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+@include for-size(phone-only) {
+    #profile_header_title {
+        flex-direction: column-reverse;
+        align-items: flex-start;
+
+    }
+}

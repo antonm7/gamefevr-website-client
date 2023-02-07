@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import SearchLayout from '../components/layout/SearchLayout'
+import SearchLayout from '../components/layout'
 
 export default function FourOFour() {
   return (

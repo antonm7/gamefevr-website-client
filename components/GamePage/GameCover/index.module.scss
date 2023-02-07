@@ -1,0 +1,7 @@
+@import '../../../styles/global.scss';
+
+@include for-size(tablet-landscape) {
+    #game_name_link {
+        white-space: nowrap;
+    }
+}
