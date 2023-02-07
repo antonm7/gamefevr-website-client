@@ -43,7 +43,7 @@ export default function Profile({
     return (
       <CurrentProfile
         hype={hype}
-        reviews={reviews}
+          reviews={reviews}
         favorites={favorites}
         user={user}
       />
@@ -65,13 +65,15 @@ export async function getServerSideProps(
 
   try {
     let user, reviews, favorites
-    const isVisited = context?.params?.id !== session?.user?.userId
+    const isVisited = context?.params?.id !==
+     session?.user?.userId
     const client = await clientPromise
     const db = client.db()
     let isHyped = false
 
     if (isVisited) {
-      const userCollection: mongoDB.Collection = db.collection('users')
+      const userCollection: mongoDB.Collection = 
+      db.collection('users')
       user = await userCollection.findOne({
         _id: new ObjectId(context?.params?.id),
       })

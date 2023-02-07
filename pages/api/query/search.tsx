@@ -99,14 +99,14 @@ export default async function handler(req: ExtendedNextApiRequest, res: Response
         const getData: any = await wretchWrapper(
           `https://api.rawg.io/api/games?key=39a2bd3750804b5a82669025ed9986a8&dates=1990-01-01,2023-12-31&page=${page}&page_size=30${filteredString}`
           , 'getGamesData')
-        games = getData.data
-        count = games.count
+        games = getData.results
+        count = getData.count
       } else {
         const getData: any = await wretchWrapper(
           `https://api.rawg.io/api/games?key=39a2bd3750804b5a82669025ed9986a8&dates=1990-01-01,2023-12-31&page=${page}&page_size=30`
           , 'getGamesData')
-        games = getData.data
-        count = games.count
+        games = getData.results
+        count = getData.count
       }
       const isNextPage = (page: number) => {
         if (page * 30 < count) {
@@ -115,9 +115,10 @@ export default async function handler(req: ExtendedNextApiRequest, res: Response
           return false
         }
       }
+      console.log(games)
       res
         .status(200)
-        .send({ games: games.results, nextPage: isNextPage(page), count })
+        .send({ games, nextPage: isNextPage(page), count })
     } catch (e) {
       console.log(e)
       res.status(500).send({ error: 'Unexpected Error' })
