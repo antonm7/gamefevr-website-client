@@ -6,6 +6,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useEffect, useState } from 'react'
 import Spinner from '../Spinner'
+import styles from './index.module.scss'
 
 type Props = {
   visibility: boolean
@@ -33,9 +34,7 @@ export default function Request({ visibility, text, owner }: Props) {
 
   return (
     <div
-      id="global_error"
-      className={`${visibility ? 'global_animation_enabled' : 'global_animation_disabled'
-        } fixed flex z-50 h-20 pl-4 rounded-lg rounded-r-none request_global_error`}
+      className={`${styles.wrapper} fixed flex z-50 h-20 pl-4 rounded-lg rounded-r-none request_global_error`}
       style={{ backgroundColor: '#e7eefa', width: '26rem' }}
     >
       <div className="flex w-full items-center">

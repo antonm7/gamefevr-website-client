@@ -1,20 +1,20 @@
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import styles from './index.module.scss'
 
 type Props = {
   visibility: boolean
   text: string
   close: () => void
 }
+
 export default function Error({ visibility, text, close }: Props) {
 
   if (!visibility) return null
 
   return (
     <div
-      id="global_error"
-      className={`${visibility ? 'global_animation_enabled' : 'global_animation_disabled'
-        } fixed flex z-50 w-96 h-20 pl-4 rounded-lg rounded-r-none`}
+      className={`${styles.wrapper} fixed flex z-50 w-96 h-20 pl-4 rounded-lg rounded-r-none`}
       style={{ backgroundColor: '#faeeeb' }}
     >
       <div className="flex w-full items-center">

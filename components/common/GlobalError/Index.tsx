@@ -20,10 +20,11 @@ export default function GlobalError() {
     setType(objectData.type)
     setVisibility(true)
     setMsg(objectData.msg)
-    if (type !== 'request') {
+    console.log('ree1')
+    if (objectData.type !== 'request') {
       setTimeout(() => {
         setVisibility(false)
-      }, 1350)
+      }, 1500)
     }
     PubSub.unsubscribe(openToken)
   }
