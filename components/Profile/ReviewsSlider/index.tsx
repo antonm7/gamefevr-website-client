@@ -3,6 +3,7 @@ import { useRef } from "react"
 import Slider from "react-slick"
 import useWindowSize from "../../../lib/functions/hooks/useWindowSize"
 import { Review_Type } from "../../../types/schema"
+import LengthIndicator from "../LengthIndicator"
 import Review from "../Review"
 
 interface Props {
@@ -43,7 +44,10 @@ export default function ReviewsSlider({ deleteReview, reviews, visited }: Props)
 
     return (
         <div className="pt-16">
-            <h1 className="text-white font-bold text-3xl">{visited ? 'Reviews' : 'Your Reviews'}</h1>
+            <div className="flex ">
+                <h1 className="text-white font-bold text-3xl">{visited ? 'Reviews' : 'Your Reviews'} </h1>
+                {reviews.length ? <LengthIndicator length={reviews.length} /> : null}
+            </div>
             <div
                 className={`mt-12 ${reviews.length === 2 && width > 1200
                     ? 'w-[60rem]'

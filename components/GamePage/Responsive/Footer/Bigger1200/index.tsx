@@ -68,8 +68,8 @@ export default function Bigger1200({ screenshots, reviews, navigateAuth, deleteR
     return (
         <>
             <div className="relative overflow-hidden" ref={wrapperRef}>
-                <Screenshots setRef={screenshotsRef} isVisible={visible === 'screenshots'} images={screenshots} />
-                <div ref={blueBoxRef} className="relative z-20 h-full w-[600px] bg-darkIndigo"
+                <Screenshots setRef={screenshotsRef} images={screenshots} />
+                <div ref={blueBoxRef} className="relative h-full w-[600px] bg-darkIndigo"
                     id={styles.blue_box}>
                     <div className="h-full pl-36 pt-28">
                         <div id={styles.arrows_wrapper} className="flex items-center bottom-0">

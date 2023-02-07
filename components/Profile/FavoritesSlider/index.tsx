@@ -4,6 +4,7 @@ import Slider from "react-slick";
 import useWindowSize from "../../../lib/functions/hooks/useWindowSize";
 import { Favorite_Type } from "../../../types/schema";
 import Favorite from "../Favorite";
+import LengthIndicator from "../LengthIndicator";
 
 interface Props {
     visited: boolean
@@ -42,7 +43,13 @@ export default function FavoritesSlider({ favorites, deleteFavorite, visited }: 
     }
     return (
         <div className="pt-14">
-            <h1 className="text-white font-bold text-3xl">{visited ? 'Favorite Games' : 'Your Favorite Games'}</h1>
+            <div className="flex">
+                <h1 className="text-white font-bold text-3xl">
+                    {visited ? 'Favorite Games' : 'Your Favorite Games'}
+                </h1>
+                {favorites.length ? <LengthIndicator length={favorites.length} /> : null}
+            </div>
+
             <div
                 className={`mt-12 ${width < 760
                     ? ''

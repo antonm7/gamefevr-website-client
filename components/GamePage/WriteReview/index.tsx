@@ -91,7 +91,7 @@ export default function WriteReview({
   return (
     <div
       className={`scrollbar ${visible ? 'fixed ' : 'hidden'
-        } px-7 py-6 rounded-xl w-3/5 z-30 h-3/4`}
+        } px-7 py-6 rounded-xl w-3/5 z-50 h-3/4`}
       style={{
         height: '30rem',
         left: '50%',

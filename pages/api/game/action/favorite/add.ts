@@ -58,14 +58,13 @@ const handler = async (req: ExtendedNextApiRequest, res: NextApiResponse) => {
       const fetchSpecificGame: any = await wretchWrapper(
         `https://api.rawg.io/api/games/${gameId}?key=39a2bd3750804b5a82669025ed9986a8`
         , 'fetchSpecificGame')
-      const gameData = fetchSpecificGame.data
 
       const favorite: Favorite_Type = {
         userId: userId,
         gameId: gameId,
         created_at: generateTime(new Date()),
-        game_name: gameData.name,
-        game_image: gameData.background_image,
+        game_name: fetchSpecificGame.name,
+        game_image: fetchSpecificGame.background_image,
       }
 
       savedFavorite = await db.collection('favorites').insertOne(favorite)
