@@ -5,6 +5,7 @@ import ReviewsSlider from "../../../ReviewsSlider";
 import Screenshots from "../../../Screenshots";
 import styles from './index.module.scss';
 import Image from "next/image";
+import { useRef } from "react";
 
 type Props = {
     screenshots: Short_Screenshot[]
@@ -15,13 +16,15 @@ type Props = {
 }
 
 export default function Lower1200({ reviews, navigateAuth, deleteReview, screenshots }: Props) {
+    const sliderRef = useRef<any>(null)
     return (
-        <div className="">
+        <div>
             <div className="relative h-[450px]">
                 <div className="absolute z-20 h-full w-[600px] bg-darkIndigo" id={styles.blueBox} >
                     <div className="pt-[23rem] pl-28">
                         <div id={styles.arrows_wrapper} className="flex items-center bottom-0">
                             <Image
+                                onClick={() => sliderRef.current.slickPrev()}
                                 src={'/icons/arrow_left.svg'}
                                 width={25}
                                 height={18}
@@ -29,6 +32,7 @@ export default function Lower1200({ reviews, navigateAuth, deleteReview, screens
                             />
                             <div className="ml-8 bg-white flex items-center justify-center py-2 px-4 rounded-lg">
                                 <Image
+                                    onClick={() => sliderRef.current.slickNext()}
                                     src={'/icons/arrow_right.svg'}
                                     width={25}
                                     height={18}
@@ -38,7 +42,7 @@ export default function Lower1200({ reviews, navigateAuth, deleteReview, screens
                         </div>
                     </div>
                 </div>
-                <Screenshots lower1200={true} isVisible={true} images={screenshots} />
+                <Screenshots sliderRef={sliderRef} lower1200={true} images={screenshots} />
             </div>
             <div className="mt-32">
                 <ReviewsSlider

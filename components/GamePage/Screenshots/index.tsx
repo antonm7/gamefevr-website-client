@@ -10,9 +10,10 @@ interface Props {
   images: Short_Screenshot[]
   lower1200?: boolean
   setRef?: any
+  sliderRef?: any
 }
 
-export default function Screenshots({ images, setRef, lower1200 }: Props) {
+export default function Screenshots({ sliderRef, images, setRef, lower1200 }: Props) {
   const [width] = useWindowSize()
   const settings = {
     infinite: false,
@@ -25,6 +26,7 @@ export default function Screenshots({ images, setRef, lower1200 }: Props) {
   return (
     <div ref={setRef} className={`${styles.slider_container} ${lower1200 ? 'relative z-0' : 'absolute'}`}     >
       <Slider
+        ref={sliderRef}
         arrows={false}
         {...settings}
       >

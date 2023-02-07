@@ -22,6 +22,7 @@ export default function Bigger1200({ screenshots, reviews, navigateAuth, deleteR
     const blueBoxRef = useRef(null)
     const wrapperRef = useRef(null)
     const reviewsRef = useRef(null)
+    const sliderRef = useRef<any>(null)
 
     useEffect(() => {
         if (visible === 'reviews') {
@@ -68,12 +69,13 @@ export default function Bigger1200({ screenshots, reviews, navigateAuth, deleteR
     return (
         <>
             <div className="relative overflow-hidden" ref={wrapperRef}>
-                <Screenshots setRef={screenshotsRef} images={screenshots} />
+                <Screenshots sliderRef={sliderRef} setRef={screenshotsRef} images={screenshots} />
                 <div ref={blueBoxRef} className="relative h-full w-[600px] bg-darkIndigo"
                     id={styles.blue_box}>
                     <div className="h-full pl-36 pt-28">
                         <div id={styles.arrows_wrapper} className="flex items-center bottom-0">
                             <Image
+                                onClick={() => sliderRef.current.slickPrev()}
                                 src={'/icons/arrow_left.svg'}
                                 width={25}
                                 height={18}
@@ -81,6 +83,7 @@ export default function Bigger1200({ screenshots, reviews, navigateAuth, deleteR
                             />
                             <div className="ml-8 bg-white flex items-center justify-center py-2 px-4 rounded-lg">
                                 <Image
+                                    onClick={() => sliderRef.current.slickNext()}
                                     src={'/icons/arrow_right.svg'}
                                     width={25}
                                     height={18}
@@ -90,7 +93,12 @@ export default function Bigger1200({ screenshots, reviews, navigateAuth, deleteR
                         </div>
                     </div>
                 </div>
-                <ReviewsSlider navigateAuth={navigateAuth} setRef={reviewsRef} reviews={reviews} deleteReview={id => deleteReview(id)} />
+                <ReviewsSlider
+                    navigateAuth={navigateAuth}
+                    setRef={reviewsRef}
+                    reviews={reviews}
+                    deleteReview={id => deleteReview(id)}
+                />
             </div>
             <div className="w-56 m-auto mt-12">
                 <YellowButton title={visible === 'screenshots' ? 'Show Reviews' : 'Show Screenshots'} onClick={() => setVisible(visible === 'reviews' ? 'screenshots' : 'reviews')} />
