@@ -11,10 +11,9 @@ const Car = React.memo(() => {
     autoplay: true,
     animationData: width > 640 ? animationData : lowData,
     rendererSettings: {
-      preserveAspectRatio: 'xMaxYMax meet', // Supports the same options as the svg element's preserveAspectRatio property
+      preserveAspectRatio: 'xMinYMax ', // Supports the same options as the svg element's preserveAspectRatio property
       clearCanvas: false,
       hideOnTransparent: true, //Boolean, only svg renderer, hides elements when opacity reaches 0 (defaults to true)
-      className: 'some-css-class-name',
     },
   }
 
@@ -25,6 +24,7 @@ const Car = React.memo(() => {
         zIndex: 0,
         position: 'absolute',
         bottom: 0,
+
       }}
     ></Lottie>
   )
