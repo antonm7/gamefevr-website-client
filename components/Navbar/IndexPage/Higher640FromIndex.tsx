@@ -7,20 +7,16 @@ export default function Higher640() {
     const router = useRouter()
 
     return (
-        <div id="navbar-wrapper" className="overflow-hidden relative h-20 w-full z-30 px-20">
+        <div className="pt-4 overflow-hidden relative w-full z-30 responsive_wrapper">
             <div
-                className="h-full w-full flex justify-between pt-4 px-20 items-center"
-                id="navbar"
-            >
-                <div style={{ marginTop: 7 }}>
+                className="w-full flex justify-between items-center">
                     <Image
                         src={'/images/Logo.svg'}
                         height={32}
                         width={130}
                         alt="Logo"
                     />
-                </div>
-                <div className="flex pt-0">
+                <div className="flex">
                     <Link href="/">
                         <p
                             className={`text-white font-semibold cursor-pointer text-sm ${router.pathname === '/' ? 'active-link ' : ''

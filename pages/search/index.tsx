@@ -46,7 +46,6 @@ export default function Index(props: Props) {
         page: store.page,
         query: router.query
       })
-      console.log(fetchMoreGames)
       if (fetchMoreGames.length === 0) {
         //if there no games from server, dont update the games state
         //and remove the loadMore button
@@ -65,6 +64,7 @@ export default function Index(props: Props) {
         msg: ''
       })
       setLoadMoreLoading(false)
+      setShowLoadMoreButton(true)
     }
 
   }
@@ -359,7 +359,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   } else {
     // No filters applied path
     try {
-
       const fetchGamesWithoutFilters: any = await wretchWrapper(`https://api.rawg.io/api/games?key=39a2bd3750804b5a82669025ed9986a8&dates=1990-01-01,2023-12-31&page=1&page_size=28`, 'fetchGamesWithoutFilters')
       return {
         props: {

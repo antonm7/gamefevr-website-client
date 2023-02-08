@@ -7,7 +7,7 @@ export default function Higher1200FromCommon() {
     const router = useRouter()
 
     return (
-        <div className="flex items-center justify-between h-20 responsive_wrapper">
+        <div className="pt-4 flex items-center justify-between responsive_wrapper">
             <div className='flex items-center'>
                 <Image
                     className='pr-8'
@@ -16,7 +16,6 @@ export default function Higher1200FromCommon() {
                     width={130}
                     alt="Logo"
                 />
-
                 <Link href="/">
                     <span className={`text-white font-semibold cursor-pointer pl-16 pr-10 text-sm ${router.pathname === '/' ? 'active-link ' : ''}`}>
                         Home
