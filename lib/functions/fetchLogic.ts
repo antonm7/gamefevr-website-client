@@ -1,6 +1,7 @@
 import wretch from 'wretch'
 
-export function wretchWrapper(url: string, request_name: string): Promise<unknown> {
+export function wretchWrapper(url: string, request_name: string):
+    Promise<unknown> {
     return wretch(url)
         .get()
         .badRequest(e => console.log('error on', request_name, e))
@@ -27,6 +28,6 @@ export function promiseHandler(results: any[]): any {
         const reason: string[] = errors.map((e) => e.reason)
         throw new AggregateError(reason)
     }
-    console.log(results)
-    return results.map((result: PromiseFulfilledResult<unknown>) => result.value)
+    return results.map((result: PromiseFulfilledResult<unknown>) =>
+        result.value)
 }
