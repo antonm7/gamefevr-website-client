@@ -41,7 +41,7 @@ export default function SearchInput() {
 
   return (
     <div className='flex flex-col' id={styles.wrapper}>
-      <div className='relative'>
+      <div className='flex items-center relative'>
         <div className="absolute h-full w-1 rounded-tl-xl rounded-bl-xl bg-specialYellow"></div>
         <FiltersAppliedCount bigInput={true} />
         <FontAwesomeIcon
@@ -67,7 +67,7 @@ export default function SearchInput() {
       {games.length > 0 ? (
         <div
           style={{ minHeight: '7rem' }}
-          className="w-700 text-white placeholder-slate-400 outline-0 px-4 py-2 h-auto bg-inputBg rounded-lg mt-2"
+          className="absolute w-700 text-white placeholder-slate-400 outline-0 px-4 py-2 h-auto bg-inputBg rounded-lg mt-20"
         >
           {games.map((game: NamedGame, index: number) => (
             <Link href={`/game/${game.id}`} key={index}>
@@ -81,40 +81,6 @@ export default function SearchInput() {
           ))}
         </div>
       ) : null}
-      {/* <div className="flex items-center relative overflow-hidden">
-        <div className="absolute h-full w-1 rounded-tl-xl rounded-bl-xl bg-specialYellow"></div>
-        <FontAwesomeIcon
-          onClick={() => store.changeFilterVisibility(true)}
-          icon={faSliders}
-          className="absolute h-4 cursor-pointer right-4 text-gray-600"
-        />
-        <FiltersAppliedCount bigInput={true} />
-        <input
-          id="search_input_wrapper"
-          autoSave="true"
-          onChange={(e) => setSearchTerm(e.target.value)}
-          autoFocus={true}
-          placeholder="Search..."
-          className="w-700 text-white placeholder-slate-400 outline-0 p-4 pl-6 h-16 bg-inputBg rounded-lg"
-        />
-      </div>
-      {games.length > 0 ? (
-        <div
-          style={{ minHeight: '7rem' }}
-          className="w-700 text-white placeholder-slate-400 outline-0 px-4 py-2 h-auto bg-inputBg rounded-lg mt-2"
-        >
-          {games.map((game: NamedGame, index: number) => (
-            <Link href={`/game/${game.id}`} key={index}>
-              <h1
-                className="cursor-pointer my-3 text-base font-base"
-                style={{ color: '#9da8b6' }}
-              >
-                {game.name}
-              </h1>
-            </Link>
-          ))}
-        </div>
-      ) : null} */}
     </div>
   )
 }

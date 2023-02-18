@@ -1,6 +1,7 @@
-/** @type {import('next').NextConfig} */
+/**
+ * @type {import('next').NextConfig}
+ */
 const nextConfig = {
-  presets: ['next/babel'],
   reactStrictMode: false,
   webpack(config) {
     config.module.rules.push({
@@ -10,7 +11,7 @@ const nextConfig = {
     return config;
   },
   eslint: {
-    ignoreDuringBuilds: true,
+    ignoreDuringBuilds: true
   },
   images: {
     domains: ['media.rawg.io', 'hatrabbits.com'],
@@ -19,6 +20,5 @@ const nextConfig = {
     key: 'e996863ffbd04374ac0586ec2bcadd55',
   },
 };
-
 // eslint-disable-next-line no-undef
 module.exports = nextConfig;

@@ -12,7 +12,7 @@ import { ObjectId } from 'bson'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { useEffect, useMemo, useState } from 'react'
-import { promiseHandler, wretchAction } from '../../../lib/functions/fetchLogic'
+import { wretchAction } from '../../../lib/functions/fetchLogic'
 import useWindowSize from '../../../lib/functions/hooks/useWindowSize'
 import slicedParagrap from '../../../lib/functions/slicedParagraph'
 import { Review_Type } from '../../../types/schema'
@@ -210,8 +210,7 @@ export default function Review({
       return (
         <p
           className="mx-3 text-xl font-extrabold opacity-50"
-          style={{ color: '#494949' }}
-        >
+          style={{ color: '#494949' }}>
           0
         </p>
       )

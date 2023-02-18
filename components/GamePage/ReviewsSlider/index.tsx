@@ -14,6 +14,37 @@ interface Props {
   lower1200?: boolean
 }
 
+
+const settings = {
+  infinite: false,
+  slidesToScroll: 1,
+  arrows: false,
+  accessibility: false,
+  slidesToShow: 3,
+  responsive: [
+    {
+      breakpoint: 1800,
+      settings: {
+        slidesToShow: 2
+      },
+    },
+    {
+      breakpoint: 1000,
+      settings: {
+        slidesToShow: 1,
+        centerMode: true
+      },
+    },
+    {
+      breakpoint: 600,
+      settings: {
+        slidesToShow: 1,
+        centerMode: false
+      }
+    }
+  ]
+}
+
 export default function ReviewsSlider({
   reviews,
   deleteReview,
@@ -21,36 +52,6 @@ export default function ReviewsSlider({
   navigateAuth,
   setRef
 }: Props) {
-
-  const settings = {
-    infinite: false,
-    slidesToScroll: 1,
-    arrows: false,
-    accessibility: false,
-    slidesToShow: 3,
-    responsive: [
-      {
-        breakpoint: 1800,
-        settings: {
-          slidesToShow: 2
-        },
-      },
-      {
-        breakpoint: 1000,
-        settings: {
-          slidesToShow: 1,
-          centerMode: true
-        },
-      },
-      {
-        breakpoint: 600,
-        settings: {
-          slidesToShow: 1,
-          centerMode: false
-        }
-      }
-    ]
-  }
 
   const session = useSession()
 
@@ -70,10 +71,7 @@ export default function ReviewsSlider({
 
     return (
       <div>
-        <Slider
-          {...settings}
-          arrows={false}
-        >
+        <Slider {...settings} arrows={false}>
           {reviews.map((review: Review_Type, index: number) => (
             <Review
               key={index}

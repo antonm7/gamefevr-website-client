@@ -8,6 +8,8 @@ import ReviewsSlider from "../../../ReviewsSlider"
 import YellowButton from "../../../../common/YellowButton"
 import gsap from 'gsap'
 import { ObjectId } from "bson"
+import checkReviews from "../../../../../lib/functions/checkReviews"
+import { useSession } from "next-auth/react"
 
 type Props = {
     screenshots: Short_Screenshot[]
@@ -22,14 +24,16 @@ export default function Bigger1200({ screenshots, reviews, navigateAuth, deleteR
     const blueBoxRef = useRef(null)
     const wrapperRef = useRef(null)
     const reviewsRef = useRef(null)
+    const buttonWrapper = useRef(null)
     const sliderRef = useRef<any>(null)
+    const session = useSession()
 
     useEffect(() => {
         if (visible === 'reviews') {
             gsap.to(wrapperRef.current, {
                 height: reviews.length ? '780px' : '180px',
                 delay: 0.4,
-                duration: 0.2
+                duration: 0.6
             })
             gsap.to(blueBoxRef.current, {
                 x: '-100%',
@@ -43,6 +47,12 @@ export default function Bigger1200({ screenshots, reviews, navigateAuth, deleteR
                 top: reviews.length ? '5rem' : '50%',
                 duration: 0.4,
                 delay: reviews.length ? 0.4 : 1,
+            })
+            gsap.to(buttonWrapper.current, {
+                top: checkReviews(reviews, session.data?.user.userId)
+                    ? '-8rem' : 0,
+                duration: 0.4,
+                delay: 0.4
             })
         } else {
             gsap.to(wrapperRef.current, {
@@ -62,6 +72,9 @@ export default function Bigger1200({ screenshots, reviews, navigateAuth, deleteR
             gsap.to(reviewsRef.current, {
                 top: '-100%',
                 duration: 0.4
+            })
+            gsap.to(buttonWrapper.current, {
+                top: 0
             })
         }
     }, [visible, reviews])
@@ -100,7 +113,7 @@ export default function Bigger1200({ screenshots, reviews, navigateAuth, deleteR
                     deleteReview={id => deleteReview(id)}
                 />
             </div>
-            <div className="w-56 m-auto mt-12">
+            <div className="w-56 m-auto mt-12 relative z-20" ref={buttonWrapper}>
                 <YellowButton title={visible === 'screenshots' ? 'Show Reviews' : 'Show Screenshots'} onClick={() => setVisible(visible === 'reviews' ? 'screenshots' : 'reviews')} />
             </div>
         </>

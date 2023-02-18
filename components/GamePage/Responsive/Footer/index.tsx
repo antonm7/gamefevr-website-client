@@ -20,7 +20,8 @@ type Props = {
     loaders: Loaders_State
 }
 
-export default function Footer({ game, reviews, updateReviewsVisibility, updateReviewsState, loaders }: Props) {
+export default function Footer({ game, reviews,
+    updateReviewsVisibility, updateReviewsState }: Props) {
     const [width] = useWindowSize()
     const session = useSession()
 
@@ -29,7 +30,7 @@ export default function Footer({ game, reviews, updateReviewsVisibility, updateR
             return router.push(`/register/login?back=${router.asPath}`)
         }
         const isAlreadyCommented = reviews.filter(
-            (r: any) =>
+            (r) =>
                 JSON.stringify(r.userId) === JSON.stringify(session.data.user.userId)
         )
         if (isAlreadyCommented.length > 0) {

@@ -62,7 +62,9 @@ export default function GamePage(props: Props) {
   const [writeReviewVisibility, setWriteReviewVisibility] = useState<boolean>(false)
   const [isUserRated, setIsUserRated] = useState<string | null>(null)
   const [reviews, setReviews] = useState<Review_Type[]>([])
-  const [loaders, setLoaders] = useReducer(loadersReducer, { globalLoading: true, reviewsLoading: true })
+  const [loaders, setLoaders] = useReducer(loadersReducer, {
+    globalLoading: true, reviewsLoading: true
+  })
 
   const loadReviews = async () => {
     const fetchReviews: any = await wretchWrapper(`/api/game/get/getReviews?gameId=${router.query.id}`, 'loadReviews')
@@ -93,7 +95,7 @@ export default function GamePage(props: Props) {
       ) : !game ? (
         <ErrorComponent onLoad={() => loadAgain()} />
       ) : (
-        <div>
+        <>
           {store.isFilterOn ? <Filters /> : null}
           <main className="responsive_wrapper py-10" >
             <WriteReview
@@ -115,7 +117,7 @@ export default function GamePage(props: Props) {
             updateReviewsState={arr => setReviews(arr)}
             loaders={loaders}
           />
-        </div>
+        </>
       )}
     </SearchLayout>
   )
@@ -152,38 +154,48 @@ export async function getStaticProps(context: Context) {
   const fetchTreilers = (): any => wretchWrapper(`https://api.rawg.io/api/games/${context.params.id}/movies?key=39a2bd3750804b5a82669025ed9986a8`, 'treilersData')
   const fetchSameSeries = (): any => wretchWrapper(`https://api.rawg.io/api/games/${context.params.id}/game-series?key=39a2bd3750804b5a82669025ed9986a8`, 'sameSeriesData')
 
-  const result = await Promise.allSettled([
-    fetchGameData(),
-    fetchScreenshots(),
-    fetchTreilers(),
-    fetchSameSeries()
-  ])
+  try {
+    const result = await Promise.allSettled([
+      fetchGameData(),
+      fetchScreenshots(),
+      fetchTreilers(),
+      fetchSameSeries()
+    ])
 
-  const [gameData, screenshots, trailers, same_series]:
-    [DetailedGame, Screenshot, any, same_series_type] = promiseHandler(result)
+    const [gameData, screenshots, trailers, same_series]:
+      [DetailedGame, Screenshot, any, same_series_type] = promiseHandler(result)
 
-  const finalData: DetailedGame = {
-    id: gameData.id,
-    name: gameData.name,
-    released: gameData.released,
-    background_image: gameData.background_image,
-    description: gameData.description,
-    genres: gameData.genres,
-    developers: gameData.developers,
-    parent_platforms: gameData.parent_platforms,
-    platforms: gameData.platforms,
-    stores: gameData.stores,
-    publishers: gameData.publishers,
-    screenshots,
-    tags: gameData.tags,
-    website: gameData.website,
-    trailers,
-    same_series,
+    const finalData: DetailedGame = {
+      id: gameData.id,
+      name: gameData.name,
+      released: gameData.released,
+      background_image: gameData.background_image,
+      description: gameData.description,
+      genres: gameData.genres,
+      developers: gameData.developers,
+      parent_platforms: gameData.parent_platforms,
+      platforms: gameData.platforms,
+      stores: gameData.stores,
+      publishers: gameData.publishers,
+      screenshots,
+      tags: gameData.tags,
+      website: gameData.website,
+      trailers,
+      same_series,
+    }
+
+    return {
+      props: {
+        game: finalData,
+      }
+    }
+  } catch (e) {
+    console.log(e)
+    return {
+      props: {
+        game: null
+      }
+    }
   }
 
-  return {
-    props: {
-      game: finalData,
-    },
-  }
 }

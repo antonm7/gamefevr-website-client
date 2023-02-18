@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import SmallSearchInput from '../../common/SmallSearchInput'
 import DynamicSession from '../DynamicSession'
+
 export default function Higher1200FromCommon() {
     const router = useRouter()
 
