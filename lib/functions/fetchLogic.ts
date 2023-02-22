@@ -1,7 +1,8 @@
 import wretch from 'wretch'
+import { PromiseHandlerProps } from '../../types/request'
 
-export function wretchWrapper(url: string, request_name: string):
-    Promise<unknown> {
+//function that promise
+export function wretchWrapper(url: string, request_name: string): Promise<object> {
     return wretch(url)
         .get()
         .badRequest(e => console.log('error on', request_name, e))
@@ -11,7 +12,7 @@ export function wretchWrapper(url: string, request_name: string):
         .json(data => data)
 }
 
-export function wretchAction(url: string, body: unknown): Promise<unknown> {
+export function wretchAction(url: string, body: unknown): Promise<string> {
     return wretch(url)
         .post({ body })
         .badRequest(e => { throw new Error() })
@@ -21,13 +22,12 @@ export function wretchAction(url: string, body: unknown): Promise<unknown> {
         .res(response => response.json())
 }
 
-export function promiseHandler(results: any[]): any {
-    const errors: { status: "rejected", reason: any }[]
-        = results.filter((result) => result.status === 'rejected')
+export function promiseHandler(results: PromiseHandlerProps[]) {
+    const errors = results.filter((result) => result.status === 'rejected')
     if (errors.length) {
-        const reason: string[] = errors.map((e) => e.reason)
+        const reason = errors.map((e) => e.reason)
         throw new AggregateError(reason)
+    } else {
+        return results.map((result) => result.value)
     }
-    return results.map((result: PromiseFulfilledResult<unknown>) =>
-        result.value)
 }

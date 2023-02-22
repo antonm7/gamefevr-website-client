@@ -11,6 +11,7 @@ import SmallLoader from '../../components/common/SmallLoader'
 import { wretchWrapper, promiseHandler } from '../../lib/functions/fetchLogic'
 import Upper from '../../components/GamePage/Responsive/Upper'
 import Footer from '../../components/GamePage/Responsive/Footer'
+import { PromiseHandlerProps } from '../../types/request'
 
 type Props = {
   game: DetailedGame
@@ -55,6 +56,16 @@ const loadersReducer = (state: Loaders_State, action: Loaders_Action) => {
   }
 }
 
+interface fetchReviewsType {
+  error: null | string
+  reviews: Review_Type[]
+}
+
+interface fetchGameData {
+  game: DetailedGame
+  reviews: Review_Type[]
+}
+
 export default function GamePage(props: Props) {
   const store = useStore()
   const router = useRouter()
@@ -67,7 +78,9 @@ export default function GamePage(props: Props) {
   })
 
   const loadReviews = async () => {
-    const fetchReviews: any = await wretchWrapper(`/api/game/get/getReviews?gameId=${router.query.id}`, 'loadReviews')
+    const fetchReviews =
+      await wretchWrapper(`/api/game/get/getReviews?gameId=${router.query.id}`,
+        'loadReviews') as fetchReviewsType
     setReviews(fetchReviews.reviews)
     setLoaders({ type: 'reviews', value: false })
   }
@@ -76,12 +89,14 @@ export default function GamePage(props: Props) {
     setGame(props.game)
     loadReviews()
     setLoaders({ type: 'none', value: false })
+    loadAgain()
   }, [router.query.id, props.game])
 
   const loadAgain = async (): Promise<void> => {
     setLoaders({ type: 'global', value: true })
-    const gameData: any = await wretchWrapper(`/api/game/get/getGame?gameId=${router.query.id}`, 'loadAgain')
-    if (gameData.length) {
+    const gameData = await
+      wretchWrapper(`/api/game/get/getGame?gameId=${router.query.id}`, 'loadAgain') as fetchGameData
+    if (gameData.game) {
       setGame(gameData.game)
       setReviews(gameData.reviews)
     }
@@ -129,15 +144,19 @@ interface Context {
   }
 }
 
+interface gamesDataFromApi {
+  results: ShortGame[]
+}
+
 export async function getStaticPaths() {
   const ids: number[] = []
 
   for (let i = 1; i < 5; i++) {
-    const getGamesData: any = await wretchWrapper(
+    const getGamesData = await wretchWrapper(
       `https://api.rawg.io/api/games?key=39a2bd3750804b5a82669025ed9986a8&dates=1990-01-01,2023-12-31&page=${i}&page_size=${100}`
-      , 'getGamesData')
+      , 'getGamesData') as gamesDataFromApi
     ids.push(
-      ...getGamesData.results.map((game: ShortGame) => game.id)
+      ...getGamesData.results.map((game) => game.id)
     )
   }
 
@@ -149,10 +168,10 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(context: Context) {
-  const fetchGameData = (): any => wretchWrapper(`https://api.rawg.io/api/games/${context.params.id}?key=39a2bd3750804b5a82669025ed9986a8`, 'gameData')
-  const fetchScreenshots = (): any => wretchWrapper(`https://api.rawg.io/api/games/${context.params.id}/screenshots?key=39a2bd3750804b5a82669025ed9986a8`, 'screenshotsData')
-  const fetchTreilers = (): any => wretchWrapper(`https://api.rawg.io/api/games/${context.params.id}/movies?key=39a2bd3750804b5a82669025ed9986a8`, 'treilersData')
-  const fetchSameSeries = (): any => wretchWrapper(`https://api.rawg.io/api/games/${context.params.id}/game-series?key=39a2bd3750804b5a82669025ed9986a8`, 'sameSeriesData')
+  const fetchGameData = () => wretchWrapper(`https://api.rawg.io/api/games/${context.params.id}?key=39a2bd3750804b5a82669025ed9986a8`, 'gameData')
+  const fetchScreenshots = () => wretchWrapper(`https://api.rawg.io/api/games/${context.params.id}/screenshots?key=39a2bd3750804b5a82669025ed9986a8`, 'screenshotsData')
+  const fetchTreilers = () => wretchWrapper(`https://api.rawg.io/api/games/${context.params.id}/movies?key=39a2bd3750804b5a82669025ed9986a8`, 'treilersData')
+  const fetchSameSeries = () => wretchWrapper(`https://api.rawg.io/api/games/${context.params.id}/game-series?key=39a2bd3750804b5a82669025ed9986a8`, 'sameSeriesData')
 
   try {
     const result = await Promise.allSettled([
@@ -160,10 +179,10 @@ export async function getStaticProps(context: Context) {
       fetchScreenshots(),
       fetchTreilers(),
       fetchSameSeries()
-    ])
+    ]) as PromiseHandlerProps[]
 
     const [gameData, screenshots, trailers, same_series]:
-      [DetailedGame, Screenshot, any, same_series_type] = promiseHandler(result)
+      [DetailedGame, Screenshot, object, same_series_type] = promiseHandler(result)
 
     const finalData: DetailedGame = {
       id: gameData.id,
