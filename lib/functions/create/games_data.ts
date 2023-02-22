@@ -26,6 +26,7 @@ export default async function games_data_document(gameId: string) {
     if (!isExists) {
       await db.collection("games_data").insertOne(document);
     }
+
   } catch (e) {
     console.log("error on creating games_data");
   }
