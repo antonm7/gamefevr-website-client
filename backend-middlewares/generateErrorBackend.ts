@@ -1,8 +1,9 @@
 import clientPromise from '../lib/functions/mongodb'
+
 interface Props {
   error: string
-  status: number
-  e: any
+  status: number,
+  e?: any
 }
 
 async function generateErrorBackend({ error, status, e }: Props) {
@@ -12,6 +13,7 @@ async function generateErrorBackend({ error, status, e }: Props) {
   await db.collection('errors').insertOne({
     error,
     status,
+    e
   })
 }
 

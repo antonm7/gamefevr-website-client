@@ -49,7 +49,6 @@ export default function FavoritesSlider({ favorites, deleteFavorite, visited }: 
                 </h1>
                 {favorites.length ? <LengthIndicator length={favorites.length} /> : null}
             </div>
-
             <div
                 className={`mt-12 ${width < 760
                     ? ''
