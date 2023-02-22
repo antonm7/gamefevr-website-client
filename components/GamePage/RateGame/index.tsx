@@ -177,9 +177,8 @@ export default function RateGame({ updateIsUserRated, reviews }: Props) {
       <div className="w-72">
         {wasteOfTime ? (
           <div
-            className="bg-white w-22 p-2 pt-1 rating-text text-center"
-            style={{ marginLeft: '26px' }}
-          >
+            className={`bg-white w-22 p-2 pt-1 rating-text text-center ${styles.rating_text}`}
+            id={styles.waste_of_time}>
             <p className="text-sm font-semibold text-darkIndigo rating_label_text">
               waste of time
             </p>
@@ -187,10 +186,7 @@ export default function RateGame({ updateIsUserRated, reviews }: Props) {
         ) : null}
         {nuh ? (
           <div
-            className="bg-white w-22 p-2 pt-1 rating-text text-center"
-            style={{ marginLeft: '102px' }}
-
-          >
+            className={`bg-white w-22 p-2 pt-1 ${styles.rating_text} text-center`} id={styles.nuh}>
             <p className="text-sm font-semibold text-darkIndigo rating_label_text">
               nuh
             </p>
@@ -198,10 +194,8 @@ export default function RateGame({ updateIsUserRated, reviews }: Props) {
         ) : null}
         {good ? (
           <div
-            className="bg-white w-22 p-2 pt-1 rating-text text-center"
-            style={{ marginLeft: '141px' }}
-
-          >
+            className={`bg-white w-22 p-2 pt-1 ${styles.rating_text} text-center`}
+            id={styles.good}>
             <p className="text-sm font-semibold text-darkIndigo rating_label_text">
               good
             </p>
@@ -209,8 +203,7 @@ export default function RateGame({ updateIsUserRated, reviews }: Props) {
         ) : null}
         {must ? (
           <div
-            className="bg-white w-22 p-2 pt-1 rating-text text-center"
-            style={{ marginLeft: '186px' }}>
+            className={`bg-white w-22 p-2 pt-1 ${styles.rating_text} text-center`} id={styles.must}>
             <p className="text-sm font-semibold text-darkIndigo rating_label_text">
               must
             </p>

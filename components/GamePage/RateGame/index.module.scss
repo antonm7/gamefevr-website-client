@@ -9,3 +9,42 @@
         padding: 0.5rem 2rem;
     }
 }
+
+.rating_text {
+    border-radius: 6px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    display: inline-block;
+}
+
+#waste_of_time {
+    margin-left: 1.5rem;
+
+    @include for-size(phone-only) {
+        margin-left: 0.1rem;
+    }
+}
+
+#nuh {
+    margin-left: 6.27rem;
+
+    @include for-size(phone-only) {
+        margin-left: 5.65rem;
+    }
+}
+
+#good {
+    margin-left: 8.95rem;
+
+    @include for-size(phone-only) {
+        margin-left: 9.65rem;
+    }
+}
+
+#must {
+    margin-left: 11.95rem;
+
+    @include for-size(phone-only) {
+        margin-left: 13.93rem;
+    }
+}

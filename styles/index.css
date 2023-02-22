@@ -23,13 +23,6 @@ div {
     background-repeat: no-repeat;
 }
 
-.rating-text {
-    border-radius: 6px;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-    display: inline-block;
-}
-
 #header_bg {
     background-image: url('/illustrations/header.svg');
     background-size: 100%;

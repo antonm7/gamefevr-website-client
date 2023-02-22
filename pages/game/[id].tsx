@@ -181,8 +181,8 @@ export async function getStaticProps(context: Context) {
       fetchSameSeries()
     ]) as PromiseHandlerProps[]
 
-    const [gameData, screenshots, trailers, same_series]:
-      [DetailedGame, Screenshot, object, same_series_type] = promiseHandler(result)
+    const [gameData, screenshots, trailers, same_series]
+      = promiseHandler(result) as [DetailedGame, Screenshot, object, same_series_type]
 
     const finalData: DetailedGame = {
       id: gameData.id,

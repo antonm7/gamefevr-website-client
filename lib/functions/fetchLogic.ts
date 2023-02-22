@@ -22,7 +22,7 @@ export function wretchAction(url: string, body: unknown): Promise<string> {
         .res(response => response.json())
 }
 
-export function promiseHandler(results: PromiseHandlerProps[]) {
+export function promiseHandler(results: PromiseHandlerProps[]): any[] {
     const errors = results.filter((result) => result.status === 'rejected')
     if (errors.length) {
         const reason = errors.map((e) => e.reason)
