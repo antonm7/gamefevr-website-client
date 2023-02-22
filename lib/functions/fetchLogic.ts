@@ -15,10 +15,10 @@ export function wretchWrapper(url: string, request_name: string): Promise<object
 export function wretchAction(url: string, body: unknown): Promise<string> {
     return wretch(url)
         .post({ body })
-        .badRequest(e => { throw new Error() })
-        .notFound(e => { throw new Error() })
-        .unauthorized(e => { throw new Error() })
-        .internalError(e => { throw new Error() })
+        .badRequest(() => { throw new Error() })
+        .notFound(() => { throw new Error() })
+        .unauthorized(() => { throw new Error() })
+        .internalError(() => { throw new Error() })
         .res(response => response.json())
 }
 
