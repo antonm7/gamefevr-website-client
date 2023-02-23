@@ -56,16 +56,6 @@ const loadersReducer = (state: Loaders_State, action: Loaders_Action) => {
   }
 }
 
-interface fetchReviewsType {
-  error: null | string
-  reviews: Review_Type[]
-}
-
-interface fetchGameData {
-  game: DetailedGame
-  reviews: Review_Type[]
-}
-
 export default function GamePage(props: Props) {
   const store = useStore()
   const router = useRouter()
@@ -80,7 +70,7 @@ export default function GamePage(props: Props) {
   const loadReviews = async () => {
     const fetchReviews =
       await wretchWrapper(`/api/game/get/getReviews?gameId=${router.query.id}`,
-        'loadReviews') as fetchReviewsType
+        'loadReviews')
     setReviews(fetchReviews.reviews)
     setLoaders({ type: 'reviews', value: false })
   }
@@ -95,7 +85,7 @@ export default function GamePage(props: Props) {
   const loadAgain = async (): Promise<void> => {
     setLoaders({ type: 'global', value: true })
     const gameData = await
-      wretchWrapper(`/api/game/get/getGame?gameId=${router.query.id}`, 'loadAgain') as fetchGameData
+      wretchWrapper(`/api/game/get/getGame?gameId=${router.query.id}`, 'loadAgain')
     if (gameData.game) {
       setGame(gameData.game)
       setReviews(gameData.reviews)
@@ -154,7 +144,7 @@ export async function getStaticPaths() {
   for (let i = 1; i < 5; i++) {
     const getGamesData = await wretchWrapper(
       `https://api.rawg.io/api/games?key=39a2bd3750804b5a82669025ed9986a8&dates=1990-01-01,2023-12-31&page=${i}&page_size=${100}`
-      , 'getGamesData') as gamesDataFromApi
+      , 'getGamesData')
     ids.push(
       ...getGamesData.results.map((game) => game.id)
     )
@@ -174,7 +164,7 @@ export async function getStaticProps(context: Context) {
   const fetchSameSeries = () => wretchWrapper(`https://api.rawg.io/api/games/${context.params.id}/game-series?key=39a2bd3750804b5a82669025ed9986a8`, 'sameSeriesData')
 
   try {
-    const result = await Promise.allSettled([
+    const result: any = await Promise.allSettled([
       fetchGameData(),
       fetchScreenshots(),
       fetchTreilers(),

@@ -206,8 +206,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
   let filteredString = ''
   const usedYears: visited_years[] = []
-  const usedGenres = []
-  const usedPlatforms = []
+  const usedGenres: string[] = []
+  const usedPlatforms: string[] = []
   const session = await getSession(context)
 
   const isNextPage = (page: number, count: number) => {

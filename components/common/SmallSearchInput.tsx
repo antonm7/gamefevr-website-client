@@ -10,6 +10,10 @@ import { useFiltersStore, useStore } from '../../store'
 import { NamedGame } from '../../types'
 import FiltersAppliedCount from './FiltersAppliedCount'
 
+interface fetchGameNameData {
+  games: NamedGame[]
+}
+
 export default function SmallSearchInput({ full }: { full: boolean }) {
   const [search, setSearch] = useState<string>('')
   const [games, setGames] = useState<NamedGame[]>([])
@@ -62,9 +66,11 @@ export default function SmallSearchInput({ full }: { full: boolean }) {
 
   const fetchData = async (name: string): Promise<void> => {
     try {
-      const getGameNameData: any = wretchWrapper(`/api/query/name?search=${name}`, 'getGameNameData')
-      const games: NamedGame[] = getGameNameData.games
-      setGames(games)
+      const getGameNameData = await wretchWrapper(
+        `/api/query/name?search=${name}`, 'getGameNameData')
+      if (getGameNameData.games) {
+        setGames(getGameNameData.games as NamedGame[])
+      }
     } catch (e) {
       PubSub.publish('OPEN_ALERT', {
         type: 'error',

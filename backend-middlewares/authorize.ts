@@ -7,7 +7,7 @@ interface ExtendedNextApiRequest extends NextApiRequest {
     newPassword: string
   }
 }
-function authorize(handler: any) {
+function authorize(handler) {
   return async (req: ExtendedNextApiRequest, res: NextApiResponse) => {
     const token = await getToken({ req })
     if (!token) {

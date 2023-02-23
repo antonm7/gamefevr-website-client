@@ -8,6 +8,10 @@ import { NamedGame } from '../../../types'
 import FiltersAppliedCount from '../FiltersAppliedCount'
 import styles from './index.module.scss'
 
+interface FetchNameData {
+  games: NamedGame[]
+}
+
 export default function SearchInput() {
   const store = useStore()
   const [searchTerm, setSearchTerm] = useState<string>('')
@@ -15,9 +19,11 @@ export default function SearchInput() {
 
   const fetchData = async (name: string): Promise<void> => {
     try {
-      const fetchNameData: any = await wretchWrapper(`/api/query/name?search=${name}`, 'fetchNameData')
-      const games: NamedGame[] = fetchNameData.games
-      setGames(games)
+      const fetchNameData = await
+        wretchWrapper(`/api/query/name?search=${name}`, 'fetchNameData')
+      if (fetchNameData.games) {
+        setGames(fetchNameData.games as NamedGame[])
+      }
     } catch (e) {
       PubSub.publish('OPEN_ALERT', {
         type: 'error',

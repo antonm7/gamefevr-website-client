@@ -16,7 +16,7 @@ export default function RateGame({ updateIsUserRated, reviews }: Props) {
   const [good, setGood] = useState<boolean>(false)
   const [must, setMust] = useState<boolean>(false)
   const [reviewsState, setReviewsState] = useState<Review_Type[]>([])
-  const [isUserRated, setIsUserRated] = useState<string | null>(null)
+  const [isUserRated, setIsUserRated] = useState<string | boolean>(false)
 
   const session = useSession()
   const router = useRouter()
@@ -31,10 +31,13 @@ export default function RateGame({ updateIsUserRated, reviews }: Props) {
   useEffect(() => {
     const isUserRated = async () => {
       try {
-        const getUserRankFetch: any = await wretchWrapper(`/api/game/get/getRank?userId=${session.data?.user?.userId}&gameId=${router.query.id}`, 'getUserRankFetch')
-        if (!getUserRankFetch.isUserRated) return
-        setIsUserRated(getUserRankFetch.isUserRated)
-        updateIsUserRated(getUserRankFetch.isUserRated)
+        const getUserRankFetch =
+          await wretchWrapper(`/api/game/get/getRank?userId=${session.data?.user?.userId}&gameId=${router.query.id}`,
+            'getUserRankFetch')
+        if (typeof getUserRankFetch.isUserRated === 'string') {
+          setIsUserRated(getUserRankFetch.isUserRated)
+          updateIsUserRated(getUserRankFetch.isUserRated)
+        }
       } catch (e) {
         return
       }
@@ -47,7 +50,7 @@ export default function RateGame({ updateIsUserRated, reviews }: Props) {
     try {
       //cancel rank
       if (rank === isUserRated) {
-        setIsUserRated(null)
+        setIsUserRated(false)
         await wretchAction('/api/game/cancel/cancelRank', {
           userId: session.data?.user?.userId,
           gameId: router.query.id,
@@ -70,7 +73,7 @@ export default function RateGame({ updateIsUserRated, reviews }: Props) {
         })
       }
     } catch (e) {
-      setIsUserRated(null)
+      setIsUserRated(false)
       PubSub.publish('OPEN_ALERT', {
         type: 'error',
         msg: `error ranking the game, try again`

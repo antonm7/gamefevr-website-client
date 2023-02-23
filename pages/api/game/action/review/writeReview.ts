@@ -22,7 +22,7 @@ interface ExtendedNextApiRequest extends NextApiRequest {
 
 async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
-    let db = null
+    let db: any = null
     const { userId, gameId, rank, text } = req.body.body
     let savedReview
     //initializing database
@@ -55,7 +55,7 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
     }
     //saves the reviews inside own ranks collection
     try {
-      const getSpecificGameData: any = await wretchWrapper(
+      const getSpecificGameData = await wretchWrapper(
         `https://api.rawg.io/api/games/${gameId}?key=0ffbdb925caf4b20987cd068aa43fd75`
         , 'getSpecificGameData')
 

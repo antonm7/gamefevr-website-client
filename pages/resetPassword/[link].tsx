@@ -5,7 +5,7 @@ import SmallLoader from '../../components/common/SmallLoader'
 import YellowButton from '../../components/common/YellowButton'
 import SearchLayout from '../../components/layout'
 import StyledInput from '../../components/Register/StyledInput'
-import { wretchAction, wretchWrapper } from '../../lib/functions/fetchLogic'
+import { wretchAction } from '../../lib/functions/fetchLogic'
 import clientPromise from '../../lib/functions/mongodb'
 
 const resetPassword: NextPage = () => {
@@ -88,7 +88,7 @@ const resetPassword: NextPage = () => {
 }
 
 export async function getServerSideProps(context: any) {
-  let db = null
+  let db: any = null
   try {
     const client = await clientPromise
     db = client.db()

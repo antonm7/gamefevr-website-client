@@ -38,8 +38,8 @@ export default function Review({
   const [dislike, setDislike] = useState<boolean>(false)
   const [isUserLiked, setIsUserLiked] = useState<boolean>(false)
   const [isUserDisliked, setIsUserDisliked] = useState<boolean>(false)
-  const [likesState, setLikesState] = useState<ObjectId[]>([])
-  const [dislikesState, setDislikesState] = useState<ObjectId[]>([])
+  const [likesState, setLikesState] = useState<string[]>([])
+  const [dislikesState, setDislikesState] = useState<string[]>([])
 
   const [width] = useWindowSize()
 

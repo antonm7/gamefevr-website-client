@@ -14,7 +14,7 @@ interface Props {
 export default function AddFavorite({ gameId }: Props) {
   const session = useSession()
   const router = useRouter()
-  const [isFavorite, setIsFavorite] = useState<boolean>(false)
+  const [isFavorite, setIsFavorite] = useState<boolean | string>(false)
   const [mouseOver, setMouseOver] = useState<boolean>(false)
 
   const navigateAuth = (): void => {
@@ -36,12 +36,12 @@ export default function AddFavorite({ gameId }: Props) {
           favoriteId: isFavorite,
         })
       } else {
-        const addToFavoriteAction: any = await wretchAction(`/api/game/action/favorite/add`, {
-          userId: session.data?.user?.userId,
-          gameId: gameId,
-        })
-
-        if (addToFavoriteAction) {
+        const addToFavoriteAction = await
+          wretchAction(`/api/game/action/favorite/add`, {
+            userId: session.data?.user?.userId,
+            gameId: gameId
+          })
+        if (typeof addToFavoriteAction.favoriteId === 'string') {
           setIsFavorite(addToFavoriteAction.favoriteId)
           PubSub.publish('OPEN_ALERT', {
             type: 'success',
@@ -63,7 +63,9 @@ export default function AddFavorite({ gameId }: Props) {
     if (session.status === 'authenticated') {
       const checkIsFavorite = async (): Promise<void> => {
         try {
-          const fetchIsFavorite: any = await wretchWrapper(`/api/game/get/getIsFavorite?userId=${session.data?.user?.userId}&gameId=${gameId}`, 'fetchIsFavorite')
+          const fetchIsFavorite
+            = await wretchWrapper(`/api/game/get/getIsFavorite?userId=${session.data?.user?.userId}&gameId=${gameId}`,
+              'fetchIsFavorite')
           if (fetchIsFavorite.isFavorite) return setIsFavorite(false)
         } catch (e) {
           console.log(e)

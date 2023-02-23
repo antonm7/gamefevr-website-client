@@ -20,7 +20,7 @@ interface ExtendedNextApiRequest extends NextApiRequest {
 
 const handler = async (req: ExtendedNextApiRequest, res: NextApiResponse) => {
   if (req.method === 'POST') {
-    let db = null
+    let db: any = null
     let savedFavorite
     const { gameId, userId } = req.body.body
     //initializing database
@@ -55,7 +55,7 @@ const handler = async (req: ExtendedNextApiRequest, res: NextApiResponse) => {
     }
     //saves the favorite inside own favorites collection
     try {
-      const fetchSpecificGame: any = await wretchWrapper(
+      const fetchSpecificGame = await wretchWrapper(
         `https://api.rawg.io/api/games/${gameId}?key=39a2bd3750804b5a82669025ed9986a8`
         , 'fetchSpecificGame')
 

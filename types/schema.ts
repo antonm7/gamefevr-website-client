@@ -23,8 +23,8 @@ export type Review_Type = {
   game_image: string
   text: string
   rank: string
-  likes: ObjectId[]
-  dislikes: ObjectId[]
+  likes: string[]
+  dislikes: string[]
 }
 
 export type Favorite_Type = {

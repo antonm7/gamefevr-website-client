@@ -5,6 +5,7 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import TextareaAutosize from 'react-textarea-autosize'
 import { promiseHandler, wretchAction } from '../../../lib/functions/fetchLogic'
+import { promiseSettledResponse } from '../../../types/apiTypes'
 import { Review_Type } from '../../../types/schema'
 
 interface Props {
@@ -43,16 +44,18 @@ export default function WriteReview({
           gameId: router.query.id,
           text,
           rank
-        }
-      )
+        })
+
       const rankGameAction = () => wretchAction('/api/game/action/rankGame', {
         userId: session.data?.user?.userId,
         gameId: router.query.id,
         value: rank
       })
 
-      const result = await Promise.allSettled([writeReviewRequest(), rankGameAction()])
-      const [writeReviewResponse]: any = promiseHandler(result)
+      const results = await Promise.allSettled(
+        [writeReviewRequest(), rankGameAction()]) as promiseSettledResponse[]
+      const [writeReviewResponse] = promiseHandler(results)
+
       PubSub.publish('OPEN_ALERT', {
         type: 'success',
         msg: `Successfully created your review!`
@@ -60,7 +63,9 @@ export default function WriteReview({
       setText('')
       setRank(null)
       onClose()
-      insertNewReview(writeReviewResponse.review)
+      if (writeReviewResponse.review) {
+        insertNewReview(writeReviewResponse.review as Review_Type)
+      }
     } catch (e) {
       PubSub.publish('OPEN_ALERT', {
         type: 'error',

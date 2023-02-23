@@ -30,15 +30,14 @@ async function handler(req: ExtendedRequest, res: Response) {
         `https://api.rawg.io/api/games/${query.gameId}/game-series?key=39a2bd3750804b5a82669025ed9986a8`
         , 'getSeries')
 
-
-      const result = await Promise.allSettled([
+      const result: any = await Promise.allSettled([
         getGame(),
         getScreenshots(),
         getTrailers(),
         getSeries()
       ])
 
-      const [gameData, screenshots, trailers, same_series] = promiseHandler(result)
+      const [gameData, screenshots, trailers, same_series]: any = promiseHandler(result)
 
       const finalData: DetailedGame = {
         id: gameData.id,
