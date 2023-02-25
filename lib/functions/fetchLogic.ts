@@ -5,10 +5,10 @@ import { promiseSettledResponse } from '../../types/apiTypes'
 export function wretchWrapper(url: string, request_name: string): Promise<promiseSettledResponse> {
     return wretch(url)
         .get()
-        .badRequest(e => console.log('error on', request_name, e))
-        .notFound(e => console.log('error on', request_name, e))
-        .unauthorized(e => console.log('error on', request_name, e))
-        .internalError(e => console.log('error on', request_name, e))
+        .badRequest(e => e)
+        .notFound(e => e)
+        .unauthorized(e => e)
+        .internalError(e => e)
         .json(data => data)
 }
 

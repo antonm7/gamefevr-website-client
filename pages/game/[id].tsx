@@ -199,7 +199,6 @@ export async function getStaticProps(context: Context) {
       }
     }
   } catch (e) {
-    console.log(e)
     return {
       props: {
         game: null

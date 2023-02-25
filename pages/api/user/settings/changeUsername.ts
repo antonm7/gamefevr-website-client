@@ -22,7 +22,7 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
       console.log('error on changing username', e)
       return res.status(401)
     }
-    let db = null
+    let db: any = null
     const { email, username } = req.body.body
     //initializing database
     try {
@@ -65,7 +65,6 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
         status: 500,
         e,
       })
-      console.log(e)
       res.status(500).send({ error: 'Unexpected Error' })
     }
     //updating username
@@ -81,7 +80,6 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
         status: 500,
         e,
       })
-      console.log(e)
       res.status(500).send({ error: 'Unexpected Error' })
     }
   }

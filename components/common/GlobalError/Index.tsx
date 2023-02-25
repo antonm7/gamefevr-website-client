@@ -20,7 +20,6 @@ export default function GlobalError() {
     setType(objectData.type)
     setVisibility(true)
     setMsg(objectData.msg)
-    console.log('ree1')
     if (objectData.type !== 'request') {
       setTimeout(() => {
         setVisibility(false)

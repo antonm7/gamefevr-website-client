@@ -16,7 +16,8 @@ interface ExtendedNextApiRequest extends NextApiRequest {
 export default async function handler(req: ExtendedNextApiRequest, res: Response) {
   if (req.method === 'POST') {
     const { link, newPassword } = req.body.body
-    let db = null
+
+    let db: any = null
     //initializing database
     try {
       const client = await clientPromise
@@ -40,8 +41,8 @@ export default async function handler(req: ExtendedNextApiRequest, res: Response
         },
         { $set: { password: hashedPassword, reset_password: '' } }
       )
-
       res.status(200).send({ ok: true })
+
     } catch (e) {
       await GenerateError({
         error:
@@ -49,7 +50,6 @@ export default async function handler(req: ExtendedNextApiRequest, res: Response
         status: 500,
         e,
       })
-      console.log('error on confirmResetPassword', e)
       res.status(500).send({ error: 'Unexpected Error' })
     }
   }

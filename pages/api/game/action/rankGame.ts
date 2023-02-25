@@ -20,7 +20,7 @@ interface ExtendedNextApiRequest extends NextApiRequest {
 
 async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
-    let db = null
+    let db: any = null
     let savedRank
     const { gameId, userId, value } = req.body.body
     //initializing database

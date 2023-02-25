@@ -86,7 +86,6 @@ async function UpdateScore(id: ObjectId, score: number): Promise<Response> {
       })
     return { ok: true }
   } catch (e) {
-    console.log('error on updateHype, updateScoreFunc', e)
     return { error: '' }
   }
 }

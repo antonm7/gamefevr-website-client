@@ -16,7 +16,7 @@ interface ExtendedNextApiRequest extends NextApiRequest {
 async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
     if (req.method === 'POST') {
         const { gets_hype, sends_hype } = req.body.body
-        let db = null
+        let db: any = null
         try {
             const client = await clientPromise
             db = client.db()

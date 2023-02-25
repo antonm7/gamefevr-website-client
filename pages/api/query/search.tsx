@@ -115,7 +115,6 @@ export default async function handler(req: ExtendedNextApiRequest, res: Response
           return false
         }
       }
-      console.log(games)
       res
         .status(200)
         .send({ games, nextPage: isNextPage(page), count })

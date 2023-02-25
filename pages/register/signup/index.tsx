@@ -47,7 +47,6 @@ const Signup: NextPage = () => {
             if (router.query.back) {
               router.push(`${router.query.back}`)
             } else {
-              console.log('ree')
               router.push('/')
             }
           }

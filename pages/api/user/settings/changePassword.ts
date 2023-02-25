@@ -21,10 +21,9 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
       const auth = await checkJWT(req)
       if (!auth) throw new Error('No token')
     } catch (e) {
-      console.log(e)
       return res.status(401)
     }
-    let db = null
+    let db: any = null
     const { email, oldPassword, newPassword } = req.body.body
     //initializing database
     try {

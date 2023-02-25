@@ -68,7 +68,6 @@ export default function AddFavorite({ gameId }: Props) {
               'fetchIsFavorite')
           if (fetchIsFavorite.isFavorite) return setIsFavorite(false)
         } catch (e) {
-          console.log(e)
           throw new Error('Unexpected Error')
         }
       }

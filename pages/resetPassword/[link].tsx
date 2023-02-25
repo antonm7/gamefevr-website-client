@@ -26,19 +26,18 @@ const resetPassword: NextPage = () => {
 
       if (password !== newPassword) return setError('Confirm password is not the same')
 
-      const req: any = await wretchAction('/api/user/settings/confirmResetPassword', {
+      const req = await wretchAction('/api/user/settings/confirmResetPassword', {
         newPassword,
-        link: router.query.link,
+        link: router.query.link
       })
-
-      if (req.data.error) {
-        setError(req.data.error)
-      } else {
+      if (req.ok) {
         setTimeout(() => {
           router.push('/register/login')
         }, 1500)
         setError('')
         setCompleted(true)
+      } else {
+        setError(req.data.error)
       }
     } catch (e) {
       setError('Unexpected error, please try again')
@@ -93,7 +92,6 @@ export async function getServerSideProps(context: any) {
     const client = await clientPromise
     db = client.db()
   } catch (e) {
-    console.log('error', e)
     return {
       props: {
         error: 'Unexpected Error, try again',
@@ -117,8 +115,6 @@ export async function getServerSideProps(context: any) {
       }
     }
   } catch (e) {
-    console.log(e)
-
     return {
       redirect: {
         permanent: false,
