@@ -26,7 +26,7 @@ type Props = {
 
 export default function Index(props: Props) {
   const [loadMoreLoading, setLoadMoreLoading] = useState<boolean>(true)
-  const [nextPage, setNextPage] = useState<boolean>(props.nextPage)
+  const [nextPage, setNextPage] = useState<boolean>(false)
   //2 types of errors
   const [loadingError, setLoadingError] = useState<boolean>(false)
   const [noResults, setNoResults] = useState<boolean>(false)
@@ -50,11 +50,12 @@ export default function Index(props: Props) {
         //if there no games from server, dont update the games state
         //and remove the loadMore button
         setShowLoadMoreButton(false)
+        setNextPage(false)
       } else {
         setShowLoadMoreButton(true)
+        setNextPage(fetchMoreGames.nextPage)
         store.addPage()
         store.addGames(fetchMoreGames.games)
-        setNextPage(fetchMoreGames.nextPage)
         store.setCount(fetchMoreGames.count)
       }
       setLoadMoreLoading(false)
@@ -66,14 +67,16 @@ export default function Index(props: Props) {
       setLoadMoreLoading(false)
       setShowLoadMoreButton(true)
     }
-
   }
 
   const initialLoading = async () => {
     setLoadMoreLoading(false)
     setLoadingError(false)
     setShowLoadMoreButton(true)
-    setNextPage(true)
+
+    if (props.nextPage) {
+      setNextPage(true)
+    }
 
     if (props.error) return setLoadingError(true)
 
@@ -194,6 +197,7 @@ function parseCookies(req: any) {
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const cookies = parseCookies(context.req)
+
   if (cookies.prevRoute === '/game/[id]') {
     return {
       props: {
@@ -315,51 +319,51 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
         const db = client.db()
 
         if (usedYears) {
-          db.collection('users').updateOne(
+          await db.collection('users').updateOne(
             { _id: new ObjectId(session.user.userId) },
             { $push: { visited_years: { $each: usedYears } } }
           )
         }
         if (usedPlatforms) {
-          db.collection('users').updateOne(
+          await db.collection('users').updateOne(
             { _id: new ObjectId(session.user.userId) },
             { $push: { visited_platforms: { $each: usedPlatforms } } }
           )
         }
         if (usedGenres) {
-          db.collection('users').updateOne(
+          await db.collection('users').updateOne(
             { _id: new ObjectId(session.user.userId) },
             { $push: { visited_genres: { $each: usedGenres } } }
           )
         }
       } catch (e) {
+        console.log('djsakdklasj')
         console.log('error on updating user fields for used_filters')
       }
+    }
 
-      try {
-        const fetchGamesWithFilters: any = await wretchWrapper(`https://api.rawg.io/api/games?key=39a2bd3750804b5a82669025ed9986a8&dates=1990-01-01,2023-12-31&page=1&page_size=28${filteredString}`, 'fetchGamesWithFilters')
-
-        return {
-          props: {
-            games: fetchGamesWithFilters.results,
-            count: fetchGamesWithFilters.count,
-            nextPage: isNextPage(1, fetchGamesWithFilters.count),
-            error: null,
-          },
+    try {
+      const fetchGamesWithFilters = await wretchWrapper(`https://api.rawg.io/api/games?key=39a2bd3750804b5a82669025ed9986a8&dates=1990-01-01,2023-12-31&page=1&page_size=28${filteredString}`, 'fetchGamesWithFilters')
+      return {
+        props: {
+          games: fetchGamesWithFilters.results,
+          count: fetchGamesWithFilters.count,
+          nextPage: isNextPage(1, fetchGamesWithFilters.count),
+          error: null,
         }
-      } catch (e) {
-        return {
-          props: {
-            games: [],
-            error: 'Error Loading Games',
-          },
+      }
+    } catch (e) {
+      return {
+        props: {
+          games: [],
+          error: 'Error Loading Games',
         }
       }
     }
   } else {
     // No filters applied path
     try {
-      const fetchGamesWithoutFilters: any = await wretchWrapper(`https://api.rawg.io/api/games?key=39a2bd3750804b5a82669025ed9986a8&dates=1990-01-01,2023-12-31&page=1&page_size=28`, 'fetchGamesWithoutFilters')
+      const fetchGamesWithoutFilters = await wretchWrapper(`https://api.rawg.io/api/games?key=39a2bd3750804b5a82669025ed9986a8&dates=1990-01-01,2023-12-31&page=1&page_size=28`, 'fetchGamesWithoutFilters')
       return {
         props: {
           games: fetchGamesWithoutFilters.results,
@@ -376,6 +380,5 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
         },
       }
     }
-
   }
 }
