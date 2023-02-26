@@ -7,6 +7,13 @@
     }
 }
 
+@include for-size(tablet-portrait) {
+    .container_padding {
+        padding-left: 0rem;
+        padding-right: 0rem;
+    }
+}
+
 @include for-size(tablet-landscape) {
     #second_row_container {
         flex-direction: column;

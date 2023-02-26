@@ -14,7 +14,7 @@ export default function SelectBox({
   return (
     <button
       onClick={onClick}
-      className={`h-10 m-2 overflow-hidden border border-lighterBg px-6 flex flex-row items-center justify-center rounded-xl ${isSelected && !coolBlue
+      className={`w-fit h-10 m-2 overflow-hidden border border-lighterBg px-6 flex flex-row items-center justify-center rounded-xl ${isSelected && !coolBlue
         ? 'bg-main-blue'
         : isSelected && coolBlue
           ? 'bg-cool-blue'
