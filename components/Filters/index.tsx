@@ -63,8 +63,6 @@ export default function Filters() {
     return <Genres updateSelectedGenres={(value: number[]) => changeSelectedGenres(value)} />
   }, [])
 
-  const [width] = useWindowSize()
-
   return (
     <div className="fixed z-40 rounded-lg py-6 px-24 w-5/6 h-5/6 bg-filtersBg top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
       <div id="filters-bg"></div>

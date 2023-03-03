@@ -28,6 +28,13 @@ export default function Genres({ updateSelectedGenres }: Props) {
 
     const [width] = useWindowSize()
 
+    const changeShowMore = (status: boolean): void => {
+        if (status === false) {
+            changeSelectedGenres([])
+        }
+        setLoadMore(status)
+    }
+
     if (width <= 900) {
         return (
             <div className={`${styles.container_padding} filters-column-shadow rounded-md bg-white py-12 h-auto w-full max-w-full`}>
@@ -37,7 +44,7 @@ export default function Genres({ updateSelectedGenres }: Props) {
                         key={e.id}
                         title={e.name} />)}
                     <button
-                        onClick={() => (loadMore ? setLoadMore(false) : setLoadMore(true))}
+                        onClick={() => (loadMore ? changeShowMore(false) : changeShowMore(true))}
                         className={`w-fit h-10 m-2 overflow-hidden border border-lighterBg px-6 flex flex-row items-center justify-center rounded-xl`}
                     >
                         <p

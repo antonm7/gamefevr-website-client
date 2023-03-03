@@ -27,6 +27,13 @@ export default function Consoles({ updateSelectedConsoles }: Props) {
         updateSelectedConsoles(selectedConsoles)
     }, [selectedConsoles])
 
+    const changeShowMore = (status: boolean): void => {
+        if (status === false) {
+            changeSelectedConsoles([])
+        }
+        setLoadMore(status)
+    }
+
     const [width] = useWindowSize()
 
     if (width <= 900) {
@@ -38,7 +45,7 @@ export default function Consoles({ updateSelectedConsoles }: Props) {
                         key={e.id}
                         title={e.name} />)}
                     <button
-                        onClick={() => (loadMore ? setLoadMore(false) : setLoadMore(true))}
+                        onClick={() => (loadMore ? changeShowMore(false) : changeShowMore(true))}
                         className={`w-fit h-10 m-2 overflow-hidden border border-lighterBg px-6 flex flex-row items-center justify-center rounded-xl`}
                     >
                         <p
