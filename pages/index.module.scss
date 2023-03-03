@@ -11,6 +11,10 @@
     #titles_container {
         padding-top: 2rem;
     }
+
+    #search_input_wrapper {
+        width: 80%;
+    }
 }
 
 @include for-size(phone-only) {

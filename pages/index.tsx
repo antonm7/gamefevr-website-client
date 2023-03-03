@@ -69,13 +69,11 @@ const Home: NextPage = () => {
                 <span className="text-cool-blue">Game For You</span>
               </h1>
               <div className="flex flex-col items-center justify-between">
-                <div>
-                  <div
-                    className="flex pt-8 justify-center">
-                    <SearchInput />
-                    <div id={styles.search_button_wrapper} className="w-24 h-16 rounded-lg ml-4">
-                      <SearchButton onClick={() => navigate()} />
-                    </div>
+                <div
+                  className="flex pt-8 justify-center" id={styles.search_input_wrapper}>
+                  <SearchInput />
+                  <div id={styles.search_button_wrapper} className="w-24 h-16 rounded-lg ml-4">
+                    <SearchButton onClick={() => navigate()} />
                   </div>
                 </div>
               </div>
