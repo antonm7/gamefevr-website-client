@@ -16,18 +16,18 @@ async function handler(req: ExtendedRequest, res: Response) {
   if (req.method === 'GET') {
     const query = req.query
     try {
-      const getGame = () => wretchWrapper(`https://api.rawg.io/api/games/${query.gameId}?key=39a2bd3750804b5a82669025ed9986a8`
+      const getGame = () => wretchWrapper(`https://api.rawg.io/api/games/${query.gameId}?key=${process.env.FETCH_GAMES_KEY_GENERAL1}`
         , 'getGame')
 
-      const getScreenshots = () => wretchWrapper(`https://api.rawg.io/api/games/${query.gameId}/screenshots?key=39a2bd3750804b5a82669025ed9986a8`,
+      const getScreenshots = () => wretchWrapper(`https://api.rawg.io/api/games/${query.gameId}/screenshots?key=${process.env.FETCH_GAMES_KEY_GENERAL1}`,
         'getScreenshots')
 
       const getTrailers = () => wretchWrapper(
-        `https://api.rawg.io/api/games/${query.gameId}/movies?key=39a2bd3750804b5a82669025ed9986a8`
+        `https://api.rawg.io/api/games/${query.gameId}/movies?key=${process.env.FETCH_GAMES_KEY_GENERAL1}`
         , 'getTreilers')
 
       const getSeries = () => wretchWrapper(
-        `https://api.rawg.io/api/games/${query.gameId}/game-series?key=39a2bd3750804b5a82669025ed9986a8`
+        `https://api.rawg.io/api/games/${query.gameId}/game-series?key=${process.env.FETCH_GAMES_KEY_GENERAL2}`
         , 'getSeries')
 
       const result: any = await Promise.allSettled([

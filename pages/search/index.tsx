@@ -343,7 +343,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     }
 
     try {
-      const fetchGamesWithFilters = await wretchWrapper(`https://api.rawg.io/api/games?key=39a2bd3750804b5a82669025ed9986a8&dates=1990-01-01,2023-12-31&page=1&page_size=28${filteredString}`, 'fetchGamesWithFilters')
+      const fetchGamesWithFilters = await wretchWrapper(`https://api.rawg.io/api/games?key=${process.env.FETCH_GAMES_KEY_GENERAL1}&dates=1990-01-01,2023-12-31&page=1&page_size=28${filteredString}`, 'fetchGamesWithFilters')
       return {
         props: {
           games: fetchGamesWithFilters.results,
@@ -363,7 +363,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   } else {
     // No filters applied path
     try {
-      const fetchGamesWithoutFilters = await wretchWrapper(`https://api.rawg.io/api/games?key=39a2bd3750804b5a82669025ed9986a8&dates=1990-01-01,2023-12-31&page=1&page_size=28`, 'fetchGamesWithoutFilters')
+      const fetchGamesWithoutFilters = await wretchWrapper(`https://api.rawg.io/api/games?key=${process.env.FETCH_GAMES_KEY_GENERAL1}&dates=1990-01-01,2023-12-31&page=1&page_size=28`, 'fetchGamesWithoutFilters')
       return {
         props: {
           games: fetchGamesWithoutFilters.results,

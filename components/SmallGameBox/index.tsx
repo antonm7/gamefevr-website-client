@@ -15,7 +15,7 @@ export default function SmallGameBox({ game }: Props) {
 
   const loadMovie = async (): Promise<void> => {
     try {
-      const getMovies: any = await wretchWrapper(`https://api.rawg.io/api/games/${game.id}/movies?key=39a2bd3750804b5a82669025ed9986a8`
+      const getMovies: any = await wretchWrapper(`https://api.rawg.io/api/games/${game.id}/movies?key=${process.env.FETCH_GAMES_KEY_GENERAL1}`
         , 'getMoviews')
       setMovieUrl(getMovies.results[0].data.max)
     } catch (e) {

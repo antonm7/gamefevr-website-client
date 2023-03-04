@@ -97,13 +97,13 @@ export default async function handler(req: ExtendedNextApiRequest, res: Response
           filteredString = filteredString.concat('&ordering=-released')
         }
         const getData: any = await wretchWrapper(
-          `https://api.rawg.io/api/games?key=39a2bd3750804b5a82669025ed9986a8&dates=1990-01-01,2023-12-31&page=${page}&page_size=30${filteredString}`
+          `https://api.rawg.io/api/games?key=${process.env.FETCH_GAMES_KEY_GENERAL2}&dates=1990-01-01,2023-12-31&page=${page}&page_size=30${filteredString}`
           , 'getGamesData')
         games = getData.results
         count = getData.count
       } else {
         const getData: any = await wretchWrapper(
-          `https://api.rawg.io/api/games?key=39a2bd3750804b5a82669025ed9986a8&dates=1990-01-01,2023-12-31&page=${page}&page_size=30`
+          `https://api.rawg.io/api/games?key=${process.env.FETCH_GAMES_KEY_GENERAL2}&dates=1990-01-01,2023-12-31&page=${page}&page_size=30`
           , 'getGamesData')
         games = getData.results
         count = getData.count

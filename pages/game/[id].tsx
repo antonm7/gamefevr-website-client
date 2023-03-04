@@ -134,16 +134,12 @@ interface Context {
   }
 }
 
-interface gamesDataFromApi {
-  results: ShortGame[]
-}
-
 export async function getStaticPaths() {
   const ids: number[] = []
 
   for (let i = 1; i < 5; i++) {
     const getGamesData = await wretchWrapper(
-      `https://api.rawg.io/api/games?key=39a2bd3750804b5a82669025ed9986a8&dates=1990-01-01,2023-12-31&page=${i}&page_size=${100}`
+      `https://api.rawg.io/api/games?key=${process.env.BUILD_GAMES_API}&dates=1990-01-01,2023-12-31&page=${i}&page_size=${100}`
       , 'getGamesData')
     ids.push(
       ...getGamesData.results.map((game) => game.id)
@@ -158,10 +154,10 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(context: Context) {
-  const fetchGameData = () => wretchWrapper(`https://api.rawg.io/api/games/${context.params.id}?key=39a2bd3750804b5a82669025ed9986a8`, 'gameData')
-  const fetchScreenshots = () => wretchWrapper(`https://api.rawg.io/api/games/${context.params.id}/screenshots?key=39a2bd3750804b5a82669025ed9986a8`, 'screenshotsData')
-  const fetchTreilers = () => wretchWrapper(`https://api.rawg.io/api/games/${context.params.id}/movies?key=39a2bd3750804b5a82669025ed9986a8`, 'treilersData')
-  const fetchSameSeries = () => wretchWrapper(`https://api.rawg.io/api/games/${context.params.id}/game-series?key=39a2bd3750804b5a82669025ed9986a8`, 'sameSeriesData')
+  const fetchGameData = () => wretchWrapper(`https://api.rawg.io/api/games/${context.params.id}?key=${process.env.BUILD_GAMES_API}`, 'gameData')
+  const fetchScreenshots = () => wretchWrapper(`https://api.rawg.io/api/games/${context.params.id}/screenshots?key=${process.env.BUILD_GAMES_API}`, 'screenshotsData')
+  const fetchTreilers = () => wretchWrapper(`https://api.rawg.io/api/games/${context.params.id}/movies?key=${process.env.BUILD_GAMES_API}`, 'treilersData')
+  const fetchSameSeries = () => wretchWrapper(`https://api.rawg.io/api/games/${context.params.id}/game-series?key=${process.env.BUILD_GAMES_API}`, 'sameSeriesData')
 
   try {
     const result: any = await Promise.allSettled([

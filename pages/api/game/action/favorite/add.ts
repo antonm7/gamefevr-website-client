@@ -56,7 +56,7 @@ const handler = async (req: ExtendedNextApiRequest, res: NextApiResponse) => {
     //saves the favorite inside own favorites collection
     try {
       const fetchSpecificGame = await wretchWrapper(
-        `https://api.rawg.io/api/games/${gameId}?key=39a2bd3750804b5a82669025ed9986a8`
+        `https://api.rawg.io/api/games/${gameId}?key=${process.env.FETCH_GAMES_KEY_GENERAL1}`
         , 'fetchSpecificGame')
 
       const favorite: Favorite_Type = {

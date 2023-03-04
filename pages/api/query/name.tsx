@@ -9,7 +9,7 @@ export default async function handler(req: Request, res: Response) {
       const games: NamedGame[] = [];
 
       const data: any = await wretchWrapper(
-        `https://api.rawg.io/api/games?key=39a2bd3750804b5a82669025ed9986a8&page=1&page_size=5&search=${query.search}`
+        `https://api.rawg.io/api/games?key=${process.env.FETCH_GAMES_KEY_GENERAL2}&page=1&page_size=5&search=${query.search}`
         , 'getGamesData');
 
       for (const key in data.results) {

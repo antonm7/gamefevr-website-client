@@ -56,7 +56,7 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
     //saves the reviews inside own ranks collection
     try {
       const getSpecificGameData = await wretchWrapper(
-        `https://api.rawg.io/api/games/${gameId}?key=0ffbdb925caf4b20987cd068aa43fd75`
+        `https://api.rawg.io/api/games/${gameId}?key=${process.env.FETCH_GAMES_KEY_GENERAL1}`
         , 'getSpecificGameData')
 
       const generateRank = (rank: string) => {
