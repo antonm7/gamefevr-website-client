@@ -72,6 +72,7 @@ export default function SearchInput() {
       }
       {games.length > 0 ? (
         <div
+          id={styles.games_box_wrapper}
           style={{ minHeight: '7rem' }}
           className="absolute w-700 text-white placeholder-slate-400 outline-0 px-4 py-2 h-auto bg-inputBg rounded-lg mt-20"
         >

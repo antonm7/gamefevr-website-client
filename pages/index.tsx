@@ -79,7 +79,7 @@ const Home: NextPage = () => {
               </div>
             </div>
           </div>
-          <div style={{ minHeight: '20rem' }}>
+          <div className="overflow-hidden" style={{ minHeight: '20rem' }}>
             {width > 640 ? null : <ResponsiveAnimations />}
             {width > 640 ? <Car /> : null}
           </div>

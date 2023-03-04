@@ -71,7 +71,7 @@ export default function GamePage(props: Props) {
     const fetchReviews =
       await wretchWrapper(`/api/game/get/getReviews?gameId=${router.query.id}`,
         'loadReviews')
-    setReviews(fetchReviews.reviews)
+    setReviews(fetchReviews.reviews ? fetchReviews.reviews : [])
     setLoaders({ type: 'reviews', value: false })
   }
 
