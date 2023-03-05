@@ -4,7 +4,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars } from '@fortawesome/free-solid-svg-icons'
 
 export default function Lower640() {
-    const changeMenuVisibility = useStore((store) => store.changeMenuVisibility)
+    const changeMenuVisibility = useStore((store) =>
+        store.changeMenuVisibility)
 
     return (
         <div className="relative overflow-hidden w-full pt-4 px-8" style={{ zIndex: '50' }}>

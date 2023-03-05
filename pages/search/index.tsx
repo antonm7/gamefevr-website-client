@@ -90,6 +90,7 @@ export default function Index(props: Props) {
     if (!props.games.length) {
       setNoResults(true)
     } else {
+      console.log(props)
       store.clearGames()
       store.addPage()
       store.addGames(props.games)
@@ -337,7 +338,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
           )
         }
       } catch (e) {
-        console.log('djsakdklasj')
         console.log('error on updating user fields for used_filters')
       }
     }
@@ -366,8 +366,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       const fetchGamesWithoutFilters = await wretchWrapper(`https://api.rawg.io/api/games?key=${process.env.FETCH_GAMES_KEY_GENERAL1}&dates=1990-01-01,2023-12-31&page=1&page_size=28`, 'fetchGamesWithoutFilters')
       return {
         props: {
-          games: fetchGamesWithoutFilters.results,
-          count: fetchGamesWithoutFilters.count,
+          games: fetchGamesWithoutFilters.results ? fetchGamesWithoutFilters.results : [],
+          count: fetchGamesWithoutFilters.count ? fetchGamesWithoutFilters.count : 0,
           nextPage: isNextPage(1, fetchGamesWithoutFilters.count),
           error: null,
         },

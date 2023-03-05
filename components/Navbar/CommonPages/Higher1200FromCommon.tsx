@@ -23,15 +23,15 @@ export default function Higher1200FromCommon() {
                     </span>
                 </Link>
                 <Link href="/">
-                    <span className={`text-white font-semibold cursor-pointer pr-10 text-sm ${router.pathname === '/' ? 'active-link ' : ''}`}>
-                        Reviews
+                    <span className={`text-white font-semibold opacity-50 pr-10 text-sm ${router.pathname === '/' ? 'active-link ' : ''}`}>
+                        Reviews - Coming Soon
                     </span>
                 </Link>
-                <Link href="/">
+                {/* <Link href="/">
                     <span className={`text-white font-semibold cursor-pointer text-sm ${router.pathname === '/' ? 'active-link ' : ''}`}>
                         Explore
                     </span>
-                </Link>
+                </Link> */}
             </div>
             <div className="flex items-center">
                 <div id="small_search_input_wrapper" className="mr-10">
