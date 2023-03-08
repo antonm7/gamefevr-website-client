@@ -29,6 +29,16 @@
     }
 }
 
+#filters_wrapper {
+    &::-webkit-scrollbar {
+        width: 0px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: darkgray;
+    }
+}
+
 #filters_bg {
     position: absolute;
     width: 100%;
@@ -39,12 +49,4 @@
     background-size: 45rem;
     left: 0;
     top: -1rem;
-
-    &::-webkit-scrollbar {
-        width: 0px;
-    }
-
-    &::-webkit-scrollbar-thumb {
-        background: darkgray;
-    }
 }
