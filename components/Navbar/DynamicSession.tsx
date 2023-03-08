@@ -7,7 +7,7 @@ export default function DynamicSession() {
     const [auth, setAuth] = useState<boolean>(false)
     const router = useRouter()
     const session = useSession()
-    // TODO:bug with logout actiom, it doesnt work sometimes.
+
     useEffect(() => {
         if (session.status === 'authenticated') {
             setAuth(true)
@@ -16,9 +16,9 @@ export default function DynamicSession() {
         }
     }, [session.status])
 
-    const signOutMethod = (): void => {
+    const signOutMethod = async (): Promise<void> => {
+        await signOut()
         router.push('/')
-        signOut()
     }
 
     if (auth) {
