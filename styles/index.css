@@ -170,26 +170,6 @@ div {
     min-width: 100% !important;
 }
 
-#filters-bg {
-    position: absolute;
-    top: -1%;
-    left: 0;
-    width: 40%;
-    height: 20%;
-    z-index: -1;
-    background-image: url('/illustrations/filters.svg');
-    background-size: 100%;
-    background-repeat: no-repeat;
-}
-
-#filters::-webkit-scrollbar {
-    width: 0px;
-}
-
-#filters::-webkit-scrollbar-thumb {
-    background: darkgray;
-}
-
 #game_box {
     flex: 1 0 20%;
 }

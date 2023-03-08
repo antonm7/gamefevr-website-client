@@ -3,6 +3,7 @@ import clientPromise from '../../../../lib/functions/mongodb'
 import checkJWT from '../../../../lib/functions/checkJWT'
 import authorize from '../../../../backend-middlewares/authorize'
 import GenerateError from '../../../../backend-middlewares/generateErrorBackend'
+import { ObjectId } from 'bson'
 
 interface ExtendedNextApiRequest extends NextApiRequest {
   body: {
@@ -37,7 +38,7 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
     try {
       const user = await db
         .collection('users')
-        .findOne({ username: username })
+        .findOne({ username })
       if (user) throw new Error('Username already taken')
     } catch (e) {
       await GenerateError({
@@ -52,9 +53,9 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
     }
     //updating every reviews name username fields
     try {
-      const userDocument = await db.collection('users').findOne({ email: email })
+      const userDocument = await db.collection('users').findOne({ email })
       if (userDocument) {
-        await db.collection('reviews').updateMany({ user_name: username }, { user_name: username })
+        await db.collection('reviews').updateMany({ userId: new ObjectId(userDocument._id) }, { user_name: username })
       } else {
         throw new Error('cant find user document')
       }
@@ -66,14 +67,17 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
         e,
       })
       res.status(500).send({ error: 'Unexpected Error' })
+      return
     }
     //updating username
     try {
+      console.log('sending')
       await db
         .collection('users')
-        .updateOne({ email: email }, { $set: { username: username } })
+        .updateOne({ email }, { $set: { username } })
       res.status(200).send({ error: null })
     } catch (e) {
+      console.log('dskal;dksa;ldksa', e)
       await GenerateError({
         error:
           'error on changing username on user document on user/settings/changeUsername',

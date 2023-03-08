@@ -9,7 +9,6 @@ import RangeContainer from './RangeContainer'
 import Consoles from './Consoles'
 import Genres from './Genres'
 import styles from './index.module.scss'
-import useWindowSize from '../../lib/functions/hooks/useWindowSize'
 
 export default function Filters() {
   const [yearRange, changeYearRange] = useState<number[]>([1990, 2023])
@@ -65,7 +64,7 @@ export default function Filters() {
 
   return (
     <div className="fixed z-40 rounded-lg py-6 px-24 w-5/6 h-5/6 bg-filtersBg top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-      <div id="filters-bg"></div>
+      <div id={styles.filters_bg}></div>
       <FontAwesomeIcon
         icon={faXmark}
         className="h-8 float-right cursor-pointer absolute right-8"

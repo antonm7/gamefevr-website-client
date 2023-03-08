@@ -15,7 +15,6 @@ interface ExtendedApiRequest extends NextApiRequest {
   }
 }
 
-
 async function handler(req: ExtendedApiRequest, res: Response) {
   if (req.method === 'POST') {
     try {
@@ -81,6 +80,7 @@ async function handler(req: ExtendedApiRequest, res: Response) {
             from: 'gameFevrr@gmail.com           ',
             templateId: 'd-d1b6d37ebdb445358fef35980ded4f6f',
           }
+          await sgMail.send(msg)
         } catch (e: any) {
           console.log('error sending email', e.response.body)
         }
