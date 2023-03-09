@@ -8,6 +8,7 @@ import { Review_Type } from '../../../types/schema'
 import useWindowSize from '../../../lib/functions/hooks/useWindowSize'
 import { OPEN_ALERT_TYPE } from '../../../types'
 import { wretchAction } from '../../../lib/functions/fetchLogic'
+import styles from './index.module.scss'
 
 interface Props extends Review_Type {
   deleteReview?: (id: ObjectId | undefined) => void
@@ -63,8 +64,7 @@ export default function Reviews({
   if (visited) {
     return (
       <div
-        id="profile-review-component"
-        className="h-72 rounded-lg p-6"
+        className={`h-72 rounded-lg p-6 ${styles.wrapper}`}
         style={{ backgroundColor: '#0e3462', width: '28rem' }}
       >
         <div className="flex items-center flex-nowrap">
@@ -74,10 +74,7 @@ export default function Reviews({
           />
           <Link href={`/game/${gameId}`}>
             <h1 className="font-semibold text-lg cursor-pointer text-white whitespace-nowrap hover:text-gray-300 px-6 py-3">
-              {width > 1200
-                ? slicedParagrap(game_name, 22, 22) :
-                width <= 800 ? game_name
-                  : slicedParagrap(game_name, 22, 22)}
+              {width >= 641 ? slicedParagrap(game_name, 25, 25) : slicedParagrap(game_name, 15, 15)}
             </h1>
           </Link>
         </div>
@@ -92,7 +89,7 @@ export default function Reviews({
             lineBreak: 'anywhere',
           }}
         >
-          {slicedParagrap(text, 180, 180)}
+          {width >= 641 ? slicedParagrap(text, 180, 180) : slicedParagrap(text, 120, 120)}
         </p>
         <p className="text-base text-white opacity-60 whitespace-nowrap">
           Sep 12,2022
@@ -102,8 +99,7 @@ export default function Reviews({
   } else {
     return (
       <div
-        id="profile-review-component"
-        className="h-72 rounded-lg p-6"
+        className={`${styles.wrapper} h-72 rounded-lg p-6`}
         style={{ backgroundColor: '#0e3462', width: '28rem' }}
       >
         <div className="flex items-center flex-nowrap">
@@ -113,10 +109,7 @@ export default function Reviews({
           />
           <Link href={`/game/${gameId}`}>
             <h1 className="font-semibold text-lg cursor-pointer text-white whitespace-nowrap hover:text-gray-300 px-6 py-3">
-              {width > 1200
-                ? slicedParagrap(game_name, 22, 22) :
-                width <= 800 ? game_name
-                  : slicedParagrap(game_name, 22, 22)}
+              {width >= 641 ? slicedParagrap(game_name, 25, 25) : slicedParagrap(game_name, 15, 15)}
             </h1>
           </Link>
           <FontAwesomeIcon
@@ -137,7 +130,7 @@ export default function Reviews({
             lineBreak: 'anywhere',
           }}
         >
-          {width > 800 ? slicedParagrap(text, 150, 150) : slicedParagrap(text, 350, 350)}
+          {width >= 641 ? slicedParagrap(text, 180, 180) : slicedParagrap(text, 120, 120)}
         </p>
         <p className="text-base text-white opacity-60 whitespace-nowrap">
           Sep 12,2022

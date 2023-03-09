@@ -4,15 +4,12 @@ import { setCookie } from 'cookies-next'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { wretchWrapper } from '../../lib/functions/fetchLogic'
-import useWindowSize from '../../lib/functions/hooks/useWindowSize'
-import { useFiltersStore, useStore } from '../../store'
-import { NamedGame } from '../../types'
-import FiltersAppliedCount from './FiltersAppliedCount'
-
-interface fetchGameNameData {
-  games: NamedGame[]
-}
+import { wretchWrapper } from '../../../lib/functions/fetchLogic'
+import useWindowSize from '../../../lib/functions/hooks/useWindowSize'
+import { useFiltersStore, useStore } from '../../../store'
+import { NamedGame } from '../../../types'
+import FiltersAppliedCount from '../FiltersAppliedCount'
+import styles from './index.module.scss'
 
 export default function SmallSearchInput({ full }: { full: boolean }) {
   const [search, setSearch] = useState<string>('')
@@ -121,6 +118,7 @@ export default function SmallSearchInput({ full }: { full: boolean }) {
       </div>
       {games.length > 0 ? (
         <div
+          id={styles.gameBox_wrapper}
           style={{ minHeight: '7rem' }}
           className="absolute w-500 text-white placeholder-slate-400 outline-0 px-4 py-2 h-auto bg-inputBg rounded-lg mt-2 z-50"
         >

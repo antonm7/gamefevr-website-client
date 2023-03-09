@@ -137,27 +137,33 @@ interface Context {
 export async function getStaticPaths() {
   const ids: number[] = []
 
-  for (let i = 1; i < 5; i++) {
-    const getGamesData = await wretchWrapper(
-      `https://api.rawg.io/api/games?key=${process.env.BUILD_GAMES_API}&dates=1990-01-01,2023-12-31&page=${i}&page_size=${100}`
-      , 'getGamesData')
-    ids.push(
-      ...getGamesData.results.map((game) => game.id)
-    )
+  try {
+    for (let i = 1; i < 5; i++) {
+      const getGamesData = await wretchWrapper(
+        `https://api.rawg.io/api/games?key=${process.env.BUILD_GAMES_API}&dates=1990-01-01,2023-12-31&page=${i}&page_size=${100}`
+        , 'getGamesData')
+      ids.push(
+        ...getGamesData.results.map((game) => game.id)
+      )
+    }
+    console.log(ids)
+    const paths = ids.map((id) => ({
+      params: { id: JSON.stringify(id) },
+    }))
+
+    return { paths, fallback: 'blocking' }
+
+  } catch (e) {
+    return { paths: [], fallback: 'blocking' }
   }
 
-  const paths = ids.map((id) => ({
-    params: { id: JSON.stringify(id) },
-  }))
-
-  return { paths, fallback: 'blocking' }
 }
 
 export async function getStaticProps(context: Context) {
-  const fetchGameData = () => wretchWrapper(`https://api.rawg.io/api/games/${context.params.id}?key=${process.env.BUILD_GAMES_API}`, 'gameData')
-  const fetchScreenshots = () => wretchWrapper(`https://api.rawg.io/api/games/${context.params.id}/screenshots?key=${process.env.BUILD_GAMES_API}`, 'screenshotsData')
-  const fetchTreilers = () => wretchWrapper(`https://api.rawg.io/api/games/${context.params.id}/movies?key=${process.env.BUILD_GAMES_API}`, 'treilersData')
-  const fetchSameSeries = () => wretchWrapper(`https://api.rawg.io/api/games/${context.params.id}/game-series?key=${process.env.BUILD_GAMES_API}`, 'sameSeriesData')
+  const fetchGameData = () => wretchWrapper(`https://api.rawg.io/api/games/${context.params.id}?key=${process.env.BUILD_GAMES_KEY}`, 'gameData')
+  const fetchScreenshots = () => wretchWrapper(`https://api.rawg.io/api/games/${context.params.id}/screenshots?key=${process.env.BUILD_GAMES_KEY}`, 'screenshotsData')
+  const fetchTreilers = () => wretchWrapper(`https://api.rawg.io/api/games/${context.params.id}/movies?key=${process.env.BUILD_GAMES_KEY}`, 'treilersData')
+  const fetchSameSeries = () => wretchWrapper(`https://api.rawg.io/api/games/${context.params.id}/game-series?key=${process.env.BUILD_GAMES_KEY}`, 'sameSeriesData')
 
   try {
     const result: any = await Promise.allSettled([
@@ -169,6 +175,8 @@ export async function getStaticProps(context: Context) {
 
     const [gameData, screenshots, trailers, same_series]
       = promiseHandler(result) as [DetailedGame, Screenshot, object, same_series_type]
+    console.log('dsadsa')
+    console.log(process.env.BUILD_GAMES_KEY)
 
     const finalData: DetailedGame = {
       id: gameData.id,
@@ -188,6 +196,7 @@ export async function getStaticProps(context: Context) {
       trailers,
       same_series,
     }
+
 
     return {
       props: {

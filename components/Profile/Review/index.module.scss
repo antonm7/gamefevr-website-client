@@ -1,0 +1,8 @@
+@import '../../../styles/global.scss';
+
+.wrapper {
+    @include for-size(phone-only) {
+        max-width: 100%;
+        background-color: red !important;
+    }
+}

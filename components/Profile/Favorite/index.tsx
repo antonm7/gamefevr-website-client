@@ -9,6 +9,7 @@ import useWindowSize from '../../../lib/functions/hooks/useWindowSize'
 import slicedParagrap from '../../../lib/functions/slicedParagraph'
 import { OPEN_ALERT_TYPE } from '../../../types'
 import { Favorite_Type } from '../../../types/schema'
+import styles from './index.module.scss'
 
 interface Props extends Favorite_Type {
   deleteFavorite?: (id: ObjectId | undefined) => void
@@ -70,8 +71,8 @@ export default function Favorite({
   if (visited) {
     return (
       <div
-        id="favorite-component"
-        className="relative w-80 h-56 rounded-lg bg-white"
+
+        className={`${styles.wrapper} relative w-80 h-56 rounded-lg bg-white`}
       >
         <div id="favorite-image">
           <Image
@@ -90,11 +91,8 @@ export default function Favorite({
             style={{ lineBreak: 'anywhere' }}
             className="inline-block font-semibold text-lg whitespace-pre-wrap hover:text-gray-500 mx-6 my-3 cursor-pointer"
           >
-            {slicedParagrap(
-              game_name,
-              width >= 800 ? 25 : width <= 640 ? 40 : 11,
-              width >= 800 ? 25 : width <= 640 ? 40 : 11
-            )}
+            {width >= 641 ? slicedParagrap(game_name, 25, 40) :
+              slicedParagrap(game_name, 16, 16)}
           </h1>
         </Link>
       </div>
@@ -102,8 +100,7 @@ export default function Favorite({
   } else {
     return (
       <div
-        id="favorite-component"
-        className="relative w-80 h-56 rounded-lg bg-white overflow-hidden"
+        className={`${styles.wrapper} relative w-80 h-56 rounded-lg bg-white overflow-hidden`}
       >
         {!mouseOver ? (
           <FontAwesomeIcon
@@ -111,7 +108,6 @@ export default function Favorite({
             className="h-4 absolute z-10 cursor-pointer"
             icon={faBookmark}
             style={{ color: '#38b6cc', right: 20, top: 15 }}
-          // onClick={() => deleteFavorite_STATE()}
           />
         ) : (
           <FontAwesomeIcon
@@ -140,11 +136,8 @@ export default function Favorite({
             style={{ lineBreak: 'anywhere' }}
             className="inline-block font-semibold text-lg whitespace-pre-wrap hover:text-gray-500 mx-6 my-4 leading-5 cursor-pointer"
           >
-            {slicedParagrap(
-              game_name,
-              width >= 800 ? 25 : width <= 640 ? 40 : 11,
-              width >= 800 ? 25 : width <= 640 ? 40 : 11
-            )}
+            {width >= 641 ? slicedParagrap(game_name, 25, 40) :
+              slicedParagrap(game_name, 16, 16)}
           </h1>
         </Link>
       </div>

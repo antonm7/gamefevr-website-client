@@ -18,7 +18,8 @@ export default function Warning({ visibility, text, close }: Props) {
       <div className="flex w-full items-center">
         <div className="flex items-center nowrap whitespace-nowrap w-full">
           <div
-            className="rounded-full flex items-center justify-center mr-4 nowrap whitespace-nowrap"
+            className={`rounded-full flex 
+            items-center justify-center mr-4 nowrap whitespace-nowrap ${styles.mark_wrapper}`}
             style={{
               height: '2.2rem',
               width: '2.2rem',

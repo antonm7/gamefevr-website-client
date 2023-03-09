@@ -16,6 +16,7 @@ import { wretchAction } from '../../../lib/functions/fetchLogic'
 import useWindowSize from '../../../lib/functions/hooks/useWindowSize'
 import slicedParagrap from '../../../lib/functions/slicedParagraph'
 import { Review_Type } from '../../../types/schema'
+import styles from './index.module.scss'
 
 interface Props extends Review_Type {
   deleteReviewProps: (reviewId: ObjectId | undefined) => void
@@ -224,6 +225,7 @@ export default function Review({
 
   return (
     <div
+      id={styles.wrapper}
       className="px-7 py-4 rounded-xl relative mx-2"
       style={{
         width: '30rem',

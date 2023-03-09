@@ -1,6 +1,8 @@
 /**
  * @type {import('next').NextConfig}
  */
+/* eslint-env es6 */
+/* eslint-disable */
 const nextConfig = {
   reactStrictMode: false,
   webpack(config) {
@@ -28,8 +30,8 @@ const nextConfig = {
     // #migolkoanton@gmail.com
     FETCH_GAMES_KEY_GENERAL2: '4f97c91efdb24a6e84f4688a9519c46f',
     // #gamefevrr@gmail.com
-    BUILD_GAMES_KEY: '2528523b74884c4aa629a65c45bf309c',
-  },
+    BUILD_GAMES_KEY: '2528523b74884c4aa629a65c45bf309c'
+  }
 };
 // eslint-disable-next-line no-undef
 module.exports = nextConfig;

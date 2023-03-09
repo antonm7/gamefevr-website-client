@@ -1,0 +1,8 @@
+@import '../../../styles/global.scss';
+
+#wrapper {
+    @include for-size(phone-only) {
+        max-width: 90% !important;
+        min-width: 90% !important;
+    }
+}
