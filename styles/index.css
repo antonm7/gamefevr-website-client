@@ -7,6 +7,15 @@
     overflow-x: hidden;
     font-family: 'Source Sans Pro', sans-serif !important;
     box-sizing: border-box !important;
+
+}
+
+*::-webkit-scrollbar {
+    width: 2px;
+}
+
+*::-webkit-scrollbar-thumb {
+    background: darkgray;
 }
 
 h1,
@@ -38,14 +47,6 @@ div {
         background-size: 100%;
         background-image: url('/illustrations/small_header.svg');
     }
-}
-
-.scrollbar::-webkit-scrollbar {
-    width: 2px;
-}
-
-.scrollbar::-webkit-scrollbar-thumb {
-    background: darkgray;
 }
 
 #search_layout_page::-webkit-scrollbar {
@@ -83,39 +84,26 @@ div {
     filter: brightness(0) invert(1);
 }
 
-#controller {
-    position: absolute;
-    height: 700px;
-    width: 594px;
-    background-color: #0c284a;
-    left: 0% !important;
-    border-bottom-right-radius: 140px;
-}
-
 #triangle {
     clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
 }
 
 #placeholder-text::-webkit-input-placeholder {
-    /* Chrome/Opera/Safari */
     color: #9da8b6;
     font-weight: 300;
 }
 
 ::-moz-placeholder {
-    /* Firefox 19+ */
     color: #9da8b6;
     font-weight: 300;
 }
 
 :-ms-input-placeholder {
-    /* IE 10+ */
     color: #9da8b6;
     font-weight: 300;
 }
 
 :-moz-placeholder {
-    /* Firefox 18- */
     color: #9da8b6;
     font-weight: 300;
 }
@@ -147,20 +135,6 @@ div {
     overflow: hidden;
 }
 
-#write_review_container {
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-}
-
-#global_error {
-    top: 5%;
-}
-
-#explore_wrapper .slick-track {
-    overflow: hidden !important;
-}
-
 .slick-track {
     float: left !important;
     width: 100%;
@@ -168,30 +142,6 @@ div {
 
 .slick-list {
     min-width: 100% !important;
-}
-
-#game_box {
-    flex: 1 0 20%;
-}
-
-.rc-slider-handle:active {
-    border: none !important;
-}
-
-.rc-slider-handle:hover {
-    border: none !important;
-}
-
-.rc-slider-handle-dragging {
-    box-shadow: 0 0 0 4px #dd5054 !important;
-}
-
-#profile-review-component {
-    overflow: hidden;
-}
-
-#favorite-component {
-    overflow: hidden;
 }
 
 .video-container {
@@ -206,14 +156,4 @@ div {
     position: absolute;
     object-fit: cover;
     z-index: 0;
-}
-
-#search-title {
-    line-height: 5.8rem;
-}
-
-.show-text {
-    color: #444444;
-    font-size: 1rem;
-    font-weight: 500;
 }
