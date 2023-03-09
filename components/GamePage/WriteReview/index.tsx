@@ -130,7 +130,7 @@ export default function WriteReview({
             }`}
           style={{ border: 'solid #e3e3e3', borderWidth: 1 }}
         >
-          <span className="pr-2 text-md">😫</span>
+          <span className="pr-2 text-md">🙁</span>
           <h2
             className={`simple-transition text-white text-sm hover:text-black ${rank === 'nuh' ? 'text-black' : ''
               }`}
@@ -144,7 +144,7 @@ export default function WriteReview({
             }`}
           style={{ border: 'solid #e3e3e3', borderWidth: 1 }}
         >
-          <span className="pr-2 text-md">😫</span>
+          <span className="pr-2 text-md">😐</span>
           <h2
             className={`simple-transition text-white text-sm hover:text-black ${rank === 'good' ? 'text-black' : ''
               }`}
@@ -158,7 +158,7 @@ export default function WriteReview({
             }`}
           style={{ border: 'solid #e3e3e3', borderWidth: 1 }}
         >
-          <span className="pr-2 text-md">😫</span>
+          <span className="pr-2 text-md">😍</span>
           <h2
             className={`simple-transition text-white text-sm hover:text-black ${rank === 'must' ? 'text-black' : ''
               }`}
