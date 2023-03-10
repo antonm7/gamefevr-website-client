@@ -76,9 +76,12 @@ async function handler(req: ExtendedApiRequest, res: Response) {
         sgMail.setApiKey(process.env.SENDGRID_API_KEY)
         try {
           const msg = {
-            to: email, // Change to your recipient
+            to: email,
             from: 'gameFevrr@gmail.com           ',
             templateId: 'd-d1b6d37ebdb445358fef35980ded4f6f',
+            dynamic_template_data: {
+              Sender_Name: username,
+            },
           }
           await sgMail.send(msg)
         } catch (e: any) {

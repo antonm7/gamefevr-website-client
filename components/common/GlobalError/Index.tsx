@@ -23,7 +23,7 @@ export default function GlobalError() {
     if (objectData.type !== 'request') {
       setTimeout(() => {
         setVisibility(false)
-      }, 9999)
+      }, 1450)
     }
     PubSub.unsubscribe(openToken)
   }
@@ -42,7 +42,7 @@ export default function GlobalError() {
 
   if (type === 'request') return <Request owner={requestOwner} visibility={visibility} text={msg} />
 
-  if (type === 'success') return <Sucssess close={() => setVisibility(true)} visibility={true} text={msg} />
+  if (type === 'success') return <Sucssess close={() => setVisibility(false)} visibility={visibility} text={msg} />
 
   return null
 }

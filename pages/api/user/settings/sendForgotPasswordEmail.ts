@@ -67,7 +67,7 @@ export default async function handler(req: ExtendedNextApiRequest, res: Response
           subject: 'Reset your password!',
           templateId: 'd-c5a1a45c79f4405c99fd359269c394c0',
           dynamic_template_data: {
-            Sender_Name: 'GameFevr',
+            Sender_Name: findingUser.username,
             reset_link: `${process.env.URI}/resetPassword/${reset_link}`,
           },
         }

@@ -7,7 +7,7 @@
 
     @include for-size(phone-only) {
         border-radius: 10rem;
-        width: 80%;
+        max-width: 80%;
         left: 50%;
         transform: translateX(-50%);
         min-height: 5rem !important;
