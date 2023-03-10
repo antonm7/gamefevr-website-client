@@ -7,19 +7,21 @@ import updateHype from '../../../../../lib/functions/updateHype'
 
 interface ExtendedNextApiRequest extends NextApiRequest {
   body: {
-    userId: string
-    reviewId: string
+    body: {
+      userId: string
+      reviewId: string
+    }
   }
 }
 
 async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
-    let db = null
-    const query = req.body
+    let db
+    const { userId, reviewId } = req.body.body
     //initializing database
     try {
       const client = await clientPromise
-      db = client.db('gameFevr')
+      db = client.db()
     } catch (e) {
       res.status(500).send({ error: 'Unexpected error' })
       return console.log('error on initializing database', e)
@@ -29,27 +31,22 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
       await db
         .collection('reviews')
         .updateOne(
-          { _id: new ObjectId(query.reviewId) },
-          { $pull: { likes: query.userId } }
+          { _id: new ObjectId(reviewId) },
+          { $pull: { likes: userId } }
         )
       //pushing the like
       await db
         .collection('reviews')
         .updateOne(
-          { _id: new ObjectId(query.reviewId) },
-          { $push: { likes: query.userId } }
+          { _id: new ObjectId(reviewId) },
+          { $push: { likes: userId } }
         )
 
-      const update_hype = await updateHype(
+      await updateHype(
         'likeReview',
-        new ObjectId(query.userId)
+        new ObjectId(userId)
       )
-
-      if (update_hype.ok) {
-        res.status(200).send({ error: null })
-      } else {
-        throw new Error('error updating hype')
-      }
+      res.status(200).send({ error: null })
     } catch (e) {
       await generateErrorBackend({
         error: 'Error liking review on like review action api',

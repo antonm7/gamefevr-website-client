@@ -38,7 +38,7 @@ export default NextAuth({
         try {
           //Get all the users
           const client = await clientPromise;
-          const db = client.db("gameFevr");
+          const db = client.db();
           const users = await db.collection("users");
 
           const result = await users.findOne({
@@ -61,8 +61,6 @@ export default NextAuth({
           };
         } catch (e) {
           throw new Error(e)
-
-          // console.log("errororor", e);
         }
       },
     }),

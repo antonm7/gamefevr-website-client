@@ -1,8 +1,7 @@
 import { faExclamation, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import TimerBar from '../TimerBar'
-
-interface Props {
+import styles from './index.module.scss'
+type Props = {
   visibility: boolean
   text: string
   close: () => void
@@ -13,15 +12,14 @@ export default function Warning({ visibility, text, close }: Props) {
 
   return (
     <div
-      id="global_error"
-      className={`${visibility ? 'global_animation_enabled' : 'global_animation_disabled'
-        } fixed flex z-50 w-96 h-20 pl-4 rounded-lg rounded-r-none`}
+      className={`${styles.wrapper} fixed flex z-50 w-96 h-20 pl-4 rounded-lg rounded-r-none`}
       style={{ backgroundColor: '#fdf8eb' }}
     >
       <div className="flex w-full items-center">
         <div className="flex items-center nowrap whitespace-nowrap w-full">
           <div
-            className="rounded-full flex items-center justify-center mr-4 nowrap whitespace-nowrap"
+            className={`rounded-full flex 
+            items-center justify-center mr-4 nowrap whitespace-nowrap ${styles.mark_wrapper}`}
             style={{
               height: '2.2rem',
               width: '2.2rem',
@@ -62,7 +60,6 @@ export default function Warning({ visibility, text, close }: Props) {
           onClick={() => close()}
         />
       </div>
-      <TimerBar start={visibility} color="#febf1f" />
     </div>
   )
 }

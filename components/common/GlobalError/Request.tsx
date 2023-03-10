@@ -5,26 +5,25 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useEffect, useState } from 'react'
-import { useGlobalError } from '../../../store'
 import Spinner from '../Spinner'
+import styles from './index.module.scss'
 
-interface Props {
+type Props = {
   visibility: boolean
   text: string
+  owner: string
 }
 
-export default function Request({ visibility, text }: Props) {
-  const state = useGlobalError((state) => state)
+export default function Request({ visibility, text, owner }: Props) {
   const [loader, setLoader] = useState<boolean>(false)
 
-
   const onYes = () => {
+    PubSub.publish(owner, 'yes')
     setLoader(true)
-    state.setAnswer('yes')
   }
 
   const onNo = () => {
-    state.setAnswer('no')
+    PubSub.publish(owner, 'no')
   }
 
   useEffect(() => {
@@ -35,15 +34,14 @@ export default function Request({ visibility, text }: Props) {
 
   return (
     <div
-      id="global_error"
-      className={`${visibility ? 'global_animation_enabled' : 'global_animation_disabled'
-        } fixed flex z-50 h-20 pl-4 rounded-lg rounded-r-none request_global_error`}
+      className={`${styles.wrapper} fixed flex z-50 h-20 pl-4 rounded-lg rounded-r-none request_global_error`}
       style={{ backgroundColor: '#e7eefa', width: '26rem' }}
     >
       <div className="flex w-full items-center">
         <div className="flex items-center nowrap whitespace-nowrap w-full">
           <div
-            className="rounded-full flex items-center justify-center mr-4 nowrap whitespace-nowrap"
+            className={`rounded-full 
+            flex items-center justify-center mr-4 nowrap whitespace-nowrap ${styles.mark_wrapper}`}
             style={{
               height: '2.2rem',
               width: '2.2rem',

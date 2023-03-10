@@ -2,11 +2,11 @@ import create from 'zustand'
 
 interface State {
   yearRange: number[]
-  genres: string[]
-  consoles: string[]
+  genres: number[]
+  consoles: number[]
   setYearRange: (yearRange: number[]) => void
-  setGenres: (genres: string[]) => void
-  setConsoles: (consoles: string[]) => void
+  setGenres: (genres: number[]) => void
+  setConsoles: (consoles: number[]) => void
   clearFilters: () => void
 }
 
@@ -23,11 +23,11 @@ export const useFiltersStore = create<State>((set) => ({
     }),
   setGenres: (genres) =>
     set(() => {
-      return { genres: [...genres] }
+      return { genres }
     }),
   setConsoles: (consoles) =>
     set(() => {
-      return { consoles: [...consoles] }
+      return { consoles }
     }),
   clearFilters: () =>
     set(() => {

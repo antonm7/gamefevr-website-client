@@ -1,0 +1,8 @@
+@import '../../../styles/responsive.scss';
+
+@include for-size(tablet-portrait) {
+    #wrapper {
+        margin: 0;
+        padding-bottom: 1rem;
+    }
+}

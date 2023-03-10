@@ -1,0 +1,17 @@
+.coming_soon {
+    z-index: 1;
+    transform: rotateY(25rem) !important;
+
+    // &::after {
+    //     content: 'Coming Soon';
+    //     position: absolute;
+    //     width: 6rem;
+    //     z-index: -1;
+    //     left: 54%;
+    //     transform: rotate(10deg);
+    //     overflow: hidden;
+    //     white-space: nowrap;
+    //     font-size: 0.6rem;
+    //     color: red;
+    // }
+}

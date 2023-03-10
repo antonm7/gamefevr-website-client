@@ -1,85 +1,70 @@
-import { useEffect, useState } from "react"
-import useWindowSize from "../../lib/functions/hooks/useWindowSize"
-import { genres } from "../../lib/staticData"
-import { ElementDescription } from "../../types"
-import SelectBox from "../common/SelectBox"
+import { useEffect, useState } from "react";
+import useWindowSize from "../../lib/functions/hooks/useWindowSize";
+import { genres } from "../../lib/staticData";
+import SelectBox from "../common/SelectBox";
+import styles from './index.module.scss';
 
-interface Props {
-    selectedGenres: string[]
-    updateGenres: (id: string) => void
+type Props = {
+    updateSelectedGenres: (value: number[]) => void
 }
 
-interface ShowMoreProps extends Props {
-    changeVisibility: () => void
-}
+export default function Genres({ updateSelectedGenres }: Props) {
+    const [selectedGenres, changeSelectedGenres] = useState<number[]>([])
+    const [loadMore, setLoadMore] = useState<boolean>(false)
 
-const ShowMore = ({ selectedGenres, updateGenres, changeVisibility }: ShowMoreProps) => {
-    return (
-        <div>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                {genres.map((genre: ElementDescription, index: number) => {
-                    return (
-                        <SelectBox
-                            isSelected={selectedGenres.includes(JSON.stringify(genre.id))}
-                            onClick={() => updateGenres(JSON.stringify(genre.id))}
-                            key={index}
-                            title={genre.name}
-                        />
-                    )
-                })
-                }
-                <button onClick={changeVisibility} className="show-text">Show Less</button>
-            </div>
-        </div>
-    )
-}
-
-export default function Genres({ selectedGenres, updateGenres }: Props) {
-    const [width] = useWindowSize()
-    const [first, setFirst] = useState<ElementDescription[]>([])
-    const [showMore, setShowMore] = useState<boolean>(false)
-
-    useEffect(() => {
-        const f = genres.slice(0, 4)
-        setFirst(f)
-    }, [])
-
-    if (width > 640) {
-        return (
-            <div className="flex h-auto items-center justify-center flex-row flex-wrap filters-category-flex">
-                {genres.map((genre: ElementDescription, index: number) => {
-                    return (
-                        <SelectBox
-                            isSelected={selectedGenres.includes(JSON.stringify(genre.id))}
-                            onClick={() => updateGenres(JSON.stringify(genre.id))}
-                            key={index}
-                            title={genre.name}
-                        />
-                    )
-                })}
-            </div>
-        )
-    } else {
-
-        if (!showMore) {
-            return (
-                <div className="flex h-auto items-center justify-center flex-row flex-wrap filters-category-flex">
-                    {first.map((genre: ElementDescription, index: number) => {
-                        return (
-                            <SelectBox
-                                isSelected={selectedGenres.includes(JSON.stringify(genre.id))}
-                                onClick={() => updateGenres(JSON.stringify(genre.id))}
-                                key={index}
-                                title={genre.name}
-                            />
-                        )
-                    })}
-                    <button onClick={() => setShowMore(true)} className="show-text">Show More</button>
-                </div>
-            )
+    const updateGenres = (index: number): void => {
+        if (selectedGenres.includes(index)) {
+            //removes
+            changeSelectedGenres(selectedGenres.filter((genre) => genre !== index))
         } else {
-            return <ShowMore selectedGenres={selectedGenres} updateGenres={updateGenres} changeVisibility={() => setShowMore(false)} />
+            //adds
+            changeSelectedGenres([...selectedGenres, index])
         }
     }
 
+    useEffect(() => {
+        updateSelectedGenres(selectedGenres)
+    }, [selectedGenres])
+
+    const [width] = useWindowSize()
+
+    const changeShowMore = (status: boolean): void => {
+        if (status === false) {
+            changeSelectedGenres([])
+        }
+        setLoadMore(status)
+    }
+
+    if (width <= 900) {
+        return (
+            <div className={`${styles.container_padding} filters-column-shadow rounded-md bg-white py-12 h-auto w-full max-w-full`}>
+                <div className="flex flex-col justify-center items-center">
+                    {(loadMore ? genres : genres.slice(0, 5)).map(e => <SelectBox isSelected={selectedGenres.includes(parseInt(e.id))}
+                        onClick={() => updateGenres(parseInt(e.id))}
+                        key={e.id}
+                        title={e.name} />)}
+                    <button
+                        onClick={() => (loadMore ? changeShowMore(false) : changeShowMore(true))}
+                        className={`w-fit h-10 m-2 overflow-hidden border border-lighterBg px-6 flex flex-row items-center justify-center rounded-xl`}
+                    >
+                        <p
+                            className={`text-text-gray
+                         text-base whitespace-nowrap font-extralight`}
+                        >
+                            {loadMore ? 'Show Less' : 'Show More'}
+                        </p>
+                    </button>
+                </div>
+            </div>
+        )
+    }
+
+    return (
+        <div className={`${styles.container_padding} filters-column-shadow rounded-md flex flex-wrap justify-center bg-white px-20 py-12 h-auto w-full max-w-full`}>
+            {genres.map(e => <SelectBox isSelected={selectedGenres.includes(parseInt(e.id))}
+                onClick={() => updateGenres(parseInt(e.id))}
+                key={e.id}
+                title={e.name} />)}
+        </div>
+    )
 }

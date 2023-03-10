@@ -1,6 +1,6 @@
 import { SpinnerRoundFilled } from 'spinners-react'
 
-interface Props {
+type Props = {
   xCentered?: boolean
   screenCentered?: boolean
   big?: boolean

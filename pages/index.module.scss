@@ -1,0 +1,30 @@
+@import '../styles/global.scss';
+
+#container {
+    background-image: url('../public/images/home/bg.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+@include for-size(tablet-portrait) {
+    #titles_container {
+        padding-top: 2rem;
+    }
+
+    #search_input_wrapper {
+        width: 80%;
+    }
+}
+
+@include for-size(phone-only) {
+    #titles_container {
+        font-size: 3.2rem;
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+
+    #search_button_wrapper {
+        width: 3rem;
+    }
+}

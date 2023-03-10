@@ -103,3 +103,10 @@ export type NamedGame = {
   id: number
   name: string
 }
+
+export type OPEN_ALERT_TYPE = {
+  type: 'error' | 'warning' | 'request' | 'success'
+  msg: string
+  requestOwner?: string
+}
+

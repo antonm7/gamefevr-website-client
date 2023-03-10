@@ -115,25 +115,13 @@ export default function Menu() {
               Home
             </p>
           </Link>
-          <Link href="/explore">
-            <p
-              id={styles.link}
-              className={`text-white my-4 font-semibold cursor-pointer text-lg ${router.pathname === '/explore' ? 'active-link ' : ''
-                }`}
-              onClick={() => changeMenuVisibility(false)}
-            >
-              Explore
-            </p>
-          </Link>
-          <Link href="/">
-            <p
-              id={styles.link}
-              className={`text-white font-semibold cursor-pointer text-lg ${router.pathname === '/reviews' ? 'active-link ' : ''
-                }`}
-            >
-              Reviews
-            </p>
-          </Link>
+          <p
+            id={styles.link}
+            className={`opacity-50 text-white font-semibold cursor-pointer text-lg ${router.pathname === '/reviews' ? 'active-link ' : ''
+              }`}
+          >
+            Reviews - Comming Soon
+          </p>
         </div>
         <DynamicSession />
       </div>

@@ -1,0 +1,15 @@
+@import '../../../styles/global.scss';
+
+@include for-size(tablet-landscape) {
+    #global_wrapper {
+        padding-top: 0;
+        padding-bottom: 4rem;
+        width: 100% !important;
+    }
+
+    #inner_games_container {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+    }
+}

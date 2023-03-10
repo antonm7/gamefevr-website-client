@@ -1,0 +1,13 @@
+@import '../../../styles/global.scss';
+
+#gameBox_wrapper {
+    @include for-size(tablet-landscape) {
+        width: calc(100vw - 10rem);
+        position: absolute;
+    }
+
+    @include for-size(tablet-portrait) {
+        width: calc(100vw - 4rem);
+        position: absolute;
+    }
+}

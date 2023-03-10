@@ -3,11 +3,14 @@ import clientPromise from '../../../../lib/functions/mongodb'
 import checkJWT from '../../../../lib/functions/checkJWT'
 import authorize from '../../../../backend-middlewares/authorize'
 import GenerateError from '../../../../backend-middlewares/generateErrorBackend'
+import { ObjectId } from 'bson'
 
 interface ExtendedNextApiRequest extends NextApiRequest {
   body: {
-    email: string
-    username: string
+    body: {
+      email: string
+      username: string
+    }
   }
 }
 
@@ -20,12 +23,12 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
       console.log('error on changing username', e)
       return res.status(401)
     }
-    let db = null
-    const body = req.body
+    let db: any = null
+    const { email, username } = req.body.body
     //initializing database
     try {
       const client = await clientPromise
-      db = client.db('gameFevr')
+      db = client.db()
     } catch (e) {
       console.log('error on initializing database', e)
       res.status(200).send({ error: 'Unexpected error' })
@@ -35,7 +38,7 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
     try {
       const user = await db
         .collection('users')
-        .findOne({ username: body.username })
+        .findOne({ username })
       if (user) throw new Error('Username already taken')
     } catch (e) {
       await GenerateError({
@@ -50,9 +53,9 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
     }
     //updating every reviews name username fields
     try {
-      const userDocument = await db.collection('users').findOne({ email: body.email })
+      const userDocument = await db.collection('users').findOne({ email })
       if (userDocument) {
-        await db.collection('reviews').updateMany({ user_name: body.username }, { user_name: body.username })
+        await db.collection('reviews').updateMany({ userId: new ObjectId(userDocument._id) }, { user_name: username })
       } else {
         throw new Error('cant find user document')
       }
@@ -63,23 +66,24 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
         status: 500,
         e,
       })
-      console.log(e)
       res.status(500).send({ error: 'Unexpected Error' })
+      return
     }
     //updating username
     try {
+      console.log('sending')
       await db
         .collection('users')
-        .updateOne({ email: body.email }, { $set: { username: body.username } })
+        .updateOne({ email }, { $set: { username } })
       res.status(200).send({ error: null })
     } catch (e) {
+      console.log('dskal;dksa;ldksa', e)
       await GenerateError({
         error:
           'error on changing username on user document on user/settings/changeUsername',
         status: 500,
         e,
       })
-      console.log(e)
       res.status(500).send({ error: 'Unexpected Error' })
     }
   }

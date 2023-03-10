@@ -4,8 +4,8 @@ import { ObjectId } from 'bson'
 import { Favorite_Type, Review_Type } from '../../types/schema'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
-import CurrentProfile from '../../components/Profile/CurrentProfile'
-import VisitedProfile from '../../components/Profile/VisitedProfile'
+import CurrentProfile from '../../components/Profile/CurrentProfile/index'
+import VisitedProfile from '../../components/Profile/VisitedProfile/index'
 import { GetServerSidePropsContext } from 'next'
 import * as mongoDB from 'mongodb'
 
@@ -43,7 +43,7 @@ export default function Profile({
     return (
       <CurrentProfile
         hype={hype}
-        reviews={reviews}
+          reviews={reviews}
         favorites={favorites}
         user={user}
       />
@@ -64,22 +64,26 @@ export async function getServerSideProps(
   const session = await getSession(context)
 
   try {
-    let user, reviews: any[], favorites: any[]
-    const isVisited = context?.params?.id !== session?.user?.userId
+    let user, reviews, favorites
+    const isVisited = context?.params?.id !==
+     session?.user?.userId
     const client = await clientPromise
-    const db = client.db('gameFevr')
+    const db = client.db()
     let isHyped = false
 
-
     if (isVisited) {
-      const userCollection: mongoDB.Collection = db.collection('users')
+      const userCollection: mongoDB.Collection = 
+      db.collection('users')
       user = await userCollection.findOne({
         _id: new ObjectId(context?.params?.id),
       })
 
-      const currentUser: any = await userCollection.findOne({ _id: new ObjectId(session?.user.userId) })
-      if (currentUser.hyped_users.includes(context?.params?.id)) {
+      const currentUser = await userCollection.findOne({ _id: new ObjectId(session?.user.userId) })
+
+      if (currentUser?.hyped_users.includes(context?.params?.id)) {
         isHyped = true
+      } else {
+        isHyped = false
       }
 
       reviews = await db
@@ -118,15 +122,14 @@ export async function getServerSideProps(
         reviews: JSON.parse(JSON.stringify(reviews)),
         hype: user?.hype,
         visited: isVisited,
-        isHyped: JSON.parse(JSON.stringify(isHyped))
-      },
+        isHyped: isHyped
+      }
     }
   } catch (e) {
-    console.log(e)
     return {
       props: {
         user: null,
-      },
+      }
     }
   }
 }

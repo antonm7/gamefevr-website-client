@@ -1,0 +1,805 @@
+@import './global.scss';
+
+.responsive_wrapper {
+  padding-left: 11rem;
+  padding-right: 11rem;
+
+  @include for-size(mid-desktop) {
+    padding-left: 5rem;
+    padding-right: 5rem;
+  }
+
+  @include for-size(tablet-portrait) {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+/* #menu-text {
+  display: none;
+  padding-right: 2rem;
+}
+
+@media (max-width: 1600px) {
+  #game_box {
+    flex: 1 0 31%;
+  }
+
+  #filters_lower_line {
+    flex-direction: column;
+  }
+
+  #filters_consoles_wrapper {
+    width: 100%;
+  }
+
+  #filters_release_wrapper {
+    width: 100%;
+    margin: 0;
+  }
+
+  .login-animation {
+    height: 60rem !important;
+  }
+}
+
+@media (max-width: 1500px) {
+  .signup-animation {
+    height: 35rem !important;
+    position: absolute !important;
+    right: 0;
+    top: 0 !important;
+  }
+}
+
+@media (max-width: 1400px) {
+  .login-animation {
+    height: 42rem !important;
+    position: absolute !important;
+    right: 0;
+    top: 0 !important;
+  }
+
+  #game_page_background_image_wrapper {
+    min-width: 20rem !important;
+  }
+
+  #games_wrapper {
+    padding-left: 4rem;
+    padding-right: 4rem;
+  }
+
+  .we_found_padding {
+    padding-left: 5rem;
+    padding-right: 5rem;
+  }
+
+  #game_page_background_image {
+    width: 20rem;
+    height: 15rem !important;
+  }
+
+  #game_page_game_name {
+    font-size: 4.5rem;
+  }
+
+  #rate_game {
+    width: 13rem;
+    height: 7rem;
+  }
+
+  #span_line {
+    padding-top: 0;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    padding-top: 0.7rem;
+  }
+
+  #rating_label {
+    position: absolute;
+  }
+
+  .rating_label_text {
+    font-size: 0.75rem;
+  }
+
+  #waste_of_time {
+    margin-left: 5px !important;
+  }
+
+  #nuh {
+    margin-left: 67px !important;
+  }
+
+  #good {
+    margin-left: 104px !important;
+  }
+
+  #must {
+    margin-left: 143px !important;
+  }
+
+  #game_page_detail {
+    font-size: 0.9rem !important;
+  }
+
+  #navbar {
+    padding-left: 5rem;
+    padding-right: 5rem;
+  }
+
+  #game_page {
+    padding-left: 5rem;
+    padding-right: 5rem;
+  }
+
+  #platforms_row {
+    width: 100% !important;
+  }
+
+  #controller {
+    height: 400px !important;
+    width: 480px;
+  }
+
+  #review {
+    min-width: 40rem !important;
+    width: 40rem !important;
+    min-height: 23rem !important;
+    height: 23rem !important;
+  }
+
+  #review_bottom_container {
+    margin-top: 2rem;
+  }
+
+  .screenshot {
+    width: 100% !important;
+    height: 16rem !important;
+    margin-top: 3rem;
+  }
+
+  #favorite-image {
+    position: relative;
+    width: 100% !important;
+    height: 70% !important;
+  }
+
+  #favorite-title {
+    padding: 0.5rem 0.8rem;
+    white-space: nowrap !important;
+  }
+
+  #profile_page {
+    padding-left: 5rem;
+    padding-right: 5rem;
+  }
+}
+
+@media (max-width: 1200px) {
+  .signup-animation {
+    height: 25rem !important;
+  }
+
+  #we_found_title {
+    font-size: 1.6rem !important;
+  }
+
+  #game_description_row {
+    flex-direction: column;
+  }
+
+  #same_series {
+    padding-top: 0;
+    padding-bottom: 4rem;
+    width: 100% !important;
+  }
+
+  #same_series_inner {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  #write_review_container {
+    width: 90%;
+  }
+
+  #navbar_links_wrapper {
+    padding-left: 2rem;
+  }
+
+  #game_box {
+    flex: 1 0 40%;
+  }
+
+  #small_search_input_wrapper {
+    margin-right: 1rem !important;
+  }
+
+  #small_search_input {
+    width: 20rem;
+  }
+
+  #small_search_input_game_box {
+    width: 20rem;
+  }
+
+  #profile-review-component {
+    width: 80% !important;
+  }
+}
+
+@media (max-width: 1024px) {
+  #rating_label {
+    display: none;
+  }
+
+  #filters {
+    width: 85%;
+  }
+
+  #profile_page_welcome {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  #small_search_input_wrapper {
+    width: 100%;
+    margin-right: 0 !important;
+    margin-top: 1rem;
+    padding-bottom: 1rem;
+  }
+
+  #small_search_input {
+    width: 100%;
+  }
+
+  #small_search_input_game_box {
+    width: calc(100% - 4.2rem);
+  }
+
+  #small_search_input_input {
+    width: 100%;
+    height: 4rem !important;
+  }
+
+  #settings_bar {
+    height: 78vh !important;
+  }
+
+  .login-animation {
+    height: 35rem !important;
+  }
+
+  #navbar-wrapper {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .signup-animation {
+    height: 25rem !important;
+  }
+
+  .login-animation {
+    height: 25rem !important;
+  }
+
+  #game_page_game_name {
+    font-size: 3rem;
+  }
+
+  .we_found_padding {
+    white-space: nowrap !important;
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+
+  #games_wrapper {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+
+  #game_page_background_image_wrapper {
+    min-width: 17rem !important;
+  }
+
+  #game_page_background_image {
+    width: 17rem;
+    height: 12rem !important;
+  }
+
+  #navbar {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+
+  #game_page {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+
+  #rate_game {
+    width: 11rem;
+    height: 7rem;
+  }
+
+  #span_line {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  #rating_label {
+    display: none;
+  }
+
+  #platforms_row {
+    padding-right: 2rem;
+  }
+
+  #review {
+    min-width: 70vw !important;
+    width: 70vw !important;
+    min-height: 100% !important;
+    height: 100% !important;
+  }
+
+  #game_page_reviews_container {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+
+  #profile_page {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+
+  #settings_bar {
+    width: 100vw !important;
+    height: 83vh !important;
+  }
+
+  #settings_bar h1 {
+    text-align: center;
+  }
+
+  #settings_bar_inner_container {
+    width: 100% !important;
+    margin: 0 auto;
+  }
+
+  #settings_bar_bottom {
+    width: 100% !important;
+    margin: 0 auto;
+  }
+
+  #game_page_screenshots_controller .slick-slider {
+    margin-left: 2rem !important;
+  }
+
+  .screenshot {
+    margin-top: 2rem;
+  }
+}
+
+@media (max-width: 800px) {
+  #profile_header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  #profile_header_name {
+    padding-right: 1rem;
+  }
+
+  #account_settings {
+    padding-top: 1rem;
+  }
+
+  #welcome_title {
+    padding: 1rem 0;
+  }
+
+  #profile_indicate_wrapper {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: flex-start !important;
+  }
+
+  #indicate-wrapper {
+    margin-left: 0 !important;
+  }
+
+  #login-container {
+    position: absolute;
+    overflow: hidden !important;
+  }
+
+  #search-button-wrapper {
+    width: 90%;
+  }
+
+  #search-title {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+
+  .register-container {
+    padding: 2rem;
+  }
+
+  .login-animation {
+    top: -5rem !important;
+    height: 25rem !important;
+  }
+
+  .signup-animation {
+    top: -2rem;
+    height: 15rem !important;
+  }
+
+  .register-title {
+    padding-top: 1rem;
+  }
+
+  #favorite-component {
+    width: 80% !important;
+  }
+
+  #profile-review-component {
+    width: 98% !important;
+  }
+}
+
+@media (max-width: 700px) {
+
+  #we_found_title_wrapper {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  #we_found_title {
+    font-size: 1.8rem !important;
+    padding-bottom: 1rem;
+  }
+
+
+  #game_box {
+    flex: 1 0 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  video {
+    width: 100% !important;
+  }
+
+  #profile_header_container {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+
+  .column-filters-wrapper {
+    width: 100%;
+  }
+
+  #selectBox {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  #writeReview-button-helper {
+    width: 100%;
+  }
+
+  #writeReviewUi {
+    overflow: hidden;
+  }
+
+  #login_onlyLogo {
+    overflow: hidden;
+  }
+
+  #search-title {
+    padding-top: 3rem;
+  }
+
+  #signup-container {
+    position: absolute;
+  }
+
+  #signup-inputs-wrapper input,
+  button {
+    width: 100% !important;
+  }
+
+  .signup-animation {
+    position: relative;
+  }
+
+  #global_error {
+    border-radius: 1rem;
+    padding: 1rem;
+    left: 50%;
+    transform: translate(-50%);
+    padding-left: 1rem;
+    padding-right: 0;
+    width: 70%;
+    top: 2rem;
+  }
+
+  #error_icon {
+    display: none;
+  }
+
+  #menu-text {
+    display: block;
+  }
+
+  .navbar-links {
+    display: none !important;
+  }
+
+  #navbar {
+    justify-content: flex-start;
+  }
+
+  #navbar-logo {
+    margin-right: auto !important;
+  }
+
+  #we_found_title {
+    padding-bottom: 1rem;
+    line-height: 2rem;
+    white-space: pre-wrap !important;
+    padding-right: 2rem !important;
+  }
+
+  #write_review_footer {
+    flex-direction: column;
+    align-items: flex-start;
+    min-height: 4rem;
+    margin-top: 1rem;
+  }
+
+  #favorite-component {
+    width: 98% !important;
+  }
+
+  #game_page_header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  #game_page_background_image_wrapper {
+    min-width: 100% !important;
+    padding-top: 1rem;
+  }
+
+  #game_page_background_image {
+    width: 100%;
+    height: 18rem !important;
+  }
+
+  #rate_game {
+    width: 15rem;
+    height: 8rem;
+  }
+
+  #rate_game_title {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    font-size: 0.9rem;
+    padding-top: 0.7rem;
+  }
+
+  #span_line {
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+    padding-top: 1rem;
+  }
+
+  #rating_label {
+    display: flex;
+    overflow: hidden;
+  }
+
+  .rating_label_text {
+    font-size: 0.75rem;
+  }
+
+  #waste_of_time {
+    margin-left: 9px !important;
+  }
+
+  #nuh {
+    margin-left: 78px !important;
+  }
+
+  #good {
+    margin-left: 121px !important;
+  }
+
+  #must {
+    margin-left: 166px !important;
+  }
+
+  #game_page_description_wrapper {
+    padding-top: 1rem;
+  }
+
+  #game_page_game_name {
+    font-size: 3.2rem;
+    padding-right: 5rem;
+    line-height: 4rem;
+  }
+
+  #search-title {
+    font-size: 3rem;
+    line-height: 4rem;
+  }
+
+  #filters_lower_line {
+    width: 100%;
+  }
+}
+
+@media (max-width: 500px) {
+  #platforms_row {
+    flex-wrap: wrap;
+    width: 70% !important;
+  }
+
+  #where_to_buy {
+    flex-direction: column;
+  }
+
+  #where_to_buy div {
+    display: inline-block;
+  }
+
+  #indicate-wrapper {
+    margin: 0 !important;
+  }
+
+
+  #controller {
+    height: 280px !important;
+    width: 330px;
+  }
+
+  .screenshot {
+    margin-top: 1.5rem;
+    height: 10rem !important;
+  }
+
+  .slick-slider {
+    margin-left: 0.5rem;
+  }
+
+  .register-title {
+    font-size: 2.4rem;
+  }
+
+  .register-welcome {
+    font-size: 0.9rem;
+    opacity: 0.8;
+  }
+
+  .register-container {
+    padding: 4rem 1rem;
+  }
+
+  #signup-title {
+    padding-top: 1rem;
+  }
+
+  .signup-animation {
+    top: -3rem !important;
+    height: 20rem !important;
+  }
+
+  .login-animation {
+    top: -5rem !important;
+    height: 20rem !important;
+  }
+}
+
+@media (max-width: 440px) {
+  #selectBox {
+    height: 3rem;
+  }
+
+  #game_page_game_name {
+    font-size: 3.2rem;
+    padding-right: 2rem;
+    line-height: 4rem;
+  }
+
+  #login_onlyLogo {
+    margin-left: 0rem !important;
+  }
+
+  #global_error {
+    width: 90% !important;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .request_global_error {
+    width: 90% !important;
+  }
+
+  .request_global_error div {
+    flex-direction: column;
+  }
+
+  #global_error_buttons_wrapper {
+    display: flex;
+    flex-direction: row !important;
+    margin-top: 1rem;
+  }
+
+  #global_error_buttons_wrapper div {
+    height: 2.4rem;
+  }
+
+  #write_review_footer {
+    min-height: 10rem !important;
+    padding-top: 1rem;
+  }
+
+  #review_bottom_container {
+    flex-direction: column-reverse;
+    align-items: flex-start;
+  }
+
+  #review_bottom_container_names {
+    padding-top: 2rem;
+  }
+
+  #welcome_title {
+    word-break: break-all;
+    font-size: 1.7rem;
+  }
+
+  #settings_bar {
+    padding: 2rem !important;
+    padding-top: 3rem !important;
+  }
+
+  #settings_bar h1 {
+    font-size: 1.2rem;
+    white-space: nowrap;
+  }
+
+  #settings_bar svg {
+    top: 25px !important;
+    right: 20px !important;
+  }
+
+  .signup-animation {
+    top: -1rem !important;
+    height: 15rem !important;
+  }
+}
+
+@media (max-width: 350px) {
+  .login-animation {
+    top: -1rem !important;
+    height: 12rem !important;
+  }
+
+  .signup-animation {
+    top: -1rem !important;
+    height: 12rem !important;
+  }
+
+  .styled-input {
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+} */

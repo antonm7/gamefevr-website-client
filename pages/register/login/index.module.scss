@@ -1,0 +1,15 @@
+@import '../../../styles/global.scss';
+
+@include for-size(phone-only) {
+    #login_container {
+        padding-top: 12rem;
+    }
+
+    #login_title {
+        padding-top: 2rem;
+    }
+
+    #login_inputs_container {
+        width: 100%;
+    }
+}

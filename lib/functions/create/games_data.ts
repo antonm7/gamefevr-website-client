@@ -20,7 +20,7 @@ export default async function games_data_document(gameId: string) {
 
   try {
     const client = await clientPromise;
-    const db = client.db("gameFevr");
+    const db = client.db();
 
     const isExists = await db.collection("games_data").findOne({ gameId });
     if (!isExists) {

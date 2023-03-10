@@ -1,7 +1,7 @@
-import axios from 'axios'
 import { Response } from 'express'
 import { NextApiRequest } from 'next'
 import GenerateError from '../../../../backend-middlewares/generateErrorBackend'
+import { promiseHandler, wretchWrapper } from '../../../../lib/functions/fetchLogic'
 import clientPromise from '../../../../lib/functions/mongodb'
 import { DetailedGame } from '../../../../types'
 
@@ -16,25 +16,28 @@ async function handler(req: ExtendedRequest, res: Response) {
   if (req.method === 'GET') {
     const query = req.query
     try {
-      const getData = await axios.get(
-        `https://api.rawg.io/api/games/${query.gameId}?key=39a2bd3750804b5a82669025ed9986a8`
-      )
-      const getScreenshots = await axios.get(
-        `https://api.rawg.io/api/games/${query.gameId}/screenshots?key=39a2bd3750804b5a82669025ed9986a8`
-      )
+      const getGame = () => wretchWrapper(`https://api.rawg.io/api/games/${query.gameId}?key=${process.env.FETCH_GAMES_KEY_GENERAL1}`
+        , 'getGame')
 
-      const getTrailers = await axios.get(
-        `https://api.rawg.io/api/games/${query.gameId}/movies?key=39a2bd3750804b5a82669025ed9986a8`
-      )
+      const getScreenshots = () => wretchWrapper(`https://api.rawg.io/api/games/${query.gameId}/screenshots?key=${process.env.FETCH_GAMES_KEY_GENERAL1}`,
+        'getScreenshots')
 
-      const getSeries = await axios.get(
-        `https://api.rawg.io/api/games/${query.gameId}/game-series?key=39a2bd3750804b5a82669025ed9986a8`
-      )
+      const getTrailers = () => wretchWrapper(
+        `https://api.rawg.io/api/games/${query.gameId}/movies?key=${process.env.FETCH_GAMES_KEY_GENERAL1}`
+        , 'getTreilers')
 
-      const gameData = getData.data
-      const screenshots = getScreenshots.data
-      const trailers = getTrailers.data
-      const same_series = getSeries.data
+      const getSeries = () => wretchWrapper(
+        `https://api.rawg.io/api/games/${query.gameId}/game-series?key=${process.env.FETCH_GAMES_KEY_GENERAL2}`
+        , 'getSeries')
+
+      const result: any = await Promise.allSettled([
+        getGame(),
+        getScreenshots(),
+        getTrailers(),
+        getSeries()
+      ])
+
+      const [gameData, screenshots, trailers, same_series]: any = promiseHandler(result)
 
       const finalData: DetailedGame = {
         id: gameData.id,
@@ -56,7 +59,7 @@ async function handler(req: ExtendedRequest, res: Response) {
       }
 
       const client = await clientPromise
-      const db = client.db('gameFevr')
+      const db = client.db()
       const reviews = await db
         .collection('reviews')
         .find({ gameId: query.gameId })

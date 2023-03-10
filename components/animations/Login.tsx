@@ -21,8 +21,10 @@ const LoginAnimation = React.memo(() => {
       options={defaultOptions}
       style={{
         zIndex: 0,
-        position: width > 800 ? 'absolute' : 'relative',
-        height: width > 800 ? '100%' : '25rem',
+        position: 'absolute',
+        height: width > 1200 ? '100%' : width > 900 ? '60%' : '35%',
+        top: width < 400 ? '-3rem' : '',
+
       }}
     ></Lottie>
   )

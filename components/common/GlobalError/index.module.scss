@@ -1,0 +1,26 @@
+@import '../../../styles/global.scss';
+
+.wrapper {
+    top: 3rem;
+    right: 0rem;
+    z-index: 60;
+
+    @include for-size(phone-only) {
+        border-radius: 10rem;
+        max-width: 80%;
+        left: 50%;
+        transform: translateX(-50%);
+        min-height: 5rem !important;
+        height: auto !important;
+
+        .mark_wrapper {
+            min-width: 2.2rem !important;
+            min-height: 2.2rem !important;
+        }
+
+        p {
+            height: auto;
+            white-space: normal;
+        }
+    }
+}

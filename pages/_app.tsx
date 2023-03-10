@@ -1,15 +1,15 @@
+import '../styles/index.css'
+import '../styles/global.scss'
+import '../styles/responsive.scss'
+import '../styles/animation.scss'
 import 'tailwindcss/tailwind.css'
-import '../styles/global.css'
-import '../styles/responsive.css'
-import '../styles/animation.css'
 import { setCookie } from 'cookies-next'
 import { SessionProvider } from 'next-auth/react'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Progress from '../components/progress/Progress'
 import {
   useFiltersStore,
-  useGlobalError,
   useProgressStore,
   useStore,
 } from '../store'
@@ -17,17 +17,12 @@ import GlobalError from '../components/common/GlobalError/Index'
 import Menu from '../components/Menu'
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: any) {
-  const changeGameName = useStore((state) => state.changeGameName)
-  const filtersStore = useFiltersStore((state) => state)
-  const setIsAnimating = useProgressStore((state) => state.setIsAnimating)
-  const isAnimating = useProgressStore((state) => state.isAnimating)
-  const isVisible = useGlobalError((state) => state.isVisible)
-  const menuVisibility = useStore((state) => state.menuVisibility)
-  const type = useGlobalError((state) => state.type)
+  const changeGameName = useStore(state => state.changeGameName)
+  const filtersStore = useFiltersStore(state => state)
+  const setIsAnimating = useProgressStore(state => state.setIsAnimating)
+  const isAnimating = useProgressStore(state => state.isAnimating)
+  const menuVisibility = useStore(state => state.menuVisibility)
   const router: any = useRouter()
-
-  const [globalErrorVisibility, setGlobalErrorVisibilit] =
-    useState<boolean>(false)
 
   useEffect(() => {
     const handleStart = () => {
@@ -43,9 +38,6 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: any) {
     router.events.on('routeChangeError', handleStop)
 
     setCookie('prevRoute', router.pathname)
-
-    //follow any changes to the query, and update the store
-    //because the filters component takes data from the store and not the query
     return () => {
       router.events.off('routeChangeStart', handleStart)
       router.events.off('routeChangeComplete', handleStop)
@@ -55,10 +47,11 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: any) {
 
   useEffect(() => {
     if (router.pathname === '/search') {
-      //updateing consoles
-      const updatedConsoles = (): string[] => {
+      const updatedConsoles = (): number[] => {
         if (!router.query.consoles) {
           return []
+          // if the typeof is a string means there is only one console,
+          // because if it is several consoles then I need to push it differently to the store.
         } else if (typeof router.query.consoles === 'string') {
           return [router.query.consoles]
         } else {
@@ -68,7 +61,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: any) {
       filtersStore.setConsoles(updatedConsoles())
 
       //updating genres
-      const updatedGenres = (): string[] => {
+      const updatedGenres = (): number[] => {
         if (!router.query.genres) {
           return []
         } else if (typeof router.query.genres === 'string') {
@@ -90,23 +83,19 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: any) {
           return router.query.yearRange
         }
       }
-      filtersStore.setYearRange(updatedYears())
 
+      filtersStore.setYearRange(updatedYears())
       changeGameName(router.query.search ? router.query.search : '')
     }
   }, [router.query])
 
-  useEffect(() => {
-    setGlobalErrorVisibilit(isVisible)
-  }, [isVisible])
-
   return (
     <>
-      <GlobalError propsType={type} isVisible={globalErrorVisibility} />
+      <GlobalError />
       <Progress isAnimating={isAnimating} />
       <SessionProvider session={session}>
         {menuVisibility ? <Menu /> : null}
-        <div className={`bg-main-blue ${router.pathname == '/' ? 'h-screen' : 'h-full'} min-h-full`}>
+        <div className={`bg-main-blue ${router.pathname == '/' ? 'h-full' : 'h-full'} min-h-full`}>
           <Component {...pageProps} />
         </div>
       </SessionProvider>

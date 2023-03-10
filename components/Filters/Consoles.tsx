@@ -1,87 +1,70 @@
-import { useState, useEffect } from "react"
-import useWindowSize from "../../lib/functions/hooks/useWindowSize"
-import { parentConsoles } from "../../lib/staticData"
-import { ElementDescription } from "../../types"
-import SelectBox from "../common/SelectBox"
+import { useEffect, useState, useMemo } from "react";
+import useWindowSize from "../../lib/functions/hooks/useWindowSize";
+import { parentConsoles } from "../../lib/staticData";
+import { ElementDescription } from "../../types";
+import SelectBox from "../common/SelectBox";
+import styles from './index.module.scss';
 
-interface Props {
-    selectedConsoles: string[]
-    updateConsoles: (id: string) => void
+type Props = {
+    updateSelectedConsoles: (value: number[]) => void
 }
 
-interface ShowMoreProps extends Props {
-    changeVisibility: () => void
-}
+export default function Consoles({ updateSelectedConsoles }: Props) {
+    const [selectedConsoles, changeSelectedConsoles] = useState<number[]>([])
+    const [loadMore, setLoadMore] = useState<boolean>(false)
 
-const ShowMore = ({ selectedConsoles, updateConsoles, changeVisibility }: ShowMoreProps) => {
-    return (
-        <div>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                {parentConsoles.map((genre: ElementDescription, index: number) => {
-                    return (
-                        <SelectBox
-                            isSelected={selectedConsoles.includes(JSON.stringify(genre.id))}
-                            onClick={() => updateConsoles(JSON.stringify(genre.id))}
-                            key={index}
-                            title={genre.name}
-                            coolBlue={true}
-                        />
-                    )
-                })
-                }
-                <button onClick={changeVisibility} className="show-text">Show Less</button>
-            </div>
-        </div>
-    )
-}
-
-export default function Consoles({ selectedConsoles, updateConsoles }: Props) {
-    const [width] = useWindowSize()
-    const [first, setFirst] = useState<ElementDescription[]>([])
-    const [showMore, setShowMore] = useState<boolean>(false)
-
-    useEffect(() => {
-        const f = parentConsoles.slice(0, 4)
-        setFirst(f)
-    }, [])
-
-    if (width > 640) {
-        return (
-            <div className="flex h-auto items-center justify-center flex-row flex-wrap filters-category-flex">
-                {parentConsoles.map((genre: ElementDescription, index: number) => {
-                    return (
-                        <SelectBox
-                            isSelected={selectedConsoles.includes(JSON.stringify(genre.id))}
-                            onClick={() => updateConsoles(JSON.stringify(genre.id))}
-                            key={index}
-                            title={genre.name}
-                            coolBlue={true}
-                        />
-                    )
-                })}
-            </div>
-        )
-    } else {
-
-        if (!showMore) {
-            return (
-                <div className="flex h-auto items-center justify-center flex-row flex-wrap filters-category-flex">
-                    {first.map((genre: ElementDescription, index: number) => {
-                        return (
-                            <SelectBox
-                                isSelected={selectedConsoles.includes(JSON.stringify(genre.id))}
-                                onClick={() => updateConsoles(JSON.stringify(genre.id))}
-                                key={index}
-                                title={genre.name}
-                                coolBlue={true}
-                            />
-                        )
-                    })}
-                    <button onClick={() => setShowMore(true)} className="show-text">Show More</button>
-                </div>
-            )
+    const updateConsoles = (index: number): void => {
+        if (selectedConsoles.includes(index)) {
+            //removes
+            changeSelectedConsoles(selectedConsoles.filter((i) => i !== index))
         } else {
-            return <ShowMore selectedConsoles={selectedConsoles} updateConsoles={updateConsoles} changeVisibility={() => setShowMore(false)} />
+            //adds
+            changeSelectedConsoles(old => [...old, index])
         }
     }
+
+    useEffect(() => {
+        updateSelectedConsoles(selectedConsoles)
+    }, [selectedConsoles])
+
+    const changeShowMore = (status: boolean): void => {
+        if (status === false) {
+            changeSelectedConsoles([])
+        }
+        setLoadMore(status)
+    }
+
+    const [width] = useWindowSize()
+
+    if (width <= 900) {
+        return (
+            <div className={`${styles.container_padding} filters-column-shadow rounded-md bg-white py-12 h-auto w-full max-w-full`}>
+                <div className="flex flex-col justify-center items-center">
+                    {(loadMore ? parentConsoles : parentConsoles.slice(0, 5)).map(e => <SelectBox isSelected={selectedConsoles.includes(parseInt(e.id))}
+                        onClick={() => updateConsoles(parseInt(e.id))}
+                        key={e.id}
+                        title={e.name} />)}
+                    <button
+                        onClick={() => (loadMore ? changeShowMore(false) : changeShowMore(true))}
+                        className={`w-fit h-10 m-2 overflow-hidden border border-lighterBg px-6 flex flex-row items-center justify-center rounded-xl`}
+                    >
+                        <p
+                            className={`text-text-gray
+                         text-base whitespace-nowrap font-extralight`}
+                        >
+                            {loadMore ? 'Show Less' : 'Show More'}
+                        </p>
+                    </button>
+                </div>
+            </div>
+        )
+    }
+    return (
+        <div className={`${styles.container_padding} filters-column-shadow rounded-md flex flex-wrap justify-center bg-white px-20 py-12 h-auto w-full max-w-full`}>
+            {parentConsoles.map(e => <SelectBox isSelected={selectedConsoles.includes(parseInt(e.id))}
+                onClick={() => updateConsoles(parseInt(e.id))}
+                key={e.id}
+                title={e.name} />)}
+        </div>
+    )
 }

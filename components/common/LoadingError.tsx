@@ -1,6 +1,6 @@
 import YellowButton from './YellowButton'
 
-interface Props {
+type Props = {
   mainTitle: string
   description: string
   button?: boolean

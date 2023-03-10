@@ -1,21 +1,27 @@
-import { Request, Response } from 'express'
+import { Response } from 'express'
 import clientPromise from '../../../../lib/functions/mongodb'
 import { hash } from 'bcrypt'
 import GenerateError from '../../../../backend-middlewares/generateErrorBackend'
+import { NextApiRequest } from 'next'
 
-interface Body {
-  link: string
-  newPassword: string
+interface ExtendedNextApiRequest extends NextApiRequest {
+  body: {
+    body: {
+      link: string
+      newPassword: string
+    }
+  }
 }
 
-export default async function handler(req: Request, res: Response) {
+export default async function handler(req: ExtendedNextApiRequest, res: Response) {
   if (req.method === 'POST') {
-    const { link, newPassword }: Body = req.body
-    let db = null
+    const { link, newPassword } = req.body.body
+
+    let db: any = null
     //initializing database
     try {
       const client = await clientPromise
-      db = client.db('gameFevr')
+      db = client.db()
     } catch (e) {
       console.log('error on initializing database', e)
       res.status(200).send({ error: 'Unexpected error,please try again' })
@@ -35,8 +41,8 @@ export default async function handler(req: Request, res: Response) {
         },
         { $set: { password: hashedPassword, reset_password: '' } }
       )
-
       res.status(200).send({ ok: true })
+
     } catch (e) {
       await GenerateError({
         error:
@@ -44,7 +50,6 @@ export default async function handler(req: Request, res: Response) {
         status: 500,
         e,
       })
-      console.log('error on confirmResetPassword', e)
       res.status(500).send({ error: 'Unexpected Error' })
     }
   }

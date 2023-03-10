@@ -6,20 +6,22 @@ import clientPromise from '../../../../../lib/functions/mongodb'
 
 interface ExtendedNextApiRequest extends NextApiRequest {
   body: {
-    gameId: string
-    userId: string
-    reviewId: string
+    body: {
+      gameId: string
+      userId: string
+      reviewId: string
+    }
   }
 }
 
 async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
-    let db = null
-    const query = req.body
+    let db: any = null
+    const { gameId, userId, reviewId } = req.body.body
     //initializing database
     try {
       const client = await clientPromise
-      db = client.db('gameFevr')
+      db = client.db()
     } catch (e) {
       res.status(500).send({ error: 'Unexpected error' })
       return console.log('error on initializing database', e)
@@ -28,7 +30,7 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
     try {
       await db
         .collection('reviews')
-        .deleteOne({ _id: new ObjectId(query.reviewId) })
+        .deleteOne({ _id: new ObjectId(reviewId) })
     } catch (e) {
       await GenerateError({
         error: 'error deleting the review on game/cancel/review/deleteReview',
@@ -43,8 +45,8 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
       await db
         .collection('users')
         .updateOne(
-          { _id: new ObjectId(query.userId) },
-          { $pull: { reviews: query.reviewId } }
+          { _id: new ObjectId(userId) },
+          { $pull: { reviews: reviewId } }
         )
     } catch (e) {
       await GenerateError({
@@ -59,7 +61,7 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
     //updates game data document
     try {
       await db.collection('games_data').updateOne(
-        { gameId: query.gameId },
+        { gameId: gameId },
         {
           $inc: { reviews: -1 },
         }

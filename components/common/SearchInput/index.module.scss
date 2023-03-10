@@ -1,0 +1,15 @@
+@import '../../../styles/global.scss';
+
+@include for-size(tablet-portrait) {
+    #wrapper {
+        width: 70%;
+    }
+
+    #input_wrapper {
+        width: 100%;
+    }
+
+    #games_box_wrapper {
+        width: 56%;
+    }
+}
