@@ -21,10 +21,10 @@ const nextConfig = {
   env: {
     key: 'e996863ffbd04374ac0586ec2bcadd55',
     NEXTAUTH_SECRET: 'secret_for_authentication_789_369_11_12',
-    NEXTAUTH_URL: 'http://127.0.0.1:3000',
-    URI: 'http://localhost:3000',
+    NEXTAUTH_URL: 'https://gamefevr.com',
+    URI: 'https://gamefevr.com',
     SENDGRID_API_KEY: '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',
-    MONGODB_URI: 'mongodb://0.0.0.0:27017/gameFevr',
+    MONGODB_URI: 'mongodb+srv://migolkoanton:794613qeadzcM712@prod.iwldom1.mongodb.net/?retryWrites=true&w=majority',
     // # migolkoa@gmail.com
     FETCH_GAMES_KEY_GENERAL1: '39a2bd3750804b5a82669025ed9986a8',
     // #migolkoanton@gmail.com
