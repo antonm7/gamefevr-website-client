@@ -10,6 +10,7 @@ interface ExtendedNextApiRequest extends NextApiRequest {
 function authorize(handler) {
   return async (req: ExtendedNextApiRequest, res: NextApiResponse) => {
     const token = await getToken({ req })
+    console.log(token)
     if (!token) {
       return res.status(401).end()
     }
