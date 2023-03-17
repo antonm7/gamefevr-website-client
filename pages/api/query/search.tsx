@@ -97,19 +97,19 @@ export default async function handler(req: ExtendedNextApiRequest, res: Response
           filteredString = filteredString.concat('&ordering=-released')
         }
         const getData: any = await wretchWrapper(
-          `https://api.rawg.io/api/games?key=${process.env.FETCH_GAMES_KEY_GENERAL2}&dates=1990-01-01,2023-12-31&page=${page}&page_size=30${filteredString}`
+          `https://api.rawg.io/api/games?key=${process.env.FETCH_GAMES_KEY_GENERAL2}&dates=1990-01-01,2023-12-31&page=${page}&page_size=16${filteredString}`
           , 'getGamesData')
         games = getData.results
         count = getData.count
       } else {
         const getData: any = await wretchWrapper(
-          `https://api.rawg.io/api/games?key=${process.env.FETCH_GAMES_KEY_GENERAL2}&dates=1990-01-01,2023-12-31&page=${page}&page_size=30`
+          `https://api.rawg.io/api/games?key=${process.env.FETCH_GAMES_KEY_GENERAL2}&dates=1990-01-01,2023-12-31&page=${page}&page_size=16`
           , 'getGamesData')
         games = getData.results
         count = getData.count
       }
       const isNextPage = (page: number) => {
-        if (page * 30 < count) {
+        if (page * 16 < count) {
           return true
         } else {
           return false

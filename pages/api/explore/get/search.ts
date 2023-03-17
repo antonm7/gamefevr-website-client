@@ -13,7 +13,7 @@ export default async function handler(
         `https://api.rawg.io/api/games?key=39a2bd3750804b5a82669025ed9986a8&page=${getRandomInt(
           10,
           200
-        )}&page_size=25`
+        )}&page_size=16`
         , 'fetchExploredGames')
       const games = fetchExploredGames.data
       return res.status(200).send(games)
