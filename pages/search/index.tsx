@@ -216,7 +216,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getSession(context)
 
   const isNextPage = (page: number, count: number) => {
-    if (page * 28 < count) {
+    if (page * 16 < count) {
       return true
     } else {
       return false
@@ -343,7 +343,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     }
 
     try {
-      const fetchGamesWithFilters = await wretchWrapper(`https://api.rawg.io/api/games?key=${process.env.FETCH_GAMES_KEY_GENERAL1}&dates=1990-01-01,2023-12-31&page=1&page_size=28${filteredString}`, 'fetchGamesWithFilters')
+      const fetchGamesWithFilters = await wretchWrapper(`https://api.rawg.io/api/games?key=${process.env.FETCH_GAMES_KEY_GENERAL1}&dates=1990-01-01,2023-12-31&page=1&page_size=16${filteredString}`, 'fetchGamesWithFilters')
       return {
         props: {
           games: fetchGamesWithFilters.results,
@@ -363,7 +363,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   } else {
     // No filters applied path
     try {
-      const fetchGamesWithoutFilters = await wretchWrapper(`https://api.rawg.io/api/games?key=${process.env.FETCH_GAMES_KEY_GENERAL1}&dates=1990-01-01,2023-12-31&page=1&page_size=28`, 'fetchGamesWithoutFilters')
+      const fetchGamesWithoutFilters = await wretchWrapper(`https://api.rawg.io/api/games?key=${process.env.FETCH_GAMES_KEY_GENERAL1}&dates=1990-01-01,2023-12-31&page=1&page_size=16`, 'fetchGamesWithoutFilters')
       return {
         props: {
           games: fetchGamesWithoutFilters.results ? fetchGamesWithoutFilters.results : [],
