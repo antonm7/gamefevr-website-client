@@ -17,8 +17,7 @@ export default function DynamicSession() {
     }, [session.status])
 
     const signOutMethod = async (): Promise<void> => {
-        await signOut()
-        router.push('/')
+        await signOut({ redirect: true })
     }
 
     if (auth) {
