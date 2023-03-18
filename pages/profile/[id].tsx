@@ -67,9 +67,10 @@ export async function getServerSideProps(
     let user, reviews, favorites
     const isVisited = context?.params?.id !==
       session?.user?.userId
-    console.log(context?.params?.id, session?.user?.userId)
+
     const client = await clientPromise
     const db = client.db()
+
     let isHyped = false
 
     if (isVisited) {
@@ -79,34 +80,46 @@ export async function getServerSideProps(
         _id: new ObjectId(context?.params?.id),
       })
 
-      const currentUser = await userCollection.findOne({ _id: new ObjectId(session?.user.userId) })
-
-      if (currentUser?.hyped_users.includes(context?.params?.id)) {
+      if (user?.hyped_users.includes(context?.params?.id)) {
         isHyped = true
       } else {
         isHyped = false
       }
 
-      reviews = await db
+      const getReviews = () => db
         .collection('reviews')
         .find({ userId: context?.params?.id })
-        .toArray()
-      favorites = await db
+
+      const getFavorites = () => db
         .collection('favorites')
         .find({ userId: context?.params?.id })
         .toArray()
+
+      const ReviewsAndFavorites = await Promise.allSettled([getReviews(), getFavorites()])
+      reviews = ReviewsAndFavorites[0]
+      favorites = ReviewsAndFavorites[1]
+
     } else {
-      user = await db
+      const getUser = () => db
         .collection('users')
         .findOne({ _id: new ObjectId(session?.user?.userId) })
-      reviews = await db
+
+      const getReviews = () => db
         .collection('reviews')
-        .find({ userId: session?.user?.userId })
-        .toArray()
-      favorites = await db
+        .findOne({ userId: session?.user?.userId })
+
+      const getFavorites = () => db
         .collection('favorites')
         .find({ userId: session?.user?.userId })
         .toArray()
+
+      const fetchedData: any = await Promise.allSettled([
+        getUser(), getReviews(), getFavorites()
+      ])
+
+      user = fetchedData[0].value
+      reviews = fetchedData[1].value
+      favorites = fetchedData[2].value
     }
 
     return {
@@ -119,8 +132,8 @@ export async function getServerSideProps(
             username: user?.username,
             email: user?.email,
           },
-        favorites: JSON.parse(JSON.stringify(favorites)),
-        reviews: JSON.parse(JSON.stringify(reviews)),
+        favorites: favorites ? JSON.parse(JSON.stringify(favorites)) : [],
+        reviews: reviews ? JSON.parse(JSON.stringify(reviews)) : [],
         hype: user?.hype,
         visited: isVisited,
         isHyped: isHyped
