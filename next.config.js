@@ -17,7 +17,7 @@ const nextConfig = {
   },
   images: {
     domains: ['media.rawg.io', 'hatrabbits.com'],
-  }
+  },
 };
 // eslint-disable-next-line no-undef
 module.exports = nextConfig;

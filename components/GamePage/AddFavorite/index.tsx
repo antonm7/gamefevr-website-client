@@ -66,7 +66,9 @@ export default function AddFavorite({ gameId }: Props) {
           const fetchIsFavorite
             = await wretchWrapper(`/api/game/get/getIsFavorite?userId=${session.data?.user?.userId}&gameId=${gameId}`,
               'fetchIsFavorite')
-          if (fetchIsFavorite.isFavorite) return setIsFavorite(false)
+          if (fetchIsFavorite.isFavorite) {
+            setIsFavorite(true)
+          }
         } catch (e) {
           throw new Error('Unexpected Error')
         }
