@@ -26,7 +26,7 @@ type Props = {
 
 export default function Index(props: Props) {
   const [loadMoreLoading, setLoadMoreLoading] = useState<boolean>(true)
-  const [nextPage, setNextPage] = useState<boolean>(false)
+  const [nextPage, setNextPage] = useState<boolean>(true)
   //2 types of errors
   const [loadingError, setLoadingError] = useState<boolean>(false)
   const [noResults, setNoResults] = useState<boolean>(false)
@@ -82,7 +82,7 @@ export default function Index(props: Props) {
 
     if (!store.games.length && !props.games.length) {
       setLoadMoreLoading(true)
-      loadMoreGames()
+      // loadMoreGames()
       return
     }
     if (!props.games.length && !props.error) return
@@ -90,7 +90,6 @@ export default function Index(props: Props) {
     if (!props.games.length) {
       setNoResults(true)
     } else {
-      console.log(props)
       store.clearGames()
       store.addPage()
       store.addGames(props.games)
@@ -99,8 +98,9 @@ export default function Index(props: Props) {
   }
 
   useEffect(() => {
+    console.log('loaded')
     initialLoading()
-  }, [props.games, props.error])
+  }, [])
 
   const sort = () => {
     const { query } = router

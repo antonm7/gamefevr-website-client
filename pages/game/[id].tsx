@@ -146,7 +146,6 @@ export async function getStaticPaths() {
         ...getGamesData.results.map((game) => game.id)
       )
     }
-    console.log(ids)
     const paths = ids.map((id) => ({
       params: { id: JSON.stringify(id) },
     }))
@@ -175,8 +174,6 @@ export async function getStaticProps(context: Context) {
 
     const [gameData, screenshots, trailers, same_series]
       = promiseHandler(result) as [DetailedGame, Screenshot, object, same_series_type]
-    console.log('dsadsa')
-    console.log(process.env.BUILD_GAMES_KEY)
 
     const finalData: DetailedGame = {
       id: gameData.id,
