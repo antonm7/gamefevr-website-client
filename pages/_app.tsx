@@ -45,49 +45,30 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: any) {
     }
   }, [router])
 
+  const getUpdatedState = (paramName: string, defaultValue: any): any => {
+    if (!router.query[paramName]) {
+      return defaultValue;
+    } else if (Array.isArray(router.query[paramName])) {
+      return router.query[paramName];
+    } else {
+      return [router.query[paramName]];
+    }
+  };
+
   useEffect(() => {
     if (router.pathname === '/search') {
-      const updatedConsoles = (): number[] => {
-        if (!router.query.consoles) {
-          return []
-          // if the typeof is a string means there is only one console,
-          // because if it is several consoles then I need to push it differently to the store.
-        } else if (typeof router.query.consoles === 'string') {
-          return [router.query.consoles]
-        } else {
-          return router.query.consoles
-        }
-      }
-      filtersStore.setConsoles(updatedConsoles())
+      const updatedConsoles = getUpdatedState('consoles', []);
+      filtersStore.setConsoles(updatedConsoles);
 
-      //updating genres
-      const updatedGenres = (): number[] => {
-        if (!router.query.genres) {
-          return []
-        } else if (typeof router.query.genres === 'string') {
-          return [router.query.genres]
-        } else {
-          return router.query.genres
-        }
-      }
-      filtersStore.setGenres(updatedGenres())
+      const updatedGenres = getUpdatedState('genres', []);
+      filtersStore.setGenres(updatedGenres);
 
-      //updating years
-      const updatedYears = (): number[] => {
-        if (router.query.yearRange && !Array.isArray(router.query.yearRange)) {
-          return [1990, 2023]
-        }
-        if (!router.query.yearRange || router.query.yearRange.length !== 2) {
-          return [1990, 2023]
-        } else {
-          return router.query.yearRange
-        }
-      }
+      const updatedYears = getUpdatedState('yearRange', [1990, 2023]);
+      filtersStore.setYearRange(updatedYears);
 
-      filtersStore.setYearRange(updatedYears())
-      changeGameName(router.query.search ? router.query.search : '')
+      changeGameName(router.query.search ? router.query.search : '');
     }
-  }, [router.query])
+  }, [router.query]);
 
   return (
     <>
