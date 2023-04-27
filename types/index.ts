@@ -92,11 +92,10 @@ export type DetailedGame = {
     url: string
   }[]
   publishers: ElementDescription[]
-  screenshots: Screenshot
-  trailers: any
+  screenshots: Screenshot | null
   tags: ElementDescription[]
   website: string
-  same_series: same_series_type
+  same_series: same_series_type | null
 }
 
 export type NamedGame = {
