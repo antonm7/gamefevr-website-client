@@ -3,16 +3,18 @@ import useWindowSize from "../../lib/functions/hooks/useWindowSize";
 import { genres } from "../../lib/staticData";
 import SelectBox from "../common/SelectBox";
 import styles from './index.module.scss';
+import { useFiltersStore } from "../../store";
 
 type Props = {
-    updateSelectedGenres: (value: number[]) => void
+    updateSelectedGenres: (value: string[]) => void
 }
 
 export default function Genres({ updateSelectedGenres }: Props) {
-    const [selectedGenres, changeSelectedGenres] = useState<number[]>([])
+    const store = useFiltersStore(state => state)
+    const [selectedGenres, changeSelectedGenres] = useState<string[]>([])
     const [loadMore, setLoadMore] = useState<boolean>(false)
 
-    const updateGenres = (index: number): void => {
+    const updateGenres = (index: string): void => {
         if (selectedGenres.includes(index)) {
             //removes
             changeSelectedGenres(selectedGenres.filter((genre) => genre !== index))
@@ -21,6 +23,10 @@ export default function Genres({ updateSelectedGenres }: Props) {
             changeSelectedGenres([...selectedGenres, index])
         }
     }
+
+    useEffect(() => {
+        changeSelectedGenres(store.genres)
+    }, [store.genres])
 
     useEffect(() => {
         updateSelectedGenres(selectedGenres)
@@ -39,8 +45,8 @@ export default function Genres({ updateSelectedGenres }: Props) {
         return (
             <div className={`${styles.container_padding} filters-column-shadow rounded-md bg-white py-12 h-auto w-full max-w-full`}>
                 <div className="flex flex-col justify-center items-center">
-                    {(loadMore ? genres : genres.slice(0, 5)).map(e => <SelectBox isSelected={selectedGenres.includes(parseInt(e.id))}
-                        onClick={() => updateGenres(parseInt(e.id))}
+                    {(loadMore ? genres : genres.slice(0, 5)).map(e => <SelectBox isSelected={selectedGenres.includes(e.id)}
+                        onClick={() => updateGenres(e.id)}
                         key={e.id}
                         title={e.name} />)}
                     <button
@@ -61,8 +67,8 @@ export default function Genres({ updateSelectedGenres }: Props) {
 
     return (
         <div className={`${styles.container_padding} filters-column-shadow rounded-md flex flex-wrap justify-center bg-white px-20 py-12 h-auto w-full max-w-full`}>
-            {genres.map(e => <SelectBox isSelected={selectedGenres.includes(parseInt(e.id))}
-                onClick={() => updateGenres(parseInt(e.id))}
+            {genres.map(e => <SelectBox isSelected={selectedGenres.includes(e.id)}
+                onClick={() => updateGenres(e.id)}
                 key={e.id}
                 title={e.name} />)}
         </div>
