@@ -9,11 +9,12 @@ import RangeContainer from './RangeContainer'
 import Consoles from './Consoles'
 import Genres from './Genres'
 import styles from './index.module.scss'
+import { IconProp } from '@fortawesome/fontawesome-svg-core'
 
 export default function Filters() {
   const [yearRange, changeYearRange] = useState<number[]>([1990, 2023])
-  const [selectedGenres, changeSelectedGenres] = useState<number[]>([])
-  const [selectedConsoles, changeSelectedConsoles] = useState<number[]>([])
+  const [selectedGenres, changeSelectedGenres] = useState<string[]>([])
+  const [selectedConsoles, changeSelectedConsoles] = useState<string[]>([])
   const store = useStore()
   const filtersStore = useFiltersStore()
 
@@ -52,21 +53,21 @@ export default function Filters() {
 
   const MemoizedRangeContainer = useMemo(() => {
     return <RangeContainer updateYearRange={(val: number[]) => changeYearRange(val)} />
-  }, [])
+  }, [yearRange])
 
   const MemoizedConsoles = useMemo(() => {
-    return <Consoles updateSelectedConsoles={(value: number[]) => changeSelectedConsoles(value)} />
-  }, [])
+    return <Consoles updateSelectedConsoles={(value: string[]) => changeSelectedConsoles(value)} />
+  }, [selectedConsoles])
 
   const MemoizedGenres = useMemo(() => {
-    return <Genres updateSelectedGenres={(value: number[]) => changeSelectedGenres(value)} />
-  }, [])
+    return <Genres updateSelectedGenres={(value: string[]) => changeSelectedGenres(value)} />
+  }, [selectedGenres])
 
   return (
     <div id={styles.filters_wrapper} className="fixed z-40 rounded-lg py-6 px-24 w-5/6 h-5/6 bg-filtersBg top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
       <div id={styles.filters_bg}></div>
       <FontAwesomeIcon
-        icon={faXmark}
+        icon={faXmark as IconProp}
         className="h-8 float-right cursor-pointer absolute right-8"
         onClick={() => store.changeFilterVisibility(false)}
       />
