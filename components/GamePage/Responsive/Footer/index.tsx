@@ -6,6 +6,9 @@ import { DetailedGame } from "../../../../types"
 import { Review_Type } from "../../../../types/schema"
 import Bigger1200 from "./Bigger1200"
 import Lower1200 from "./Lower1200"
+import { useEffect, useState } from "react"
+import { wretchWrapper } from "../../../../lib/functions/fetchLogic"
+import SmallLoader from "../../../common/SmallLoader"
 
 type Loaders_State = {
     globalLoading: boolean
@@ -14,14 +17,17 @@ type Loaders_State = {
 
 type Props = {
     game: DetailedGame
-    reviews: Review_Type[]
+    reviews_state: any
+    update_reviews: any
     updateReviewsVisibility: (value: boolean) => void
-    updateReviewsState: (reviews: Review_Type[]) => void
-    loaders: Loaders_State
 }
 
-export default function Footer({ game, reviews,
-    updateReviewsVisibility, updateReviewsState }: Props) {
+export default function Footer({
+    updateReviewsVisibility, reviews_state, update_reviews }: Props) {
+    const [screenshots, setScreenshots] = useState([])
+    const [reviews, setReviews] = useState<Review_Type[]>([])
+    const [screenshots_loader, setScreenshotsLoader] = useState(false)
+    const [loading, setLoading] = useState<boolean>(false)
     const [width] = useWindowSize()
     const session = useSession()
 
@@ -48,28 +54,54 @@ export default function Footer({ game, reviews,
             const newReviews = reviews.filter(
                 (review: Review_Type) => review._id !== id
             )
-            updateReviewsState(newReviews)
+            setReviews(newReviews)
         }
     }
+
+    const initial_loading = async () => {
+        setLoading(true)
+        const fetchScreenshots = await wretchWrapper(`/api/game/get/getScreenshots?gameId=${router.query.id}`,
+            'loadScreenshots')
+        const fetchReviews = await wretchWrapper(`/api/game/get/getReviews?gameId=${router.query.id}`,
+            'loadReviews')
+        setReviews(fetchReviews.reviews ? fetchReviews.reviews : [])
+        setScreenshots(fetchScreenshots.screenshots.results ? fetchScreenshots.screenshots.results : [])
+        update_reviews(fetchReviews.reviews ? fetchReviews.reviews : [])
+        setLoading(false)
+    }
+
+    useEffect(() => {
+        initial_loading()
+    }, [])
+
+    useEffect(() => {
+        setReviews(reviews_state)
+    }, [reviews_state])
+
+    if (loading) return (
+        <div className="pt-28 ">
+            <SmallLoader xCentered={true} big={true} />
+        </div>
+    )
 
     return (
         <div className="pt-28">
             {width > 1200 ? (
                 <Bigger1200
                     navigateAuth={() => navigateAuth()}
-                    screenshots={game.screenshots.results}
+                    screenshots={screenshots}
                     reviews={reviews}
+                    screenshots_loader={screenshots_loader}
                     deleteReview={id => deleteReview(id)}
                 />
-
             ) : (
                 <Lower1200
                     navigateAuth={() => navigateAuth()}
-                    screenshots={game.screenshots.results}
+                    screenshots={screenshots}
                     reviews={reviews}
+                    screenshots_loader={screenshots_loader}
                     deleteReview={id => deleteReview(id)}
                     sliderRef={undefined} />
-
             )}
         </div>
     )
