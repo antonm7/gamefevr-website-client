@@ -2,11 +2,11 @@ import create from 'zustand'
 
 interface State {
   yearRange: number[]
-  genres: number[]
-  consoles: number[]
+  genres: string[]
+  consoles: string[]
   setYearRange: (yearRange: number[]) => void
-  setGenres: (genres: number[]) => void
-  setConsoles: (consoles: number[]) => void
+  setGenres: (genres: string[]) => void
+  setConsoles: (consoles: string[]) => void
   clearFilters: () => void
 }
 
