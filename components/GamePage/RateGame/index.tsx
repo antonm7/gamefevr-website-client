@@ -42,7 +42,9 @@ export default function RateGame({ updateIsUserRated, reviews }: Props) {
         return
       }
     }
-    isUserRated()
+    if (session.status === 'authenticated') {
+      isUserRated()
+    }
   }, [session.status])
 
   const rate = async (rank: string) => {
@@ -58,6 +60,7 @@ export default function RateGame({ updateIsUserRated, reviews }: Props) {
         })
       } else {
         setIsUserRated(rank)
+        updateIsUserRated(rank)
         //for not getting several ranking on the same game
         if (isUserRated) {
           await wretchAction('/api/game/cancel/cancelRank', {
@@ -138,9 +141,9 @@ export default function RateGame({ updateIsUserRated, reviews }: Props) {
         </h1>
         <div className="flex justify-between px-16 pt-3" id={styles.icons_container}>
           <span
-            className={`text-xl cursor-pointer opacity-40 ${wasteOfTime || isUserRated === 'waste_of_time'
+            className={`text-xl cursor-pointer ${wasteOfTime || isUserRated === 'waste_of_time'
               ? 'opacity-100'
-              : ''
+              : 'opacity-40'
               }`}
             onMouseEnter={() => setWasteOfTime(true)}
             onMouseLeave={() => setWasteOfTime(false)}
@@ -149,7 +152,7 @@ export default function RateGame({ updateIsUserRated, reviews }: Props) {
             😫
           </span>
           <span
-            className={`text-xl cursor-pointer opacity-40 ${nuh || isUserRated === 'nuh' ? 'opacity-100' : ''
+            className={`text-xl cursor-pointer  ${nuh || isUserRated === 'nuh' ? 'opacity-100' : 'opacity-40'
               }`}
             onMouseEnter={() => setNuh(true)}
             onMouseLeave={() => setNuh(false)}
@@ -158,7 +161,7 @@ export default function RateGame({ updateIsUserRated, reviews }: Props) {
             🙁
           </span>
           <span
-            className={`text-xl cursor-pointer opacity-40 ${good || isUserRated === 'good' ? 'opacity-100' : ''
+            className={`text-xl cursor-pointer ${good || isUserRated === 'good' ? 'opacity-100' : 'opacity-40'
               }`}
             onMouseEnter={() => setGood(true)}
             onMouseLeave={() => setGood(false)}
@@ -167,7 +170,7 @@ export default function RateGame({ updateIsUserRated, reviews }: Props) {
             😐
           </span>
           <span
-            className={`text-xl cursor-pointer opacity-40 ${must || isUserRated === 'must' ? 'opacity-100' : ''
+            className={`text-xl cursor-pointer ${must || isUserRated === 'must' ? 'opacity-100' : 'opacity-40'
               }`}
             onMouseEnter={() => setMust(true)}
             onMouseLeave={() => setMust(false)}
