@@ -9,129 +9,105 @@ import SmallLoader from '../../components/common/SmallLoader'
 import { ShortGame } from '../../types'
 import LoadingError from '../../components/common/LoadingError'
 import cookie from 'cookie'
-import { GetServerSidePropsContext } from 'next'
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import { getSession } from 'next-auth/react'
-import { visited_years } from '../../types/schema'
 import clientPromise from '../../lib/functions/mongodb'
-import { ObjectId } from 'bson'
-import { wretchAction, wretchWrapper } from '../../lib/functions/fetchLogic'
+import { wretchAction } from '../../lib/functions/fetchLogic'
 import styles from './index.module.scss'
 
-type Props = {
-  games: ShortGame[]
-  count: number
-  error: string | null
-  nextPage: boolean
-}
 
-export default function Index(props: Props) {
-  const [loadMoreLoading, setLoadMoreLoading] = useState<boolean>(true)
-  const [nextPage, setNextPage] = useState<boolean>(false)
+export default function Index(props: InferGetServerSidePropsType<typeof getServerSideProps>) {
   //2 types of errors
-  const [loadingError, setLoadingError] = useState<boolean>(false)
-  const [noResults, setNoResults] = useState<boolean>(false)
-  const [showLoadMoreButton, setShowLoadMoreButton] = useState<boolean>(true)
   const router = useRouter()
   const store = useStore()
 
-  const loadMoreGames = async () => {
-    if (loadingError) {
-      setLoadingError(false)
+  const [error, setError] = useState<string>('')
+  const [noResults, setNoResults] = useState<boolean>(false)
+  const [nextPage, setNextPage] = useState<boolean>(false)
+  const [loadMoreLoading, setLoadMoreLoading] = useState<boolean>(false)
+
+  const loadInitialResults = () => {
+    const { already_visited, error, games, count, isNextPage } = props;
+
+    if (already_visited && store.games.length) {
+      setNextPage(true);
+      return;
     }
 
-    try {
-      setNoResults(false)
-      setLoadMoreLoading(true)
-      const fetchMoreGames: any = await wretchAction('/api/query/search', {
-        page: store.page,
-        query: router.query
-      })
-      if (fetchMoreGames.length === 0) {
-        //if there no games from server, dont update the games state
-        //and remove the loadMore button
-        setShowLoadMoreButton(false)
-        setNextPage(false)
-      } else {
-        setShowLoadMoreButton(true)
-        setNextPage(fetchMoreGames.nextPage)
-        store.addPage()
-        store.addGames(fetchMoreGames.games)
-        store.setCount(fetchMoreGames.count)
-      }
-      setLoadMoreLoading(false)
-    } catch (e) {
-      PubSub.publish('OPEN_ALERT', {
-        type: 'error',
-        msg: ''
-      })
-      setLoadMoreLoading(false)
-      setShowLoadMoreButton(true)
-    }
-  }
-
-  const initialLoading = async () => {
-    setLoadMoreLoading(false)
-    setLoadingError(false)
-    setShowLoadMoreButton(true)
-
-    if (props.nextPage) {
-      setNextPage(true)
+    if (error) {
+      setError(error);
+      return;
     }
 
-    if (props.error) return setLoadingError(true)
-
-    if (!store.games.length && !props.games.length) {
-      setLoadMoreLoading(true)
-      loadMoreGames()
-      return
-    }
-    if (!props.games.length && !props.error) return
-    if (props.error) return setLoadingError(true)
-    if (!props.games.length) {
-      setNoResults(true)
+    if (games?.length) {
+      store.setCount(count ?? 0);
+      store.clearGames();
+      store.addGames(games);
+      store.addPage();
+      setNextPage(isNextPage);
     } else {
-      console.log(props)
-      store.clearGames()
-      store.addPage()
-      store.addGames(props.games)
-      store.setCount(props.count)
+      setNoResults(true);
     }
-  }
+  };
+
+  const load_more = async () => {
+    setNoResults(false);
+    setError('');
+    setLoadMoreLoading(true);
+    try {
+      const fetchMoreGames = await wretchAction('/api/query/search', {
+        page: store.page,
+        query: router.query,
+      });
+      if (fetchMoreGames.error) {
+        throw new Error('Unable to fetch more games');
+      }
+      const { games = [], count = 0, isNextPage } = fetchMoreGames;
+      store.setCount(count);
+      store.addGames(games);
+      setNextPage(isNextPage);
+      store.addPage();
+      if (!games.length) {
+        setNoResults(true);
+      }
+    } catch (e) {
+      setError((e as Error).message);
+    } finally {
+      setLoadMoreLoading(false);
+    }
+  };
 
   useEffect(() => {
-    initialLoading()
-  }, [props.games, props.error])
+    loadInitialResults()
+  }, [])
+
+  useEffect(() => {
+    if (store.reload) {
+      load_more().then(() => store.activateReload(false))
+    }
+  }, [store.reload])
 
   const sort = () => {
-    const { query } = router
-    if (router.query.sort) {
-      router.query.sort = []
-      router.push({
-        pathname: router.pathname,
-        query: { ...query },
-      })
-    } else {
-      router.push({
-        pathname: router.pathname,
-        query: { ...query, sort: 'year' },
-      })
-    }
+    // const { query } = router
+    // if (router.query.sort) {
+    //   router.query.sort = []
+    //   router.push({
+    //     pathname: router.pathname,
+    //     query: { ...query },
+    //   })
+    // } else {
+    //   router.push({
+    //     pathname: router.pathname,
+    //     query: { ...query, sort: 'year' },
+    //   })
+    // }
   }
 
   return (
     <SearchLayout>
-      <>
+      <div className='responsive_wrapper py-10'>
         {store.isFilterOn ? <Filters /> : null}
-        {loadingError ? (
-          <div className="pt-32">
-            <LoadingError
-              mainTitle={'Unexpected Error'}
-              description={'Oops...something went wrong'}
-              button={true}
-              onClick={() => loadMoreGames()}
-            />
-          </div>
-        ) : noResults ? (
+        {noResults ? (
           <div className="pt-32">
             <LoadingError
               mainTitle={'No Results Found'}
@@ -139,29 +115,26 @@ export default function Index(props: Props) {
             />
           </div>
         ) : (
-          <div className="responsive_wrapper py-10">
-            {!loadMoreLoading ? (
-              <div
-                id={styles.header_titles}
-                className="flex justify-between items-center"
+          <>
+            <div
+              id={styles.header_titles}
+              className="flex justify-between items-center">
+              <p
+                id={styles.we_found_title}
+                className="font-bold text-white text-4xl pb-10"
               >
-                <p
-                  id={styles.we_found_title}
-                  className="font-bold text-white text-4xl pb-10"
+                We found {store.count.toLocaleString()} games for you
+              </p>
+              <div className={`h-full pb-10 text-white ${router.query.sort ? 'underline' : ''}`}>
+                <span className="opacity-60">Sort by:</span>{' '}
+                <span
+                  className="font-semibold  cursor-pointer"
+                  onClick={() => sort()}
                 >
-                  We found {store.count.toLocaleString()} games for you
-                </p>
-                <div className={`h-full pb-10 text-white ${router.query.sort ? 'underline' : ''}`}>
-                  <span className="opacity-60">Sort by:</span>{' '}
-                  <span
-                    className="font-semibold  cursor-pointer"
-                    onClick={() => sort()}
-                  >
-                    Year
-                  </span>
-                </div>
+                  Year
+                </span>
               </div>
-            ) : null}
+            </div>
             <div
               id={styles.games_wrapper}
               className="flex flex-wrap justify-between">
@@ -169,25 +142,22 @@ export default function Index(props: Props) {
                 <SmallGameBox key={index} game={game} />
               ))}
             </div>
-            {nextPage ? (
-              store.games.length > 0 ? (
-                <div className="w-24 h-16 rounded-lg m-auto mt-8">
-                  {loadMoreLoading ? (
-                    <SmallLoader big={false} xCentered={true} />
-                  ) : showLoadMoreButton ? (
-                    <SearchButton
-                      text="Load More"
-                      onClick={() => loadMoreGames()}
-                    />
-                  ) : null}
-                </div>
-              ) : (
-                <SmallLoader big={true} xCentered={true} />
-              )
-            ) : null}
-          </div>
+          </>
         )}
-      </>
+        <div className="w-24 h-16 rounded-lg m-auto mt-8">
+          {nextPage ?
+            loadMoreLoading ? (
+              // <div className='m-auto flext justify-center bg-red-200'>
+              <SmallLoader xCentered={true} />
+              // </div>
+            ) : (
+              <SearchButton
+                text="Load More"
+                onClick={() => load_more()}
+              />
+            ) : null}
+        </div>
+      </div>
     </SearchLayout>
   )
 }
@@ -196,188 +166,106 @@ function parseCookies(req: any) {
   return cookie.parse(req ? req.headers.cookie || '' : document.cookie)
 }
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const cookies = parseCookies(context.req)
+interface PageProps {
+  games: ShortGame[]
+  error: string | null
+  already_visited: boolean
+  count: number | null
+  isNextPage: boolean
+}
+
+interface QueryObject {
+  [key: string]: {
+    [key: string]: any
+  } | any
+}
+
+export const getServerSideProps: GetServerSideProps<PageProps> = async (ctx) => {
+  const cookies = parseCookies(ctx.req)
 
   if (cookies.prevRoute === '/game/[id]') {
     return {
       props: {
         games: [],
+        error: null,
+        already_visited: true,
+        count: null,
+        isNextPage: false,
       },
     }
   }
 
-  const { yearRange, genres, consoles, search, sort } = context.query
+  const { yearRange, genres, consoles, search, sort } = ctx.query
 
-  let filteredString = ''
-  const usedYears: visited_years[] = []
-  const usedGenres: string[] = []
-  const usedPlatforms: string[] = []
-  const session = await getSession(context)
+  const isNextPage = (page: number, count: number) => page * 16 < count
 
-  const isNextPage = (page: number, count: number) => {
-    if (page * 16 < count) {
-      return true
-    } else {
-      return false
-    }
+  let query: QueryObject = { $and: [] };
+
+  if (search) {
+    query.$and.push({ name: { $regex: new RegExp(search as string, 'i') } });
   }
 
-  if (yearRange || genres || consoles || search || sort) {
-    if (search) {
-      filteredString += `&search=${search}&`
-    }
+  if (yearRange?.length === 2) {
+    query.$and.push({
+      released: {
+        $gte: `${yearRange[0]}-01-01`,
+        $lte: `${yearRange[1]}-12-31`,
+      },
+    })
+  }
 
-    if (yearRange) {
-      if (!Array.isArray(yearRange)) {
-        filteredString = filteredString.concat(
-          '',
-          `&dates=1990-01-01,2023-12-31`
-        )
-      } else {
-        filteredString = filteredString.concat(
-          '',
-          `&dates=${yearRange[0]}-01-01,${yearRange[1]}-12-31`
-        )
-        if (session) {
-          usedYears.push({ range_1: yearRange[0], range_2: yearRange[1] })
-        }
-      }
-    }
-
-    if (consoles) {
-      //if there is only one filtered console then I will get a string from
-      // the query
-      if (typeof consoles === 'string') {
-        filteredString = filteredString.concat(
-          `&parent_platforms=${consoles}}`
-        )
-        if (session) {
-          usedPlatforms.push(consoles)
-        }
-        // if its not a string then the type is an array
-        // and it means we got several consoles to filter from
-      } else {
-        let consolesString = ''
-        for (const key in consoles) {
-          if (session) {
-            usedPlatforms.push(consoles[key])
-          }
-          if (parseInt(key) !== consoles.length - 1) {
-            consolesString = consolesString.concat(
-              `${parseInt(consoles[key])}`,
-              ','
-            )
-          } else {
-            consolesString = consolesString.concat(
-              `${parseInt(consoles[key])}`,
-              ''
-            )
-          }
-        }
-        filteredString = filteredString.concat(`&platforms=${consolesString}`)
-      }
-    }
-
-    if (genres) {
-      if (typeof genres === 'string') {
-        filteredString = filteredString.concat(
-          `&genres=${parseInt(JSON.parse(genres))}`
-        )
-        if (session) {
-          usedGenres.push(JSON.parse(genres))
-        }
-      } else {
-        //filtering logic forseveral genres
-        let genresString = ''
-        for (const key in genres) {
-          if (session) {
-            usedGenres.push(genres[key])
-          }
-          if (parseInt(key) !== genres.length - 1) {
-            genresString = genresString.concat(
-              `${parseInt(genres[key])}`,
-              ','
-            )
-          } else {
-            genresString = genresString.concat(
-              `${parseInt(genres[key])}`,
-              ''
-            )
-          }
-        }
-        filteredString = filteredString.concat(`&genres=${genresString}`)
-      }
-    }
-
-    if (sort === 'year') {
-      filteredString = filteredString.concat('&ordering=-released')
-    }
-
-    if (session) {
-      try {
-        const client = await clientPromise
-        const db = client.db()
-
-        if (usedYears) {
-          await db.collection('users').updateOne(
-            { _id: new ObjectId(session.user.userId) },
-            { $push: { visited_years: { $each: usedYears } } }
-          )
-        }
-        if (usedPlatforms) {
-          await db.collection('users').updateOne(
-            { _id: new ObjectId(session.user.userId) },
-            { $push: { visited_platforms: { $each: usedPlatforms } } }
-          )
-        }
-        if (usedGenres) {
-          await db.collection('users').updateOne(
-            { _id: new ObjectId(session.user.userId) },
-            { $push: { visited_genres: { $each: usedGenres } } }
-          )
-        }
-      } catch (e) {
-        console.log('error on updating user fields for used_filters')
-      }
-    }
-
-    try {
-      const fetchGamesWithFilters = await wretchWrapper(`https://api.rawg.io/api/games?key=${process.env.FETCH_GAMES_KEY_GENERAL1}&dates=1990-01-01,2023-12-31&page=1&page_size=16${filteredString}`, 'fetchGamesWithFilters')
-      return {
-        props: {
-          games: fetchGamesWithFilters.results,
-          count: fetchGamesWithFilters.count,
-          nextPage: isNextPage(1, fetchGamesWithFilters.count),
-          error: null,
-        }
-      }
-    } catch (e) {
-      return {
-        props: {
-          games: [],
-          error: 'Error Loading Games',
-        }
-      }
-    }
-  } else {
-    // No filters applied path
-    try {
-      const fetchGamesWithoutFilters = await wretchWrapper(`https://api.rawg.io/api/games?key=${process.env.FETCH_GAMES_KEY_GENERAL1}&dates=1990-01-01,2023-12-31&page=1&page_size=16`, 'fetchGamesWithoutFilters')
-      return {
-        props: {
-          games: fetchGamesWithoutFilters.results ? fetchGamesWithoutFilters.results : [],
-          count: fetchGamesWithoutFilters.count ? fetchGamesWithoutFilters.count : 0,
-          nextPage: isNextPage(1, fetchGamesWithoutFilters.count),
-          error: null,
+  if (genres) {
+    const genreIds = Array.isArray(genres) ? genres.map((g) => parseInt(g)) : [parseInt(genres)]
+    query.$and.push({
+      genres: {
+        $elemMatch: {
+          id: { $in: genreIds },
         },
-      }
-    } catch (e) {
-      return {
-        props: {
-          games: [],
-          error: 'Error Loading Games',
+      },
+    })
+  }
+
+  if (consoles) {
+    const platformIds = Array.isArray(consoles) ? consoles.map((c) => parseInt(c)) : [parseInt(consoles)]
+    query.$and.push({
+      parent_platforms: {
+        $elemMatch: {
+          'platform.id': { $in: platformIds },
         },
+      },
+    })
+  }
+
+  try {
+    const client = await clientPromise
+    const db = client.db()
+
+    const getGames = async (query: any) => {
+      const data = await db.collection('short_games').find(query).limit(16).toArray()
+      const count = await db.collection('short_games').countDocuments(query)
+      return {
+        games: JSON.parse(JSON.stringify(data)) as ShortGame[],
+        count,
+        error: null,
+        already_visited: false,
+        isNextPage: isNextPage(1, count),
+      }
+    }
+
+    if (query.$and.length > 0) {
+      return { props: await getGames(query) }
+    } else {
+      return { props: await getGames({}) }
+    }
+  } catch (e) {
+    console.error(e)
+    return {
+      props: {
+        games: [],
+        error: 'Error loading data',
+        already_visited: false,
+        count: null,
+        isNextPage: false,
       }
     }
   }
