@@ -92,7 +92,6 @@ async function handler(req: ExtendedApiRequest, res: Response) {
 
       res.status(201).send({ error: null })
     } catch (e) {
-      console.log(process.env.MONGODB_URI)
       console.log('error on signup', e)
       res.status(500).send()
     }
