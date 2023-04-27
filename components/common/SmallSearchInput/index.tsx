@@ -1,5 +1,5 @@
 import { faMagnifyingGlass, faSliders } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { setCookie } from 'cookies-next'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -10,6 +10,7 @@ import { useFiltersStore, useStore } from '../../../store'
 import { NamedGame } from '../../../types'
 import FiltersAppliedCount from '../FiltersAppliedCount'
 import styles from './index.module.scss'
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 export default function SmallSearchInput({ full }: { full: boolean }) {
   const [search, setSearch] = useState<string>('')
@@ -25,48 +26,32 @@ export default function SmallSearchInput({ full }: { full: boolean }) {
     store.changeGameName(text)
   }
 
-  const navigate = (): void => {
+  const navigate = async () => {
     setCookie('prevRoute', '/')
-    if (store.gameName.length > 0) {
-      router.push({
-        pathname: '/search',
-        query: {
-          search: store.gameName,
-          genres: filtersStore.genres,
-          consoles: filtersStore.consoles,
-          yearRange:
-            filtersStore.yearRange[0] === 1990 &&
-              filtersStore.yearRange[1] === 2023
-              ? []
-              : filtersStore.yearRange,
-        },
-      })
-    } else {
-      router.push({
-        pathname: '/search',
-        query: {
-          search: store.gameName,
-          genres: filtersStore.genres,
-          consoles: filtersStore.consoles,
-          yearRange:
-            filtersStore.yearRange[0] === 1990 &&
-              filtersStore.yearRange[1] === 2023
-              ? []
-              : filtersStore.yearRange,
-        },
-      })
-    }
-    store.clearGames()
-    store.clearPage()
-    store.changeFilterVisibility(false)
+    await router.push({
+      pathname: '/search',
+      query: {
+        search: store.gameName,
+        genres: filtersStore.genres,
+        consoles: filtersStore.consoles,
+        yearRange:
+          filtersStore.yearRange[0] === 1990 &&
+            filtersStore.yearRange[1] === 2023
+            ? []
+            : filtersStore.yearRange,
+      },
+    })
+
+    store.activateReload(true)
+
   }
 
   const fetchData = async (name: string): Promise<void> => {
     try {
       const getGameNameData = await wretchWrapper(
         `/api/query/name?search=${name}`, 'getGameNameData')
-      if (getGameNameData.games) {
-        setGames(getGameNameData.games as NamedGame[])
+      if (getGameNameData.data.length) {
+        setGames(getGameNameData.data as NamedGame[])
       }
     } catch (e) {
       PubSub.publish('OPEN_ALERT', {
@@ -99,12 +84,12 @@ export default function SmallSearchInput({ full }: { full: boolean }) {
       <div className="flex items-center relative">
         <FontAwesomeIcon
           onClick={() => store.changeFilterVisibility(true)}
-          icon={faSliders}
+          icon={faSliders as IconProp}
           className={`absolute ${width > 700 ? 'h-3 right-10' : 'h-5 right-14'} cursor-pointer  text-gray-600`}
         />
         <FontAwesomeIcon
           onClick={() => navigate()}
-          icon={faMagnifyingGlass}
+          icon={faMagnifyingGlass as IconProp}
           className={`${width > 700 ? 'h-3 right-4' : 'h-4 right-5'} absolute  cursor-pointer  text-white`}
         />
         <FiltersAppliedCount />
