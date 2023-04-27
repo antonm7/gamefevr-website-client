@@ -1,27 +1,28 @@
 import { Request, Response } from "express";
 import { wretchWrapper } from "../../../lib/functions/fetchLogic";
 import { NamedGame } from "../../../types";
+import clientPromise from "../../../lib/functions/mongodb";
 
 export default async function handler(req: Request, res: Response) {
-  if (req.method === "GET") {
-    try {
-      const query = req.query;
-      const games: NamedGame[] = [];
+  if (req.method !== 'GET') {
+    res.status(405).json({ message: 'Method Not Allowed' })
+    return
+  }
+  try {
+    const query = req.query;
+    const client = await clientPromise;
+    const db = client.db();
+    const collection = db.collection('short_games');
 
-      const data: any = await wretchWrapper(
-        `https://api.rawg.io/api/games?key=${process.env.FETCH_GAMES_KEY_GENERAL2}&page=1&page_size=5&search=${query.search}`
-        , 'getGamesData');
+    const data = await collection.find({
+      name: { $regex: new RegExp(query.search as string), $options: 'i' }
+    })
+      .limit(5).skip(0).toArray()
 
-      for (const key in data.results) {
-        games.push({
-          name: data.results[key].name,
-          id: data.results[key].id,
-        });
-      }
 
-      res.status(200).send({ games });
-    } catch (e) {
-      console.log("error, e");
-    }
+    res.status(200).send({ data });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal Server Error' });
   }
 }
