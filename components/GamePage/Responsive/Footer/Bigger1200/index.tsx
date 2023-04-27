@@ -2,7 +2,6 @@ import { Short_Screenshot } from "../../../../../types"
 import { Review_Type } from "../../../../../types/schema"
 import Screenshots from "../../../Screenshots"
 import styles from './index.module.scss'
-import Image from "next/image"
 import { useEffect, useRef, useState } from 'react'
 import ReviewsSlider from "../../../ReviewsSlider"
 import YellowButton from "../../../../common/YellowButton"
@@ -10,15 +9,21 @@ import gsap from 'gsap'
 import { ObjectId } from "bson"
 import checkReviews from "../../../../../lib/functions/checkReviews"
 import { useSession } from "next-auth/react"
+import SmallLoader from "../../../../common/SmallLoader"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons"
+import { IconProp } from "@fortawesome/fontawesome-svg-core"
 
 type Props = {
     screenshots: Short_Screenshot[]
     reviews: Review_Type[]
     navigateAuth: () => void
+    screenshots_loader: boolean
     deleteReview: (id: ObjectId | undefined) => void
 }
 
-export default function Bigger1200({ screenshots, reviews, navigateAuth, deleteReview }: Props) {
+export default function Bigger1200({ screenshots, reviews, navigateAuth, deleteReview,
+    screenshots_loader }: Props) {
     const [visible, setVisible] = useState<'screenshots' | 'reviews'>('screenshots')
     const screenshotsRef = useRef(null)
     const blueBoxRef = useRef(null)
@@ -82,25 +87,22 @@ export default function Bigger1200({ screenshots, reviews, navigateAuth, deleteR
     return (
         <>
             <div className="relative overflow-hidden" ref={wrapperRef}>
-                <Screenshots sliderRef={sliderRef} setRef={screenshotsRef} images={screenshots} />
+                {screenshots_loader
+                    ? <SmallLoader /> :
+                    <Screenshots sliderRef={sliderRef} setRef={screenshotsRef} images={screenshots} />
+                }
                 <div ref={blueBoxRef} className="relative h-full w-[600px] bg-darkIndigo"
                     id={styles.blue_box}>
                     <div className="h-full pl-36 pt-28">
                         <div id={styles.arrows_wrapper} className="flex items-center bottom-0">
-                            <Image
+                            <FontAwesomeIcon className="h-6 text-white"
+                                icon={faArrowLeft as IconProp}
                                 onClick={() => sliderRef.current.slickPrev()}
-                                src={'/icons/arrow_left.svg'}
-                                width={25}
-                                height={18}
-                                alt="arrow-left"
                             />
                             <div className="ml-8 bg-white flex items-center justify-center py-2 px-4 rounded-lg">
-                                <Image
+                                <FontAwesomeIcon className="h-6 text-inputBg"
+                                    icon={faArrowRight as IconProp}
                                     onClick={() => sliderRef.current.slickNext()}
-                                    src={'/icons/arrow_right.svg'}
-                                    width={25}
-                                    height={18}
-                                    alt="arrow-right"
                                 />
                             </div>
                         </div>
