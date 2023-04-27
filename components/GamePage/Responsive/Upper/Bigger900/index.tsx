@@ -8,10 +8,11 @@ import { Review_Type } from '../../../../../types/schema'
 interface Props {
   game: DetailedGame
   reviews: Review_Type[]
+  movieUri: string | null
   changeIsUserRated: (value: string) => void
 }
 
-export default function Bigger900({ game, changeIsUserRated, reviews }: Props) {
+export default function Bigger900({ game, changeIsUserRated, reviews, movieUri }: Props) {
   return (
     <div id="game_page_header" className="flex flex-row justify-between">
       <div className="pr-16">
@@ -102,7 +103,7 @@ export default function Bigger900({ game, changeIsUserRated, reviews }: Props) {
         className="flex flex-col items-center"
         style={{ minWidth: '24rem' }}
       >
-        {game.trailers?.results[0]?.data?.max ? (
+        {movieUri ? (
           <div className="video-container rounded-xl overflow-hidden">
             <video
               id="game_video"
@@ -111,7 +112,7 @@ export default function Bigger900({ game, changeIsUserRated, reviews }: Props) {
               loop
               style={{ width: '24rem', height: '19rem', marginTop: '0rem', borderRadius: '0.75rem' }}
             >
-              <source src={game.trailers.results[0]?.data.max} />
+              <source src={movieUri} />
             </video>
           </div>
         ) : (
