@@ -1,127 +1,80 @@
-import { ObjectId } from 'bson'
-import { Favorite_Type } from '../../../../../types/schema'
-import clientPromise from '../../../../../lib/functions/mongodb'
-import games_data_document from '../../../../../lib/functions/create/games_data'
-import { NextApiRequest, NextApiResponse } from 'next'
-import authorize from '../../../../../backend-middlewares/authorize'
-import GenerateError from '../../../../../backend-middlewares/generateErrorBackend'
-import updateHype from '../../../../../lib/functions/updateHype'
-import generateTime from '../../../../../lib/functions/generateTime'
-import { wretchWrapper } from '../../../../../lib/functions/fetchLogic'
+import { ObjectId } from 'bson';
+import { NextApiRequest, NextApiResponse } from 'next';
+import clientPromise from '../../../../../lib/functions/mongodb';
+import gamesDataDocument from '../../../../../lib/functions/create/games_data';
+import { wretchWrapper } from '../../../../../lib/functions/fetchLogic';
+import authorize from '../../../../../backend-middlewares/authorize';
+import generateErrorBackend from '../../../../../backend-middlewares/generateErrorBackend';
+import updateHype from '../../../../../lib/functions/updateHype';
+import generateTime from '../../../../../lib/functions/generateTime';
+import { Favorite_Type } from '../../../../../types/schema';
+
+interface AddFavoriteRequestBody {
+  gameId: string;
+  userId: string;
+}
 
 interface ExtendedNextApiRequest extends NextApiRequest {
   body: {
-    body: {
-      gameId: string
-      userId: string
-    }
-  }
+    body: AddFavoriteRequestBody;
+  };
 }
 
-const handler = async (req: ExtendedNextApiRequest, res: NextApiResponse) => {
-  if (req.method === 'POST') {
-    let db: any = null
-    let savedFavorite
-    const { gameId, userId } = req.body.body
-    //initializing database
-    try {
-      const client = await clientPromise
-      db = client.db()
-    } catch (e) {
-      res.status(500).send({ error: 'Unexpected error' })
-      return console.log('error on initializing database', e)
-    }
-    //checks if game document exists
-    try {
-      await games_data_document(gameId)
-    } catch (e) {
-      await GenerateError({
-        error: 'error on games_data_document on add/action favorite api',
-        status: 500,
-        e,
-      })
-      res.status(500).send({ error: 'Unexpected error' })
-      return console.log('error on games_data_document', e)
-    }
-    //checking if user already added this game to favorites
-    try {
-      const is_already_favorite = await db.collection('favorites').findOne({ userId: userId, gameId: gameId })
-      if (is_already_favorite) {
-        throw new Error('You already saved this game')
-      }
-    } catch (e) {
-      res.status(500).send({ error: 'You already saved this game' })
-      return
-    }
-    //saves the favorite inside own favorites collection
-    try {
-      const fetchSpecificGame = await wretchWrapper(
-        `https://api.rawg.io/api/games/${gameId}?key=${process.env.FETCH_GAMES_KEY_GENERAL1}`
-        , 'fetchSpecificGame')
+const ERROR_MESSAGES = {
+  UNEXPECTED_ERROR: 'Unexpected error',
+  GAME_ALREADY_SAVED: 'You already saved this game',
+  ERROR_ON_GAMES_DATA_DOCUMENT: 'Error on games_data_document on add/action favorite api',
+  ERROR_SAVING_FAVORITE: 'Error saving the favorite on add/action favorite api',
+  ERROR_UPDATING_USER_RANKS_FIELD: 'Error on updating user ranks field on add/action favorite api',
+  ERROR_UPDATING_GAMES_DATA_DOCUMENT: 'Error on updating games_data document on add/action favorite api',
+  ERROR_ON_RANK_GAME: 'Error on rankGame',
+};
 
-      const favorite: Favorite_Type = {
-        userId: userId,
-        gameId: gameId,
-        created_at: generateTime(new Date()),
-        game_name: fetchSpecificGame.name,
-        game_image: fetchSpecificGame.background_image,
-      }
+export default async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method Not Allowed' });
+  }
 
-      savedFavorite = await db.collection('favorites').insertOne(favorite)
-    } catch (e) {
-      await GenerateError({
-        error: 'error saving the favorite on add/action favorite api',
-        status: 500,
-        e,
-      })
-      res.status(500).send({ error: 'Unexpected error' })
-      return console.log('error saving the favorite', e)
-    }
-    //updates user's document
-    try {
-      await db
-        .collection('users')
-        .updateOne(
-          { _id: new ObjectId(userId) },
-          { $push: { favorites: savedFavorite?.insertedId } }
-        )
-    } catch (e) {
-      await GenerateError({
-        error: 'error on updating user ranks field on add/action favorite api',
-        status: 500,
-        e,
-      })
-      res.status(500).send({ error: 'Unexpected error' })
-      return console.log('error on updating user ranks field')
-    }
-    //updates game data document
-    try {
-      await db
-        .collection('games_data')
-        .updateOne({ gameId: gameId }, { $inc: { favorites: 1 } })
-    } catch (e) {
-      await GenerateError({
-        error: 'error on updating user ranks field on add/action favorite api',
-        status: 500,
-        e,
-      })
-      res.status(500).send({ error: 'Unexpected error' })
-      return console.log('error on updating games_data document', e)
-    }
-    try {
-      await updateHype(
-        'addToFavorite',
-        new ObjectId(userId)
-      )
-      res
-        .status(200)
-        .send({ error: null, favoriteId: savedFavorite.insertedId })
+  try {
+    const { gameId, userId } = req.body.body;
 
-    } catch (e) {
-      res.status(500).send({ error: 'Unexpected error' })
-      return console.log('error on rankGame', e)
+    const client = await clientPromise;
+    const db = client.db();
+
+    await gamesDataDocument(gameId);
+
+    const isAlreadyFavorite = await db.collection('favorites').findOne({ userId, gameId });
+    if (isAlreadyFavorite) {
+      return res.status(400).json({ error: ERROR_MESSAGES.GAME_ALREADY_SAVED });
     }
+
+    const game = await db.collection('games').findOne({ id: gameId });
+
+    if (!game) {
+      return res.status(404).json({ error: ERROR_MESSAGES.ERROR_ON_RANK_GAME })
+    }
+
+    const favorite: Favorite_Type = {
+      userId,
+      gameId,
+      created_at: generateTime(new Date()),
+      game_name: game.name,
+      game_image: game.background_image,
+    };
+
+    const savedFavorite = await db.collection('favorites').insertOne(favorite);
+
+    await Promise.all([
+      db.collection('users').updateOne({ _id: new ObjectId(userId) }, { $push: { favorites: savedFavorite.insertedId } }),
+      db.collection('games_data').updateOne({ gameId }, { $inc: { favorites: 1 } }),
+      updateHype('addToFavorite', new ObjectId(userId)),
+    ]);
+
+    const favoriteId = savedFavorite.insertedId;
+
+    return res.status(200).json({ error: null, favoriteId });
+  } catch (e) {
+    await generateErrorBackend({ error: ERROR_MESSAGES.UNEXPECTED_ERROR, status: 500, e });
+    return res.status(500).send({ error: ERROR_MESSAGES.UNEXPECTED_ERROR });
   }
 }
-
-export default authorize(handler)
