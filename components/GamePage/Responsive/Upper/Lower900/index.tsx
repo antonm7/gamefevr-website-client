@@ -8,10 +8,11 @@ import { Review_Type } from '../../../../../types/schema'
 interface Props {
   game: DetailedGame
   reviews: Review_Type[]
+  movieUri: string | null
   changeIsUserRated: (isUserRated: string) => void
 }
 
-export default function Lower900({ game, changeIsUserRated, reviews }: Props) {
+export default function Lower900({ game, changeIsUserRated, reviews, movieUri }: Props) {
   return (
     <div id="game_page_header" className="flex flex-row justify-between">
       <div>
@@ -27,7 +28,7 @@ export default function Lower900({ game, changeIsUserRated, reviews }: Props) {
         <div
           className="flex flex-col items-center"
         >
-          {game.trailers?.results[0]?.data?.max ? (
+          {movieUri ? (
             <div className="video-container rounded-xl overflow-hidden">
               <video
                 autoPlay
@@ -35,7 +36,7 @@ export default function Lower900({ game, changeIsUserRated, reviews }: Props) {
                 loop
                 style={{ width: '24rem', height: '19rem', marginTop: '0rem', borderRadius: '0.75rem' }}
               >
-                <source src={game.trailers.results[0].data.max} />
+                <source src={movieUri} />
               </video>
             </div>
           ) : (
