@@ -14,6 +14,7 @@ import { getSession } from 'next-auth/react'
 import clientPromise from '../../lib/functions/mongodb'
 import { wretchAction } from '../../lib/functions/fetchLogic'
 import styles from './index.module.scss'
+import ErrorComponent from '../../components/ErrorComponent'
 
 
 export default function Index(props: InferGetServerSidePropsType<typeof getServerSideProps>) {
@@ -21,7 +22,7 @@ export default function Index(props: InferGetServerSidePropsType<typeof getServe
   const router = useRouter()
   const store = useStore()
 
-  const [error, setError] = useState<string>('')
+
   const [noResults, setNoResults] = useState<boolean>(false)
   const [nextPage, setNextPage] = useState<boolean>(false)
   const [loadMoreLoading, setLoadMoreLoading] = useState<boolean>(false)
@@ -35,7 +36,10 @@ export default function Index(props: InferGetServerSidePropsType<typeof getServe
     }
 
     if (error) {
-      setError(error);
+      PubSub.publish('OPEN_ALERT', {
+        type: 'error',
+        msg: `error getting games, please try again`
+      })
       return;
     }
 
@@ -52,7 +56,6 @@ export default function Index(props: InferGetServerSidePropsType<typeof getServe
 
   const load_more = async () => {
     setNoResults(false);
-    setError('');
     setLoadMoreLoading(true);
     try {
       const fetchMoreGames = await wretchAction('/api/query/search', {
@@ -66,12 +69,18 @@ export default function Index(props: InferGetServerSidePropsType<typeof getServe
       store.setCount(count);
       store.addGames(games);
       setNextPage(isNextPage);
+
       store.addPage();
+
       if (!games.length) {
         setNoResults(true);
       }
+
     } catch (e) {
-      setError((e as Error).message);
+      PubSub.publish('OPEN_ALERT', {
+        type: 'error',
+        msg: `error getting games, please try again`
+      })
     } finally {
       setLoadMoreLoading(false);
     }
@@ -147,9 +156,7 @@ export default function Index(props: InferGetServerSidePropsType<typeof getServe
         <div className="w-24 h-16 rounded-lg m-auto mt-8">
           {nextPage ?
             loadMoreLoading ? (
-              // <div className='m-auto flext justify-center bg-red-200'>
               <SmallLoader xCentered={true} />
-              // </div>
             ) : (
               <SearchButton
                 text="Load More"
@@ -242,7 +249,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (ctx) => 
 
     const getGames = async (query: any) => {
       const data = await db.collection('short_games').find(query).limit(16).toArray()
-      const count = await db.collection('short_games').countDocuments(query)
+      const count = await db.collection('short_games').countDocuments(query) as unknown as number
       return {
         games: JSON.parse(JSON.stringify(data)) as ShortGame[],
         count,
@@ -257,6 +264,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (ctx) => 
     } else {
       return { props: await getGames({}) }
     }
+
   } catch (e) {
     console.error(e)
     return {
