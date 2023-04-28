@@ -61,14 +61,14 @@ export default async function handler(req: ExtendedNextApiRequest, res: Response
 
     const [data, count] = await Promise.all([
       query.limit(16).skip(16 * (page - 1)).toArray(),
-      collection.countDocuments(filtering.$and.length ? filtering : {}),
+      collection.countDocuments(filtering.$and.length ? filtering : {}) as unknown as number,
     ]);
 
     res.status(200).send({
       games: data.map((d) => ({ ...d })),
       count,
-      isNextPage: isNextPage(page, count),
-      error: null,
+      isNextPage: isNextPage(page, count ? count : 0),
+      error: null
     });
   } catch (error) {
     console.error(error);
