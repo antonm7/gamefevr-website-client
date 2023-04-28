@@ -92,7 +92,6 @@ export type DetailedGame = {
     url: string
   }[]
   publishers: ElementDescription[]
-  screenshots: Screenshot | null
   tags: ElementDescription[]
   website: string
   same_series: same_series_type | null
