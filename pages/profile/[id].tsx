@@ -7,7 +7,6 @@ import 'slick-carousel/slick/slick-theme.css'
 import CurrentProfile from '../../components/Profile/CurrentProfile/index'
 import VisitedProfile from '../../components/Profile/VisitedProfile/index'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
-import * as mongoDB from 'mongodb'
 
 export default function Profile({
   reviews,
@@ -17,11 +16,6 @@ export default function Profile({
   isHyped,
   hype,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  if (!user) {
-    return (
-      <div>dsadsa</div>
-    )
-  }
   if (visited) {
     return (
       <VisitedProfile
@@ -48,7 +42,7 @@ interface PageProps {
   user: {
     username: string,
     email?: string
-  } | null,
+  },
   favorites: Favorite_Type[],
   reviews: Review_Type[],
   visited: boolean,
@@ -139,14 +133,9 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (ctx) => 
     }
   } catch (e) {
     return {
-      props: {
-        user: null,
-        favorites: [],
-        reviews: [],
-        visited: false,
-        hype: '0',
-        isHyped: false,
-        error: 'Unexpected Error'
+      redirect: {
+        destination: '/',
+        permanent: false
       }
     }
   }
