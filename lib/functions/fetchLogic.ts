@@ -2,14 +2,44 @@ import wretch from 'wretch'
 import { promiseSettledResponse } from '../../types/apiTypes'
 
 //function that promise
-export function wretchWrapper(url: string, request_name: string): Promise<promiseSettledResponse> {
+export function wretchWrapper(url: string): Promise<promiseSettledResponse> {
     return wretch(url)
         .get()
-        .badRequest(e => e)
-        .notFound(e => e)
-        .unauthorized(e => e)
-        .internalError(e => e)
-        .json(data => data)
+        .badRequest((e) => {
+            const error: ErrorResponse = {
+                message: e.message,
+                statusCode: e.status,
+            };
+            throw error;
+        })
+        .notFound((e) => {
+            const error: ErrorResponse = {
+                message: e.message,
+                statusCode: e.status,
+            };
+            throw error;
+        })
+        .unauthorized((e) => {
+            const error: ErrorResponse = {
+                message: e.message,
+                statusCode: e.status,
+            };
+            throw error;
+        })
+        .internalError((e) => {
+            const error: ErrorResponse = {
+                message: e.message,
+                statusCode: e.status,
+            };
+            throw error;
+        })
+        .res(response => response.json())
+        .catch(error => {
+            PubSub.publish('OPEN_ALERT', {
+                type: 'error',
+                msg: `Unexpected Error`
+            })
+        });
 }
 
 interface ErrorResponse {
@@ -56,7 +86,10 @@ export function wretchAction(url: string, body: unknown): Promise<promiseSettled
         })
         .res(response => response.json())
         .catch(error => {
-            throw error
+            PubSub.publish('OPEN_ALERT', {
+                type: 'error',
+                msg: `Unexpected Error`
+            })
         });
 }
 

@@ -10,11 +10,6 @@ import { useEffect, useState } from "react"
 import { wretchWrapper } from "../../../../lib/functions/fetchLogic"
 import SmallLoader from "../../../common/SmallLoader"
 
-type Loaders_State = {
-    globalLoading: boolean
-    reviewsLoading: boolean
-}
-
 type Props = {
     game: DetailedGame
     reviews_state: any
@@ -61,9 +56,8 @@ export default function Footer({
     const initial_loading = async () => {
         setLoading(true)
         const fetchScreenshots = await wretchWrapper(`/api/game/get/getScreenshots?gameId=${router.query.id}`,
-            'loadScreenshots')
-        const fetchReviews = await wretchWrapper(`/api/game/get/getReviews?gameId=${router.query.id}`,
-            'loadReviews')
+        )
+        const fetchReviews = await wretchWrapper(`/api/game/get/getReviews?gameId=${router.query.id}`)
         setReviews(fetchReviews.reviews ? fetchReviews.reviews : [])
         setScreenshots(fetchScreenshots.screenshots.results ? fetchScreenshots.screenshots.results : [])
         update_reviews(fetchReviews.reviews ? fetchReviews.reviews : [])

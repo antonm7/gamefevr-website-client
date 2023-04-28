@@ -32,8 +32,7 @@ export default function RateGame({ updateIsUserRated, reviews }: Props) {
     const isUserRated = async () => {
       try {
         const getUserRankFetch =
-          await wretchWrapper(`/api/game/get/getRank?userId=${session.data?.user?.userId}&gameId=${router.query.id}`,
-            'getUserRankFetch')
+          await wretchWrapper(`/api/game/get/getRankuserId=${session.data?.user?.userId}&gameId=${router.query.id}`,)
         if (typeof getUserRankFetch.isUserRated === 'string') {
           setIsUserRated(getUserRankFetch.isUserRated)
           updateIsUserRated(getUserRankFetch.isUserRated)

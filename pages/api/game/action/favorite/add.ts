@@ -2,8 +2,6 @@ import { ObjectId } from 'bson';
 import { NextApiRequest, NextApiResponse } from 'next';
 import clientPromise from '../../../../../lib/functions/mongodb';
 import gamesDataDocument from '../../../../../lib/functions/create/games_data';
-import { wretchWrapper } from '../../../../../lib/functions/fetchLogic';
-import authorize from '../../../../../backend-middlewares/authorize';
 import generateErrorBackend from '../../../../../backend-middlewares/generateErrorBackend';
 import updateHype from '../../../../../lib/functions/updateHype';
 import generateTime from '../../../../../lib/functions/generateTime';

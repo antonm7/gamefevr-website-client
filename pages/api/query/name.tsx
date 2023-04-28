@@ -1,6 +1,4 @@
 import { Request, Response } from "express";
-import { wretchWrapper } from "../../../lib/functions/fetchLogic";
-import { NamedGame } from "../../../types";
 import clientPromise from "../../../lib/functions/mongodb";
 
 export default async function handler(req: Request, res: Response) {

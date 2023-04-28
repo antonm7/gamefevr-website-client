@@ -65,8 +65,7 @@ export default function AddFavorite({ gameId }: Props) {
       const checkIsFavorite = async (): Promise<void> => {
         try {
           const fetchIsFavorite
-            = await wretchWrapper(`/api/game/get/getIsFavorite?userId=${session.data?.user?.userId}&gameId=${gameId}`,
-              'fetchIsFavorite')
+            = await wretchWrapper(`/api/game/get/getIsFavorite?userId=${session.data?.user?.userId}&gameId=${gameId}`)
           if (fetchIsFavorite.isFavorite) {
             setIsFavorite(fetchIsFavorite.isFavorite)
           }

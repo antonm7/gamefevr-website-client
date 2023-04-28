@@ -23,8 +23,7 @@ export default function Upper({ reviews, game, setIsUserRated }: Props) {
 
     const loadMovie = async (): Promise<void> => {
         try {
-            const getMovies: any = await wretchWrapper(`/api/game/get/getMovie?gameId=${game.id}`
-                , 'getMoviews')
+            const getMovies: any = await wretchWrapper(`/api/game/get/getMovie?gameId=${game.id}`)
             if (!getMovies.movies) return
             setMovieUrl(getMovies.movies[0].data.max)
         } catch (e) {
