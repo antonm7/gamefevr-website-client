@@ -3,7 +3,7 @@ import { NextApiRequest } from 'next'
 import GenerateError from '../../../../backend-middlewares/generateErrorBackend'
 import { promiseHandler, wretchWrapper } from '../../../../lib/functions/fetchLogic'
 import clientPromise from '../../../../lib/functions/mongodb'
-import { DetailedGame, Screenshot, Short_Screenshot } from '../../../../types'
+import { DetailedGame } from '../../../../types'
 
 type ExtendedRequest = NextApiRequest & {
   query: {
@@ -16,37 +16,17 @@ async function handler(req: ExtendedRequest, res: Response) {
   if (req.method === 'GET') {
     const query = req.query
     try {
-      // const getGame = () => wretchWrapper(`https://api.rawg.io/api/games/${query.gameId}?key=${process.env.FETCH_GAMES_KEY_GENERAL1}`
-      //   , 'getGame')
-
-      // const getScreenshots = () => wretchWrapper(`https://api.rawg.io/api/games/${query.gameId}/screenshots?key=${process.env.FETCH_GAMES_KEY_GENERAL1}`,
-      //   'getScreenshots')
-
-      // const getTrailers = () => wretchWrapper(
-      //   `https://api.rawg.io/api/games/${query.gameId}/movies?key=${process.env.FETCH_GAMES_KEY_GENERAL1}`
-      //   , 'getTreilers')
-
-      // const getSeries = () => wretchWrapper(
-      //   `https://api.rawg.io/api/games/${query.gameId}/game-series?key=${process.env.FETCH_GAMES_KEY_GENERAL2}`
-      //   , 'getSeries')
-
-      // const result: any = await Promise.allSettled([
-      //   getGame(),
-      //   getScreenshots(),
-      //   getTrailers(),
-      //   getSeries()
-      // ])
-
       const client = await clientPromise
       const db = client.db()
 
-      const gameData = await db.collection('games').findOne({ id: query.gameId })
-      const screenshotsData = await db.collection('screenshots').findOne({ gameId: query.gameId })
-      // const [gameData, screenshots, trailers, same_series]: any = promiseHandler(result)
+      const gameData = await db.collection('games').findOne({ id: parseInt(query.gameId) })
+      console.log(gameData)
+
       if (!gameData) {
-        res.status(500).send()
+        res.status(404).json({ message: 'Game not found' })
         return
       }
+
       const finalData: DetailedGame = {
         id: gameData.id,
         name: gameData.name,
@@ -59,23 +39,15 @@ async function handler(req: ExtendedRequest, res: Response) {
         platforms: gameData.platforms,
         stores: gameData.stores,
         publishers: gameData.publishers,
-        screenshots: screenshotsData?.length ? screenshotsData as unknown as any : [],
-        trailers: null,
         same_series: null,
         tags: gameData.tags,
         website: gameData.website,
       }
 
-
-      const reviews = await db
-        .collection('reviews')
-        .find({ gameId: query.gameId })
-        .toArray()
-
       res.status(200).send({
-        game: finalData,
-        reviews: JSON.parse(JSON.stringify(reviews)),
+        game: finalData
       })
+
 
     } catch (e) {
       await GenerateError({
