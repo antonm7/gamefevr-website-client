@@ -7,7 +7,7 @@ import Filters from '../../components/Filters'
 import { useStore } from '../../store'
 import { useRouter } from 'next/router'
 import ErrorComponent from '../../components/ErrorComponent'
-import { wretchWrapper } from '../../lib/functions/fetchLogic'
+import { wretchAction, wretchWrapper } from '../../lib/functions/fetchLogic'
 import Upper from '../../components/GamePage/Responsive/Upper'
 import Footer from '../../components/GamePage/Responsive/Footer'
 import clientPromise from '../../lib/functions/mongodb'
@@ -25,20 +25,25 @@ export default function GamePage(props: Props) {
   const [reviews, setReviews] = useState<Review_Type[]>([])
 
   const loadAgain = async (): Promise<void> => {
-    const gameData = await
-      wretchWrapper(`/api/game/get/getGame?gameId=${router.query.id}`, 'loadAgain')
-    if (gameData.game) {
-      setGame(gameData.game)
+    try {
+      const gameData = await
+        wretchWrapper(`/api/game/get/getGame?gameId=${router.query.id}`, 'loadAgain')
+      if (gameData.game) {
+        setGame(gameData.game)
+      } else {
+        throw new Error
+      }
+    } catch (e) {
+
+      console.log('error', e)
     }
   }
-
-  useEffect(() => { console.log('reviews', reviews) }, [reviews])
 
   return (
     <SearchLayout>
       <>
         {store.isFilterOn ? <Filters /> : null}
-        {!props.game ?
+        {!props.game && !game ?
           <ErrorComponent onLoad={() => loadAgain()} />
           :
           <>
@@ -53,7 +58,7 @@ export default function GamePage(props: Props) {
               />
               <Upper
                 reviews={reviews}
-                game={props.game}
+                game={props.game ? props.game : game as DetailedGame}
                 setIsUserRated={value => setIsUserRated(value)} />
             </main>
             <Footer
@@ -79,13 +84,12 @@ export async function getStaticPaths() {
   const ids: number[] = []
 
   try {
-    for (let i = 1; i < 5; i++) {
-      const getGamesData = await wretchWrapper(
-        `https://api.rawg.io/api/games?key=${process.env.BUILD_GAMES_API}&dates=1990-01-01,2023-12-31&page=${i}&page_size=${100}`
-        , 'getGamesData')
-      ids.push(
-        ...getGamesData.results.map((game) => game.id)
-      )
+    const client = await clientPromise
+    const db = client.db()
+
+    for (let i = 0; i < 40; i++) {
+      const games = await db.collection('games').find({}).limit(20).skip(20 * i).toArray()
+      ids.push(...games.map((game) => game.id))
     }
     const paths = ids.map((id) => ({
       params: { id: JSON.stringify(id) },
@@ -107,7 +111,7 @@ export async function getStaticProps(context: Context) {
     const db = client.db()
 
     const gameData = await db.collection('games').
-      findOne({ id: parseInt(context.params.id as unknown as string) })
+      findOne({ dsaid: parseInt(context.params.id as unknown as string) })
 
     if (!gameData) {
       return {
@@ -129,7 +133,6 @@ export async function getStaticProps(context: Context) {
       platforms: gameData.platforms,
       stores: gameData.stores,
       publishers: gameData.publishers,
-      screenshots: null,
       tags: gameData.tags,
       website: gameData.website,
       same_series: null,
