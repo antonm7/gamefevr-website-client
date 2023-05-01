@@ -12,6 +12,7 @@ const nextConfig = {
     });
     return config;
   },
+  staticPageGenerationTimeout: 120,
   eslint: {
     ignoreDuringBuilds: true
   },

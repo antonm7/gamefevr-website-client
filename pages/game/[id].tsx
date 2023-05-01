@@ -81,16 +81,18 @@ interface Context {
 }
 
 export async function getStaticPaths() {
-  const ids: number[] = []
 
   try {
+    const ids: number[] = []
     const client = await clientPromise
     const db = client.db()
 
-    for (let i = 0; i < 40; i++) {
-      const games = await db.collection('games').find({}).limit(20).skip(20 * i).toArray()
-      ids.push(...games.map((game) => game.id))
+    for (let i = 0; i <= 1500; i++) {
+      const game = await db.collection('games').find({}).limit(1).skip(i).toArray()
+      ids.push(game[0].id)
+      console.log(ids.length)
     }
+
     const paths = ids.map((id) => ({
       params: { id: JSON.stringify(id) },
     }))
@@ -98,6 +100,7 @@ export async function getStaticPaths() {
     return { paths, fallback: 'blocking' }
 
   } catch (e) {
+    console.log('error....', e)
     return { paths: [], fallback: 'blocking' }
   }
 
@@ -110,8 +113,10 @@ export async function getStaticProps(context: Context) {
     const client = await clientPromise
     const db = client.db()
 
+    console.log('building', context.params.id)
+
     const gameData = await db.collection('games').
-      findOne({ dsaid: parseInt(context.params.id as unknown as string) })
+      findOne({ id: parseInt(context.params.id as unknown as string) })
 
     if (!gameData) {
       return {
