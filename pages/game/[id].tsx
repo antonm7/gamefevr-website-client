@@ -7,7 +7,7 @@ import Filters from '../../components/Filters'
 import { useStore } from '../../store'
 import { useRouter } from 'next/router'
 import ErrorComponent from '../../components/ErrorComponent'
-import { wretchAction, wretchWrapper } from '../../lib/functions/fetchLogic'
+import { wretchWrapper } from '../../lib/functions/fetchLogic'
 import Upper from '../../components/GamePage/Responsive/Upper'
 import Footer from '../../components/GamePage/Responsive/Footer'
 import clientPromise from '../../lib/functions/mongodb'
@@ -27,7 +27,7 @@ export default function GamePage(props: Props) {
   const loadAgain = async (): Promise<void> => {
     try {
       const gameData = await
-        wretchWrapper(`/api/game/get/getGame?gameId=${router.query.id}`, 'loadAgain')
+        wretchWrapper(`/api/game/get/getGame?gameId=${router.query.id}`)
       if (gameData.game) {
         setGame(gameData.game)
       } else {
@@ -107,8 +107,6 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(context: Context) {
-  // const fetchSameSeries = () => wretchWrapper(`https://api.rawg.io/api/games/${context.params.id}/game-series?key=${process.env.BUILD_GAMES_KEY}`, 'sameSeriesData')
-
   try {
     const client = await clientPromise
     const db = client.db()

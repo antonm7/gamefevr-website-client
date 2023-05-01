@@ -49,7 +49,7 @@ export default function SmallSearchInput({ full }: { full: boolean }) {
   const fetchData = async (name: string): Promise<void> => {
     try {
       const getGameNameData = await wretchWrapper(
-        `/api/query/name?search=${name}`, 'getGameNameData')
+        `/api/query/name?search=${name}`)
       if (getGameNameData.data.length) {
         setGames(getGameNameData.data as NamedGame[])
       }

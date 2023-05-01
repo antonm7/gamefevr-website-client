@@ -21,7 +21,7 @@ export default function SearchInput() {
   const fetchData = async (name: string): Promise<void> => {
     try {
       const fetchNameData = await
-        wretchWrapper(`/api/query/name?search=${name}`, 'fetchNameData')
+        wretchWrapper(`/api/query/name?search=${name}`)
       if (fetchNameData.games) {
         setGames(fetchNameData.games as NamedGame[])
       }
