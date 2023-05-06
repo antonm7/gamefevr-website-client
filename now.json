@@ -1,0 +1,19 @@
+{
+    "version": 2,
+    "builds": [
+        {
+            "src": "package.json",
+            "use": "@now/static-build",
+            "config": {
+                "maxLambdaSize": "15mb"
+            }
+        }
+    ],
+    "install": {
+        "ignoreScripts": false,
+        "args": [
+            "install",
+            "--force"
+        ]
+    }
+}
