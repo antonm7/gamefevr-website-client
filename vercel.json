@@ -1,0 +1,18 @@
+{
+    "version": 2,
+    "builds": [
+        {
+            "src": "package.json",
+            "use": "@vercel/static-build"
+        }
+    ],
+    "env": {
+        "CI": "1"
+    },
+    "build": {
+        "env": {
+            "CI": "1"
+        },
+        "command": "npm install --force && npm run build"
+    }
+}
