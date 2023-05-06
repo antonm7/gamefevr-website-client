@@ -2,6 +2,7 @@
   "name": "gamefevr-website",
   "private": true,
   "scripts": {
+    "prebuild": "npm install --force",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",

@@ -3,16 +3,16 @@
     "builds": [
         {
             "src": "package.json",
-            "use": "@now/static-build",
+            "use": "@vercel/static-build",
             "config": {
                 "maxLambdaSize": "15mb"
             }
         }
     ],
-    "install": {
-        "ignoreScripts": true,
-        "args": [
-            "--force"
-        ]
+    "functions": {
+        "preBuild": {
+            "runtime": "vercel-node@12",
+            "memory": 128
+        }
     }
 }
