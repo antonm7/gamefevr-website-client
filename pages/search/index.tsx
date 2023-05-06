@@ -23,7 +23,6 @@ export default function Index(props: InferGetServerSidePropsType<typeof getServe
   const [nextPage, setNextPage] = useState<boolean>(false)
   const [loadMoreLoading, setLoadMoreLoading] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(false)
-
   const loadInitialResults = () => {
     const { already_visited, error, games, count, isNextPage } = props;
     if (already_visited && store.games.length) {
@@ -57,7 +56,7 @@ export default function Index(props: InferGetServerSidePropsType<typeof getServe
     }
   };
 
-  const load_more = async () => {
+const load_more = async () => {
     setNoResults(false);
     setLoadMoreLoading(true);
     setInitialError(false);
@@ -92,7 +91,7 @@ export default function Index(props: InferGetServerSidePropsType<typeof getServe
     }
   };
 
-  useEffect(() => {
+ useEffect(() => {
     loadInitialResults()
   }, [])
 

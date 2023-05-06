@@ -92,7 +92,7 @@ export async function getStaticPaths() {
       const game = await db.collection('games').find({}).limit(1).skip(i).toArray()
       ids.push(game[0].id)
     }
-
+    
     const paths = ids.map((id) => ({
       params: { id: JSON.stringify(id) },
     }))
@@ -151,3 +151,4 @@ export async function getStaticProps(context: Context) {
     }
   }
 }
+
