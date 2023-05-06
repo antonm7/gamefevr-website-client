@@ -9,10 +9,16 @@
     "env": {
         "CI": "1"
     },
-    "build": {
+    "install": {
         "env": {
             "CI": "1"
         },
-        "command": "npm install --force && npm run build"
-    }
+        "ignoreScripts": true
+    },
+    "routes": [
+        {
+            "src": "/(.*)",
+            "dest": "/index.js"
+        }
+    ]
 }
