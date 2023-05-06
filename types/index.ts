@@ -107,4 +107,3 @@ export type OPEN_ALERT_TYPE = {
   msg: string
   requestOwner?: string
 }
-

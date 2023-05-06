@@ -5,6 +5,7 @@ import { ObjectId } from 'bson'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useSession } from 'next-auth/react'
+import { IconProp } from '@fortawesome/fontawesome-svg-core'
 
 interface Props {
   reviews: Review_Type[]
@@ -62,7 +63,7 @@ export default function ReviewsSlider({
         className="overflow-hidden rounded-md flex items-center px-12 m-auto
         bg-[rgba(21,21,21)] h-16 text-white max-w-max cursor-pointer opacity-40 hover:opacity-100">
         <FontAwesomeIcon
-          icon={faPlus}
+          icon={faPlus as IconProp}
           className="h-5"
         />
         <span className='pl-2 text-lg whitespace-nowrap'>Write A Review</span>
@@ -95,7 +96,7 @@ export default function ReviewsSlider({
           className="overflow-hidden rounded-md flex items-center px-12 m-auto
         bg-[rgba(21,21,21)] h-16 text-white max-w-max cursor-pointer opacity-40 hover:opacity-100 mt-36">
           <FontAwesomeIcon
-            icon={faPlus}
+            icon={faPlus as IconProp}
             className="h-5"
           />
           <span className='pl-2 text-lg whitespace-nowrap'>Write A Review</span>
@@ -111,7 +112,7 @@ export default function ReviewsSlider({
         style={{ left: '50%', transform: 'translateX(-50%)', bottom: '6.3rem' }}
         className="overflow-hidden rounded-md flex items-center px-12 bg-[rgba(21,21,21)] absolute min-w-max h-16 text-white cursor-pointer opacity-40 hover:opacity-100">
         <FontAwesomeIcon
-          icon={faPlus}
+          icon={faPlus as IconProp}
           className="h-5"
         />
         <span className='pl-2 text-lg whitespace-nowrap'>Write A Review</span>
@@ -151,7 +152,7 @@ export default function ReviewsSlider({
             style={{ left: '50%', transform: 'translateX(-50%)', bottom: '6.3rem' }}
             className="overflow-hidden rounded-md flex items-center px-12 bg-[rgba(21,21,21)] absolute min-w-max h-16 text-white cursor-pointer opacity-40 hover:opacity-100">
             <FontAwesomeIcon
-              icon={faPlus}
+              icon={faPlus as IconProp}
               className="h-5"
             />
             <span className='pl-2 text-lg'>Write A Review</span>

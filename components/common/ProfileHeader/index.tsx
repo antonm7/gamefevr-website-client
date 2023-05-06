@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import IndicateHype from "../../Profile/IndicateHype"
 import HypeUser from "../HypeUser"
 import styles from './index.module.scss'
+import { IconProp } from "@fortawesome/fontawesome-svg-core"
 
 type Props = {
     visited: boolean,
@@ -36,7 +37,7 @@ export default function ProfileHeader({
                     onClick={() => changeVisibleSettings(true)}
                 >
                     <FontAwesomeIcon
-                        icon={faGear}
+                        icon={faGear as IconProp}
                         className="h-4 pr-2 cursor-pointer"
                         style={{ color: '#616e7e' }}
                     />

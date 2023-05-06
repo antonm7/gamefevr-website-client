@@ -2,6 +2,7 @@ import { useStore } from "../../../store"
 import Image from "next/image"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars } from '@fortawesome/free-solid-svg-icons'
+import { IconProp } from "@fortawesome/fontawesome-svg-core"
 
 export default function Lower640() {
     const changeMenuVisibility = useStore((store) =>
@@ -20,7 +21,7 @@ export default function Lower640() {
                 </div>
                 <FontAwesomeIcon
                     onClick={() => changeMenuVisibility(true)}
-                    icon={faBars}
+                    icon={faBars as IconProp}
                     className="h-5 text-white cursor-pointer "
                 />
             </div>

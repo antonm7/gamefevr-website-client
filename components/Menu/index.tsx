@@ -7,6 +7,7 @@ import Image from 'next/image'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { useStore } from '../../store'
+import { IconProp } from '@fortawesome/fontawesome-svg-core'
 
 export default function Menu() {
   const router = useRouter()
@@ -97,7 +98,7 @@ export default function Menu() {
     <div id={styles.menu}>
       <div className="flex flex-col items-center pt-12">
         <FontAwesomeIcon
-          icon={faXmark}
+          icon={faXmark as IconProp}
           id={styles.icon}
           onClick={() => changeMenuVisibility(false)}
         />

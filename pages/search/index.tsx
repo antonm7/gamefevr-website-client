@@ -6,33 +6,34 @@ import { useRouter } from 'next/router'
 import { useStore } from '../../store'
 import Filters from '../../components/Filters'
 import SmallLoader from '../../components/common/SmallLoader'
-import { ShortGame } from '../../types'
+import { type ShortGame } from '../../types'
 import LoadingError from '../../components/common/LoadingError'
 import cookie from 'cookie'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
-import { getSession } from 'next-auth/react'
 import clientPromise from '../../lib/functions/mongodb'
 import { wretchAction } from '../../lib/functions/fetchLogic'
 import styles from './index.module.scss'
-import ErrorComponent from '../../components/ErrorComponent'
-
 
 export default function Index(props: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  //2 types of errors
   const router = useRouter()
   const store = useStore()
 
-
   const [noResults, setNoResults] = useState<boolean>(false)
+  const [initialError, setInitialError] = useState<boolean>(false)
   const [nextPage, setNextPage] = useState<boolean>(false)
   const [loadMoreLoading, setLoadMoreLoading] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(false)
 
   const loadInitialResults = () => {
     const { already_visited, error, games, count, isNextPage } = props;
-
     if (already_visited && store.games.length) {
       setNextPage(true);
       return;
+    }
+
+    if (already_visited && !store.games.length) {
+      load_more()
+      return
     }
 
     if (error) {
@@ -40,6 +41,8 @@ export default function Index(props: InferGetServerSidePropsType<typeof getServe
         type: 'error',
         msg: `error getting games, please try again`
       })
+      setNoResults(true)
+      setInitialError(true)
       return;
     }
 
@@ -57,13 +60,14 @@ export default function Index(props: InferGetServerSidePropsType<typeof getServe
   const load_more = async () => {
     setNoResults(false);
     setLoadMoreLoading(true);
+    setInitialError(false);
     try {
       const fetchMoreGames = await wretchAction('/api/query/search', {
         page: store.page,
         query: router.query,
       });
       if (fetchMoreGames.error) {
-        throw new Error('Unable to fetch more games');
+        throw new Error();
       }
       const { games = [], count = 0, isNextPage } = fetchMoreGames;
       store.setCount(count);
@@ -81,8 +85,10 @@ export default function Index(props: InferGetServerSidePropsType<typeof getServe
         type: 'error',
         msg: `error getting games, please try again`
       })
+      setInitialError(true)
     } finally {
       setLoadMoreLoading(false);
+      setLoading(false)
     }
   };
 
@@ -92,69 +98,59 @@ export default function Index(props: InferGetServerSidePropsType<typeof getServe
 
   useEffect(() => {
     if (store.reload) {
+      setLoading(true)
       load_more().then(() => store.activateReload(false))
     }
   }, [store.reload])
-
-  const sort = () => {
-    // const { query } = router
-    // if (router.query.sort) {
-    //   router.query.sort = []
-    //   router.push({
-    //     pathname: router.pathname,
-    //     query: { ...query },
-    //   })
-    // } else {
-    //   router.push({
-    //     pathname: router.pathname,
-    //     query: { ...query, sort: 'year' },
-    //   })
-    // }
-  }
 
   return (
     <SearchLayout>
       <div className='responsive_wrapper py-10'>
         {store.isFilterOn ? <Filters /> : null}
-        {noResults ? (
+        {loading ? (
+          <SmallLoader big={true} screenCentered={true} />
+        ) : noResults && !initialError ? (
           <div className="pt-32">
             <LoadingError
               mainTitle={'No Results Found'}
               description={'We couldnt find what you searched...'}
             />
           </div>
-        ) : (
-          <>
-            <div
-              id={styles.header_titles}
-              className="flex justify-between items-center">
-              <p
-                id={styles.we_found_title}
-                className="font-bold text-white text-4xl pb-10"
-              >
-                We found {store.count.toLocaleString()} games for you
-              </p>
-              <div className={`h-full pb-10 text-white ${router.query.sort ? 'underline' : ''}`}>
-                <span className="opacity-60">Sort by:</span>{' '}
-                <span
-                  className="font-semibold  cursor-pointer"
-                  onClick={() => sort()}
-                >
-                  Year
-                </span>
+        ) : initialError ? (
+          <div className="pt-32">
+            <LoadingError
+              mainTitle={'Error occured'}
+              description={'Unexpected error, please try again'}
+              button={true}
+              onClick={() => store.activateReload(true)}
+            />
+          </div>
+        ) :
+          loading ? <SmallLoader big={true} xCentered={true} /> : (
+            <>
+              <div
+                id={styles.header_titles}
+                className="flex justify-between items-center">
+                {store.count > 0 ?
+                  <p
+                    id={styles.we_found_title}
+                    className="font-bold text-white text-4xl pb-10"
+                  >
+                    We found {store.count.toLocaleString()} games for you
+                  </p>
+                  : null}
               </div>
-            </div>
-            <div
-              id={styles.games_wrapper}
-              className="flex flex-wrap justify-between">
-              {store.games.map((game: ShortGame, index: number) => (
-                <SmallGameBox key={index} game={game} />
-              ))}
-            </div>
-          </>
-        )}
+              <div
+                id={styles.games_wrapper}
+                className="flex flex-wrap justify-between">
+                {store.games.map((game: ShortGame, index: number) => (
+                  <SmallGameBox key={index} game={game} />
+                ))}
+              </div>
+            </>
+          )}
         <div className="w-24 h-16 rounded-lg m-auto mt-8">
-          {nextPage ?
+          {!initialError && !loading && nextPage ?
             loadMoreLoading ? (
               <SmallLoader xCentered={true} />
             ) : (
@@ -189,7 +185,6 @@ interface QueryObject {
 
 export const getServerSideProps: GetServerSideProps<PageProps> = async (ctx) => {
   const cookies = parseCookies(ctx.req)
-
   if (cookies.prevRoute === '/game/[id]') {
     return {
       props: {
@@ -202,7 +197,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (ctx) => 
     }
   }
 
-  const { yearRange, genres, consoles, search, sort } = ctx.query
+  const { yearRange, genres, consoles, search } = ctx.query
 
   const isNextPage = (page: number, count: number) => page * 16 < count
 
@@ -248,8 +243,12 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (ctx) => 
     const db = client.db()
 
     const getGames = async (query: any) => {
-      const data = await db.collection('short_games').find(query).limit(16).toArray()
-      const count = await db.collection('short_games').countDocuments(query) as unknown as number
+
+      const data = await db.collection('short_games').find(query)
+        .limit(16).toArray()
+      const count = await db.collection('short_games').
+        countDocuments(query) as unknown as number
+
       return {
         games: JSON.parse(JSON.stringify(data)) as ShortGame[],
         count,

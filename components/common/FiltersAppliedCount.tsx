@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useState } from 'react'
 import useFiltersCount from '../../lib/functions/hooks/useFiltersCount'
 import { useFiltersStore } from '../../store'
+import { IconProp } from '@fortawesome/fontawesome-svg-core'
 
 type Props = {
   bigInput?: boolean
@@ -28,7 +29,7 @@ export default function FiltersAppliedCount({ bigInput }: Props) {
         {hover ? (
           <FontAwesomeIcon
             className="text-white h-3"
-            icon={faXmark}
+            icon={faXmark as IconProp}
             onClick={() => clearFilters()}
           />
         ) : (

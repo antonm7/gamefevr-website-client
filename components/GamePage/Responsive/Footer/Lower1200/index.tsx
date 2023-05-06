@@ -4,9 +4,7 @@ import { Review_Type } from "../../../../../types/schema";
 import ReviewsSlider from "../../../ReviewsSlider";
 import Screenshots from "../../../Screenshots";
 import styles from './index.module.scss';
-import Image from "next/image";
 import { useRef } from "react";
-import SmallLoader from "../../../../common/SmallLoader";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -15,12 +13,11 @@ type Props = {
     screenshots: Short_Screenshot[]
     navigateAuth: () => void
     deleteReview: (id: ObjectId | undefined) => void
-    screenshots_loader: boolean
     reviews: Review_Type[]
     sliderRef: any
 }
 
-export default function Lower1200({ reviews, navigateAuth, deleteReview, screenshots, screenshots_loader }: Props) {
+export default function Lower1200({ reviews, navigateAuth, deleteReview, screenshots }: Props) {
     const sliderRef = useRef<any>(null)
     return (
         <div>
@@ -41,9 +38,7 @@ export default function Lower1200({ reviews, navigateAuth, deleteReview, screens
                         </div>
                     </div>
                 </div>
-                {screenshots_loader ? <SmallLoader /> :
-                    <Screenshots sliderRef={sliderRef} lower1200={true} images={screenshots} />
-                }
+                <Screenshots sliderRef={sliderRef} lower1200={true} images={screenshots} />
             </div>
             <div className="mt-32">
                 <ReviewsSlider

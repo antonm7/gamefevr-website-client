@@ -18,12 +18,10 @@ type Props = {
     screenshots: Short_Screenshot[]
     reviews: Review_Type[]
     navigateAuth: () => void
-    screenshots_loader: boolean
     deleteReview: (id: ObjectId | undefined) => void
 }
 
-export default function Bigger1200({ screenshots, reviews, navigateAuth, deleteReview,
-    screenshots_loader }: Props) {
+export default function Bigger1200({ screenshots, reviews, navigateAuth, deleteReview }: Props) {
     const [visible, setVisible] = useState<'screenshots' | 'reviews'>('screenshots')
     const screenshotsRef = useRef(null)
     const blueBoxRef = useRef(null)
@@ -37,7 +35,7 @@ export default function Bigger1200({ screenshots, reviews, navigateAuth, deleteR
         if (visible === 'reviews') {
             gsap.to(wrapperRef.current, {
                 height: reviews.length ? '780px' : '180px',
-                delay: 0.4,
+                delay: 0.6,
                 duration: 0.6
             })
             gsap.to(blueBoxRef.current, {
@@ -51,7 +49,7 @@ export default function Bigger1200({ screenshots, reviews, navigateAuth, deleteR
             gsap.to(reviewsRef.current, {
                 top: reviews.length ? '5rem' : '50%',
                 duration: 0.4,
-                delay: reviews.length ? 0.4 : 1,
+                delay: reviews.length ? 0.4 : 0.6,
             })
             gsap.to(buttonWrapper.current, {
                 top: checkReviews(reviews, session.data?.user.userId)
@@ -87,10 +85,7 @@ export default function Bigger1200({ screenshots, reviews, navigateAuth, deleteR
     return (
         <>
             <div className="relative overflow-hidden" ref={wrapperRef}>
-                {screenshots_loader
-                    ? <SmallLoader /> :
-                    <Screenshots sliderRef={sliderRef} setRef={screenshotsRef} images={screenshots} />
-                }
+                <Screenshots sliderRef={sliderRef} setRef={screenshotsRef} images={screenshots} />
                 <div ref={blueBoxRef} className="relative h-full w-[600px] bg-darkIndigo"
                     id={styles.blue_box}>
                     <div className="h-full pl-36 pt-28">

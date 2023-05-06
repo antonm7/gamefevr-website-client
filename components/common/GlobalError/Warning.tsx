@@ -1,6 +1,7 @@
 import { faExclamation, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import styles from './index.module.scss'
+import { IconProp } from '@fortawesome/fontawesome-svg-core'
 type Props = {
   visibility: boolean
   text: string
@@ -37,7 +38,7 @@ export default function Warning({ visibility, text, close }: Props) {
               <FontAwesomeIcon
                 style={{ color: '#febf1f' }}
                 className="h-5"
-                icon={faExclamation}
+                icon={faExclamation as IconProp}
               />
             </div>
           </div>
@@ -56,7 +57,7 @@ export default function Warning({ visibility, text, close }: Props) {
         <FontAwesomeIcon
           style={{ color: 'gray' }}
           className="h-5 mr-4 opacity-60 cursor-pointer hover:opacity-90"
-          icon={faXmark}
+          icon={faXmark as IconProp}
           onClick={() => close()}
         />
       </div>

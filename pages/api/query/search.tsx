@@ -11,7 +11,6 @@ interface ExtendedNextApiRequest extends NextApiRequest {
         genres: string[] | string | undefined
         consoles: string[] | string | undefined
         search: string | undefined
-        sort: string | undefined
       }
     }
   }
@@ -31,7 +30,7 @@ export default async function handler(req: ExtendedNextApiRequest, res: Response
     return
   }
   const { page, query } = req.body.body
-  const { yearRange, genres, consoles, search, sort } = query
+  const { yearRange, genres, consoles, search } = query
   try {
     const client = await clientPromise;
     const db = client.db();

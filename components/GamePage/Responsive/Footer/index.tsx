@@ -21,7 +21,6 @@ export default function Footer({
     updateReviewsVisibility, reviews_state, update_reviews }: Props) {
     const [screenshots, setScreenshots] = useState([])
     const [reviews, setReviews] = useState<Review_Type[]>([])
-    const [screenshots_loader, setScreenshotsLoader] = useState(false)
     const [loading, setLoading] = useState<boolean>(false)
     const [width] = useWindowSize()
     const session = useSession()
@@ -59,7 +58,7 @@ export default function Footer({
         )
         const fetchReviews = await wretchWrapper(`/api/game/get/getReviews?gameId=${router.query.id}`)
         setReviews(fetchReviews.reviews ? fetchReviews.reviews : [])
-        setScreenshots(fetchScreenshots.screenshots.results ? fetchScreenshots.screenshots.results : [])
+        setScreenshots(fetchScreenshots.screenshots.screenshots_body.results ? fetchScreenshots.screenshots.screenshots_body.results : [])
         update_reviews(fetchReviews.reviews ? fetchReviews.reviews : [])
         setLoading(false)
     }
@@ -85,7 +84,6 @@ export default function Footer({
                     navigateAuth={() => navigateAuth()}
                     screenshots={screenshots}
                     reviews={reviews}
-                    screenshots_loader={screenshots_loader}
                     deleteReview={id => deleteReview(id)}
                 />
             ) : (
@@ -93,7 +91,6 @@ export default function Footer({
                     navigateAuth={() => navigateAuth()}
                     screenshots={screenshots}
                     reviews={reviews}
-                    screenshots_loader={screenshots_loader}
                     deleteReview={id => deleteReview(id)}
                     sliderRef={undefined} />
             )}

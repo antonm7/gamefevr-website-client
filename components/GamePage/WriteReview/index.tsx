@@ -7,6 +7,7 @@ import TextareaAutosize from 'react-textarea-autosize'
 import { promiseHandler, wretchAction } from '../../../lib/functions/fetchLogic'
 import { promiseSettledResponse } from '../../../types/apiTypes'
 import { Review_Type } from '../../../types/schema'
+import { IconProp } from '@fortawesome/fontawesome-svg-core'
 
 interface Props {
   onClose: () => void
@@ -104,7 +105,7 @@ export default function WriteReview({
     >
       <FontAwesomeIcon
         onClick={onClose}
-        icon={faXmark}
+        icon={faXmark as IconProp}
         className="h-6 absolute white text-white right-6 cursor-pointer"
       />
       <div className="flex flex-wrap my-2">

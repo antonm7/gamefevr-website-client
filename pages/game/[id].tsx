@@ -25,6 +25,7 @@ export default function GamePage(props: Props) {
   const [reviews, setReviews] = useState<Review_Type[]>([])
 
   const loadAgain = async (): Promise<void> => {
+    console.log('running')
     try {
       const gameData = await
         wretchWrapper(`/api/game/get/getGame?gameId=${router.query.id}`)
@@ -34,7 +35,6 @@ export default function GamePage(props: Props) {
         throw new Error
       }
     } catch (e) {
-
       console.log('error', e)
     }
   }
@@ -81,6 +81,7 @@ interface Context {
 }
 
 export async function getStaticPaths() {
+  if (process.env.NODE_ENV === 'development') return { paths: [], fallback: 'blocking' }
 
   try {
     const ids: number[] = []
@@ -90,7 +91,6 @@ export async function getStaticPaths() {
     for (let i = 0; i <= 1500; i++) {
       const game = await db.collection('games').find({}).limit(1).skip(i).toArray()
       ids.push(game[0].id)
-      console.log(ids.length)
     }
 
     const paths = ids.map((id) => ({
@@ -103,16 +103,12 @@ export async function getStaticPaths() {
     console.log('error....', e)
     return { paths: [], fallback: 'blocking' }
   }
-
 }
 
 export async function getStaticProps(context: Context) {
   try {
     const client = await clientPromise
     const db = client.db()
-
-    console.log('building', context.params.id)
-
     const gameData = await db.collection('games').
       findOne({ id: parseInt(context.params.id as unknown as string) })
 
@@ -143,15 +139,15 @@ export async function getStaticProps(context: Context) {
 
     return {
       props: {
-        game: finalData,
+        game: finalData
       }
     }
   } catch (e) {
+    console.log(e)
     return {
       props: {
         game: null
       }
     }
   }
-
 }

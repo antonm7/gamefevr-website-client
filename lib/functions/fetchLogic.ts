@@ -35,10 +35,7 @@ export function wretchWrapper(url: string): Promise<promiseSettledResponse> {
         })
         .res(response => response.json())
         .catch(error => {
-            PubSub.publish('OPEN_ALERT', {
-                type: 'error',
-                msg: `Unexpected Error`
-            })
+            throw error
         });
 }
 
@@ -86,10 +83,7 @@ export function wretchAction(url: string, body: unknown): Promise<promiseSettled
         })
         .res(response => response.json())
         .catch(error => {
-            PubSub.publish('OPEN_ALERT', {
-                type: 'error',
-                msg: `Unexpected Error`
-            })
+            throw new Error()
         });
 }
 
