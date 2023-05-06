@@ -2,7 +2,7 @@
   "name": "gamefevr-website",
   "private": true,
   "scripts": {
-    "prebuild": "npm install --force",
+    "vercel-build": "npm install --force && your-build-command",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",

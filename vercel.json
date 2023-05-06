@@ -9,10 +9,18 @@
             }
         }
     ],
-    "functions": {
-        "preBuild": {
-            "runtime": "vercel-node@12",
-            "memory": 128
+    "rewrites": [
+        {
+            "source": "/_next/(.*)",
+            "destination": "/_next/$1"
+        },
+        {
+            "source": "/favicon.ico",
+            "destination": "/favicon.ico"
+        },
+        {
+            "source": "/(.*)",
+            "destination": "/index.js"
         }
-    }
+    ]
 }
