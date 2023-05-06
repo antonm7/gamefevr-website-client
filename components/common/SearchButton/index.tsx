@@ -1,3 +1,4 @@
+import { IconProp } from '@fortawesome/fontawesome-svg-core'
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 type Props = {
@@ -21,7 +22,7 @@ export default function SearchButton({ onClick, text }: Props) {
         onClick={onClick}
         className="bg-specialYellow w-full h-full flex items-center justify-center"
       >
-        <FontAwesomeIcon className="text-white h-4" icon={faMagnifyingGlass} />
+        <FontAwesomeIcon className="text-white h-4" icon={faMagnifyingGlass as IconProp} />
       </button>
     )
   }

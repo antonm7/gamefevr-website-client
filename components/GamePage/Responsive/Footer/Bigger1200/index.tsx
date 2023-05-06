@@ -2,7 +2,6 @@ import { Short_Screenshot } from "../../../../../types"
 import { Review_Type } from "../../../../../types/schema"
 import Screenshots from "../../../Screenshots"
 import styles from './index.module.scss'
-import Image from "next/image"
 import { useEffect, useRef, useState } from 'react'
 import ReviewsSlider from "../../../ReviewsSlider"
 import YellowButton from "../../../../common/YellowButton"
@@ -10,6 +9,10 @@ import gsap from 'gsap'
 import { ObjectId } from "bson"
 import checkReviews from "../../../../../lib/functions/checkReviews"
 import { useSession } from "next-auth/react"
+import SmallLoader from "../../../../common/SmallLoader"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons"
+import { IconProp } from "@fortawesome/fontawesome-svg-core"
 
 type Props = {
     screenshots: Short_Screenshot[]
@@ -32,7 +35,7 @@ export default function Bigger1200({ screenshots, reviews, navigateAuth, deleteR
         if (visible === 'reviews') {
             gsap.to(wrapperRef.current, {
                 height: reviews.length ? '780px' : '180px',
-                delay: 0.4,
+                delay: 0.6,
                 duration: 0.6
             })
             gsap.to(blueBoxRef.current, {
@@ -46,7 +49,7 @@ export default function Bigger1200({ screenshots, reviews, navigateAuth, deleteR
             gsap.to(reviewsRef.current, {
                 top: reviews.length ? '5rem' : '50%',
                 duration: 0.4,
-                delay: reviews.length ? 0.4 : 1,
+                delay: reviews.length ? 0.4 : 0.6,
             })
             gsap.to(buttonWrapper.current, {
                 top: checkReviews(reviews, session.data?.user.userId)
@@ -87,20 +90,14 @@ export default function Bigger1200({ screenshots, reviews, navigateAuth, deleteR
                     id={styles.blue_box}>
                     <div className="h-full pl-36 pt-28">
                         <div id={styles.arrows_wrapper} className="flex items-center bottom-0">
-                            <Image
+                            <FontAwesomeIcon className="h-6 text-white"
+                                icon={faArrowLeft as IconProp}
                                 onClick={() => sliderRef.current.slickPrev()}
-                                src={'/icons/arrow_left.svg'}
-                                width={25}
-                                height={18}
-                                alt="arrow-left"
                             />
                             <div className="ml-8 bg-white flex items-center justify-center py-2 px-4 rounded-lg">
-                                <Image
+                                <FontAwesomeIcon className="h-6 text-inputBg"
+                                    icon={faArrowRight as IconProp}
                                     onClick={() => sliderRef.current.slickNext()}
-                                    src={'/icons/arrow_right.svg'}
-                                    width={25}
-                                    height={18}
-                                    alt="arrow-right"
                                 />
                             </div>
                         </div>

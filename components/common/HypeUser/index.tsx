@@ -5,6 +5,7 @@ import { useRouter } from "next/router"
 import { useState } from "react"
 import { wretchAction } from "../../../lib/functions/fetchLogic"
 import styles from './index.module.scss'
+import { IconProp } from "@fortawesome/fontawesome-svg-core"
 
 export default function HypeUser() {
     const router = useRouter()
@@ -43,7 +44,7 @@ export default function HypeUser() {
     return (
         <div onClick={() => navigateAuth()} id={styles.hype_user_wrapper}>
             <div className="h-8 w-8 flex flex-col justify-center items-center overflow-hidden rounded-full mr-4" style={{ border: "1px solid #38b6cc" }}>
-                <FontAwesomeIcon icon={faArrowUp} className="font-semibold text-cool-blue cursor-pointer h-4" />
+                <FontAwesomeIcon icon={faArrowUp as IconProp} className="font-semibold text-cool-blue cursor-pointer h-4" />
             </div>
         </div >
     )

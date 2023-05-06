@@ -3,7 +3,6 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import authorize from '../../../../../backend-middlewares/authorize'
 import generateErrorBackend from '../../../../../backend-middlewares/generateErrorBackend'
 import games_data_document from '../../../../../lib/functions/create/games_data'
-import { wretchWrapper } from '../../../../../lib/functions/fetchLogic'
 import generateTime from '../../../../../lib/functions/generateTime'
 import clientPromise from '../../../../../lib/functions/mongodb'
 import updateHype from '../../../../../lib/functions/updateHype'
@@ -55,9 +54,7 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
     }
     //saves the reviews inside own ranks collection
     try {
-      const getSpecificGameData = await wretchWrapper(
-        `https://api.rawg.io/api/games/${gameId}?key=${process.env.FETCH_GAMES_KEY_GENERAL1}`
-        , 'getSpecificGameData')
+      const game = await db.collection('games').findOne({ id: parseInt(gameId) })
 
       const generateRank = (rank: string) => {
         switch (rank) {
@@ -95,8 +92,8 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
         userId: userId,
         gameId: gameId,
         user_name,
-        game_name: getSpecificGameData.name,
-        game_image: getSpecificGameData.background_image,
+        game_name: game.name,
+        game_image: game.background_image,
         created_at: generateTime(new Date()),
         rank: generateRank(rank),
         text: text,

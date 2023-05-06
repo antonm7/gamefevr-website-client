@@ -1,6 +1,7 @@
 import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import styles from './index.module.scss'
+import { IconProp } from "@fortawesome/fontawesome-svg-core"
 type Props = {
     visibility: boolean
     text: string
@@ -37,7 +38,7 @@ export default function Sucssess({ visibility, text, close }: Props) {
                             <FontAwesomeIcon
                                 style={{ color: '#50c878' }}
                                 className="h-5"
-                                icon={faCheck}
+                                icon={faCheck as IconProp}
                             />
                         </div>
                     </div>
@@ -57,7 +58,7 @@ export default function Sucssess({ visibility, text, close }: Props) {
                     onClick={() => close()}
                     style={{ color: 'gray' }}
                     className="h-5 mr-4 opacity-60 cursor-pointer hover:opacity-90"
-                    icon={faXmark}
+                    icon={faXmark as IconProp}
                 />
             </div>
         </div>

@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useEffect, useState } from 'react'
 import Spinner from '../Spinner'
 import styles from './index.module.scss'
+import { IconProp } from '@fortawesome/fontawesome-svg-core'
 
 type Props = {
   visibility: boolean
@@ -59,7 +60,7 @@ export default function Request({ visibility, text, owner }: Props) {
               <FontAwesomeIcon
                 style={{ color: '#3087e9' }}
                 className="h-5"
-                icon={faExclamation}
+                icon={faExclamation as IconProp}
               />
             </div>
           </div>
@@ -77,7 +78,7 @@ export default function Request({ visibility, text, owner }: Props) {
             style={{ backgroundColor: '#50dc6b' }}
             className="bg-green-500 w-16 h-8 rounded-lg flex items-center justify-center cursor-pointer"
           >
-            {loader ? <Spinner /> : <FontAwesomeIcon className="text-white h-5" icon={faCheck} />}
+            {loader ? <Spinner /> : <FontAwesomeIcon className="text-white h-5" icon={faCheck as IconProp} />}
           </div>
           <div
             onClick={() => onNo()}
@@ -85,7 +86,7 @@ export default function Request({ visibility, text, owner }: Props) {
             className="w-16 h-8 rounded-lg ml-2 flex items-center justify-center"
           >
             <FontAwesomeIcon
-              icon={faXmark}
+              icon={faXmark as IconProp}
               className="text-white h-5 cursor-pointer"
             />
           </div>

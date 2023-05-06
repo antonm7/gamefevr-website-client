@@ -1,3 +1,4 @@
+import { IconProp } from '@fortawesome/fontawesome-svg-core'
 import { faPlay } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Image from 'next/image'
@@ -51,7 +52,7 @@ export default function BackgroundGameImage({ bg, movieUrl }: Props) {
             alt="Not Working!"
           />
           <div className="opacity-80 left-4 bottom-4 bg-gray-900 absolute rounded-full w-12 h-12 flex items-center justify-center">
-            <FontAwesomeIcon className="text-white h-5" icon={faPlay} />
+            <FontAwesomeIcon className="text-white h-5" icon={faPlay as IconProp} />
           </div>
         </div>
       )}

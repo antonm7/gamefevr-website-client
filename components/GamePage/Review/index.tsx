@@ -17,6 +17,7 @@ import useWindowSize from '../../../lib/functions/hooks/useWindowSize'
 import slicedParagrap from '../../../lib/functions/slicedParagraph'
 import { Review_Type } from '../../../types/schema'
 import styles from './index.module.scss'
+import { IconProp } from '@fortawesome/fontawesome-svg-core'
 
 interface Props extends Review_Type {
   deleteReviewProps: (reviewId: ObjectId | undefined) => void
@@ -241,7 +242,7 @@ export default function Review({
           JSON.stringify(session.data?.user.userId) ? null : (
           <FontAwesomeIcon
             onClick={() => deleteReview_STATE()}
-            icon={faTrash}
+            icon={faTrash as IconProp}
             className="h-4 cursor-pointer text-red-500 opacity-40 hover:opacity-100"
           />
         )}
@@ -267,12 +268,12 @@ export default function Review({
           JSON.stringify(session.data?.user.userId) ? (
           <div className="flex items-center">
             <FontAwesomeIcon
-              icon={faThumbsUpRegular}
+              icon={faThumbsUpRegular as IconProp}
               className="h-8 text-green-400 cursor-pointer"
             />
             {CalculateCountMemoized}
             <FontAwesomeIcon
-              icon={faThumbsDownRegular}
+              icon={faThumbsDownRegular as IconProp}
               className="h-8 text-red-400 cursor-pointer"
             />
           </div>
@@ -281,15 +282,15 @@ export default function Review({
             <div className="flex items-center">
               <FontAwesomeIcon
 
-                icon={like || isUserLiked ? faThumbsUpSolid : faThumbsUpRegular}
+                icon={like || isUserLiked ? faThumbsUpSolid as IconProp : faThumbsUpRegular as IconProp}
                 className="h-8 text-green-400 cursor-pointer"
               />
               {CalculateCountMemoized}
               <FontAwesomeIcon
                 icon={
                   dislike || isUserDisliked
-                    ? faThumbsDownSolid
-                    : faThumbsDownRegular
+                    ? faThumbsDownSolid as IconProp
+                    : faThumbsDownRegular as IconProp
                 }
                 className="h-8 text-red-400 cursor-pointer"
               />
@@ -300,7 +301,7 @@ export default function Review({
                 onClick={() => likeReview()}
                 onMouseEnter={() => setLike(true)}
                 onMouseLeave={() => setLike(false)}
-                icon={like || isUserLiked ? faThumbsUpSolid : faThumbsUpRegular}
+                icon={like || isUserLiked ? faThumbsUpSolid as IconProp : faThumbsUpRegular as IconProp}
                 className="h-8 text-green-400 cursor-pointer"
               />
               {CalculateCountMemoized}
@@ -310,8 +311,8 @@ export default function Review({
                 onMouseLeave={() => setDislike(false)}
                 icon={
                   dislike || isUserDisliked
-                    ? faThumbsDownSolid
-                    : faThumbsDownRegular
+                    ? faThumbsDownSolid as IconProp
+                    : faThumbsDownRegular as IconProp
                 }
                 className="h-8 text-red-400 cursor-pointer"
               />

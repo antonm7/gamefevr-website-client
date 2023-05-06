@@ -16,28 +16,16 @@ async function handler(req: ExtendedRequest, res: Response) {
   if (req.method === 'GET') {
     const query = req.query
     try {
-      const getGame = () => wretchWrapper(`https://api.rawg.io/api/games/${query.gameId}?key=${process.env.FETCH_GAMES_KEY_GENERAL1}`
-        , 'getGame')
+      const client = await clientPromise
+      const db = client.db()
 
-      const getScreenshots = () => wretchWrapper(`https://api.rawg.io/api/games/${query.gameId}/screenshots?key=${process.env.FETCH_GAMES_KEY_GENERAL1}`,
-        'getScreenshots')
+      const gameData = await db.collection('games').findOne({ id: parseInt(query.gameId) })
+      console.log(gameData)
 
-      const getTrailers = () => wretchWrapper(
-        `https://api.rawg.io/api/games/${query.gameId}/movies?key=${process.env.FETCH_GAMES_KEY_GENERAL1}`
-        , 'getTreilers')
-
-      const getSeries = () => wretchWrapper(
-        `https://api.rawg.io/api/games/${query.gameId}/game-series?key=${process.env.FETCH_GAMES_KEY_GENERAL2}`
-        , 'getSeries')
-
-      const result: any = await Promise.allSettled([
-        getGame(),
-        getScreenshots(),
-        getTrailers(),
-        getSeries()
-      ])
-
-      const [gameData, screenshots, trailers, same_series]: any = promiseHandler(result)
+      if (!gameData) {
+        res.status(404).json({ message: 'Game not found' })
+        return
+      }
 
       const finalData: DetailedGame = {
         id: gameData.id,
@@ -51,24 +39,16 @@ async function handler(req: ExtendedRequest, res: Response) {
         platforms: gameData.platforms,
         stores: gameData.stores,
         publishers: gameData.publishers,
-        screenshots,
-        trailers,
-        same_series,
+        same_series: null,
         tags: gameData.tags,
         website: gameData.website,
       }
 
-      const client = await clientPromise
-      const db = client.db()
-      const reviews = await db
-        .collection('reviews')
-        .find({ gameId: query.gameId })
-        .toArray()
-
       res.status(200).send({
-        game: finalData,
-        reviews: JSON.parse(JSON.stringify(reviews)),
+        game: finalData
       })
+
+
     } catch (e) {
       await GenerateError({
         error: 'error getting game on game/get/getGame',

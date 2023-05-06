@@ -7,6 +7,7 @@ import { useStore } from '../../../store'
 import { NamedGame } from '../../../types'
 import FiltersAppliedCount from '../FiltersAppliedCount'
 import styles from './index.module.scss'
+import { IconProp } from '@fortawesome/fontawesome-svg-core'
 
 interface FetchNameData {
   games: NamedGame[]
@@ -20,7 +21,7 @@ export default function SearchInput() {
   const fetchData = async (name: string): Promise<void> => {
     try {
       const fetchNameData = await
-        wretchWrapper(`/api/query/name?search=${name}`, 'fetchNameData')
+        wretchWrapper(`/api/query/name?search=${name}`)
       if (fetchNameData.games) {
         setGames(fetchNameData.games as NamedGame[])
       }
@@ -52,7 +53,7 @@ export default function SearchInput() {
         <FiltersAppliedCount bigInput={true} />
         <FontAwesomeIcon
           onClick={() => store.changeFilterVisibility(true)}
-          icon={faSliders}
+          icon={faSliders as IconProp}
           className="absolute h-4 cursor-pointer top-6 right-4 text-gray-600"
         />
         <input

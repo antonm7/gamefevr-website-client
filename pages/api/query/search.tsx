@@ -1,6 +1,6 @@
 import { Response } from 'express'
 import { NextApiRequest } from 'next'
-import { wretchWrapper } from '../../../lib/functions/fetchLogic'
+import clientPromise from '../../../lib/functions/mongodb'
 
 interface ExtendedNextApiRequest extends NextApiRequest {
   body: {
@@ -11,116 +11,67 @@ interface ExtendedNextApiRequest extends NextApiRequest {
         genres: string[] | string | undefined
         consoles: string[] | string | undefined
         search: string | undefined
-        sort: string | undefined
       }
     }
   }
 }
 
-export default async function handler(req: ExtendedNextApiRequest, res: Response) {
-  if (req.method === 'POST') {
-    try {
-      const { page, query } = req.body.body
-      const { yearRange, genres, consoles, search, sort } = query
-      let games = []
-      let count = 0
-      let filteredString = ''
-      //checking if i got some filter
-      if (yearRange || genres || consoles || search) {
-        if (search) {
-          filteredString += `&search=${search}&`
-        }
-        if (yearRange) {
-          if (!Array.isArray(yearRange)) {
-            filteredString = filteredString.concat(
-              '',
-              `&dates=1990-01-01,2023-12-31`
-            )
-          } else {
-            filteredString = filteredString.concat(
-              '',
-              `&dates=${yearRange[0]}-01-01,${yearRange[1]}-12-31`
-            )
-          }
-        }
-        //simetimes from the client i get consoles as string, but i need an array
-        //thats why i am checkinf the type of the consoles
-        if (consoles) {
-          if (typeof consoles === 'string') {
-            filteredString = filteredString.concat(
-              `&parent_platforms=${parseInt(JSON.parse(consoles))}`
-            )
-          } else {
-            let consolesString = ''
-            for (const key in consoles) {
-              if (parseInt(key) !== consoles.length - 1) {
-                consolesString = consolesString.concat(
-                  `${parseInt(JSON.parse(consoles[key]))}`,
-                  ','
-                )
-              } else {
-                consolesString = consolesString.concat(
-                  `${parseInt(JSON.parse(consoles[key]))}`,
-                  ''
-                )
-              }
-            }
-            filteredString = filteredString.concat(
-              `&platforms=${consolesString}`
-            )
-          }
-        }
-        if (genres) {
-          if (typeof genres === 'string') {
-            filteredString = filteredString.concat(
-              `&genres=${parseInt(JSON.parse(genres))}`
-            )
-          } else {
-            let genresString = ''
-            for (const key in genres) {
-              if (parseInt(key) !== genres.length - 1) {
-                genresString = genresString.concat(
-                  `${parseInt(JSON.parse(genres[key]))}`,
-                  ','
-                )
-              } else {
-                genresString = genresString.concat(
-                  `${parseInt(JSON.parse(genres[key]))}`,
-                  ''
-                )
-              }
-            }
-            filteredString = filteredString.concat(`&genres=${genresString}`)
-          }
-        }
-        if (sort === 'year') {
-          filteredString = filteredString.concat('&ordering=-released')
-        }
-        const getData: any = await wretchWrapper(
-          `https://api.rawg.io/api/games?key=${process.env.FETCH_GAMES_KEY_GENERAL2}&dates=1990-01-01,2023-12-31&page=${page}&page_size=16${filteredString}`
-          , 'getGamesData')
-        games = getData.results
-        count = getData.count
-      } else {
-        const getData: any = await wretchWrapper(
-          `https://api.rawg.io/api/games?key=${process.env.FETCH_GAMES_KEY_GENERAL2}&dates=1990-01-01,2023-12-31&page=${page}&page_size=16`
-          , 'getGamesData')
-        games = getData.results
-        count = getData.count
-      }
-      const isNextPage = (page: number) => {
-        if (page * 16 < count) {
-          return true
-        } else {
-          return false
-        }
-      }
-      res
-        .status(200)
-        .send({ games, nextPage: isNextPage(page), count })
-    } catch (e) {
-      console.log(e)
-      res.status(500).send({ error: 'Unexpected Error' })
-    }
+const isNextPage = (page: number, count: number) => {
+  if (page * 16 < count) {
+    return true
+  } else {
+    return false
   }
 }
+
+export default async function handler(req: ExtendedNextApiRequest, res: Response) {
+  if (req.method !== 'POST') {
+    res.status(405).json({ message: 'Method Not Allowed' })
+    return
+  }
+  const { page, query } = req.body.body
+  const { yearRange, genres, consoles, search } = query
+  try {
+    const client = await clientPromise;
+    const db = client.db();
+    const collection = db.collection('short_games');
+
+    let filtering: any = { $and: [] };
+
+    if (search) {
+      filtering.$and.push({ name: { $regex: new RegExp(search), $options: 'i' } });
+    }
+
+    if (yearRange) {
+      filtering.$and.push({ released: { $gte: `${yearRange[0]}-01-01`, $lte: `${yearRange[1]}-12-31` } });
+    }
+
+    if (genres) {
+      const genreIds = typeof genres === 'string' ? [parseInt(genres)] : Object.values(genres).map((id) => parseInt(id));
+      filtering.$and.push({ 'genres.id': { $in: genreIds } });
+    }
+
+    if (consoles) {
+      const consoleIds = typeof consoles === 'string' ? [parseInt(consoles)] : Object.values(consoles).map((id) => parseInt(id));
+      filtering.$and.push({ 'parent_platforms.platform.id': { $in: consoleIds } });
+    }
+
+    const query = collection.find(filtering.$and.length ? filtering : {});
+
+    const [data, count] = await Promise.all([
+      query.limit(16).skip(16 * (page - 1)).toArray(),
+      collection.countDocuments(filtering.$and.length ? filtering : {}) as unknown as number,
+    ]);
+
+    res.status(200).send({
+      games: data.map((d) => ({ ...d })),
+      count,
+      isNextPage: isNextPage(page, count ? count : 0),
+      error: null
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+}
+

@@ -1,13 +1,19 @@
 import { Range } from 'rc-slider'
 import 'rc-slider/assets/index.css'
 import { useEffect, useState } from 'react'
+import { useFiltersStore } from '../../store'
 
 type Props = {
     updateYearRange: (val: number[]) => void
 }
 
 export default function RangeContainer({ updateYearRange }: Props) {
+    const store = useFiltersStore(state => state)
     const [yearRange, setYearRange] = useState<number[]>([1990, 2023])
+
+    useEffect(() => {
+        setYearRange(store.yearRange)
+    }, [store.yearRange])
 
     useEffect(() => {
         updateYearRange(yearRange)

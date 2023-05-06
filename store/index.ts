@@ -8,6 +8,8 @@ interface State {
   page: number
   gameName: string
   count: number
+  reload: boolean
+  activateReload: (value: boolean) => void
   addGames: (games: ShortGame[]) => void
   clearGames: () => void
   addPage: () => void
@@ -25,6 +27,14 @@ export const useStore = create<State>((set) => ({
   page: <number>1,
   gameName: <string>'',
   count: <number>0,
+  reload: false,
+  activateReload: (value: boolean) => set((state) => {
+    if (value) {
+      return { reload: value, page: 1, games: [] }
+    } else {
+      return { reload: value, page: state.page, games: state.games }
+    }
+  }),
   addGames: (arr: ShortGame[]) =>
     set((state) => {
       return { games: [...state.games, ...arr] }

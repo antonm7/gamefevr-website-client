@@ -10,6 +10,7 @@ import slicedParagrap from '../../../lib/functions/slicedParagraph'
 import { OPEN_ALERT_TYPE } from '../../../types'
 import { Favorite_Type } from '../../../types/schema'
 import styles from './index.module.scss'
+import { IconProp } from '@fortawesome/fontawesome-svg-core'
 
 interface Props extends Favorite_Type {
   deleteFavorite?: (id: ObjectId | undefined) => void
@@ -106,14 +107,14 @@ export default function Favorite({
           <FontAwesomeIcon
             onMouseOver={() => setMouseOver(true)}
             className="h-4 absolute z-10 cursor-pointer"
-            icon={faBookmark}
+            icon={faBookmark as IconProp}
             style={{ color: '#38b6cc', right: 20, top: 15 }}
           />
         ) : (
           <FontAwesomeIcon
             onMouseLeave={() => setMouseOver(false)}
             className="h-4 absolute z-10 cursor-pointer"
-            icon={faTrash}
+            icon={faTrash as IconProp}
             style={{ color: '#38b6cc', right: 20, top: 15 }}
             onClick={() => deleteFavorite_STATE()}
           />

@@ -12,6 +12,7 @@ const nextConfig = {
     });
     return config;
   },
+  staticPageGenerationTimeout: 10000,
   eslint: {
     ignoreDuringBuilds: true
   },
@@ -25,8 +26,8 @@ const nextConfig = {
     SENDGRID_API_KEY: process.env.SENDGRID_API_KEY,
     MONGODB_URI: process.env.MONGODB_URI,
     FETCH_GAMES_KEY_GENERAL1: process.env.FETCH_GAMES_KEY_GENERAL1,
-    FETCH_GAMES_KEY_GENERAL2: process.env.FETCH_GAMES_KEY_GENERAL2,
-    BUILD_GAMES_KEY: process.env.BUILD_GAMES_KEY
+    // FETCH_GAMES_KEY_GENERAL2: process.env.FETCH_GAMES_KEY_GENERAL2,
+    // BUILD_GAMES_KEY: process.env.BUILD_GAMES_KEY
   }
 };
 // eslint-disable-next-line no-undef

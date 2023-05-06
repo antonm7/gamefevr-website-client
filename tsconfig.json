@@ -28,7 +28,8 @@
     "**/*.ts",
     "**/*.tsx",
     "pages/api/auth/[...nextauth].tsx",
-    "backend-middlewares/generateErrorBackend"
+    "backend-middlewares/generateErrorBackend",
+    "pages/api/auth/[...nextauth].js"
   ],
   "exclude": [
     "node_modules"

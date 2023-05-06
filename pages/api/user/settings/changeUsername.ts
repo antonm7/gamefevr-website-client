@@ -71,13 +71,11 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
     }
     //updating username
     try {
-      console.log('sending')
       await db
         .collection('users')
         .updateOne({ email }, { $set: { username } })
       res.status(200).send({ error: null })
     } catch (e) {
-      console.log('dskal;dksa;ldksa', e)
       await GenerateError({
         error:
           'error on changing username on user document on user/settings/changeUsername',

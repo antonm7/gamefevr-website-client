@@ -92,11 +92,9 @@ export type DetailedGame = {
     url: string
   }[]
   publishers: ElementDescription[]
-  screenshots: Screenshot
-  trailers: any
   tags: ElementDescription[]
   website: string
-  same_series: same_series_type
+  same_series: same_series_type | null
 }
 
 export type NamedGame = {
@@ -109,4 +107,3 @@ export type OPEN_ALERT_TYPE = {
   msg: string
   requestOwner?: string
 }
-

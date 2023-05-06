@@ -2,26 +2,90 @@ import wretch from 'wretch'
 import { promiseSettledResponse } from '../../types/apiTypes'
 
 //function that promise
-export function wretchWrapper(url: string, request_name: string): Promise<promiseSettledResponse> {
+export function wretchWrapper(url: string): Promise<promiseSettledResponse> {
     return wretch(url)
         .get()
-        .badRequest(e => e)
-        .notFound(e => e)
-        .unauthorized(e => e)
-        .internalError(e => e)
-        .json(data => data)
+        .badRequest((e) => {
+            const error: ErrorResponse = {
+                message: e.message,
+                statusCode: e.status,
+            };
+            throw error;
+        })
+        .notFound((e) => {
+            const error: ErrorResponse = {
+                message: e.message,
+                statusCode: e.status,
+            };
+            throw error;
+        })
+        .unauthorized((e) => {
+            const error: ErrorResponse = {
+                message: e.message,
+                statusCode: e.status,
+            };
+            throw error;
+        })
+        .internalError((e) => {
+            const error: ErrorResponse = {
+                message: e.message,
+                statusCode: e.status,
+            };
+            throw error;
+        })
+        .res(response => response.json())
+        .catch(error => {
+            throw error
+        });
+}
+
+interface ErrorResponse {
+    message: string;
+    statusCode: number;
+}
+
+
+interface ErrorResponse {
+    message: string;
+    statusCode: number;
 }
 
 export function wretchAction(url: string, body: unknown): Promise<promiseSettledResponse> {
     return wretch(url)
         .post({ body })
-        .badRequest(() => { throw new Error() })
-        .notFound(() => { throw new Error() })
-        .unauthorized(() => { throw new Error() })
-        .internalError(() => { throw new Error() })
+        .badRequest((e) => {
+            const error: ErrorResponse = {
+                message: e.message,
+                statusCode: e.status,
+            };
+            throw error;
+        })
+        .notFound((e) => {
+            const error: ErrorResponse = {
+                message: e.message,
+                statusCode: e.status,
+            };
+            throw error;
+        })
+        .unauthorized((e) => {
+            const error: ErrorResponse = {
+                message: e.message,
+                statusCode: e.status,
+            };
+            throw error;
+        })
+        .internalError((e) => {
+            const error: ErrorResponse = {
+                message: e.message,
+                statusCode: e.status,
+            };
+            throw error;
+        })
         .res(response => response.json())
+        .catch(error => {
+            throw new Error()
+        });
 }
-
 
 export function promiseHandler(results: promiseSettledResponse[]):
     promiseSettledResponse[] {

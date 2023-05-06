@@ -79,43 +79,42 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
       return console.log('error on updating user ranks field')
     }
     //updates game data document
+    const rankToUpdate = {
+      waste_of_time: 0,
+      nuh: 0,
+      good: 0,
+      must: 0,
+    }
+
+    switch (value) {
+      case 'waste_of_time':
+        rankToUpdate.waste_of_time = 1
+        break
+      case 'nuh':
+        rankToUpdate.nuh = 1
+        break
+      case 'good':
+        rankToUpdate.good = 1
+        break
+      case 'must':
+        rankToUpdate.must = 1
+        break
+      default:
+        return
+    }
+
     try {
-      if (value === 'waste_of_time') {
-        await db
-          .collection('games_data')
-          .updateOne(
-            { gameId: gameId },
-            { $inc: { waste_of_time: 1 } }
-          )
-      }
-
-      if (value === 'nuh') {
-        await db
-          .collection('games_data')
-          .updateOne({ gameId: gameId }, { $inc: { nuh: 1 } })
-      }
-
-      if (value === 'good') {
-        await db
-          .collection('games_data')
-          .updateOne({ gameId: gameId }, { $inc: { good: 1 } })
-      }
-
-      if (value === 'must') {
-        await db
-          .collection('games_data')
-          .updateOne({ gameId: gameId }, { $inc: { must: 1 } })
-      }
+      await db.collection('games_data').updateOne({ gameId }, { $inc: rankToUpdate })
     } catch (e) {
       await generateErrorBackend({
-        error: 'error on updating games_data document on rankGame api action',
+        error: 'Error on updating games_data document on rankGame api action',
         status: 500,
         e,
       })
-
+      console.log('Error on updating games_data document', e)
       res.status(500).send({ error: 'Unexpected error' })
-      return console.log('error on updating games_data document', e)
     }
+
     try {
       await updateHype(
         'dislikeReview',
@@ -123,6 +122,7 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
       )
       res.status(201).send({ error: null })
     } catch (e) {
+      console.log(e)
       res.status(500).send({ error: 'Unexpected error' })
       console.log('error on rankGame', e)
     }

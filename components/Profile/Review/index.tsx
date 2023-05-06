@@ -9,6 +9,7 @@ import useWindowSize from '../../../lib/functions/hooks/useWindowSize'
 import { OPEN_ALERT_TYPE } from '../../../types'
 import { wretchAction } from '../../../lib/functions/fetchLogic'
 import styles from './index.module.scss'
+import { IconProp } from '@fortawesome/fontawesome-svg-core'
 
 interface Props extends Review_Type {
   deleteReview?: (id: ObjectId | undefined) => void
@@ -114,7 +115,7 @@ export default function Reviews({
           </Link>
           <FontAwesomeIcon
             onClick={() => deleteReview_STATE()}
-            icon={faTrash}
+            icon={faTrash as IconProp}
             className="h-4 cursor-pointer text-red-500 opacity-40 hover:opacity-100"
             style={{ marginLeft: 'auto' }}
           />

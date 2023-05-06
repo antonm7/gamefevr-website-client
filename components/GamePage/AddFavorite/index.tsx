@@ -6,6 +6,7 @@ import { faBookmark as regular } from '@fortawesome/free-regular-svg-icons'
 import { faBookmark as solid } from '@fortawesome/free-solid-svg-icons'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { wretchAction, wretchWrapper } from '../../../lib/functions/fetchLogic'
+import { IconProp } from '@fortawesome/fontawesome-svg-core'
 
 interface Props {
   gameId: number
@@ -29,12 +30,12 @@ export default function AddFavorite({ gameId }: Props) {
     try {
       //cancel favorite game
       if (isFavorite) {
-        setIsFavorite(false)
         await wretchAction('/api/game/cancel/favorite/deleteFavorite', {
           userId: session.data?.user?.userId,
           gameId: gameId,
-          favoriteId: isFavorite,
+          favoriteId: isFavorite
         })
+        setIsFavorite(false)
       } else {
         const addToFavoriteAction = await
           wretchAction(`/api/game/action/favorite/add`, {
@@ -64,10 +65,9 @@ export default function AddFavorite({ gameId }: Props) {
       const checkIsFavorite = async (): Promise<void> => {
         try {
           const fetchIsFavorite
-            = await wretchWrapper(`/api/game/get/getIsFavorite?userId=${session.data?.user?.userId}&gameId=${gameId}`,
-              'fetchIsFavorite')
+            = await wretchWrapper(`/api/game/get/getIsFavorite?userId=${session.data?.user?.userId}&gameId=${gameId}`)
           if (fetchIsFavorite.isFavorite) {
-            setIsFavorite(true)
+            setIsFavorite(fetchIsFavorite.isFavorite)
           }
         } catch (e) {
           throw new Error('Unexpected Error')
@@ -88,7 +88,7 @@ export default function AddFavorite({ gameId }: Props) {
         className="flex items-center justify-center w-40 h-10  mt-2 rounded-md cursor-pointer opacity-70 hover:opacity-100"
         style={{ backgroundColor: '#0c284a' }}
       >
-        <FontAwesomeIcon icon={regular} className="h-4 text-white pr-2" />
+        <FontAwesomeIcon icon={regular as IconProp} className="h-4 text-white pr-2" />
         <p className="whitespace-nowrap text-sm text-white">Add To Favorite</p>
       </div>
     )
@@ -102,7 +102,7 @@ export default function AddFavorite({ gameId }: Props) {
         style={{ backgroundColor: mouseOver ? 'rgb(239 68 68)' : '#50c878' }}
       >
         <FontAwesomeIcon
-          icon={mouseOver ? faXmark : solid}
+          icon={mouseOver ? faXmark as IconProp : solid as IconProp}
           className={`${mouseOver ? 'h-5' : 'h-4'} text-white pr-2`}
         />
         <p className="whitespace-nowrap text-sm text-white">Favorite</p>

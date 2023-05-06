@@ -7,6 +7,7 @@ import TextareaAutosize from 'react-textarea-autosize'
 import { promiseHandler, wretchAction } from '../../../lib/functions/fetchLogic'
 import { promiseSettledResponse } from '../../../types/apiTypes'
 import { Review_Type } from '../../../types/schema'
+import { IconProp } from '@fortawesome/fontawesome-svg-core'
 
 interface Props {
   onClose: () => void
@@ -28,8 +29,6 @@ export default function WriteReview({
 
   const writeReviewAction = async (): Promise<void> => {
     try {
-      //if user already rated the game, and if the raview
-      // ranking is different then needs to cancel the ranking
       if (isUserRated && rank !== isUserRated) {
         await wretchAction('/api/game/cancel/cancelRank', {
           userId: session.data?.user?.userId,
@@ -106,7 +105,7 @@ export default function WriteReview({
     >
       <FontAwesomeIcon
         onClick={onClose}
-        icon={faXmark}
+        icon={faXmark as IconProp}
         className="h-6 absolute white text-white right-6 cursor-pointer"
       />
       <div className="flex flex-wrap my-2">
@@ -126,8 +125,9 @@ export default function WriteReview({
         </div>
         <div
           onClick={() => toggleRank('nuh')}
-          className={`simple-transition cursor-pointer flex items-center flex-nowrap rounded-md py-1 px-2 mr-4 mb-4 hover:bg-white ${rank === 'nuh' ? 'bg-white' : ''
-            }`}
+          className={`simple-transition cursor-pointer flex items-center
+          flex-nowrap rounded-md py-1
+           px-2 mr-4 mb-4 hover:bg-white ${rank === 'nuh' ? 'bg-white' : ''}`}
           style={{ border: 'solid #e3e3e3', borderWidth: 1 }}
         >
           <span className="pr-2 text-md">🙁</span>

@@ -1,25 +1,12 @@
 import { getSession } from 'next-auth/react'
 import clientPromise from '../../lib/functions/mongodb'
 import { ObjectId } from 'bson'
-import { Favorite_Type, Review_Type } from '../../types/schema'
+import { type Favorite_Type, type Review_Type } from '../../types/schema'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 import CurrentProfile from '../../components/Profile/CurrentProfile/index'
 import VisitedProfile from '../../components/Profile/VisitedProfile/index'
-import { GetServerSidePropsContext } from 'next'
-import * as mongoDB from 'mongodb'
-
-interface Props {
-  reviews: Review_Type[]
-  favorites: Favorite_Type[]
-  hype: string
-  isHyped: boolean
-  user: {
-    username: string
-    email: string
-  }
-  visited: boolean
-}
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 
 export default function Profile({
   reviews,
@@ -28,7 +15,7 @@ export default function Profile({
   visited,
   isHyped,
   hype,
-}: Props) {
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
   if (visited) {
     return (
       <VisitedProfile
@@ -45,27 +32,31 @@ export default function Profile({
         hype={hype}
         reviews={reviews}
         favorites={favorites}
-        user={user}
+        user={user as { email: string, username: string }}
       />
     )
   }
 }
 
-interface Context {
-  // Type 'Context' does not satisfy the constraint 'ParsedUrlQuery'.
-  // Index signature for type 'string' is missing in type 'Context'.ts(2344)
-  [id: string]: string
-  id: string
+interface PageProps {
+  user: {
+    username: string,
+    email?: string
+  },
+  favorites: Favorite_Type[],
+  reviews: Review_Type[],
+  visited: boolean,
+  isHyped: boolean,
+  error: null | string,
+  hype: string
 }
 
-export async function getServerSideProps(
-  context: GetServerSidePropsContext<Context>
-) {
-  const session = await getSession(context)
+export const getServerSideProps: GetServerSideProps<PageProps> = async (ctx) => {
+  const session = await getSession(ctx)
 
   try {
     let user, reviews, favorites
-    const isVisited = context?.params?.id !==
+    const isVisited = ctx?.params?.id !==
       session?.user?.userId
 
     const client = await clientPromise
@@ -74,13 +65,13 @@ export async function getServerSideProps(
     let isHyped = false
 
     if (isVisited) {
-      const userCollection: mongoDB.Collection =
+      const userCollection =
         db.collection('users')
       user = await userCollection.findOne({
-        _id: new ObjectId(context?.params?.id),
+        _id: new ObjectId(ctx?.params?.id as string),
       })
 
-      if (user?.hyped_users.includes(context?.params?.id)) {
+      if (user?.hyped_users.includes(ctx?.params?.id)) {
         isHyped = true
       } else {
         isHyped = false
@@ -88,11 +79,11 @@ export async function getServerSideProps(
 
       const getReviews = () => db
         .collection('reviews')
-        .find({ userId: context?.params?.id })
+        .find({ userId: ctx?.params?.id })
 
       const getFavorites = () => db
         .collection('favorites')
-        .find({ userId: context?.params?.id })
+        .find({ userId: ctx?.params?.id })
         .toArray()
 
       const ReviewsAndFavorites = await Promise.allSettled([getReviews(), getFavorites()])
@@ -134,15 +125,17 @@ export async function getServerSideProps(
           },
         favorites: favorites ? JSON.parse(JSON.stringify(favorites)) : [],
         reviews: reviews ? JSON.parse(JSON.stringify(reviews)) : [],
-        hype: user?.hype,
+        hype: user?.hype as string,
         visited: isVisited,
-        isHyped: isHyped
+        isHyped: isHyped,
+        error: null
       }
     }
   } catch (e) {
     return {
-      props: {
-        user: null,
+      redirect: {
+        destination: '/',
+        permanent: false
       }
     }
   }

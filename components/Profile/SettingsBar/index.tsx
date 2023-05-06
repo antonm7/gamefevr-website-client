@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import styles from './index.module.scss'
 import { wretchAction } from '../../../lib/functions/fetchLogic'
+import { IconProp } from '@fortawesome/fontawesome-svg-core'
 
 interface Props {
   user: {
@@ -131,7 +132,7 @@ export default function SettingsBar({ user, isOpened, close, onUsernameChange }:
     >
       <FontAwesomeIcon
         onClick={() => close()}
-        icon={faXmark}
+        icon={faXmark as IconProp}
         className="absolute cursor-pointer"
         style={{ height: 22, color: '#c7c7c7', right: 35, top: 42 }}
       />
