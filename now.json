@@ -10,7 +10,7 @@
         }
     ],
     "install": {
-        "ignoreScripts": false,
+        "ignoreScripts": true,
         "args": [
             "--force"
         ]
