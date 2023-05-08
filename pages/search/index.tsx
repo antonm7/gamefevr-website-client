@@ -248,7 +248,6 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (ctx) => 
       const count = await db.collection('short_games').
         countDocuments(query) as unknown as number
 
-      console.log(data.length, 'trying')
       return {
         games: JSON.parse(JSON.stringify(data)) as ShortGame[],
         count,
