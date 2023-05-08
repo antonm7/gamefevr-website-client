@@ -13,7 +13,7 @@ export default function Lower1200FromCommon() {
             <div className="flex items-center justify-between overflow-hidden h-11">
                 <div style={{ marginTop: 7 }}>
                     <Image
-                        src={'/images/Logo.svg'}
+                        src={'/images/gameFevr.png'}
                         height={32}
                         width={130}
                         alt="Logo"

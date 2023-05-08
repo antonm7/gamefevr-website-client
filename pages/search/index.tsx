@@ -56,7 +56,7 @@ export default function Index(props: InferGetServerSidePropsType<typeof getServe
     }
   };
 
-const load_more = async () => {
+  const load_more = async () => {
     setNoResults(false);
     setLoadMoreLoading(true);
     setInitialError(false);
@@ -91,7 +91,7 @@ const load_more = async () => {
     }
   };
 
- useEffect(() => {
+  useEffect(() => {
     loadInitialResults()
   }, [])
 
