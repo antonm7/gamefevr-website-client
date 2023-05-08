@@ -6,7 +6,7 @@ export default function OnlyLogo() {
   const [width] = useWindowSize()
 
   if (width >= 900) {
-    return <Image src={'/images/dLogo.png'} height={32} width={130} alt="Logo" />
+    return <Image src={'/images/logo-white.webp'} height={32} width={130} alt="Logo" />
   } else {
     return (
       <div className="relative overflow-hidden" id="login_onlyLogo">
