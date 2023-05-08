@@ -13,7 +13,7 @@ export default function Lower640() {
             <div className="flex items-center justify-between">
                 <div style={{ marginTop: 7 }}>
                     <Image
-                        src={'/images/gameFevr.png'}
+                        src={'/images/logo-dark.webp'}
                         height={32}
                         width={130}
                         alt="Logo"

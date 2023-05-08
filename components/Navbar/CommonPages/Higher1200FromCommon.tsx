@@ -12,7 +12,7 @@ export default function Higher1200FromCommon() {
             <div className='flex items-center'>
                 <Image
                     className='pr-8'
-                    src={'/images/gameFevr.png'}
+                    src={'/images/logo-dark.webp'}
                     height={32}
                     width={130}
                     alt="Logo"

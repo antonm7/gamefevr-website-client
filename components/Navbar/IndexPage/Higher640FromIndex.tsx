@@ -12,7 +12,7 @@ export default function Higher640() {
             <div
                 className="w-full flex justify-between items-center">
                 <Image
-                    src={'/images/gameFevr.png'}
+                    src={'/images/logo-dark.webp'}
                     height={32}
                     width={130}
                     alt="Logo"
