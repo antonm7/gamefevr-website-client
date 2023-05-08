@@ -198,7 +198,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (ctx) => 
 
   const { yearRange, genres, consoles, search } = ctx.query
 
-  const isNextPage = (page: number, count: number) => page * 16 < count
+  const isNextPage = (page: number, count: number) => page * 12 < count
 
   let query: QueryObject = { $and: [] };
 
@@ -244,7 +244,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (ctx) => 
     const getGames = async (query: any) => {
 
       const data = await db.collection('short_games').find(query)
-        .limit(16).toArray()
+        .limit(12).toArray()
       const count = await db.collection('short_games').
         countDocuments(query) as unknown as number
 

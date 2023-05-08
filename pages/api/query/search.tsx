@@ -17,7 +17,7 @@ interface ExtendedNextApiRequest extends NextApiRequest {
 }
 
 const isNextPage = (page: number, count: number) => {
-  if (page * 16 < count) {
+  if (page * 12 < count) {
     return true
   } else {
     return false
@@ -59,7 +59,7 @@ export default async function handler(req: ExtendedNextApiRequest, res: Response
     const query = collection.find(filtering.$and.length ? filtering : {});
 
     const [data, count] = await Promise.all([
-      query.limit(16).skip(16 * (page - 1)).toArray(),
+      query.limit(12).skip(12 * (page - 1)).toArray(),
       collection.countDocuments(filtering.$and.length ? filtering : {}) as unknown as number,
     ]);
 
