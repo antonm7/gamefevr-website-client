@@ -103,7 +103,7 @@ export default function Menu() {
           onClick={() => changeMenuVisibility(false)}
         />
         <div>
-          <Image src={'/images/logo-dark.svg'} height={60} width={200} alt="Logo" />
+          <Image src={'/images/logo-dark.webp'} height={60} width={200} alt="Logo" />
         </div>
         <div className="flex flex-col pt-0 pb-4">
           <Link href="/">
