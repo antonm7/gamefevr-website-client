@@ -56,7 +56,7 @@ export default function Index(props: InferGetServerSidePropsType<typeof getServe
     }
   };
 
-const load_more = async () => {
+  const load_more = async () => {
     setNoResults(false);
     setLoadMoreLoading(true);
     setInitialError(false);
@@ -91,7 +91,7 @@ const load_more = async () => {
     }
   };
 
- useEffect(() => {
+  useEffect(() => {
     loadInitialResults()
   }, [])
 
@@ -248,6 +248,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (ctx) => 
       const count = await db.collection('short_games').
         countDocuments(query) as unknown as number
 
+      console.log(data.length, 'trying')
       return {
         games: JSON.parse(JSON.stringify(data)) as ShortGame[],
         count,
