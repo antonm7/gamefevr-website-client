@@ -43,8 +43,8 @@ export default function BackgroundGameImage({ bg, movieUrl }: Props) {
       ) : (
         <div>
           <Image
-            quality={55}
-            loading="eager"
+            quality={50}
+            loading="lazy"
             className="z-0"
             src={bg}
             layout="fill"
