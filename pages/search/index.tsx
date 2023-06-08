@@ -245,8 +245,13 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (ctx) => 
 
       const data = await db.collection('short_games').find(query)
         .limit(12).toArray()
-      const count = await db.collection('short_games').
-        countDocuments(query) as unknown as number
+
+      let count = 18118;
+
+      if (Object.keys(query).length !== 0) {
+        count = await db.collection('short_games').
+          countDocuments(query) as unknown as number
+      }
 
       return {
         games: JSON.parse(JSON.stringify(data)) as ShortGame[],

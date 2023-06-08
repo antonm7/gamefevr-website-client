@@ -22,10 +22,10 @@ export default function SmallGameBox({ game }: Props) {
       return
     }
   }
-
-  useEffect(() => {
-    loadMovie()
-  }, [])
+  // turned off for now
+  // useEffect(() => {
+  //   loadMovie()
+  // }, [])
 
   return (
     <Link href={`/game/${game.id}`} className="cursor-pointer">
