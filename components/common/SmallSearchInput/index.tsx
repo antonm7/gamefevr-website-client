@@ -1,6 +1,5 @@
 import { faMagnifyingGlass, faSliders } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { setCookie } from 'cookies-next'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
@@ -27,7 +26,6 @@ export default function SmallSearchInput({ full }: { full: boolean }) {
   }
 
   const navigate = async () => {
-    setCookie('prevRoute', '/')
     await router.push({
       pathname: '/search',
       query: {

@@ -8,13 +8,10 @@ import Filters from '../../components/Filters'
 import SmallLoader from '../../components/common/SmallLoader'
 import { type ShortGame } from '../../types'
 import LoadingError from '../../components/common/LoadingError'
-import cookie from 'cookie'
-import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
-import clientPromise from '../../lib/functions/mongodb'
 import { wretchAction } from '../../lib/functions/fetchLogic'
 import styles from './index.module.scss'
 
-export default function Index(props: InferGetServerSidePropsType<typeof getServerSideProps>) {
+export default function Index() {
   const router = useRouter()
   const store = useStore()
 
@@ -23,40 +20,17 @@ export default function Index(props: InferGetServerSidePropsType<typeof getServe
   const [nextPage, setNextPage] = useState<boolean>(false)
   const [loadMoreLoading, setLoadMoreLoading] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(false)
-  const loadInitialResults = () => {
-    const { already_visited, error, games, count, isNextPage } = props;
-    if (already_visited && store.games.length) {
+
+  const load_more = async (initial_render: boolean) => {
+    if (store.games.length && initial_render) {
       setNextPage(true);
       return;
     }
 
-    if (already_visited && !store.games.length) {
-      load_more()
-      return
+    if (initial_render) {
+      setLoading(true)
     }
 
-    if (error) {
-      PubSub.publish('OPEN_ALERT', {
-        type: 'error',
-        msg: `error getting games, please try again`
-      })
-      setNoResults(true)
-      setInitialError(true)
-      return;
-    }
-
-    if (games?.length) {
-      store.setCount(count ?? 0);
-      store.clearGames();
-      store.addGames(games);
-      store.addPage();
-      setNextPage(isNextPage);
-    } else {
-      setNoResults(true);
-    }
-  };
-
-  const load_more = async () => {
     setNoResults(false);
     setLoadMoreLoading(true);
     setInitialError(false);
@@ -92,13 +66,13 @@ export default function Index(props: InferGetServerSidePropsType<typeof getServe
   };
 
   useEffect(() => {
-    loadInitialResults()
+    load_more(true)
   }, [])
 
   useEffect(() => {
     if (store.reload) {
       setLoading(true)
-      load_more().then(() => store.activateReload(false))
+      load_more(false).then(() => store.activateReload(false))
     }
   }, [store.reload])
 
@@ -155,129 +129,11 @@ export default function Index(props: InferGetServerSidePropsType<typeof getServe
             ) : (
               <SearchButton
                 text="Load More"
-                onClick={() => load_more()}
+                onClick={() => load_more(false)}
               />
             ) : null}
         </div>
       </div>
     </SearchLayout>
   )
-}
-
-function parseCookies(req: any) {
-  return cookie.parse(req ? req.headers.cookie || '' : document.cookie)
-}
-
-interface PageProps {
-  games: ShortGame[]
-  error: string | null
-  already_visited: boolean
-  count: number | null
-  isNextPage: boolean
-}
-
-interface QueryObject {
-  [key: string]: {
-    [key: string]: any
-  } | any
-}
-
-export const getServerSideProps: GetServerSideProps<PageProps> = async (ctx) => {
-  const cookies = parseCookies(ctx.req)
-  if (cookies.prevRoute === '/game/[id]') {
-    return {
-      props: {
-        games: [],
-        error: null,
-        already_visited: true,
-        count: null,
-        isNextPage: false,
-      },
-    }
-  }
-
-  const { yearRange, genres, consoles, search } = ctx.query
-
-  const isNextPage = (page: number, count: number) => page * 12 < count
-
-  let query: QueryObject = { $and: [] };
-
-  if (search) {
-    query.$and.push({ name: { $regex: new RegExp(search as string, 'i') } });
-  }
-
-  if (yearRange?.length === 2) {
-    query.$and.push({
-      released: {
-        $gte: `${yearRange[0]}-01-01`,
-        $lte: `${yearRange[1]}-12-31`,
-      },
-    })
-  }
-
-  if (genres) {
-    const genreIds = Array.isArray(genres) ? genres.map((g) => parseInt(g)) : [parseInt(genres)]
-    query.$and.push({
-      genres: {
-        $elemMatch: {
-          id: { $in: genreIds },
-        },
-      },
-    })
-  }
-
-  if (consoles) {
-    const platformIds = Array.isArray(consoles) ? consoles.map((c) => parseInt(c)) : [parseInt(consoles)]
-    query.$and.push({
-      parent_platforms: {
-        $elemMatch: {
-          'platform.id': { $in: platformIds },
-        },
-      },
-    })
-  }
-
-  try {
-    const client = await clientPromise
-    const db = client.db()
-
-    const getGames = async (query: any) => {
-
-      const data = await db.collection('short_games').find(query)
-        .limit(12).toArray()
-
-      let count = 18118;
-
-      if (Object.keys(query).length !== 0) {
-        count = await db.collection('short_games').
-          countDocuments(query) as unknown as number
-      }
-
-      return {
-        games: JSON.parse(JSON.stringify(data)) as ShortGame[],
-        count,
-        error: null,
-        already_visited: false,
-        isNextPage: isNextPage(1, count),
-      }
-    }
-
-    if (query.$and.length > 0) {
-      return { props: await getGames(query) }
-    } else {
-      return { props: await getGames({}) }
-    }
-
-  } catch (e) {
-    console.error(e)
-    return {
-      props: {
-        games: [],
-        error: 'Error loading data',
-        already_visited: false,
-        count: null,
-        isNextPage: false,
-      }
-    }
-  }
 }

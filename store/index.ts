@@ -41,7 +41,7 @@ export const useStore = create<State>((set) => ({
     }),
   clearGames: () =>
     set(() => {
-      return { games: [] }
+      return { games: [], page: 1 }
     }),
   addPage: () => set((state) => ({ page: (state.page += 1) })),
   clearPage: () => set(() => ({ page: 1 })),

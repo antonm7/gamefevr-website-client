@@ -18,6 +18,7 @@ const Home: NextPage = () => {
   const [width] = useWindowSize()
 
   const navigate = () => {
+    store.clearGames()
     if (store.gameName.length > 0) {
       router.push({
         pathname: '/search',

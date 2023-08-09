@@ -3,7 +3,6 @@ import '../styles/global.scss'
 import '../styles/responsive.scss'
 import '../styles/animation.scss'
 import 'tailwindcss/tailwind.css'
-import { setCookie } from 'cookies-next'
 import { SessionProvider } from 'next-auth/react'
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
@@ -37,7 +36,6 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: any) {
     router.events.on('routeChangeComplete', handleStop)
     router.events.on('routeChangeError', handleStop)
 
-    setCookie('prevRoute', router.pathname)
     return () => {
       router.events.off('routeChangeStart', handleStart)
       router.events.off('routeChangeComplete', handleStop)

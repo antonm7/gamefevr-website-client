@@ -4,7 +4,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { useFiltersStore, useStore } from '../../store'
 import YellowButton from '../common/YellowButton'
-import { setCookie } from 'cookies-next'
 import RangeContainer from './RangeContainer'
 import Consoles from './Consoles'
 import Genres from './Genres'
@@ -28,7 +27,7 @@ export default function Filters() {
   }
 
   const search = (): void => {
-    setCookie('prevRoute', '/')
+    store.clearGames()
     filtersStore.setConsoles(selectedConsoles)
     filtersStore.setGenres(selectedGenres)
     filtersStore.setYearRange(yearRange)
